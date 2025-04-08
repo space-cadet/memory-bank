@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Organization | Integrated Code Rules and Memory Bank System</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+    <button class="menu-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h1>Memory Bank</h1>
+            <p>Documentation</p>
+        </div>
+        
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search documentation...">
+        </div>
+        
+        <nav>
+            <div class="nav-section">Getting Started</div>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="index.html">Home</a></li>
+                <li class="nav-item"><a href="overview.html">System Overview</a></li>
+                <li class="nav-item"><a href="quick-start.html">Quick Start Guide</a></li>
+            </ul>
+            
+            <div class="nav-section">Core Concepts</div>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="task-workflow.html">Task-First Workflow</a></li>
+                <li class="nav-item"><a href="knowledge-structure.html">Knowledge Organization</a></li>
+                <li class="nav-item"><a href="command-system.html">Command System</a></li>
+                <li class="nav-item"><a href="session-management.html">Session Management</a></li>
+            </ul>
+            
+            <div class="nav-section">Implementation</div>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="code-standards.html">Code Standards</a></li>
+                <li class="nav-item"><a href="documentation-standards.html">Documentation Standards</a></li>
+                <li class="nav-item"><a href="tool-usage.html">Tool Usage</a></li>
+                <li class="nav-item"><a href="file-operations.html">File Operations</a></li>
+            </ul>
+            
+            <div class="nav-section">Reference</div>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="command-reference.html">Command Reference</a></li>
+                <li class="nav-item"><a href="file-structure.html">File Structure</a></li>
+                <li class="nav-item"><a href="templates.html">Templates</a></li>
+                <li class="nav-item"><a href="external-tools.html">External Tools</a></li>
+            </ul>
+        </nav>
+    </aside>
+    
+    <main class="content">
+        <div class="content-wrapper">
+            <h1>Knowledge Organization</h1>
+            <p class="last-updated">Last Updated: April 8, 2025</p>
+            
+            <p>The Integrated Code Rules and Memory Bank System uses a tiered knowledge structure to optimize the loading and management of project information. This approach ensures that only the most relevant information is loaded for each task, minimizing token usage while maintaining project continuity.</p>
+            
+            <div class="alert alert-info">
+                <p><strong>Key Principle:</strong> Information is organized in four tiers with task-oriented loading priorities, from minimal required knowledge to detailed reference information.</p>
+            </div>
+            
+            <h2>Tiered Knowledge Structure</h2>
+            
+            <p>Knowledge is organized in four tiers with progressively increasing detail and decreasing loading priority:</p>
+            
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-seedling"></i></div>
+                    <div class="card-title">Bootstrap Tier</div>
+                    <p>Core system structure, loaded only when essential for understanding the command system.</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-exclamation-circle"></i></div>
+                    <div class="card-title">Critical Tier</div>
+                    <p>Current state relevant to immediate tasks, loaded only for files directly relevant to current task step.</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-clipboard-list"></i></div>
+                    <div class="card-title">Essential Tier</div>
+                    <p>Reference information loaded only when task requirements aren't clear from Critical tier.</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-book"></i></div>
+                    <div class="card-title">Reference Tier</div>
+                    <p>Detailed implementation information accessed only when directly relevant to current task step.</p>
+                </div>
+            </div>
+            
+            <h2>Tier Details</h2>
+            
+            <h3>1. Bootstrap Tier (Minimal Required Knowledge)</h3>
+            <ul>
+                <li><code>bootstrap.md</code> - Core system structure, loaded only when essential</li>
+                <li>Access only when needed to understand command system</li>
+                <li>Contains fundamental information about system operation</li>
+            </ul>
+            
+            <div class="callout">
+                <div class="callout-title">
+                    <span class="callout-icon"><i class="fas fa-lightbulb"></i></span>
+                    When to Access Bootstrap Tier
+                </div>
+                <p>Only access the Bootstrap tier when:</p>
+                <ul>
+                    <li>Setting up the system for the first time</li>
+                    <li>Needing to understand core command structure</li>
+                    <li>Troubleshooting fundamental system issues</li>
+                </ul>
+            </div>
+            
+            <h3>2. Critical Tier (Task-Relevant Only)</h3>
+            <ul>
+                <li><code>activeContext.md</code> - Current state relevant to immediate task</li>
+                <li><code>progress.md</code> - Status information needed for current step</li>
+                <li><code>session_cache.md</code> - Minimal continuity information if continuing a task</li>
+                <li>Load only files directly relevant to current task step</li>
+            </ul>
+            
+            <div class="callout">
+                <div class="callout-title">
+                    <span class="callout-icon"><i class="fas fa-lightbulb"></i></span>
+                    Critical Tier Loading
+                </div>
+                <p>The Critical tier is your primary source of task-relevant information. Always start here, loading only the specific files needed for your current step.</p>
+            </div>
+            
+            <h3>3. Essential Tier (Load Only When Required)</h3>
+            <ul>
+                <li><code>projectbrief.md</code> - Reference only when task scope is unclear</li>
+                <li><code>.cursorrules</code> - Reference only when implementation patterns are needed</li>
+                <li>Load only when task requirements aren't clear from Critical tier</li>
+            </ul>
+            
+            <div class="callout">
+                <div class="callout-title">
+                    <span class="callout-icon"><i class="fas fa-lightbulb"></i></span>
+                    Essential Tier Loading
+                </div>
+                <p>Only move to Essential tier files when you need clarity on project scope or implementation patterns that aren't available in the Critical tier.</p>
+            </div>
+            
+            <h3>4. Reference Tier (Avoid Unless Specifically Needed)</h3>
+            <ul>
+                <li><code>productContext.md</code> - Why and how the project works</li>
+                <li><code>systemPatterns.md</code> - Architecture and design patterns</li>
+                <li><code>techContext.md</code> - Technical implementation details</li>
+                <li>Load only specific files when directly relevant to current task step</li>
+            </ul>
+            
+            <div class="callout">
+                <div class="callout-title">
+                    <span class="callout-icon"><i class="fas fa-lightbulb"></i></span>
+                    Reference Tier Loading
+                </div>
+                <p>Reference tier files contain detailed information that should only be loaded when specifically needed for a task step. Avoid loading these files "just in case."</p>
+            </div>
+            
+            <h2>Task-First Loading Process</h2>
+            
+            <p>The knowledge tiering system supports a task-first approach to information loading:</p>
+            
+            <ol>
+                <li><strong>Analyze the immediate task requirements</strong>
+                    <ul>
+                        <li>Break down the task into discrete steps</li>
+                        <li>Identify what information is needed for the current step only</li>
+                    </ul>
+                </li>
+                <li><strong>Identify the minimal set of files needed</strong>
+                    <ul>
+                        <li>Start with Critical tier files relevant to the task</li>
+                        <li>Only add Essential or Reference tier files if specifically needed</li>
+                    </ul>
+                </li>
+                <li><strong>Load only those files directly relevant</strong>
+                    <ul>
+                        <li>Use <code>read_mb [file]</code> to load specific files</li>
+                        <li>Avoid loading entire directories or tiers</li>
+                    </ul>
+                </li>
+                <li><strong>Execute the current step completely</strong>
+                    <ul>
+                        <li>Focus on completing the current step with the loaded information</li>
+                    </ul>
+                </li>
+                <li><strong>Load additional files only when needed for the next step</strong>
+                    <ul>
+                        <li>Evaluate what's needed for the next specific step</li>
+                        <li>Load only those additional files</li>
+                    </ul>
+                </li>
+                <li><strong>Update only files with meaningful changes</strong>
+                    <ul>
+                        <li>Follow the Documentation Decision Framework</li>
+                        <li>Make targeted updates to relevant files</li>
+                    </ul>
+                </li>
+            </ol>
+            
+            <h2>Documentation Decision Framework</h2>
+            
+            <p>The system uses a standardized framework to determine which files to update based on the type of change:</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Change Type</th>
+                        <th>Documentation Requirements</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Interface changes</td>
+                        <td>Update API docs, activeContext.md</td>
+                    </tr>
+                    <tr>
+                        <td>Implementation details</td>
+                        <td>Code comments only</td>
+                    </tr>
+                    <tr>
+                        <td>Architecture changes</td>
+                        <td>Update systemPatterns.md</td>
+                    </tr>
+                    <tr>
+                        <td>New features</td>
+                        <td>Update progress.md, projectbrief.md</td>
+                    </tr>
+                    <tr>
+                        <td>Bug fixes</td>
+                        <td>Update progress.md only</td>
+                    </tr>
+                    <tr>
+                        <td>Refactoring</td>
+                        <td>Minimal documentation unless patterns change</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2>File Purposes and Content</h2>
+            
+            <h3>Bootstrap Tier</h3>
+            
+            <h4>bootstrap.md</h4>
+            <p>Core system structure and fundamental operation information.</p>
+            <ul>
+                <li>Basic command structure</li>
+                <li>System initialization process</li>
+                <li>Core operational principles</li>
+            </ul>
+            
+            <h3>Critical Tier</h3>
+            
+            <h4>activeContext.md</h4>
+            <p>Current state relevant to immediate tasks.</p>
+            <ul>
+                <li>List of active tasks with current status</li>
+                <li>Components currently being modified</li>
+                <li>Decisions directly affecting current tasks</li>
+                <li>Specific next steps for current tasks</li>
+            </ul>
+            
+            <h4>progress.md</h4>
+            <p>Status tracking information needed for current steps.</p>
+            <ul>
+                <li>Task progress tracking</li>
+                <li>Completed milestones</li>
+                <li>Current blockers or issues</li>
+                <li>Immediate next actions</li>
+            </ul>
+            
+            <h4>session_cache.md</h4>
+            <p>Minimal continuity information for continuing tasks.</p>
+            <ul>
+                <li>Session status (continuing or complete)</li>
+                <li>Current task in progress</li>
+                <li>Current step in the process</li>
+                <li>Critical files needed to continue</li>
+                <li>Minimal state information needed to continue</li>
+            </ul>
+            
+            <h3>Essential Tier</h3>
+            
+            <h4>projectbrief.md</h4>
+            <p>Core requirements and project scope information.</p>
+            <ul>
+                <li>Project goals and objectives</li>
+                <li>Key requirements</li>
+                <li>Main features and functionality</li>
+                <li>Project constraints and limitations</li>
+            </ul>
+            
+            <h4>.cursorrules</h4>
+            <p>Project patterns and implementation guidelines.</p>
+            <ul>
+                <li>Coding patterns and standards</li>
+                <li>Implementation guidelines</li>
+                <li>Code organization principles</li>
+                <li>Best practices specific to the project</li>
+            </ul>
+            
+            <h3>Reference Tier</h3>
+            
+            <h4>productContext.md</h4>
+            <p>Why and how the project works from a product perspective.</p>
+            <ul>
+                <li>Detailed product description</li>
+                <li>User personas and use cases</li>
+                <li>Product flows and interactions</li>
+                <li>Business requirements and constraints</li>
+            </ul>
+            
+            <h4>systemPatterns.md</h4>
+            <p>Architecture and design patterns used in the project.</p>
+            <ul>
+                <li>System architecture overview</li>
+                <li>Design patterns and their implementations</li>
+                <li>Component interactions and dependencies</li>
+                <li>Data flow and state management</li>
+            </ul>
+            
+            <h4>techContext.md</h4>
+            <p>Technical implementation details and technology stack.</p>
+            <ul>
+                <li>Technology stack details</li>
+                <li>Library and framework usage</li>
+                <li>API specifications and integrations</li>
+                <li>Technical constraints and considerations</li>
+            </ul>
+            
+            <h2>Loading Commands and Examples</h2>
+            
+            <h3>Basic Loading Commands</h3>
+            
+            <pre><code>read_mb                  # Load Critical tier files needed for current task
+read_mb [file]          # Load specific file only
+read_mb standard        # Load Critical + Essential tiers
+read_mb complete        # Load all Memory Bank files (rarely needed)
+update_mb [file]        # Update specific file with minimal changes</code></pre>
+            
+            <h3>Example: Task-First Loading Process</h3>
+            
+            <div class="callout">
+                <div class="callout-title">
+                    <span class="callout-icon"><i class="fas fa-code"></i></span>
+                    Example: Implementing Form Validation
+                </div>
+                
+                <p><strong>Step 1: Analyze Task Needs</strong></p>
+                <p>Need to understand current form handling and validation requirements.</p>
+                <pre><code>do_task implement form validation
+read_mb activeContext.md        # Current state of form components
+read_mb progress.md             # Track validation task progress</code></pre>
+                
+                <p><strong>Step 2: Implement First Component</strong></p>
+                <p>Need implementation patterns for validation logic.</p>
+                <pre><code>read_mb .cursorrules            # Get implementation patterns</code></pre>
+                
+                <p><strong>Step 3: Need Technical Details</strong></p>
+                <p>Need specific technical information about the validation library.</p>
+                <pre><code>read_mb techContext.md          # Technical implementation details</code></pre>
+                
+                <p><strong>Step 4: Update Documentation</strong></p>
+                <pre><code>update_mb activeContext.md      # Update form validation status
+update_mb progress.md           # Mark validation implementation as complete</code></pre>
+            </div>
+            
+            <h2>Best Practices for Knowledge Organization</h2>
+            
+            <ol>
+                <li><strong>Prioritize Critical Tier:</strong> Always start with Critical tier files relevant to your immediate task</li>
+                <li><strong>Be Specific in Loading:</strong> Load only specific files, not entire tiers or directories</li>
+                <li><strong>Progressive Loading:</strong> Add files only as needed for each step, not preemptively</li>
+                <li><strong>Targeted Updates:</strong> Update only files with meaningful changes related to your task</li>
+                <li><strong>Maintain Documentation Quality:</strong> Follow the Documentation Decision Framework for consistency</li>
+                <li><strong>Keep Session Cache Minimal:</strong> Include only essential information needed to continue tasks</li>
+                <li><strong>Use Templates:</strong> Follow established templates when creating or updating documentation</li>
+            </ol>
+            
+            <div class="alert alert-warning">
+                <p><strong>Common Mistakes to Avoid:</strong></p>
+                <ul>
+                    <li>Loading all files "just to be safe"</li>
+                    <li>Starting with Reference tier files instead of Critical tier</li>
+                    <li>Making comprehensive documentation updates for minor changes</li>
+                    <li>Including non-essential information in session_cache.md</li>
+                    <li>Not following the Documentation Decision Framework</li>
+                </ul>
+            </div>
+            
+            <h2>Related Topics</h2>
+            
+            <ul>
+                <li><a href="task-workflow.html">Task-First Workflow</a> - How to execute tasks with minimal context loading</li>
+                <li><a href="command-system.html">Command System</a> - Commands for memory management</li>
+                <li><a href="documentation-standards.html">Documentation Standards</a> - How to update documentation effectively</li>
+                <li><a href="file-structure.html">File Structure</a> - Organization of Memory Bank files</li>
+            </ul>
+            
+            <footer class="footer">
+                <p>&copy; 2025 Integrated Code Rules and Memory Bank System</p>
+                <p>Last Updated: April 8, 2025</p>
+            </footer>
+        </div>
+    </main>
+    
+    <script src="assets/main.js"></script>
+</body>
+</html>
