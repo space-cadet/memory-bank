@@ -1,0 +1,147 @@
+# Spin Network Visualization App Development Rules
+
+## Project Architecture
+
+1. This is a React application using TypeScript and built with Vite
+2. The project uses Tailwind CSS for styling
+3. Dependencies are managed with pnpm (not npm or yarn)
+4. The app has a component-based architecture with clear separation of concerns
+5. Components are organized by functionality (layouts, tools, panels, visualization)
+
+## Data Model Patterns
+
+1. The network data model uses TypeScript interfaces for all elements
+2. Network operations return new objects rather than modifying existing ones (immutability)
+3. Node IDs are unique strings with format 'node-{timestamp}-{random}'
+4. Edge IDs are unique strings with format 'edge-{timestamp}-{random}'
+5. All operations include validation to ensure network integrity
+6. Edges can have null source/target to support "dangling" edges
+7. Dangling edges store position information for their unconnected endpoints
+8. Placeholder nodes are created for visualization of dangling edge endpoints
+9. Node and edge types have unique string IDs for reference in the data model
+10. Type IDs with pattern 'node-type-{timestamp}' and 'edge-type-{timestamp}'
+11. Built-in system types ('regular', 'placeholder', 'dangling') have special handling
+
+## Interface Patterns
+
+1. The application uses a resizable panel system for flexible workspace customization
+2. The main layout consists of:
+   - Left panel for network tools
+   - Center area for network visualization (containing toolbar with undo/redo, mode buttons, and zoom controls)
+   - Right panel for properties and simulation controls
+   - Bottom panel for energy/metrics visualization
+3. Resize handles allow users to adjust panel sizes to their preference
+4. Panels maintain minimum and maximum size constraints
+5. All panels must have proper vertical scrolling with overflow-y-auto
+6. Interaction modes (select, pan, add node, add edge, delete) use visual feedback
+7. Status indicators guide users through multi-step operations
+8. Cursor styles change based on the current interaction mode
+9. Timestamps are added to filenames when saving networks
+
+## Network Visualization Patterns
+
+1. Cytoscape.js is used for network visualization
+2. Network elements (nodes/edges) are selectable for property editing
+3. Nodes represent intertwiners with position and intertwiner value properties
+4. Edges represent spins with source, target, and spin value properties
+5. The visualization supports multiple modes (select, pan, add node, add edge, delete)
+6. Exercise caution when using Cytoscape.js layout functions - they can cause rendering issues
+7. Always use try/catch blocks around Cytoscape.js operations that might fail
+8. Prefer CSS classes for styling Cytoscape elements over direct style application
+9. Use appropriate selectors for filtering nodes by type (regular vs. placeholder)
+10. Set fixed node dimensions to prevent automatic scaling
+11. Use more padding when fitting elements to the view
+12. Limit maximum zoom level to maintain visual consistency
+13. Use the useNetworkStyles hook to apply view settings to Cytoscape
+14. Update Cytoscape styles when view settings change using useEffect
+15. Node and edge types define visual properties (color, size, shape, etc.)
+16. The Type Management UI allows customization of element visual properties
+17. Type-specific styles override global view settings when applied
+
+## Event Handling Patterns
+
+1. Use namespaced event handlers (e.g., 'tap.delete') for better event management
+2. Remove existing handlers before adding new ones to prevent duplicates
+3. Use `preventDefault()` and `stopPropagation()` to control event bubbling
+4. Handle events differently based on node type (regular vs. placeholder)
+5. Reattach handlers after operations that modify the graph
+6. Use filters like `cy.nodes().filter('[type != "placeholder"]')` to target specific node types
+7. Separate handlers for different interaction modes
+8. Centralize complex operations in helper functions (createEdge, createDanglingEdge, etc.)
+9. Use saveHistoryBeforeGroupOperation and finalizeGroupOperation for composite operations
+10. Ensure deletion handlers properly clean up related elements
+11. Add detailed console logging for debugging complex event chains
+
+## Placeholder Node Patterns
+
+1. Placeholder nodes are used to visualize dangling edge endpoints
+2. Placeholder nodes have a different visual style (diamond shape, orange color, dashed border)
+3. Placeholder nodes store metadata about their associated edge
+4. Placeholder nodes can be converted to real nodes in select mode
+5. Clicking on a placeholder node in select mode prompts for conversion
+6. Placeholder nodes can be used as connection points in edge creation mode
+7. Deleting a placeholder also deletes its associated edge
+
+## Component Patterns
+
+1. ResizablePanel is a reusable component for creating panels that can be resized by the user
+2. Network generators create different types of networks (lattice, circular, random)
+3. Property panels show context-sensitive controls based on selected elements
+4. Interface components use consistent styling from Tailwind CSS
+5. Mode buttons use toggle behavior (active→inactive) for better UX
+6. Confirmation dialogs are used for destructive operations
+7. HeaderDropdown provides consistent dropdown functionality in the header
+8. SettingsDropdown organizes application settings with submenus
+9. Dropdown menus use a consistent back-button pattern for submenu navigation
+10. Custom CSS classes (menu-item, menu-label) ensure consistent styling in dropdowns
+11. Type management uses a tabbed modal interface for different element types
+12. Type creation/editing forms provide live preview of appearance changes
+13. Type managers handle CRUD operations for node/edge types
+
+## Coding Conventions
+
+1. Use functional components with hooks, not class components
+2. Use TypeScript interfaces for component props and data structures
+3. Maintain clear type definitions for all data structures
+4. Place CSS in the appropriate style files, not inline (except for dynamic values)
+5. Follow the existing naming conventions for files and components
+6. Use consistent indentation (2 spaces) and formatting
+
+## State Management
+
+1. Using Redux with Redux Toolkit for state management
+2. State updates are immutable (create new objects rather than modifying existing ones)
+3. Use selector functions to extract data from state where appropriate
+4. Action creators are strongly typed with PayloadAction<T>
+5. All hooks must be called unconditionally at the top level of components
+6. Use useMemo for conditional logic that depends on state
+7. Keep Redux state normalized and minimal
+8. Network operations are triggered through Redux actions
+9. UI state (modes, selection) is managed through the uiSlice
+10. Use the store.getState() method to access Redux state outside of components
+11. History state is maintained alongside network state for undo/redo functionality
+12. Group operations should be tracked as atomic units in history
+13. Save and restore the entire history state when persisting networks
+14. Theme settings are stored in Redux and applied using ThemeProvider
+15. Visual settings (nodeSize, edgeThickness, labels) are persisted in Redux
+16. Performance settings control rendering quality and animation smoothness
+
+## Theme Management
+
+1. The application supports light, dark, and system themes
+2. ThemeProvider applies the current theme based on Redux state
+3. Dark mode uses CSS class 'dark-mode' applied to the document root
+4. Theme colors are defined using CSS variables for consistent styling
+5. All color values should use the CSS variables rather than hardcoded values
+6. System theme detection uses window.matchMedia('(prefers-color-scheme: dark)')
+7. Dropdown menus and UI components should have proper dark mode styling
+
+## Development Workflow
+
+1. Understand existing code before making changes
+2. Make incremental changes that can be easily tested
+3. Consider how new features will integrate with the existing architecture
+4. Maintain documentation in the memory-bank alongside code changes
+5. Test UI changes across different panel configurations
+6. Check different interaction modes when implementing new features
+7. Consider edge cases for user interactions

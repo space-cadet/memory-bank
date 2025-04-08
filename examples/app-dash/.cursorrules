@@ -1,0 +1,210 @@
+# Project Rules & Patterns
+
+## Naming Conventions
+
+### Components
+- Use PascalCase for component names
+- Main components should be named clearly reflecting their purpose (e.g., `Dashboard`, `LLMConversation`)
+- UI components follow shadcn/ui naming convention (e.g., `Button`, `Input`)
+
+### Files
+- Component files use kebab-case (e.g., `llm-conversation.tsx`)
+- Page files use standard Next.js conventions (e.g., `page.tsx`)
+- Utility files use kebab-case (e.g., `utils.ts`)
+
+### Variables
+- Use camelCase for variable and function names
+- Use PascalCase for types and interfaces
+- Prefix boolean variables with 'is', 'has', or similar (e.g., `isLoading`, `hasError`)
+
+## Component Structure
+
+### Component Organization
+- Import statements at the top
+- Type/interface definitions next
+- Component function
+- Helper functions/hooks within the component if they're not reused
+- Export statement at the bottom
+
+### Standard Component Form
+```typescript
+import { ... } from '...'
+
+interface ComponentProps {
+  // Props definition
+}
+
+export function ComponentName({ prop1, prop2 }: ComponentProps) {
+  // Context hooks first
+  const { settings } = useSettings();
+  
+  // State hooks
+  const [state, setState] = useState(...)
+  
+  // Effect hooks
+
+  // Event handlers
+  
+  return (
+    // JSX
+  )
+}
+```
+
+### Context Pattern
+- Place context definitions in `/src/app/contexts/` directory
+- Follow naming pattern: `feature-context.tsx`
+- Provide a custom hook for accessing the context (e.g., `useSettings`)
+- Always wrap context usage in try/catch with informative error messages
+- Ensure all entry points have proper provider wrappers
+
+## Styling Patterns
+
+### Tailwind Usage
+- Use Tailwind utility classes directly in components
+- Use shadcn/ui variants for consistent component styling
+- Follow BEM-like nesting for complex components using Tailwind's grouping syntax
+
+### Class Organization
+- Layout properties first (display, position)
+- Box model properties next (margin, padding, width, height)
+- Typography properties
+- Visual properties (colors, backgrounds)
+- Interactive properties (hover, focus)
+
+### Dark Mode
+- Use CSS variables defined in globals.css for theme colors
+- Use class-based dark mode strategy via Tailwind
+
+## State Management
+
+### Local State
+- Use React hooks for component-local state
+- Prefer `useState` for simple state
+- Use `useReducer` for complex state logic
+
+### Context State
+- Use React Context API for global state
+- Create dedicated context files in the contexts directory
+- Provide custom hooks for accessing context
+- Follow pattern: `useFeatureName` (e.g., `useSettings`)
+
+### Props Passing
+- Explicitly type all props
+- Use interface for props definition
+- Destructure props in function parameters
+- Prefer context for widely used data instead of deep prop drilling
+
+## File Organization
+
+### Directory Structure
+- `/src/app` - Next.js app directory
+- `/src/app/components` - App-specific components
+- `/src/components/ui` - Reusable UI components
+- `/src/lib` - Utility functions and hooks
+
+## Development Practices
+
+### TypeScript
+- Ensure proper typing for all components and functions
+- Use interfaces for object type definitions
+- Use explicit return types for functions
+
+### Component Design
+- Components should have a single responsibility
+- Extract reusable pieces into separate components
+- Use composition over inheritance
+
+### Error Handling
+- Use try/catch for async operations
+- Provide fallback UI for error states
+- Log errors for debugging
+
+## Application Specifics
+
+### Dashboard Patterns
+- Use the sidebar for main navigation
+- Keep app array definition in a single location
+- Use dynamic component loading for different apps
+- Provide settings access from both sidebar and header
+
+### LLM Conversation Patterns
+- Color-code messages by participant
+- Use scrollable container for message history
+- Provide clear visual indication of system status (loading, error)
+- Access LLM-specific settings from context when needed
+
+### Settings Patterns
+- Define settings using the schema in `settings-schema.ts`
+- Group settings in a hierarchical structure with support for nested groups
+- Settings can be organized in four levels: category > section > group > setting
+- Each setting has a type that determines its UI component
+- Use specific setting types for different data types (text, number, boolean, switch, etc.)
+- Include color type for visual customization settings
+- Settings paths follow dot notation: `category.section.setting` or `category.section.group.setting`
+- For app-specific settings, use `apps.appName` structure 
+- Include tooltips for explaining complex settings
+- Provide section and global reset capabilities
+- Use search for easy discovery
+- Use side panel navigation for app-based settings organization
+- Group related settings together in logical sections
+- Use collapsible groups for related settings with Radix UI Collapsible
+- Implement conditional visibility based on other setting values
+- Support resizable dialog with custom resize handle
+- Provide visual icons for app identification in settings navigation
+- Include validation for settings inputs (especially URLs and API keys)
+- Provide visual feedback for validation status and errors
+- Add "Test Connection" buttons for API-related settings
+- Support form-level validation with proper error messages
+
+### LLM Provider Patterns
+- Use conditional rendering for provider-specific settings
+- Organize providers into logical groups (credentials, models, parameters, content)
+- Use provider selection to control which settings are visible
+- Dynamic model selection options based on the selected provider
+- Expand provider settings group by default for easy access
+- Keep API keys in separate fields for each provider
+- Clearly display the currently selected provider 
+- Support advanced generation parameters like temperature, top_p, etc.
+- Provide custom model options for local/Ollama providers
+- Support per-conversation settings overrides with toggle
+- Add quick settings button in conversation interface
+- Indicate currently active settings in the UI
+- Support API key validation and connection testing
+- Synchronize settings between global and local contexts
+- Preserve local settings across conversation sessions
+
+### API Validation Patterns
+- Validate API keys using provider-specific validation rules
+- Validate URLs using proper URL format checking
+- Provide immediate visual feedback for validation errors
+- Include "Test Connection" buttons for API-related settings
+- Show loading indicators during API connection testing
+- Use color-coding to indicate validation status (red for errors, green for success)
+- Include detailed error messages for failed validations
+- Validate on blur for input fields
+- Validate when value changes
+- Prevent saving invalid settings
+- Provide hints for correcting validation errors
+- Make validation errors dismissible
+- Centralize validation logic in the settings context
+- Add timeout handling to prevent hanging connections
+- Implement batch testing utility for all configured APIs
+- Mask sensitive API keys in logs (show only last 4 characters)
+- Standardize logging format across all providers
+- Include host and path information in log entries
+- Auto-update logs when new entries are added
+- Provide detailed view for individual log entries
+
+### Debug Component Patterns
+- Display system information in organized categories
+- Show API request logs with timestamp, status, host, request, and messages
+- Make log displays scrollable both vertically and horizontally
+- Implement auto-refresh for log displays when logs change
+- Provide detailed view modal when clicking on log entries
+- Use appropriate status colors (green for success, red for error)
+- Include utility functions for testing and debugging
+- Log API requests automatically when they occur
+- Provide clear error messages for failed requests
+- Organize logs in reverse chronological order (newest first)
+- Limit log entries to reasonable number (100) to prevent performance issues
