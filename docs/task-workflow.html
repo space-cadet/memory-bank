@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task-First Workflow | Integrated Code Rules and Memory Bank System</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+    <button class="menu-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h1>Memory Bank</h1>
+            <p>Documentation</p>
+        </div>
+        
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search documentation...">
+        </div>
+        
+        <nav>
+            <div class="nav-section">Getting Started</div>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="index.html">Home</a></li>
+                <li class="nav-item"><a href="overview.html">System Overview</a></li>
+                <li class="nav-item"><a href="quick-start.html">Quick Start Guide</a></li>
+            </ul>
+            
+            <div class="nav-section">Core Concepts</div>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="task-workflow.html">Task-First Workflow</a></li>
+                <li class="nav-item"><a href="knowledge-structure.html">Knowledge Organization</a></li>
+                <li class="nav-item"><a href="command-system.html">Command System</a></li>
+                <li class="nav-item"><a href="session-management.html">Session Management</a></li>
+            </ul>
+            
+            <div class="nav-section">Implementation</div>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="code-standards.html">Code Standards</a></li>
+                <li class="nav-item"><a href="documentation-standards.html">Documentation Standards</a></li>
+                <li class="nav-item"><a href="tool-usage.html">Tool Usage</a></li>
+                <li class="nav-item"><a href="file-operations.html">File Operations</a></li>
+            </ul>
+            
+            <div class="nav-section">Reference</div>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="command-reference.html">Command Reference</a></li>
+                <li class="nav-item"><a href="file-structure.html">File Structure</a></li>
+                <li class="nav-item"><a href="templates.html">Templates</a></li>
+                <li class="nav-item"><a href="external-tools.html">External Tools</a></li>
+            </ul>
+        </nav>
+    </aside>
+    
+    <main class="content">
+        <div class="content-wrapper">
+            <h1>Task-First Workflow</h1>
+            <p class="last-updated">Last Updated: April 8, 2025</p>
+            
+            <p>The Task-First Workflow is the core methodology of the Integrated Code Rules and Memory Bank System. It emphasizes completing tasks efficiently by loading only the minimal context needed for each step, rather than loading everything preemptively.</p>
+            
+            <div class="alert alert-info">
+                <p><strong>Key Principle:</strong> Focus immediately on understanding and executing the specific task, loading only the minimum files needed for the current step.</p>
+            </div>
+            
+            <h2>Workflow Overview</h2>
+            
+            <div class="flowchart">
+                <img src="images/task-workflow.svg" alt="Task-First Workflow">
+                <p><em>The Task-First Implementation Workflow</em></p>
+            </div>
+            
+            <p>The Task-First Workflow follows this process:</p>
+            
+            <ol>
+                <li><strong>Receive Task:</strong> Begin with a clear understanding of the task to be performed</li>
+                <li><strong>Analyze Immediate Task Needs:</strong> Determine what information is needed for the first step only</li>
+                <li><strong>Load Minimal Required Context:</strong> Load only the files directly relevant to the current step</li>
+                <li><strong>Execute First Step:</strong> Complete the first step of the task</li>
+                <li><strong>Evaluate Next Steps:</strong> Determine if more steps are needed</li>
+                <li><strong>Load Context for Next Step:</strong> Only if needed, load additional context for the next step</li>
+                <li><strong>Execute Next Step:</strong> Complete the next step of the task</li>
+                <li><strong>Verify Against Standards:</strong> Ensure implementation follows code standards</li>
+                <li><strong>Update Required Documentation:</strong> Make targeted updates to necessary documentation</li>
+            </ol>
+            
+            <h2>Detailed Steps</h2>
+            
+            <h3>1. Receive Task</h3>
+            <p>When receiving a task:</p>
+            <ul>
+                <li>Focus on understanding the specific requirements</li>
+                <li>Identify the scope and boundaries of the task</li>
+                <li>Determine the expected output or result</li>
+                <li>Use the <code>do_task [task]</code> command to begin</li>
+            </ul>
+            
+            <h3>2. Analyze Immediate Task Needs</h3>
+            <p>Before loading any files:</p>
+            <ul>
+                <li>Break down the task into discrete steps</li>
+                <li>Identify what information is needed for the <em>first step only</em></li>
+                <li>Determine which Memory Bank files contain that information</li>
+                <li>Resist the urge to load files "just in case"</li>
+            </ul>
+            
+            <div class="callout">
+                <div class="callout-title">
+                    <span class="callout-icon"><i class="fas fa-lightbulb"></i></span>
+                    Example Analysis
+                </div>
+                <p>Task: "Implement a new user authentication feature"</p>
+                <p>First step needs:</p>
+                <ul>
+                    <li>Current authentication status (<code>activeContext.md</code>)</li>
+                    <li>Task status tracking (<code>progress.md</code>)</li>
+                </ul>
+                <p>Does <em>not</em> need:</p>
+                <ul>
+                    <li>Complete product context</li>
+                    <li>All system patterns</li>
+                    <li>Technical implementation details not relevant to step 1</li>
+                </ul>
+            </div>
+            
+            <h3>3. Load Minimal Required Context</h3>
+            <p>Use targeted loading commands:</p>
+            <ul>
+                <li>Use <code>read_mb [file]</code> to load specific files only</li>
+                <li>Prioritize Critical tier files relevant to the immediate task</li>
+                <li>Avoid loading entire directories or Reference tier files unless specifically needed</li>
+            </ul>
+            
+            <pre><code>read_mb activeContext.md
+read_mb progress.md</code></pre>
+            
+            <h3>4. Execute First Step</h3>
+            <p>When executing the first step:</p>
+            <ul>
+                <li>Focus completely on this step without looking ahead</li>
+                <li>Use standardized tool formats for all operations</li>
+                <li>Make precise, surgical changes</li>
+                <li>Document changes inline with code as appropriate</li>
+            </ul>
+            
+            <h3>5. Evaluate Next Steps</h3>
+            <p>After completing a step:</p>
+            <ul>
+                <li>Evaluate what's needed for the next specific step</li>
+                <li>Determine if additional context is required</li>
+                <li>Identify only the specific files needed for the next step</li>
+            </ul>
+            
+            <h3>6. Load Context for Next Step</h3>
+            <p>Only if needed:</p>
+            <ul>
+                <li>Load additional files specific to the next step</li>
+                <li>Continue to prioritize Critical tier files</li>
+                <li>Only move to Essential or Reference tier files if specifically required</li>
+                <li>Remember that it's better to load progressively than preemptively</li>
+            </ul>
+            
+            <h3>7. Execute Next Step</h3>
+            <p>Follow the same principles as the first step:</p>
+            <ul>
+                <li>Focus completely on this step</li>
+                <li>Use standardized tool formats</li>
+                <li>Make precise, surgical changes</li>
+                <li>Repeat the evaluation and loading process for subsequent steps</li>
+            </ul>
+            
+            <h3>8. Verify Against Standards</h3>
+            <p>When the implementation is complete:</p>
+            <ul>
+                <li>Use <code>verify_code</code> to check implementation against standards</li>
+                <li>Ensure code follows the project's formatting guidelines</li>
+                <li>Verify that interfaces and APIs are properly documented</li>
+                <li>Check for proper error handling and validation</li>
+            </ul>
+            
+            <h3>9. Update Required Documentation</h3>
+            <p>Make targeted documentation updates:</p>
+            <ul>
+                <li>Follow the Documentation Decision Framework to determine what to update</li>
+                <li>Update only files with meaningful changes</li>
+                <li>Make targeted updates rather than comprehensive rewrites</li>
+                <li>Update timestamps and status indicators</li>
+            </ul>
+            
+            <h2>Task-First Implementation Examples</h2>
+            
+            <h3>Example 1: Bug Fix</h3>
+            
+            <div class="callout">
+                <div class="callout-title">
+                    <span class="callout-icon"><i class="fas fa-code"></i></span>
+                    Task: Fix Login Validation Bug
+                </div>
+                
+                <p><strong>Step 1: Analyze Task Needs</strong></p>
+                <p>Need to understand current login validation and bug details.</p>
+                <pre><code>do_task fix login validation bug
+read_mb activeContext.md</code></pre>
+                
+                <p><strong>Step 2: Locate Bug</strong></p>
+                <pre><code>&lt;read_file&gt;
+&lt;path&gt;src/auth/validation.js&lt;/path&gt;
+&lt;/read_file&gt;</code></pre>
+                
+                <p><strong>Step 3: Implement Fix</strong></p>
+                <pre><code>&lt;apply_diff&gt;
+&lt;path&gt;src/auth/validation.js&lt;/path&gt;
+&lt;diff&gt;
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; SEARCH
+function validateEmail(email) {
+  const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+  return regex.test(email);
+}
+=======
+function validateEmail(email) {
+  if (!email) return false;
+  const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+  return regex.test(email);
+}
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; REPLACE
+&lt;/diff&gt;
+&lt;/apply_diff&gt;</code></pre>
+                
+                <p><strong>Step 4: Verify and Document</strong></p>
+                <pre><code>verify_code
+update_mb progress.md</code></pre>
+            </div>
+            
+            <h3>Example 2: New Feature Implementation</h3>
+            
+            <div class="callout">
+                <div class="callout-title">
+                    <span class="callout-icon"><i class="fas fa-code"></i></span>
+                    Task: Add Two-Factor Authentication
+                </div>
+                
+                <p><strong>Step 1: Analyze Task Needs</strong></p>
+                <p>Need to understand current auth system and where to add 2FA.</p>
+                <pre><code>do_task implement two-factor authentication
+read_mb activeContext.md
+read_mb progress.md</code></pre>
+                
+                <p><strong>Step 2: Load Implementation Patterns</strong></p>
+                <p>Need specific authentication patterns before implementation.</p>
+                <pre><code>read_mb systemPatterns.md</code></pre>
+                
+                <p><strong>Step 3: Implement First Component</strong></p>
+                <pre><code>&lt;write_to_file&gt;
+&lt;path&gt;src/auth/twoFactor.js&lt;/path&gt;
+&lt;content&gt;
+// Two-factor authentication implementation
+export function generateTOTP(secret) {
+  // Implementation details
+}
+
+export function verifyTOTP(token, secret) {
+  // Verification logic
+}
+&lt;/content&gt;
+&lt;/write_to_file&gt;</code></pre>
+                
+                <p><strong>Step 4: Integrate with Existing Auth</strong></p>
+                <pre><code>&lt;read_file&gt;
+&lt;path&gt;src/auth/index.js&lt;/path&gt;
+&lt;/read_file&gt;
+
+&lt;apply_diff&gt;
+&lt;path&gt;src/auth/index.js&lt;/path&gt;
+&lt;diff&gt;
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; SEARCH
+import { validateCredentials } from './validation';
+
+export function login(username, password) {
+  // Validate credentials
+  if (!validateCredentials(username, password)) {
+    return { success: false, message: 'Invalid credentials' };
+  }
+  
+  // Generate session token
+  return generateSession(username);
+}
+=======
+import { validateCredentials } from './validation';
+import { verifyTOTP } from './twoFactor';
+
+export function login(username, password, totpToken = null) {
+  // Validate credentials
+  if (!validateCredentials(username, password)) {
+    return { success: false, message: 'Invalid credentials' };
+  }
+  
+  // Check if user has 2FA enabled
+  const user = getUserByUsername(username);
+  if (user.twoFactorEnabled) {
+    if (!totpToken) {
+      return { success: false, requireTOTP: true };
+    }
+    
+    if (!verifyTOTP(totpToken, user.totpSecret)) {
+      return { success: false, message: 'Invalid 2FA code' };
+    }
+  }
+  
+  // Generate session token
+  return generateSession(username);
+}
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; REPLACE
+&lt;/diff&gt;
+&lt;/apply_diff&gt;</code></pre>
+                
+                <p><strong>Step 5: Update Documentation</strong></p>
+                <pre><code>verify_code
+update_mb activeContext.md
+update_mb progress.md</code></pre>
+            </div>
+            
+            <h2>Common Pitfalls to Avoid</h2>
+            
+            <div class="alert alert-warning">
+                <p><strong>Avoid These Common Mistakes:</strong></p>
+                <ul>
+                    <li><strong>Loading Entire Directories:</strong> Load specific files, not entire directories</li>
+                    <li><strong>Preemptive Loading:</strong> Don't load files "just in case" you might need them later</li>
+                    <li><strong>Reference Overload:</strong> Don't load Reference tier files unless specifically needed</li>
+                    <li><strong>Excessive Documentation:</strong> Update only what's necessary, not everything</li>
+                    <li><strong>Project-Wide Scans:</strong> Focus on files relevant to the current task</li>
+                </ul>
+            </div>
+            
+            <h2>Best Practices</h2>
+            
+            <ol>
+                <li><strong>One Step at a Time:</strong> Complete each step fully before moving to the next</li>
+                <li><strong>Minimalist Loading:</strong> Start with minimal files and add only as needed</li>
+                <li><strong>Surgical Changes:</strong> Make precise, targeted modifications</li>
+                <li><strong>Targeted Documentation:</strong> Update only what's necessary based on the Documentation Decision Framework</li>
+                <li><strong>Consistent Tool Usage:</strong> Use standardized XML formats for all operations</li>
+            </ol>
+            
+            <div class="callout">
+                <div class="callout-title">
+                    <span class="callout-icon"><i class="fas fa-lightbulb"></i></span>
+                    Remember
+                </div>
+                <p>The key to the Task-First Workflow is balance: complete tasks efficiently by loading only what you need when you need it, while still maintaining enough documentation for project continuity.</p>
+            </div>
+            
+            <h2>Related Topics</h2>
+            
+            <ul>
+                <li><a href="knowledge-structure.html">Knowledge Organization</a> - How information is structured in tiers</li>
+                <li><a href="command-system.html">Command System</a> - Commands for task execution and memory management</li>
+                <li><a href="session-management.html">Session Management</a> - Managing state across multiple sessions</li>
+                <li><a href="documentation-standards.html">Documentation Standards</a> - How to update documentation effectively</li>
+            </ul>
+            
+            <footer class="footer">
+                <p>&copy; 2025 Integrated Code Rules and Memory Bank System</p>
+                <p>Last Updated: April 8, 2025</p>
+            </footer>
+        </div>
+    </main>
+    
+    <script src="assets/main.js"></script>
+</body>
+</html>

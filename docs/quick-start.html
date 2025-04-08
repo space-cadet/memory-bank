@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Start Guide | Integrated Code Rules and Memory Bank System</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+    <button class="menu-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h1>Memory Bank</h1>
+            <p>Documentation</p>
+        </div>
+        
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search documentation...">
+        </div>
+        
+        <nav>
+            <div class="nav-section">Getting Started</div>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="index.html">Home</a></li>
+                <li class="nav-item"><a href="overview.html">System Overview</a></li>
+                <li class="nav-item"><a href="quick-start.html">Quick Start Guide</a></li>
+            </ul>
+            
+            <div class="nav-section">Core Concepts</div>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="task-workflow.html">Task-First Workflow</a></li>
+                <li class="nav-item"><a href="knowledge-structure.html">Knowledge Organization</a></li>
+                <li class="nav-item"><a href="command-system.html">Command System</a></li>
+                <li class="nav-item"><a href="session-management.html">Session Management</a></li>
+            </ul>
+            
+            <div class="nav-section">Implementation</div>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="code-standards.html">Code Standards</a></li>
+                <li class="nav-item"><a href="documentation-standards.html">Documentation Standards</a></li>
+                <li class="nav-item"><a href="tool-usage.html">Tool Usage</a></li>
+                <li class="nav-item"><a href="file-operations.html">File Operations</a></li>
+            </ul>
+            
+            <div class="nav-section">Reference</div>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="command-reference.html">Command Reference</a></li>
+                <li class="nav-item"><a href="file-structure.html">File Structure</a></li>
+                <li class="nav-item"><a href="templates.html">Templates</a></li>
+                <li class="nav-item"><a href="external-tools.html">External Tools</a></li>
+            </ul>
+        </nav>
+    </aside>
+    
+    <main class="content">
+        <div class="content-wrapper">
+            <h1>Quick Start Guide</h1>
+            <p class="last-updated">Last Updated: April 8, 2025</p>
+            
+            <p>This guide will help you get started with the Integrated Code Rules and Memory Bank System quickly. Follow these steps to begin using the system effectively.</p>
+            
+            <div class="alert alert-info">
+                <p><strong>Remember:</strong> The key to this system is loading only what you need when you need it. Don't try to load everything at once!</p>
+            </div>
+            
+            <h2>Step 1: Set Up Your Environment</h2>
+            
+            <p>Begin by setting up your environment with the necessary files:</p>
+            
+            <ol>
+                <li>Clone or download the Memory Bank repository</li>
+                <li>Ensure the core files are in place (especially the Bootstrap and Critical tier files)</li>
+                <li>Verify that the Memory Bank directory structure follows the recommended pattern</li>
+            </ol>
+            
+            <pre><code>memory-bank/
+├── bootstrap.md
+├── activeContext.md
+├── progress.md
+├── session_cache.md
+├── projectbrief.md
+├── .cursorrules
+└── memory-bank/
+    ├── productContext.md
+    ├── systemPatterns.md
+    └── techContext.md</code></pre>
+            
+            <h2>Step 2: Starting Your First Session</h2>
+            
+            <p>To begin your first session with the system:</p>
+            
+            <ol>
+                <li>Use the <code>start_session</code> command to initialize a new session with a timestamp</li>
+                <li>Determine the specific task you want to accomplish</li>
+                <li>Use the <code>do_task [task]</code> command to begin task execution</li>
+            </ol>
+            
+            <div class="callout">
+                <div class="callout-title">
+                    <span class="callout-icon"><i class="fas fa-lightbulb"></i></span>
+                    Example
+                </div>
+                <pre><code>start_session
+do_task implement new user authentication feature</code></pre>
+            </div>
+            
+            <h2>Step 3: Loading Only What You Need</h2>
+            
+            <p>The system is designed to load only the minimal information needed for each task step:</p>
+            
+            <ol>
+                <li>Start by analyzing what you need for the immediate task step</li>
+                <li>Use <code>read_mb</code> to load only the Critical tier files needed</li>
+                <li>Only load additional files if directly relevant to the current step</li>
+            </ol>
+            
+            <div class="callout">
+                <div class="callout-title">
+                    <span class="callout-icon"><i class="fas fa-lightbulb"></i></span>
+                    Example
+                </div>
+                <pre><code>read_mb activeContext.md
+read_mb progress.md</code></pre>
+            </div>
+            
+            <div class="alert alert-warning">
+                <p><strong>Key Principle:</strong> Avoid loading entire directories or unnecessary files. If you need information about system patterns, load <code>systemPatterns.md</code> only when you're ready to implement that specific part.</p>
+            </div>
+            
+            <h2>Step 4: Executing Task Steps</h2>
+            
+            <p>Execute your task following these principles:</p>
+            
+            <ol>
+                <li>Complete the current step fully before looking ahead</li>
+                <li>Use the standardized tool format for all operations</li>
+                <li>Make surgical, precise changes when modifying files</li>
+                <li>Verify changes against code standards</li>
+            </ol>
+            
+            <h3>Example: Reading a File</h3>
+            <pre><code>&lt;read_file&gt;
+&lt;path&gt;src/main.js&lt;/path&gt;
+&lt;/read_file&gt;</code></pre>
+            
+            <h3>Example: Modifying a File</h3>
+            <pre><code>&lt;apply_diff&gt;
+&lt;path&gt;src/auth.js&lt;/path&gt;
+&lt;diff&gt;
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; SEARCH
+export function login(username, password) {
+  // Basic login implementation
+  return api.login(username, password);
+}
+=======
+export function login(username, password) {
+  // Enhanced login with validation
+  if (!username || !password) {
+    throw new Error('Username and password are required');
+  }
+  return api.login(username, password);
+}
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; REPLACE
+&lt;/diff&gt;
+&lt;/apply_diff&gt;</code></pre>
+            
+            <h2>Step 5: Managing Session State</h2>
+            
+            <p>When you need to continue a task in a future session:</p>
+            
+            <ol>
+                <li>Use <code>cache_session</code> to create a continuation point</li>
+                <li>Update only the necessary Memory Bank files with minimal changes</li>
+                <li>In the next session, use <code>continue_session</code> to resume</li>
+            </ol>
+            
+            <div class="callout">
+                <div class="callout-title">
+                    <span class="callout-icon"><i class="fas fa-lightbulb"></i></span>
+                    Example
+                </div>
+                <pre><code>cache_session
+
+// Later, in a new session:
+continue_session
+read_mb session_cache.md</code></pre>
+            </div>
+            
+            <h2>Step 6: Completing Tasks</h2>
+            
+            <p>When you've completed a task:</p>
+            
+            <ol>
+                <li>Use <code>complete_task</code> to finish the current task</li>
+                <li>Update the necessary documentation based on the Documentation Decision Framework</li>
+                <li>Mark the session as complete with <code>complete_session</code></li>
+            </ol>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Change Type</th>
+                        <th>Documentation To Update</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Interface changes</td>
+                        <td>API docs, activeContext.md</td>
+                    </tr>
+                    <tr>
+                        <td>Implementation details</td>
+                        <td>Code comments only</td>
+                    </tr>
+                    <tr>
+                        <td>Architecture changes</td>
+                        <td>systemPatterns.md</td>
+                    </tr>
+                    <tr>
+                        <td>New features</td>
+                        <td>progress.md, projectbrief.md</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2>Common Commands Reference</h2>
+            
+            <h3>Task Execution</h3>
+            <ul>
+                <li><code>do_task [task]</code> - Execute specific task with minimal context loading</li>
+                <li><code>continue_task</code> - Resume previous task using minimal context from cache</li>
+                <li><code>complete_task</code> - Finish current task with targeted documentation updates</li>
+            </ul>
+            
+            <h3>Memory Management</h3>
+            <ul>
+                <li><code>read_mb</code> - Load Critical tier files needed for current task</li>
+                <li><code>read_mb [file]</code> - Load specific file only</li>
+                <li><code>read_mb standard</code> - Load Critical + Essential tiers</li>
+                <li><code>update_mb [file]</code> - Update specific file with minimal changes</li>
+            </ul>
+            
+            <h3>Session Management</h3>
+            <ul>
+                <li><code>continue_session</code> - Flag this as a continuation; prioritize session_cache.md</li>
+                <li><code>complete_session</code> - Mark session as complete, update necessary docs</li>
+                <li><code>cache_session</code> - Create continuation point with minimal updates</li>
+                <li><code>start_session</code> - Begin new session with fresh timestamp</li>
+            </ul>
+            
+            <div class="alert alert-success">
+                <p><strong>Congratulations!</strong> You're now ready to start using the Integrated Code Rules and Memory Bank System. Remember the key principle: load only what you need when you need it.</p>
+            </div>
+            
+            <h2>Next Steps</h2>
+            
+            <p>To deepen your understanding of the system:</p>
+            
+            <ul>
+                <li>Explore the <a href="task-workflow.html">Task-First Workflow</a> in detail</li>
+                <li>Learn more about <a href="knowledge-structure.html">Knowledge Organization</a></li>
+                <li>Understand the <a href="command-system.html">Command System</a> thoroughly</li>
+                <li>Review the <a href="code-standards.html">Code Standards</a> for implementation guidelines</li>
+            </ul>
+            
+            <footer class="footer">
+                <p>&copy; 2025 Integrated Code Rules and Memory Bank System</p>
+                <p>Last Updated: April 8, 2025</p>
+            </footer>
+        </div>
+    </main>
+    
+    <script src="assets/main.js"></script>
+</body>
+</html>
