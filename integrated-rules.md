@@ -1,6 +1,8 @@
 # Integrated Code Rules and Memory Bank System
 
-*Last Updated: April 8, 2025*
+*Last Updated: April 9, 2025*
+
+⚠️ IMPORTANT: NEVER modify files without explicit user approval. Always present a plan and wait for confirmation before making any changes.
 
 ## 1. Unified System Purpose and Philosophy
 
@@ -49,12 +51,17 @@ When starting work:
 3. Avoid executing shell commands that might affect system state
 4. Always verify paths before file operations
 
-### 3.2 Step-by-Step Approval
+### 3.2 Mandatory Step-by-Step Approval
 
-1. Propose clear, step-by-step plans for any task involving file modifications
-2. Wait for explicit user approval before implementing plans
-3. Focus on necessary files/components related to the task
-4. Avoid unnecessary project-wide scans
+1. NEVER modify files without EXPLICIT user approval first
+2. For each discrete file modification:
+   - Present a concise description of WHAT will be changed
+   - Get explicit approval BEFORE making the change
+3. No need to present all planned changes at once - proceed incrementally
+4. Complex changes can be broken into manageable approval steps
+5. If approval is ambiguous, request clarification
+6. Focus on necessary files/components related to the task
+7. Avoid unnecessary project-wide scans
 
 ### 3.3 Efficiency Rules
 
