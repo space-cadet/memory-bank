@@ -1,0 +1,44 @@
+# Memory Bank Implementation Guidelines
+
+## File Organization
+- All Memory Bank files should be located in the `/Users/deepak/code/memory-bank/memory-bank/` directory
+- Use Markdown format for all documentation files
+- Maintain consistent naming conventions for all files
+
+## Content Structure
+- Each file should have a clear purpose and focus
+- Use hierarchical headings (# for title, ## for major sections, ### for subsections)
+- Include a "Last Updated" timestamp at the end of each file
+- Cross-reference related information using relative links
+
+## Progressive Loading Implementation
+- Critical Tier files should contain only essential current context
+- Essential Tier files should provide foundational information
+- Reference Tier files should contain detailed technical information
+- Avoid duplicating information across tiers
+
+## Session Continuity Guidelines
+- Use session_cache.md only for in-progress work
+- Include clear status flags (COMPLETE or CONTINUING)
+- List all files consulted during the session
+- Provide sufficient context for continuation
+
+## Update Patterns
+- Update activeContext.md and progress.md after each significant change
+- Make differential updates to minimize token usage
+- Include timestamps for all updates
+- Prefer small, focused updates over large rewrites
+
+## Command Usage
+- Use explicit read_mb commands when loading specific files
+- Use update_mb commands when writing to specific files
+- Use session commands to manage continuity
+- Document all command patterns in changelog.md
+
+## Documentation Style
+- Use clear, concise language
+- Prefer bullet points for lists of items
+- Use tables for structured information
+- Include examples for complex concepts
+
+Last Updated: April 8, 2025
