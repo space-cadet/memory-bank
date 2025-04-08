@@ -1,0 +1,96 @@
+# Memory Bank Implementation Guidelines
+
+*Created: 2025-04-08*  
+*Last Updated: 2025-04-08*
+
+## File Structure
+
+1. All Memory Bank files must be Markdown (.md) format
+2. File names should be camelCase except for special files (.cursorrules, bootstrap.md)
+3. Each file must include creation and last updated timestamps
+4. Session logs must use ISO datetime format (YYYY-MM-DDTHHMMSS.md)
+5. All files should include clear section headings with ## heading level
+
+## Content Guidelines
+
+1. **All Memory Bank Files Must**:
+   - Begin with a # title
+   - Include timestamps for creation/updates
+   - Use consistent heading structure
+   - Include cross-references where appropriate
+   - Follow markdown best practices
+
+2. **Session Files Must**:
+   - Use standardized timestamp format
+   - Include session goals and status
+   - Log progress chronologically
+   - Document decisions made with rationale
+   - List accomplishments and pending tasks
+
+3. **Core Files Must**:
+   - Maintain consistent structure across updates
+   - Include cross-references to related files
+   - Clearly identify current state and next actions
+   - Use emoji indicators for status where appropriate (✅🔄⬜)
+
+## Implementation Rules
+
+1. **Progressive Loading**:
+   - Always load bootstrap.md first
+   - Check session_cache.md for continuity status
+   - Load critical tier by default
+   - Only load additional files when necessary
+
+2. **Session Management**:
+   - Create new time-stamped session log at start of each new session
+   - Update session log throughout the conversation
+   - Update session_cache.md when continuing or completing
+   - Always link to most recent session log in session_cache.md
+
+3. **Command Processing**:
+   - Process all memory bank commands immediately
+   - Follow exact command syntax as defined in bootstrap.md
+   - Confirm command execution in responses
+   - Default to minimal loading when no explicit command is given
+
+4. **Updates**:
+   - Use differential updates to minimize redundancy
+   - Always update timestamps when modifying files
+   - Ensure cross-references remain valid after updates
+   - Maintain consistent formatting across updates
+
+## Styling Conventions
+
+1. **Status Indicators**:
+   - ✅ Complete/Working
+   - 🔄 In Progress
+   - ⬜ Not Started
+   - ❌ Blocked/Issue
+
+2. **Section Structure**:
+   - Use ## for main sections
+   - Use ### for subsections
+   - Use #### for minor subdivisions
+   - Use bullet lists for collections of related items
+   - Use numbered lists for sequential steps or priorities
+
+3. **Code and Command Formatting**:
+   - Use backticks for inline commands: `read_mb`
+   - Use code blocks for command examples or longer snippets
+   - Use tables for command reference and parameters
+
+4. **Cross-References**:
+   - Use full paths for file references: [file.md](/path/to/file.md)
+   - Use descriptive link text, not just filenames
+   - Group related cross-references together
+
+## Best Practices
+
+1. Prioritize clarity and simplicity over complexity
+2. Keep similar information grouped together
+3. Update cross-references whenever file structure changes
+4. Use consistent formatting across all files
+5. Include "Last Updated" timestamps on all modified files
+6. Regularly update progress.md with current status
+7. Keep session logs focused on key decisions and progress
+8. Use session_cache.md for short-term continuation only
