@@ -21,9 +21,61 @@ This system implements a balance between:
 - **Standardized Implementation**: Following consistent coding patterns and practices
 - **Progressive Knowledge**: Building and maintaining project history when valuable
 
-## 2. Integrated Command System
+## 2. Communication Style
 
-### 2.1 Task Execution Commands
+### 2.1 Task-Oriented Communication
+
+1. Use direct, clear statements focused on actions and results
+2. Avoid unnecessary explanations of process or methodology
+3. Be concise and avoid conversational language
+4. Focus on what was done and what will be done next
+5. For task discussions, use action-oriented language
+
+### 2.2 Implementation Process
+
+When starting work:
+1. Focus immediately on understanding the specific task
+2. Load only the minimum files needed for the current step
+3. Execute the step completely before getting additional context
+4. Document changes in a targeted, minimal way
+5. Complete tasks efficiently with minimal information gathering
+
+## 3. Implementation Guidelines
+
+### 3.1 Safety & Scope
+
+1. Operate exclusively within the designated project directory and subdirectories
+2. Do not access, read, or modify files outside defined scope
+3. Avoid executing shell commands that might affect system state
+4. Always verify paths before file operations
+
+### 3.2 Step-by-Step Approval
+
+1. Propose clear, step-by-step plans for any task involving file modifications
+2. Wait for explicit user approval before implementing plans
+3. Focus on necessary files/components related to the task
+4. Avoid unnecessary project-wide scans
+
+### 3.3 Efficiency Rules
+
+1. Do not read file content you already have
+2. Avoid reading entire repos or directories
+3. Focus only on the specific files needed for the current step
+4. When examining code, look for the specific components relevant to the task
+5. Trust that you can access more information if needed rather than loading it preemptively
+
+## 4. Integration with Development Workflow
+
+This integrated system is designed to:
+- Support rapid task execution while maintaining documentation quality
+- Ensure code standards are maintained without excessive overhead
+- Provide just enough context for effective implementation
+- Document only what's necessary for project continuity
+- Balance immediate task needs with long-term project knowledge
+
+## 5. Integrated Command System
+
+### 5.1 Task Execution Commands
 
 | Command | Description |
 |---------|-------------|
@@ -32,7 +84,7 @@ This system implements a balance between:
 | `complete_task` | Finish current task with targeted documentation updates |
 | `verify_task` | Check implementation against code standards |
 
-### 2.2 Memory Management Commands
+### 5.2 Memory Management Commands
 
 | Command | Description |
 |---------|-------------|
@@ -42,7 +94,7 @@ This system implements a balance between:
 | `read_mb complete` | Load all Memory Bank files (rarely needed) |
 | `update_mb [file]` | Update specific file with minimal changes |
 
-### 2.3 Session Management Commands
+### 5.3 Session Management Commands
 
 | Command | Description |
 |---------|-------------|
@@ -51,7 +103,7 @@ This system implements a balance between:
 | `cache_session` | Create continuation point with minimal updates |
 | `start_session` | Begin new session with fresh timestamp |
 
-### 2.4 Code Implementation Commands
+### 5.4 Code Implementation Commands
 
 | Command | Description |
 |---------|-------------|
@@ -59,9 +111,9 @@ This system implements a balance between:
 | `format_code` | Ensure code follows formatting guidelines |
 | `document_code` | Update documentation for code changes |
 
-## 3. Knowledge Organization and Management
+## 6. Knowledge Organization and Management
 
-### 3.1 Tiered Knowledge Structure
+### 6.1 Tiered Knowledge Structure
 
 Knowledge is organized in four tiers with task-oriented loading priorities:
 
@@ -86,7 +138,7 @@ Knowledge is organized in four tiers with task-oriented loading priorities:
    - `techContext.md` - Technical implementation details
    - Load only specific files when directly relevant to current task step
 
-### 3.2 Task-First Loading Process
+### 6.2 Task-First Loading Process
 
 1. Analyze the immediate task requirements
 2. Identify the minimal set of files needed for the current step
@@ -95,7 +147,7 @@ Knowledge is organized in four tiers with task-oriented loading priorities:
 5. Load additional files only when needed for the next step
 6. Update only files with meaningful changes related to the task
 
-### 3.3 Documentation Decision Framework
+### 6.3 Documentation Decision Framework
 
 | Change Type | Documentation Requirements |
 |-------------|----------------------------|
@@ -106,9 +158,9 @@ Knowledge is organized in four tiers with task-oriented loading priorities:
 | Bug fixes | Update progress.md only |
 | Refactoring | Minimal documentation unless patterns change |
 
-## 4. Technical Implementation Standards
+## 7. Technical Implementation Standards
 
-### 4.1 XML Tag Format
+### 7.1 XML Tag Format
 
 Tool use is formatted using XML-style tags:
 
@@ -120,7 +172,7 @@ Tool use is formatted using XML-style tags:
 </tool_name>
 ```
 
-### 4.2 File Operations
+### 7.2 File Operations
 
 #### Reading Files
 
@@ -199,7 +251,7 @@ def calculate_total(items):
 </write_to_file>
 ```
 
-### 4.3 Code Standards
+### 7.3 Code Standards
 
 - Use modular design with clear separation of concerns
 - Make surgical, precise changes when editing existing files
@@ -208,7 +260,7 @@ def calculate_total(items):
 - Follow asynchronous patterns for I/O operations
 - Implement proper error handling and validation
 
-### 4.4 Documentation Standards
+### 7.4 Documentation Standards
 
 - Update only files with meaningful changes
 - Include creation and last updated timestamps
@@ -216,9 +268,9 @@ def calculate_total(items):
 - Use status indicators: ✅ (Complete), 🔄 (In Progress), ⬜ (Not Started)
 - Make targeted updates rather than comprehensive rewrites
 
-## 5. Integrated Workflows
+## 8. Integrated Workflows
 
-### 5.1 Task-First Implementation Flow
+### 8.1 Task-First Implementation Flow
 
 ```
 flowchart TD
@@ -234,7 +286,7 @@ flowchart TD
     Document --> End[End]
 ```
 
-### 5.2 Session Management Flow
+### 8.2 Session Management Flow
 
 ```
 flowchart TD
@@ -256,7 +308,7 @@ flowchart TD
     UpdateCache --> End
 ```
 
-### 5.3 Documentation Update Process
+### 8.3 Documentation Update Process
 
 1. After completing a task, determine documentation requirements based on change type
 2. Update only the necessary files based on the Documentation Decision Framework
@@ -264,9 +316,9 @@ flowchart TD
 4. For continuing tasks, update session_cache.md with minimal state information
 5. For completed tasks, update relevant Memory Bank files based on impact
 
-## 6. Core File Structure and Templates
+## 9. Core File Structure and Templates
 
-### 6.1 session_cache.md (Task-Oriented Version)
+### 9.1 session_cache.md (Task-Oriented Version)
 
 ```markdown
 # Session Cache
@@ -289,7 +341,7 @@ flowchart TD
 [Minimal state needed to continue]
 ```
 
-### 6.2 activeContext.md (Task-Oriented Version)
+### 9.2 activeContext.md (Task-Oriented Version)
 
 ```markdown
 # Active Context
@@ -309,7 +361,7 @@ flowchart TD
 [Specific next steps for current tasks]
 ```
 
-### 6.3 Time-stamped Session Logs
+### 9.3 Time-stamped Session Logs
 
 ```markdown
 # Session Log: [ISO Date-Time]
@@ -330,9 +382,9 @@ flowchart TD
 [Only if continuing]
 ```
 
-## 7. External Tools and Integration
+## 10. External Tools and Integration
 
-### 7.1 MCP (Model Context Protocol) Servers
+### 10.1 MCP (Model Context Protocol) Servers
 
 Available MCP servers include:
 
@@ -358,70 +410,18 @@ Available MCP servers include:
 </use_mcp_tool>
 ```
 
-### 7.2 API Integration
+### 10.2 API Integration
 
 - Use structured JSON for data exchange
 - Implement proper error handling for API responses
 - Follow RESTful principles for endpoint design
 - Document all API contracts as part of the implementation
 
-### 7.3 External Libraries
+### 10.3 External Libraries
 
 - Prefer established libraries over custom implementations
 - Document dependencies in the appropriate Memory Bank files
 - Maintain compatibility with existing project dependencies
 - Verify license compatibility before introducing new dependencies
-
-## 8. Communication Style
-
-### 8.1 Task-Oriented Communication
-
-1. Use direct, clear statements focused on actions and results
-2. Avoid unnecessary explanations of process or methodology
-3. Be concise and avoid conversational language
-4. Focus on what was done and what will be done next
-5. For task discussions, use action-oriented language
-
-### 8.2 Implementation Process
-
-When starting work:
-1. Focus immediately on understanding the specific task
-2. Load only the minimum files needed for the current step
-3. Execute the step completely before getting additional context
-4. Document changes in a targeted, minimal way
-5. Complete tasks efficiently with minimal information gathering
-
-## 9. Implementation Guidelines
-
-### 9.1 Safety & Scope
-
-1. Operate exclusively within the designated project directory and subdirectories
-2. Do not access, read, or modify files outside defined scope
-3. Avoid executing shell commands that might affect system state
-4. Always verify paths before file operations
-
-### 9.2 Step-by-Step Approval
-
-1. Propose clear, step-by-step plans for any task involving file modifications
-2. Wait for explicit user approval before implementing plans
-3. Focus on necessary files/components related to the task
-4. Avoid unnecessary project-wide scans
-
-### 9.3 Efficiency Rules
-
-1. Do not read file content you already have
-2. Avoid reading entire repos or directories
-3. Focus only on the specific files needed for the current step
-4. When examining code, look for the specific components relevant to the task
-5. Trust that you can access more information if needed rather than loading it preemptively
-
-## 10. Integration with Development Workflow
-
-This integrated system is designed to:
-- Support rapid task execution while maintaining documentation quality
-- Ensure code standards are maintained without excessive overhead
-- Provide just enough context for effective implementation
-- Document only what's necessary for project continuity
-- Balance immediate task needs with long-term project knowledge
 
 Remember: The system's effectiveness comes from balancing task efficiency with appropriate documentation, loading only what's needed when it's needed, and following a consistent, standardized approach to both code and documentation.
