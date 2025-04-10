@@ -21,4 +21,12 @@
 #### 16:15 - Updated Additional Memory Bank Files
 
 - Updated `/Users/deepak/code/memory-bank/memory-bank/progress.md` - Updated completed items, milestones, and known issues
-- Updated `/Users/deepak/code/memory-bank/memory-bank/edit_history.md` - Added latest changes to edit history (this update)
+- Updated `/Users/deepak/code/memory-bank/memory-bank/edit_history.md` - Added latest changes to edit history
+
+#### 16:30 - File Structure Cleanup and Clarification
+
+- Deleted duplicate files from project root (edit_history.md, errorLog.md, session_cache.md, activeContext.md)
+- Renamed `/Users/deepak/code/memory-bank/progress.md` to `/Users/deepak/code/memory-bank/project_progress.md` to avoid confusion
+- Updated `/Users/deepak/code/memory-bank/README.md` - Added clear file structure documentation
+- Updated `/Users/deepak/code/memory-bank/integrated-rules.md` - Added File Locations section
+- Updated `/Users/deepak/code/memory-bank/integrated-rules-v2.md` - Added File Locations section

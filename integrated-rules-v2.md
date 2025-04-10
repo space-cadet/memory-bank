@@ -4,6 +4,12 @@
 
 ⚠️ IMPORTANT: NEVER modify files without explicit user approval. Always present a plan and wait for confirmation before making any changes.
 
+### File Locations
+
+- Memory Bank files (session_cache.md, edit_history.md, errorLog.md, etc.) should be located in the `/memory-bank/` directory
+- Integrated Rules files remain in the project root
+- This structure ensures consistent organization and prevents confusion about file locations
+
 ## 1. Unified System Purpose and Philosophy
 
 ### 1.1 Core Purpose
