@@ -1,6 +1,6 @@
 # Integrated Code Rules and Memory Bank System
 
-*Last Updated: April 8, 2025*
+*Last Updated: April 10, 2025*
 
 ## Overview
 
@@ -14,24 +14,32 @@ The Integrated Code Rules and Memory Bank System provides a comprehensive framew
 - **Standardized Tools**: Consistent XML-formatted tool usage for all operations
 - **Comprehensive Documentation**: Structured framework for maintaining project knowledge
 
-## Directory Structure
+## File Structure
 
-- `/` - Root directory containing the integrated system documentation
+This project uses the following organization:
+
+- **Root directory**: Contains project-wide files
   - `integrated-rules.md` - Main documentation combining Code Rules and Memory Bank
-  - `code-rules-and-memory-bank.md` - Original detailed specifications
+  - `integrated-rules-v2.md` - Updated rules with consistency fixes
+  - `project_progress.md` - Project-level progress tracking (historical)
   - `bootstrap.md` - Core system structure, loaded only when essential
-  - `/memory-bank/` - Contains all Memory Bank documentation files
-    - `activeContext.md` - Current state relevant to immediate tasks
-    - `progress.md` - Status tracking and next priorities
-    - `session_cache.md` - Continuity information for multi-session tasks
-    - `projectbrief.md` - Core requirements and project scope
-    - `.cursorrules` - Project patterns and implementation guidelines
-    - `productContext.md` - Why and how the project works
-    - `systemPatterns.md` - Architecture and design patterns
-    - `techContext.md` - Technical implementation details
-    - `changelog.md` - Record of system changes and updates
-  - `/sessions/` - Contains time-stamped session logs
-  - `/examples/` - Contains example usage patterns and templates
+  - `code-rules-and-memory-bank.md` - Original detailed specifications
+  
+- **/memory-bank/**: Contains all Memory Bank system files including:
+  - `activeContext.md` - Current state and focus
+  - `edit_history.md` - Chronological record of file modifications
+  - `errorLog.md` - Error tracking and resolution
+  - `progress.md` - Task and milestone tracking
+  - `session_cache.md` - Session continuity information  
+  - `projectbrief.md` - Core requirements and project scope
+  - `.cursorrules` - Project patterns and implementation guidelines
+  - `productContext.md` - Why and how the project works
+  - `systemPatterns.md` - Architecture and design patterns
+  - `techContext.md` - Technical implementation details
+  - `changelog.md` - Record of system changes and updates
+  
+- **/sessions/**: Contains time-stamped session logs
+- **/examples/**: Contains example usage patterns and templates
 
 ## Getting Started
 
@@ -61,6 +69,9 @@ The Integrated Code Rules and Memory Bank System provides a comprehensive framew
 | `read_mb standard` | Load Critical + Essential tiers |
 | `read_mb complete` | Load all Memory Bank files (rarely needed) |
 | `update_mb [file]` | Update specific file with minimal changes |
+| `log_error [title]` | Record a new error with details in errorLog.md |
+| `record_edits [task]` | Add file modifications to edit_history.md |
+| `read_errors [component]` | Load error history for a specific component or error type |
 
 ### Session Management Commands
 
