@@ -29,6 +29,7 @@ This system implements a balance between:
   - After every file/folder creation operation
   - After every file edit operation
   - Or at minimum after every few chat messages
+  - For rapid sequential edits to the same file, batch updates are acceptable to maintain efficiency
 - `errorLog.md` should be updated whenever an error is encountered and resolved
 - `session_cache.md` should be updated at session boundaries or significant implementation milestones
 
@@ -144,8 +145,8 @@ Knowledge is organized in four tiers with task-oriented loading priorities:
    - `activeContext.md` - Current state relevant to immediate task
    - `progress.md` - Status information needed for current step
    - `session_cache.md` - Minimal continuity information if continuing a task
-   - `errorLog.md` - Record of errors, their causes, and resolutions for reference
-   - `edit_history.md` - Chronological record of file modifications with timestamps
+   - `errorLog.md` - Record of errors, their causes, and resolutions for reference (load when debugging)
+   - `edit_history.md` - Chronological record of file modifications with timestamps (load when context about recent changes is needed)
    - Load only files directly relevant to current task step
 
 3. **Essential Tier (Load Only When Required)**
@@ -181,6 +182,8 @@ Knowledge is organized in four tiers with task-oriented loading priorities:
 | Error resolution | Update errorLog.md with error details and fix |
 | File modification | Update edit_history.md with file changes |
 | Multiple file edits | Update both session_cache.md and edit_history.md |
+| Ongoing work | Update session_cache.md with clear "in progress" indicators (🔄) |
+| Mixed change types | Document according to highest impact change type, ensuring all aspects are covered |
 
 ## 7. Technical Implementation Standards
 
@@ -312,6 +315,8 @@ flowchart TD
     Document --> End[End]
 ```
 
+**Note:** The "Execute First Step" and "Execute Next Step" boxes inherently include multiple edit operations, each of which should trigger the `record_edits` command to update `edit_history.md`. The diagram simplifies this cycle for clarity.
+
 ### 8.2 Session Management Flow
 
 ```
@@ -335,6 +340,8 @@ flowchart TD
     UpdateCache --> End
 ```
 
+**Note:** Use `record_edits` command after each file modification, and `cache_session` command when creating continuation points. The "ExecuteTask" box represents multiple cycles of implementation and documentation.
+
 ### 8.3 Documentation Update Process
 
 1. After completing a task, determine documentation requirements based on change type
@@ -342,8 +349,8 @@ flowchart TD
 3. Always update timestamps and status indicators
 4. For continuing tasks, update session_cache.md with minimal state information
 5. For completed tasks, update relevant Memory Bank files based on impact
-6. Update edit_history.md after each file modification or at most every few messages
-7. Log errors in errorLog.md when encountered and document their resolution
+6. Update edit_history.md after each file modification (using `record_edits`) or at most every few messages
+7. Log errors in errorLog.md (using `log_error`) when encountered and document their resolution
 
 ### 8.4 Error Handling and Resolution Flow
 
@@ -358,6 +365,8 @@ flowchart TD
     RecordEdits --> End[Continue Task]
     Success -->|No| Identify
 ```
+
+**Note:** Use the `log_error` command when documenting errors in errorLog.md, and the `record_edits` command when updating edit_history.md with the fixes applied.
 
 ## 9. Core File Structure and Templates
 
@@ -399,6 +408,8 @@ flowchart TD
 ## Notes
 [Additional context relevant for continuing the task]
 ```
+
+The template format is flexible as long as all required sections are present and clearly labeled.
 
 ### 9.2 activeContext.md (Task-Oriented Version)
 
@@ -443,6 +454,8 @@ flowchart TD
 
 ### 9.4 errorLog.md (Error Tracking and Resolution)
 
+The error log should follow this structure for each error entry:
+
 ```markdown
 # Error Log
 
@@ -470,7 +483,11 @@ flowchart TD
 - [List of files modified to fix the error]
 ```
 
+The format may be adjusted as needed while maintaining the key information sections (File, Error Message, Cause, Fix, and Affected Files).
+
 ### 9.5 edit_history.md (File Modification Tracking)
+
+The edit history should be organized chronologically with timestamps:
 
 ```markdown
 # Edit History
@@ -491,6 +508,8 @@ flowchart TD
 
 - ...
 ```
+
+For rapid sequential edits, changes can be batched under a single time entry to maintain efficiency while preserving the chronological record.
 
 ## 10. External Tools and Integration
 
