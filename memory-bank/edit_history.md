@@ -4,6 +4,30 @@
 
 ## File Modification Log
 
+### April 14, 2025
+
+#### 16:30 - T1: Moving Templates to Project Root
+
+- Moved `/Users/deepak/code/memory-bank/memory-bank/templates/` directory to `/Users/deepak/code/memory-bank/templates/`
+- Updated `/Users/deepak/code/memory-bank/integrated-rules-v4.md` - Updated file locations section to reflect template directory move
+- Updated `/Users/deepak/code/memory-bank/templates/projectbrief.md` - Updated Memory Bank Organization section
+
+#### 16:00 - T1: Implementing Multi-Task Support for Memory Bank
+
+- Created `/Users/deepak/code/memory-bank/integrated-rules-v4.md` - Updated integrated rules with multi-task support
+- Created `/Users/deepak/code/memory-bank/memory-bank/tasks.md` - Added new task registry file
+- Created `/Users/deepak/code/memory-bank/memory-bank/templates/` - Added directory for file templates
+- Created `/Users/deepak/code/memory-bank/memory-bank/templates/tasks.md` - Added template for task registry
+- Created `/Users/deepak/code/memory-bank/memory-bank/templates/session_cache.md` - Added template for multi-task session cache
+- Created `/Users/deepak/code/memory-bank/memory-bank/templates/activeContext.md` - Added template for multi-task active context
+- Created `/Users/deepak/code/memory-bank/memory-bank/templates/edit_history.md` - Added template for edit history with task references
+- Created `/Users/deepak/code/memory-bank/memory-bank/templates/errorLog.md` - Added template for error log with task references
+- Created `/Users/deepak/code/memory-bank/memory-bank/templates/progress.md` - Added template for progress with task organization
+- Created `/Users/deepak/code/memory-bank/memory-bank/templates/projectbrief.md` - Added template for project brief
+- Created `/Users/deepak/code/memory-bank/memory-bank/templates/changelog.md` - Added template for changelog
+- Updated `/Users/deepak/code/memory-bank/memory-bank/session_cache.md` - Updated to use multi-task structure
+- Updated `/Users/deepak/code/memory-bank/memory-bank/edit_history.md` - Added task ID references and latest changes
+
 ### April 13, 2025
 
 #### 11:00 - Examined Project Status and Updated Memory Bank Files
