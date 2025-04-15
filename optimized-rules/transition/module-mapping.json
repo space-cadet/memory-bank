@@ -1,0 +1,239 @@
+{
+  "mapping": [
+    {
+      "sourceSection": "1. Unified System Purpose and Philosophy",
+      "targetModule": "core-rules.md",
+      "subsections": [
+        {
+          "sourceSubsection": "1.1 Core Purpose",
+          "targetSection": "1. Essential System Purpose"
+        },
+        {
+          "sourceSubsection": "1.2 Balanced Approach",
+          "targetSection": "1. Essential System Purpose"
+        },
+        {
+          "sourceSubsection": "1.3 Documentation Update Cadence",
+          "targetModule": "documentation-rules.md",
+          "targetSection": "2. Documentation Update Cadence"
+        }
+      ]
+    },
+    {
+      "sourceSection": "2. Communication Style",
+      "targetModule": "documentation-rules.md",
+      "subsections": [
+        {
+          "sourceSubsection": "2.1 Task-Oriented Communication",
+          "targetSection": "3. Communication Guidelines"
+        },
+        {
+          "sourceSubsection": "2.2 Implementation Process",
+          "targetModule": "implementation-rules.md",
+          "targetSection": "2. Implementation Process"
+        }
+      ]
+    },
+    {
+      "sourceSection": "3. Core Memory Bank Files",
+      "targetModule": "memory-management-rules.md",
+      "subsections": [
+        {
+          "sourceSubsection": "3.1 Essential Files",
+          "targetSection": "1. Essential Files"
+        },
+        {
+          "sourceSubsection": "3.2 File Templates",
+          "targetSection": "2. File Templates"
+        },
+        {
+          "sourceSubsection": "3.3 File Relationships",
+          "targetSection": "3. File Relationships"
+        },
+        {
+          "sourceSubsection": "3.4 Validation Rules",
+          "targetSection": "4. Validation Rules"
+        },
+        {
+          "sourceSubsection": "3.5 Maintenance Guidelines",
+          "targetSection": "5. Maintenance Guidelines"
+        },
+        {
+          "sourceSubsection": "3.6 File Size Management Protocol",
+          "targetSection": "6. File Size Management"
+        }
+      ]
+    },
+    {
+      "sourceSection": "4. Implementation Guidelines",
+      "targetModule": "implementation-rules.md",
+      "subsections": [
+        {
+          "sourceSubsection": "4.1 Safety & Scope",
+          "targetModule": "core-rules.md",
+          "targetSection": "2. Safety & Scope Rules"
+        },
+        {
+          "sourceSubsection": "4.2 Mandatory Step-by-Step Approval",
+          "targetModule": "core-rules.md",
+          "targetSection": "2. Safety & Scope Rules"
+        },
+        {
+          "sourceSubsection": "4.3 Efficiency Rules",
+          "targetSection": "3. Efficiency Guidelines"
+        }
+      ]
+    },
+    {
+      "sourceSection": "5. Integration with Development Workflow",
+      "targetModule": "implementation-rules.md",
+      "targetSection": "4. Development Workflow Integration"
+    },
+    {
+      "sourceSection": "6. Integrated Command System",
+      "subsections": [
+        {
+          "sourceSubsection": "6.1 Task Management Commands",
+          "targetModule": "task-management-rules.md",
+          "targetSection": "2. Task Management Commands"
+        },
+        {
+          "sourceSubsection": "6.2 Task Execution Commands",
+          "targetModule": "task-management-rules.md",
+          "targetSection": "3. Task Execution Commands"
+        },
+        {
+          "sourceSubsection": "6.3 Memory Management Commands",
+          "targetModule": "memory-management-rules.md",
+          "targetSection": "7. Memory Management Commands"
+        },
+        {
+          "sourceSubsection": "6.4 Session Management Commands",
+          "targetModule": "session-management-rules.md",
+          "targetSection": "2. Session Management Commands"
+        },
+        {
+          "sourceSubsection": "6.5 Code Implementation Commands",
+          "targetModule": "implementation-rules.md",
+          "targetSection": "5. Code Implementation Commands"
+        }
+      ]
+    },
+    {
+      "sourceSection": "7. Knowledge Organization and Management",
+      "targetModule": "memory-management-rules.md",
+      "subsections": [
+        {
+          "sourceSubsection": "7.1 Tiered Knowledge Structure",
+          "targetSection": "8. Knowledge Organization"
+        },
+        {
+          "sourceSubsection": "7.2 Task-First Loading Process",
+          "targetSection": "9. Task-First Loading Process"
+        },
+        {
+          "sourceSubsection": "7.3 Documentation Decision Framework",
+          "targetModule": "documentation-rules.md",
+          "targetSection": "4. Documentation Decision Framework"
+        }
+      ]
+    },
+    {
+      "sourceSection": "8. Technical Implementation Standards",
+      "targetModule": "implementation-rules.md",
+      "subsections": [
+        {
+          "sourceSubsection": "8.1 XML Tag Format",
+          "targetSection": "6. XML Tag Format"
+        },
+        {
+          "sourceSubsection": "8.2 File Operations",
+          "targetModule": "tool-usage-rules.md",
+          "targetSection": "2. File Operations"
+        },
+        {
+          "sourceSubsection": "8.3 Code Standards",
+          "targetSection": "7. Code Standards"
+        },
+        {
+          "sourceSubsection": "8.4 Documentation Standards",
+          "targetModule": "documentation-rules.md",
+          "targetSection": "5. Documentation Standards"
+        }
+      ]
+    },
+    {
+      "sourceSection": "9. Integrated Workflows",
+      "subsections": [
+        {
+          "sourceSubsection": "9.1 Task-First Implementation Flow",
+          "targetModule": "task-management-rules.md",
+          "targetSection": "4. Task-First Implementation Flow"
+        },
+        {
+          "sourceSubsection": "9.2 Multi-Task Management Flow",
+          "targetModule": "task-management-rules.md",
+          "targetSection": "5. Multi-Task Management Flow"
+        },
+        {
+          "sourceSubsection": "9.3 Documentation Update Process",
+          "targetModule": "documentation-rules.md",
+          "targetSection": "6. Documentation Update Process"
+        },
+        {
+          "sourceSubsection": "9.4 Error Handling and Resolution Flow",
+          "targetModule": "error-handling-rules.md",
+          "targetSection": "2. Error Handling and Resolution Flow"
+        }
+      ]
+    },
+    {
+      "sourceSection": "10. Core File Structure and Templates",
+      "targetModule": "memory-management-rules.md",
+      "subsections": [
+        {
+          "sourceSubsection": "10.1 tasks.md (Task Registry)",
+          "targetSection": "10. File Templates"
+        },
+        {
+          "sourceSubsection": "10.2 session_cache.md (Multi-Task Version)",
+          "targetSection": "10. File Templates"
+        },
+        {
+          "sourceSubsection": "10.3 activeContext.md (Multi-Task Version)",
+          "targetSection": "10. File Templates"
+        },
+        {
+          "sourceSubsection": "10.4 edit_history.md (With Task References)",
+          "targetSection": "10. File Templates"
+        },
+        {
+          "sourceSubsection": "10.5 errorLog.md (With Task References)",
+          "targetSection": "10. File Templates"
+        },
+        {
+          "sourceSubsection": "10.6 progress.md (Task-Organized Version)",
+          "targetSection": "10. File Templates"
+        }
+      ]
+    },
+    {
+      "sourceSection": "11. External Tools and Integration",
+      "targetModule": "tool-usage-rules.md",
+      "subsections": [
+        {
+          "sourceSubsection": "11.1 MCP (Model Context Protocol) Servers",
+          "targetSection": "3. MCP Servers"
+        },
+        {
+          "sourceSubsection": "11.2 API Integration",
+          "targetSection": "4. API Integration"
+        },
+        {
+          "sourceSubsection": "11.3 External Libraries",
+          "targetSection": "5. External Libraries"
+        }
+      ]
+    }
+  ]
+}
