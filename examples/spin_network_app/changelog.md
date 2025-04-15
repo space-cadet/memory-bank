@@ -2,6 +2,33 @@
 
 This document tracks key decisions, major milestones, and pivots in the project's development.
 
+## [2025-04-10] Simulation UI Integration and Error Handling Improvements
+
+- Implemented comprehensive simulation UI with controls for parameter configuration
+- Created SimulationControlPanel with collapsible sections for different parameter groups
+- Added SimulationResultsPanel for visualizing analysis data and simulation results
+- Enhanced useSimulation hook to interact with the simulation engine
+- Fixed runtime errors with defensive coding and proper handling of undefined network data
+- Improved user feedback by showing a warning banner when no network is loaded
+- Made simulation controls accessible for configuration even without a network
+- Disabled execution buttons when no network is available while maintaining all settings
+- Added time slider for simulation history navigation
+- Implemented parameter controls for different diffusion models
+- Created tabbed interface for parameters and analysis
+
+## [2025-04-09] Real-time Type Management and Collapsible UI
+
+- Implemented real-time type management updates with immediate visualization feedback
+- Removed the need to click "Update" button when editing types by adding direct Redux dispatch
+- Added Type Management panel to the right sidebar as a collapsible element
+- Made all sidebar panels collapsible (Properties, Type Management, Simulation Controls, Network Tools)
+- Updated Settings dropdown to indicate Type Management is also available in the sidebar
+- Added tip in the Type Management modal about the sidebar alternative
+- Enhanced user experience with instant visual feedback on type changes
+- Modified button labels from "Update" to "Done" for clarity in editing mode
+- Applied consistent styling across all collapsible panels
+- Improved UI organization and reduced visual clutter
+
 ## [2025-04-08] Type Management UI Implementation
 
 - Created comprehensive Type Management UI for customizing node and edge appearances
