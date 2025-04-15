@@ -1,16 +1,47 @@
 # Session Cache
 
-*Last Updated: April 14, 2025*
+*Last Updated: April 15, 2025*
 
 ## Overview
-- Active Tasks: 1
+- Active Tasks: 2
 - Paused Tasks: 0
 - Last Task Focus: T1
 
 ## Task Registry
 - [T1]: Update Memory Bank with multi-task support - 🔄 IN PROGRESS
+- [T2]: Optimize Rules System for Token Efficiency - ⬜ NOT STARTED
 
 ## Active Tasks
+
+### T2: Optimize Rules System for Token Efficiency
+**Status:** ⬜ NOT STARTED
+**Priority:** HIGH
+**Started:** -
+**Last Active:** April 15, 2025 (planning phase)
+**Dependencies:** T1
+
+#### Context
+Planning to optimize the rules system to reduce token usage by creating a modular structure with a small core set of rules and specialized modules that can be loaded on demand. This will involve restructuring the folder organization and creating a new streamlined core-rules.md file.
+
+#### Critical Files
+- Future: `core/core-rules.md`
+- Future: `modules/` specialized rule files
+- Future: `context-store/` (replacement for memory-bank folder)
+- Future: `loader.md`
+
+#### Implementation Progress
+1. ✅ Created optimization plan
+2. ⬜ Create folder structure
+3. ⬜ Create core-rules.md with essential instructions
+4. ⬜ Create specialized module files
+5. ⬜ Implement dynamic loading mechanism
+6. ⬜ Move examples to separate files
+7. ⬜ Test token efficiency gains
+
+#### Working State
+- Created plan for optimizing rules system
+- Proposed new folder structure
+- Added task to tracking system
 
 ### T1: Update Memory Bank with multi-task support
 **Status:** 🔄 IN PROGRESS
@@ -47,4 +78,4 @@ Working on updating the Memory Bank system to support tracking multiple concurre
 - Updated session management workflows to preserve context when switching tasks
 
 ## Session Notes
-This session focuses on implementing multi-task support for the Memory Bank system. The goal is to allow working on multiple aspects of a project simultaneously without losing context when switching between tasks. The implementation includes a new task registry file, updates to existing files to support task references, and templates for all memory bank files.
+This session includes planning for token optimization of the rules system (T2) while continuing work on multi-task support (T1). The optimization plan includes creating a modular structure with a small core set of rules and specialized modules that can be loaded on demand. This will significantly reduce the token usage for each interaction with the LLM while maintaining the system's effectiveness.
