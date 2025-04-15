@@ -1,10 +1,11 @@
 # Task Registry
-*Last Updated: April 14, 2025*
+*Last Updated: April 15, 2025 13:45 UTC*
 
 ## Active Tasks
 | ID | Title | Status | Priority | Started | Dependencies | Owner |
 |----|-------|--------|----------|---------|--------------|-------|
 | T1 | Update Memory Bank with multi-task support | 🔄 IN PROGRESS | HIGH | 2025-04-14 | - | Deepak |
+| T3 | Implement Database Migration | ⬜ PLANNED | HIGH | - | T2 | Deepak |
 
 ## Task Details
 
@@ -28,6 +29,45 @@
 **Notes**:
 Updated system maintains clear boundaries between tasks while preserving context when switching between them.
 
+### T2: Plan Database Migration Strategy
+**Description**: Analyze requirements and propose strategies for migrating Memory Bank data from Markdown files to a database system. Document findings and comparisons.
+**Status**: ✅ DONE
+**Last Active**: 2025-04-15 12:19 UTC
+**Completion Criteria**:
+- Create `database_planning.md` outlining potential database choices.
+- Create `database_migration.md` detailing specific migration plans.
+- Add comparison between SQL and NoSQL (MongoDB) data models to `database_migration.md`.
+- Create `recommended_migration_plan.md` with a final recommendation.
+
+**Related Files**:
+- `memory-bank/database-planning/database_planning.md`
+- `memory-bank/database-planning/database_migration.md`
+- `memory-bank/database-planning/recommended_migration_plan.md`
+
+**Notes**:
+Compared several approaches including enhanced Markdown, MongoDB, SQLite hybrid, and Knowledge Base integration. Added detailed comparison of SQL vs MongoDB models.
+
+### T3: Implement Database Migration
+**Description**: Implement the database migration based on the Prisma ORM and relational database approach recommended in T2.
+**Status**: ⬜ PLANNED
+**Priority**: HIGH
+**Dependencies**: T2
+**Completion Criteria**:
+- Define Prisma schema based on existing Memory Bank file structure
+- Set up database and Prisma environment
+- Develop conversion scripts to migrate from Markdown to database
+- Build MCP server for database interaction
+- Integrate LLM workflow with new MCP server tools
+
+**Related Files**:
+- To be created:
+  - `memory-bank/database/schema.prisma`
+  - `memory-bank/database/migration-scripts/`
+  - `memory-bank/database/mcp-server/`
+
+**Notes**:
+Will follow the approach outlined in `memory-bank/database-planning/recommended_migration_plan.md`, focusing on efficient querying and reduced token usage through targeted data retrieval.
+
 ## Completed Tasks
 | ID | Title | Completed | Related Tasks |
 |----|-------|-----------|---------------|
@@ -38,6 +78,9 @@ Updated system maintains clear boundaries between tasks while preserving context
 graph TD
     T0[T0: Initial Setup]
     T1[T1: Multi-task Support]
-    
+    T2[T2: Plan DB Migration]
+    T3[T3: Implement DB Migration]
+
     T0 --> T1
-```
+    T0 --> T2
+    T2 --> T3
