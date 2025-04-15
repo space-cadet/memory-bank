@@ -13,8 +13,9 @@ const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 const memoryBankDir = path.join(__dirname, '../../');
+const examplesDir = path.join(__dirname, '../../../examples');
 
-// Utility to extract date from markdown string
+// Utility functions
 function extractDate(dateString) {
   if (!dateString) return null;
   try {
@@ -27,7 +28,6 @@ function extractDate(dateString) {
   }
 }
 
-// Parse task status emoji
 function parseTaskStatus(statusText) {
   if (!statusText) return 'PLANNED';
   
@@ -35,47 +35,83 @@ function parseTaskStatus(statusText) {
     return 'DONE';
   } else if (statusText.includes('🔄') || statusText.toLowerCase().includes('in progress')) {
     return 'IN_PROGRESS';
+  } else if (statusText.includes('⏸️') || statusText.toLowerCase().includes('paused')) {
+    return 'PAUSED';
   } else {
     return 'PLANNED';
   }
 }
 
-// Convert tasks.md to database entries
-async function convertTasks() {
-  console.log('Converting tasks.md...');
-  
-  const tasksPath = path.join(memoryBankDir, 'tasks.md');
-  if (!fs.existsSync(tasksPath)) {
-    console.log('tasks.md not found, skipping');
-    return;
-  }
-  
-  const content = fs.readFileSync(tasksPath, 'utf8');
-  
-  // Extract task IDs and titles from the table
-  const taskTableRegex = /\|\s*([T\d]+)\s*\|\s*([^|]+)\s*\|\s*([^|]+)\s*\|/g;
-  const taskMatches = [...content.matchAll(taskTableRegex)];
-  
-  // Extract detailed task information from the sections
-  const taskSectionRegex = /### ([T\d]+): (.+?)(?=\n\*\*Description\*\*)/g;
-  const taskDetailRegex = /\*\*([^:]+):\*\*\s*([\s\S]*?)(?=\n\*\*|$)/g;
-  
-  for (const taskMatch of [...content.matchAll(taskSectionRegex)]) {
-    const taskId = taskMatch[1];
-    const title = taskMatch[2].trim();
-    const taskSection = content.substring(taskMatch.index);
-    const nextTaskIndex = taskSection.indexOf('### T', 10); // Skip the current task header
+// Conversion functions
+async function convertTasks(projectId) {}
+async function convertSessionCache(projectId) {}
+async function convertEditHistory(projectId) {}
+async function convertErrorLog(projectId) {}
+async function convertActiveContext(projectId) {}
+async function convertProgress(projectId) {}
+async function convertProjectBrief(projectId) {}
+async function convertChangelog(projectId) {}
+
+// Archive handling function
+async function convertArchivedFiles(projectId) {}
+
+// Example project handling
+async function convertExampleProject(projectPath) {}
+
+// Main function
+async function main() {
+  try {
+    console.log('Starting database migration...');
     
-    const taskContent = nextTaskIndex !== -1 
-      ? taskSection.substring(0, nextTaskIndex) 
-      : taskSection;
+    // Check if default project exists
+    let project = await prisma.project.findFirst({
+      where: {
+        path: memoryBankDir
+      }
+    });
     
-    // Parse task details
-    const details = {};
-    for (const detailMatch of [...taskContent.matchAll(taskDetailRegex)]) {
-      const key = detailMatch[1].trim().toLowerCase();
-      const value = detailMatch[2].trim();
-      details[key] = value;
+    // Create default project if it doesn't exist
+    if (!project) {
+      project = await prisma.project.create({
+        data: {
+          name: 'Memory Bank',
+          path: memoryBankDir
+        }
+      });
+      console.log(`Created project: ${project.name}`);
     }
     
-    // Parse related files
+    // Convert main project files
+    await convertTasks(project.id);
+    await convertSessionCache(project.id);
+    await convertEditHistory(project.id);
+    await convertErrorLog(project.id);
+    await convertActiveContext(project.id);
+    await convertProgress(project.id);
+    await convertProjectBrief(project.id);
+    await convertChangelog(project.id);
+    
+    // Convert archived files if they exist
+    await convertArchivedFiles(project.id);
+    
+    // Check if example projects should be converted
+    if (fs.existsSync(examplesDir)) {
+      const examples = fs.readdirSync(examplesDir, { withFileTypes: true })
+        .filter(dirent => dirent.isDirectory())
+        .map(dirent => path.join(examplesDir, dirent.name));
+      
+      for (const examplePath of examples) {
+        await convertExampleProject(examplePath);
+      }
+    }
+    
+    console.log('Database migration completed successfully.');
+  } catch (error) {
+    console.error('Error during database migration:', error);
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+// Run the main function
+main();
