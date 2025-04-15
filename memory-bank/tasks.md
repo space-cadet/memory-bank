@@ -94,3 +94,29 @@ graph TD
     T0 --> T2
     T2 --> T3
 ```
+
+### T4: Optimize Integrated Rules for Token Efficiency
+**Description**: Implement a tiered, modular, and dynamically loaded Integrated Rules system to reduce token usage while maintaining context and usability.
+**Status**: ⬜ NOT STARTED
+**Priority**: HIGH
+**Started**: -
+**Dependencies**: T1
+**Completion Criteria**:
+- Create Core Rules module with essential instructions (~20% size)
+- Develop Extended Rules modules for specific tasks (documentation, implementation, memory management, etc.)
+- Implement dynamic loading and unloading of rule modules during sessions
+- Restructure documentation flow to external templates and references
+- Optimize command structure with condensed descriptions and shorthand
+- Implement progressive disclosure for instructions
+- Update folder structure to support modular rules and context store
+- Test and validate token usage reduction and system functionality
+
+**Related Files**:
+- `memory-bank/core/core-rules.md`
+- `memory-bank/modules/`
+- `memory-bank/context-store/`
+- `memory-bank/templates/`
+- `memory-bank/loader.md`
+
+**Notes**:
+This task aims to balance token efficiency with maintaining comprehensive and usable Integrated Rules.
