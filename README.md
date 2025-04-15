@@ -1,6 +1,6 @@
 # Integrated Code Rules and Memory Bank System
 
-*Last Updated: April 10, 2025*
+*Last Updated: April 15, 2025*
 
 ## Overview
 
@@ -9,6 +9,8 @@ The Integrated Code Rules and Memory Bank System provides a comprehensive framew
 ## Key Features
 
 - **Task-First Approach**: Prioritizing immediate task execution with minimal context loading
+- **Multi-Task Support**: Tracking and managing multiple concurrent tasks
+- **Database-Backed Storage**: Efficient querying and reduced token usage
 - **Progressive Loading**: Tiered documentation approach to optimize token usage
 - **Session Continuity**: Mechanisms for maintaining context across multiple chat sessions
 - **Standardized Tools**: Consistent XML-formatted tool usage for all operations
@@ -21,6 +23,7 @@ This project uses the following organization:
 - **Root directory**: Contains project-wide files
   - `integrated-rules.md` - Main documentation combining Code Rules and Memory Bank
   - `integrated-rules-v2.md` - Updated rules with consistency fixes
+  - `integrated-rules-v4.md` - Updated rules with multi-task support
   - `project_progress.md` - Project-level progress tracking (historical)
   - `bootstrap.md` - Core system structure, loaded only when essential
   - `code-rules-and-memory-bank.md` - Original detailed specifications
@@ -32,13 +35,22 @@ This project uses the following organization:
   - `progress.md` - Task and milestone tracking
   - `session_cache.md` - Session continuity information  
   - `projectbrief.md` - Core requirements and project scope
+  - `tasks.md` - Task registry for multi-task support
   - `.cursorrules` - Project patterns and implementation guidelines
   - `productContext.md` - Why and how the project works
   - `systemPatterns.md` - Architecture and design patterns
   - `techContext.md` - Technical implementation details
   - `changelog.md` - Record of system changes and updates
   
+- **/memory-bank/database/**: Contains database implementation
+  - `schema.prisma` - Database schema definition
+  - `/migration-scripts/` - Scripts for data migration
+  - `/mcp-server/` - MCP server for database interaction
+
+- **/templates/**: Contains file templates for memory bank files
+  
 - **/sessions/**: Contains time-stamped session logs
+
 - **/examples/**: Contains example usage patterns and templates
 
 ## Getting Started
@@ -81,6 +93,21 @@ This project uses the following organization:
 | `complete_session` | Mark session as complete, update necessary docs |
 | `cache_session` | Create continuation point with minimal updates |
 | `start_session` | Begin new session with fresh timestamp |
+
+## Recent Updates
+
+### Version 0.3.0 (April 15, 2025)
+- Added database migration framework with Prisma ORM
+- Added multi-project support in database schema design
+- Added comprehensive schema for all memory bank data models
+- Eliminated need for file rotation through database approach
+- Improved task relationship modeling with enhanced dependency types
+
+### Version 0.2.0 (April 14, 2025)
+- Added multi-task support with dedicated task registry
+- Added task ID referencing across all Memory Bank files
+- Added templates for all memory bank file types
+- Enhanced session cache with multi-task tracking
 
 ## Workflow
 

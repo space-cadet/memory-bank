@@ -1,49 +1,79 @@
 # Changelog: Memory Bank System
 
-## April 8, 2025 (10:00) - Integration with Code Rules
-- Created integrated-rules.md file that combines Code Rules and Memory Bank system
-- Implemented comprehensive XML tag format for tool usage
-- Expanded command system to include task execution and code implementation
-- Added detailed documentation standards for consistent project knowledge
-- Integrated workflow diagrams for task-first implementation and session management
-- Added MCP server integration specifications
+## [0.3.0] - April 15, 2025
+### Added
+- Database migration framework with Prisma ORM
+- Multi-project support in database schema design
+- SQLite configuration for initial database implementation
+- Comprehensive schema for all memory bank data models
+- Enhanced error logging with full-text support in database
 
-### Key Decisions
-- **Unified System**: Combined Code Rules and Memory Bank into a single integrated system
-- **Task-First Approach**: Prioritized immediate task execution with minimal context loading
-- **Expanded Tool Usage**: Added detailed XML tag formatting for all tool operations
-- **Workflow Integration**: Created clear flowcharts for implementation and session management
+### Changed
+- Eliminated need for file rotation through database approach
+- Improved task relationship modeling with enhanced dependency types
+- Better structured Task model with pause/resume capability
 
-### Design Enhancements
-- Added detailed file operation specifications including diff format for surgical edits
-- Expanded documentation standards with status indicators and heading conventions
-- Created templates for session_cache.md and activeContext.md with task-oriented focus
-- Implemented Documentation Decision Framework for targeted updates
+### Planned
+- MCP server implementation for database interactions
+- Conversion scripts for markdown to database migration
+- Integration with LLM workflows
 
-## April 8, 2025 - Initial Setup
-- Created dedicated memory-bank subfolder within the project
-- Established Memory Bank core structure with all required files
-- Implemented tiered documentation approach
-- Set up progressive loading framework
-- Created session continuity mechanism
-- Documented system architecture and patterns
+## [0.2.0] - April 14, 2025
+### Added
+- Multi-task support with dedicated task registry
+- Task ID referencing across all Memory Bank files
+- Templates for all memory bank file types
+- Task relationship visualization with mermaid diagrams
+- Enhanced session cache with multi-task tracking
 
-### Key Decisions
-- **Progressive Loading**: Adopted a tiered approach to documentation to optimize token usage
-- **Session Continuity**: Implemented session_cache.md for maintaining context across sessions
-- **Command System**: Created explicit commands for controlling information flow
-- **Differential Updates**: Established patterns for minimizing token usage during updates
+### Changed
+- Moved templates directory to project root
+- Updated integrated rules (v4) with multi-task support
+- Enhanced edit history with task references
+- Improved session continuity when switching between tasks
+
+## [0.1.1] - April 10, 2025
+### Added
+- Error logging capability with errorLog.md
+- File modification tracking with edit_history.md
+- Task and milestone tracking in progress.md
+- Enhanced session cache structure
+- File size management protocol
+
+### Changed
+- Improved Documentation Decision Framework
+- Enhanced XML tag formatting for tool usage
+- More detailed file operation specifications
+- Better structured session cache template
+
+## [0.1.0] - April 8, 2025
+### Added
+- Integration with Code Rules into unified system
+- Comprehensive XML tag format for tool usage
+- Expanded command system for task execution and code implementation
+- Workflow diagrams for task-first implementation and session management
+- MCP server integration specifications
+- Documentation standards for consistent project knowledge
+
+### Changed
+- Combined Code Rules and Memory Bank into single integrated system
+- Prioritized task-first approach with minimal context loading
+- Expanded tool usage with detailed XML tag formatting
+- Added detailed file operation specifications
+
+## [0.0.1] - April 8, 2025
+### Added
+- Initial Memory Bank structure
+- Dedicated memory-bank subfolder within the project
+- Tiered documentation approach
+- Progressive loading framework
+- Session continuity mechanism
+- System architecture and patterns documentation
 
 ### Design Choices
-- Selected Markdown as the primary documentation format for readability and portability
-- Organized files in a hierarchical structure to facilitate clear information flow
-- Implemented explicit commands rather than automatic mechanisms to provide user control
-- Used a directory-based approach for organizing documentation
+- Selected Markdown as primary documentation format
+- Organized files in hierarchical structure
+- Implemented explicit commands for user control
+- Used directory-based approach for documentation organization
 
-### Future Considerations
-- Potential for additional specialized documentation for complex features
-- Possible enhancements to the command system for more granular control
-- Exploration of metadata approaches for better cross-referencing
-- Investigation of visualization tools for system state representation
-
-Last Updated: April 8, 2025
+Last Updated: April 15, 2025
