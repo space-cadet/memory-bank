@@ -18,13 +18,22 @@ const examplesDir = path.join(__dirname, '../../../examples');
 // Utility functions
 function extractDate(dateString) {
   if (!dateString) return null;
+  
   try {
     // Handle various date formats
     // Examples: "April 15, 2025", "2025-04-15", "2025-04-15 12:30 UTC"
-    return new Date(dateString);
+    const date = new Date(dateString);
+    
+    // Check if date is valid
+    if (isNaN(date.getTime())) {
+      console.warn(`Invalid date string: "${dateString}", using current date instead`);
+      return new Date(); // Return current date as fallback
+    }
+    
+    return date;
   } catch (error) {
     console.error(`Error parsing date: ${dateString}`, error);
-    return null;
+    return new Date(); // Return current date as fallback
   }
 }
 
@@ -774,8 +783,21 @@ async function convertChangelog(projectId, dirPath = memoryBankDir) {
     const dateStr = versionMatch[2].trim();
     const changeContent = versionMatch[3];
     
-    // Parse date
-    const date = extractDate(dateStr) || new Date();
+    // Parse date - ensure it's valid
+    let date;
+    try {
+      // If dateStr is empty or invalid, use current date
+      date = dateStr ? new Date(dateStr) : new Date();
+      
+      // Check if date is valid
+      if (isNaN(date.getTime())) {
+        console.warn(`Invalid date in changelog for version ${version}: "${dateStr}", using current date`);
+        date = new Date();
+      }
+    } catch (error) {
+      console.warn(`Error parsing date in changelog for version ${version}: "${dateStr}", using current date`);
+      date = new Date();
+    }
     
     // Extract changes
     const changes = [];
@@ -808,6 +830,11 @@ async function convertChangelog(projectId, dirPath = memoryBankDir) {
     // Create changelog entry
     if (changes.length > 0) {
       try {
+        // Final validation check before database insert
+        if (isNaN(date.getTime())) {
+          date = new Date(); // Ensure we have a valid date
+        }
+        
         await prisma.changelogEntry.create({
           data: {
             version,
@@ -820,6 +847,23 @@ async function convertChangelog(projectId, dirPath = memoryBankDir) {
         console.log(`Created changelog entry for v${version}`);
       } catch (error) {
         console.error(`Error creating changelog entry for v${version}:`, error);
+        // Try one more time with current date if it was a date-related error
+        if (error.message && error.message.includes('Invalid value for argument `date`')) {
+          try {
+            console.log(`Retrying with current date for v${version}...`);
+            await prisma.changelogEntry.create({
+              data: {
+                version,
+                date: new Date(), // Use current date as fallback
+                changes,
+                projectId,
+              },
+            });
+            console.log(`Successfully created changelog entry for v${version} with current date`);
+          } catch (retryError) {
+            console.error(`Failed retry for changelog entry v${version}:`, retryError);
+          }
+        }
       }
     }
   }

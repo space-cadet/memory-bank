@@ -139,11 +139,11 @@ model Error {
   timestamp         DateTime @default(now())
   title             String
   filePath          String?
-  errorDescription  String   @db.Text
-  errorMessage      String?  @db.Text
-  cause             String   @db.Text
-  fix               String   @db.Text
-  keyCodeChanges    String?  @db.Text
+  errorDescription  String
+  errorMessage      String?
+  cause             String
+  fix               String
+  keyCodeChanges    String?
   task              Task?    @relation(fields: [taskId], references: [id])
   taskId            String?
   project           Project  @relation(fields: [projectId], references: [id])
@@ -168,7 +168,7 @@ model ActiveContext {
   id                String   @id @default(cuid())
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
-  implementationFocus String  @db.Text
+  implementationFocus String
   currentDecisions   Json?   // Array of decisions
   nextActions        Json?   // Array of actions
   project            Project @relation(fields: [projectId], references: [id])
@@ -190,10 +190,10 @@ model Progress {
 model ProjectBrief {
   id             String   @id @default(cuid())
   updatedAt      DateTime @updatedAt
-  overview       String   @db.Text
+  overview       String
   objectives     Json?    // Array of objectives
   keyFiles       Json?    // Array of key files with descriptions
-  architecture   String?  @db.Text
+  architecture   String?
   technologies   Json?    // Array of technologies
   project        Project  @relation(fields: [projectId], references: [id])
   projectId      String
@@ -214,7 +214,7 @@ model CustomDocument {
   id             String   @id @default(cuid())
   title          String
   path           String   // Path within memory-bank directory
-  content        String   @db.Text
+  content        String
   category       String?  // For grouping similar documents
   updatedAt      DateTime @updatedAt
   project        Project  @relation(fields: [projectId], references: [id])
