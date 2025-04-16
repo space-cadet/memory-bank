@@ -21,6 +21,19 @@
         "mcp"
       ],
       "source": "project"
+    },
+    {
+      "slug": "modular-rules",
+      "name": "Modular Rules",
+      "roleDefinition": "Read the instructions in /Users/deepak/code/memory-bank/integrated-rules-v4.md and work accordingly.",
+      "groups": [
+        "read",
+        "edit",
+        "browser",
+        "command",
+        "mcp"
+      ],
+      "source": "project"
     }
   ]
 }
