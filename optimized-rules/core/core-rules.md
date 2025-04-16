@@ -1,97 +1,42 @@
-# Core Rules for Integrated Code and Memory Bank System
+# Core Rules
 
-*Last Updated: April 15, 2025*
+*Last Updated: April 16, 2025*
 
-⚠️ **IMPORTANT: NEVER modify files without explicit user approval. Always present a plan and wait for confirmation before making any changes.**
+## Purpose and Philosophy
+This core module provides the essential instructions required for the operation of the Integrated Code Rules and Memory Bank System. It is designed to be minimal in size to reduce token usage while maintaining critical guidance for safe and consistent task execution.
 
-## 1. Essential System Purpose
+## Safety Guidelines
+- Operate exclusively within designated project directories.
+- Avoid executing commands that may affect system state without explicit approval.
+- Always verify file paths before reading or writing.
+- Maintain strict control over module loading and unloading to prevent context corruption.
 
-The Integrated Code Rules and Memory Bank System is designed to:
-- Balance task execution efficiency with project knowledge
-- Maintain consistent coding standards
-- Ensure project continuity across sessions
-- Optimize resource usage by loading only necessary information
+## Minimal Command Reference
+- `load_module [module_name]`: Load a specific rule module dynamically.
+- `unload_module [module_name]`: Unload a specific rule module to free token space.
+- `list_modules`: List all available modules and their current load status.
+- `suggest_modules [task_id]`: Suggest relevant modules based on the current task context.
 
-## 2. Safety & Scope Rules
+## Basic Document Structure
+- Use modular files for rules and guidelines.
+- Maintain clear separation between core, modules, context-store, and examples.
+- Update session_cache.md to track loaded modules and task progress.
 
-1. Operate exclusively within designated project directories
-2. Never modify files without explicit user approval
-3. Verify paths before file operations
-4. Present changes for approval before execution
-5. Focus only on necessary files relevant to current task
+## Module Loading Instructions
+To load a module, use the following command format:
 
-## 3. Core Commands
-
-### Task Management
-- `create_task [title]` - Create new task
-- `switch_task [task_id]` - Switch to different task
-- `complete_task [task_id]` - Mark task as completed
-
-### Memory Management
-- `read_mb [file]` - Load specific memory bank file
-- `update_mb [file]` - Update memory bank file
-- `log_error [title] [task_id]` - Record error in errorLog.md
-- `record_edits [task_id] [description]` - Add to edit_history.md
-
-### Module Management
-- `load_module [module_name]` - Load a specific rule module
-- `unload_module [module_name]` - Unload a specific rule module
-- `list_modules` - List all available modules and their status
-- `suggest_modules [task_id]` - Suggest relevant modules for task
-
-## 4. File Operations
-
-### Reading Files
-```
-<read_file>
-<path>src/main.js</path>
-</read_file>
-```
-
-### Surgical File Modification
-```
-<edit_block>
-<blockContent>
-/path/to/file
-<<<<<<< SEARCH
-code to find
-=======
-code to replace
->>>>>>> REPLACE
-</blockContent>
-</edit_block>
-```
-
-### Directory Listing
-```
-<list_directory>
-<path>.</path>
-</list_directory>
-```
-
-## 5. Documentation Standards
-
-- Update timestamps when modifying files
-- Include task ID references in all documentation
-- Use status indicators: ✅ (Complete), 🔄 (In Progress), ⏸️ (Paused), ⬜ (Not Started)
-
-## 6. Module System
-
-This is a minimal Core Rules module. Additional modules can be loaded as needed:
-
-- **documentation-rules** - Documentation standards and practices
-- **implementation-rules** - Code implementation standards
-- **memory-management-rules** - Memory Bank file management
-- **session-management-rules** - Session tracking and management
-- **task-management-rules** - Multi-task tracking and switching
-- **error-handling-rules** - Error logging and resolution
-- **tool-usage-rules** - Detailed tool usage guidelines
-
-To load additional modules, use:
 ```
 <load_module>
-<module_name>module-name-here</module_name>
+<module_name>module-name</module_name>
 </load_module>
 ```
 
-For more detailed instructions, see `/optimized-rules/loader.md`.
+To unload a module:
+
+```
+<unload_module>
+<module_name>module-name</module_name>
+</unload_module>
+```
+
+Always keep core-rules.md loaded; it should not be unloaded.

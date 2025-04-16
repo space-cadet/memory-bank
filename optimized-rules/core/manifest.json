@@ -1,82 +1,52 @@
 {
-  "name": "Memory Bank Optimized Rules",
-  "version": "1.0.0",
-  "description": "Modular and dynamically loaded Integrated Rules system",
-  "coreModule": {
-    "name": "core-rules",
-    "version": "1.0.0",
-    "description": "Essential instructions always loaded at session start",
-    "path": "/core/core-rules.md"
-  },
   "modules": [
+    {
+      "name": "core-rules",
+      "version": "1.0.0",
+      "description": "Essential instructions for system operation, minimal size.",
+      "dependencies": []
+    },
     {
       "name": "documentation-rules",
       "version": "1.0.0",
-      "description": "Documentation standards and practices",
-      "path": "/modules/documentation-rules.md",
-      "dependencies": []
+      "description": "Documentation standards and practices.",
+      "dependencies": ["memory-management-rules"]
     },
     {
       "name": "implementation-rules",
       "version": "1.0.0",
-      "description": "Code implementation standards",
-      "path": "/modules/implementation-rules.md",
-      "dependencies": []
+      "description": "Code implementation standards and guidelines.",
+      "dependencies": ["tool-usage-rules", "error-handling-rules"]
     },
     {
       "name": "memory-management-rules",
       "version": "1.0.0",
-      "description": "Memory Bank file management rules",
-      "path": "/modules/memory-management-rules.md",
+      "description": "Memory Bank file management rules.",
       "dependencies": []
     },
     {
       "name": "session-management-rules",
       "version": "1.0.0",
-      "description": "Session tracking and management",
-      "path": "/modules/session-management-rules.md",
-      "dependencies": ["memory-management-rules"]
+      "description": "Session tracking and management rules.",
+      "dependencies": []
     },
     {
       "name": "task-management-rules",
       "version": "1.0.0",
-      "description": "Multi-task tracking and switching",
-      "path": "/modules/task-management-rules.md",
+      "description": "Multi-task tracking and switching rules.",
       "dependencies": ["memory-management-rules", "session-management-rules"]
     },
     {
       "name": "error-handling-rules",
       "version": "1.0.0",
-      "description": "Error logging and resolution",
-      "path": "/modules/error-handling-rules.md",
+      "description": "Error logging and resolution guidelines.",
       "dependencies": []
     },
     {
       "name": "tool-usage-rules",
       "version": "1.0.0",
-      "description": "Detailed tool usage guidelines",
-      "path": "/modules/tool-usage-rules.md",
+      "description": "Detailed tool usage guidelines.",
       "dependencies": []
     }
-  ],
-  "taskTypeModules": {
-    "documentation": [
-      "documentation-rules",
-      "memory-management-rules"
-    ],
-    "implementation": [
-      "implementation-rules",
-      "tool-usage-rules",
-      "error-handling-rules"
-    ],
-    "maintenance": [
-      "session-management-rules",
-      "memory-management-rules"
-    ],
-    "optimization": [
-      "implementation-rules",
-      "memory-management-rules",
-      "tool-usage-rules"
-    ]
-  }
+  ]
 }

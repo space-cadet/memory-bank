@@ -1,83 +1,33 @@
-# Quick Start Guide
+# Quickstart Guide
 
-*Last Updated: April 15, 2025*
+*Last Updated: April 16, 2025*
 
-## Getting Started with the Optimized Rules System
+## Introduction
+This quickstart guide helps you begin using the modular Integrated Code Rules and Memory Bank System efficiently.
 
-This guide helps you quickly start using the new modular rules system for the Integrated Code Rules and Memory Bank.
+## Starting a Session
+1. Always start with the core-rules.md module loaded.
+2. Use the module loading commands to add functionality as needed:
+   ```
+   <load_module>
+   <module_name>module-name</module_name>
+   </load_module>
+   ```
+3. Track loaded modules in session_cache.md to maintain context.
 
-## Basic Session Workflow
+## Basic Workflow
+- Identify the task type.
+- Load recommended modules for the task type.
+- Perform task operations using loaded modules.
+- Unload modules when switching to different task types to optimize token usage.
 
-1. **Start Session**: Core rules are automatically loaded
-2. **Load Task-Specific Modules**: Use `<load_module>` commands to load relevant modules
-3. **Execute Task**: Perform work with minimal token usage
-4. **Update Documentation**: Record changes to appropriate files with task references
-5. **Complete or Switch Tasks**: Update task status and session cache
+## Module Recommendations by Task Type
+- Documentation: documentation-rules, memory-management-rules
+- Implementation: implementation-rules, tool-usage-rules, error-handling-rules
+- Maintenance: session-management-rules, memory-management-rules
+- Optimization: implementation-rules, memory-management-rules, tool-usage-rules
 
-## Common Commands
-
-### Task Management
-```
-<create_task>
-<title>Optimize database queries</title>
-</create_task>
-
-<switch_task>
-<task_id>T4</task_id>
-</switch_task>
-
-<complete_task>
-<task_id>T3</task_id>
-</complete_task>
-```
-
-### Module Management
-```
-<load_module>
-<module_name>implementation-rules</module_name>
-</load_module>
-
-<list_modules>
-</list_modules>
-
-<suggest_modules>
-<task_id>T4</task_id>
-</suggest_modules>
-```
-
-### File Operations
-```
-<read_file>
-<path>src/main.js</path>
-</read_file>
-
-<edit_block>
-<blockContent>
-/path/to/file
-<<<<<<< SEARCH
-old code
-=======
-new code
->>>>>>> REPLACE
-</blockContent>
-</edit_block>
-```
-
-## Documentation Requirements
-
-- Always update `edit_history.md` after file changes
-- Include task ID in all documentation updates
-- Update task status in `tasks.md` when necessary
-- Update `session_cache.md` when switching tasks
-
-## Need More Details?
-
-Load specific modules for detailed instructions:
-
-```
-<load_module>
-<module_name>documentation-rules</module_name>
-</load_module>
-```
-
-Or refer to the comprehensive module documentation in the `/optimized-rules/docs/` directory.
+## Additional Resources
+- Refer to command-reference.md for command syntax.
+- See loader.md for detailed module loading instructions.
+- Consult docs/guides/ for user guides and best practices.
