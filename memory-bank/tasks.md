@@ -1,11 +1,12 @@
 # Task Registry
-*Last Updated: April 17, 2025 12:10 UTC*
+*Last Updated: April 17, 2025 17:20 UTC*
 
 ## Active Tasks
 | ID | Title | Status | Priority | Started | Dependencies | Owner |
 |----|-------|--------|----------|---------|--------------|-------|
 | T1 | Update Memory Bank with multi-task support | 🔄 IN PROGRESS | HIGH | 2025-04-14 | - | Deepak |
 | T3 | Implement Database Migration | 🔄 IN PROGRESS | HIGH | 2025-04-15 | T2 | Deepak |
+| T5 | Optimize Integrated Rules v4 Document | 🔄 IN PROGRESS | MEDIUM | 2025-04-17 | - | Deepak |
 
 ## Task Details
 
@@ -89,10 +90,14 @@ graph TD
     T1[T1: Multi-task Support]
     T2[T2: Plan DB Migration]
     T3[T3: Implement DB Migration]
+    T4[T4: Modular Rules System]
+    T5[T5: Optimize Rules v4]
 
     T0 --> T1
     T0 --> T2
     T2 --> T3
+    T1 --> T4
+    T1 --> T5
 ```
 
 ### T4: Optimize Integrated Rules for Token Efficiency
@@ -124,3 +129,25 @@ graph TD
 
 **Notes**:
 Rather than rushing to complete all modules, currently focusing on validating the approach with core rules and a few sample modules. Need to measure token efficiency compared to original integrated rules system before investing in full implementation. Current focus on developing module specifications and structure to demonstrate the concept.
+
+### T5: Optimize Integrated Rules v4 Document
+**Description**: Streamline the existing integrated-rules-v4.md document to improve efficiency and usability while reducing redundancy.
+**Status**: 🔄 IN PROGRESS
+**Priority**: MEDIUM
+**Started**: 2025-04-17
+**Last Active**: 2025-04-17 17:15 UTC
+**Dependencies**: -
+**Completion Criteria**:
+- Add table of contents with hyperlinks to all sections ✅
+- Optimize command descriptions for brevity ✅
+- Consolidate redundant sections (surgical editing guidelines & file operations) ✅
+- Improve workflow diagrams with user consultation steps ✅
+- Add explicit memory-bank directory verification check ✅
+- Plan workflow for memory bank management ✅
+- Document future optimization opportunities 🔄
+
+**Related Files**:
+- `integrated-rules-v4.md` ✅
+
+**Notes**:
+This task focuses on immediate optimizations to the existing integrated rules document rather than the complete redesign being explored in T4. The changes aim to improve usability while reducing token usage and redundancy. Additional optimizations have been identified but will be implemented in future iterations.

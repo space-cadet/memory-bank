@@ -4,12 +4,66 @@
 
 ⚠️ IMPORTANT: NEVER modify files without explicit user approval. Always present a plan and wait for confirmation before making any changes.
 
-### File Locations
+## File Locations
 
 - Memory Bank files (session_cache.md, edit_history.md, errorLog.md, tasks.md, etc.) should be located in the `/memory-bank/` directory
 - Template files for memory bank documents should be in the `/templates/` directory at the project root
 - Integrated Rules files remain in the project root
 - This structure ensures consistent organization and prevents confusion about file locations
+
+## Table of Contents
+
+1. [Unified System Purpose and Philosophy](#1-unified-system-purpose-and-philosophy)
+   1. [Core Purpose](#11-core-purpose)
+   2. [Balanced Approach](#12-balanced-approach)
+   3. [Documentation Update Cadence](#13-documentation-update-cadence)
+2. [Communication Style](#2-communication-style)
+   1. [Task-Oriented Communication](#21-task-oriented-communication)
+   2. [Implementation Process](#22-implementation-process)
+3. [Core Memory Bank Files](#3-core-memory-bank-files)
+   1. [Essential Files](#31-essential-files)
+   2. [File Templates](#32-file-templates)
+   3. [File Relationships](#33-file-relationships)
+   4. [Validation Rules](#34-validation-rules)
+   5. [Maintenance Guidelines](#35-maintenance-guidelines)
+   6. [File Size Management Protocol](#36-file-size-management-protocol)
+4. [Implementation Guidelines](#4-implementation-guidelines)
+   1. [Safety & Scope](#41-safety--scope)
+   2. [Mandatory Step-by-Step Approval](#42-mandatory-step-by-step-approval)
+   3. [Minimal Change Principle](#43-minimal-change-principle)
+   4. [Efficiency Rules](#44-efficiency-rules)
+5. [Integration with Development Workflow](#5-integration-with-development-workflow)
+6. [Integrated Command System](#6-integrated-command-system)
+   1. [Task Management Commands](#61-task-management-commands)
+   2. [Task Execution Commands](#62-task-execution-commands)
+   3. [Memory Management Commands](#63-memory-management-commands)
+   4. [Session Management Commands](#64-session-management-commands)
+   5. [Code Implementation Commands](#65-code-implementation-commands)
+7. [Knowledge Organization and Management](#7-knowledge-organization-and-management)
+   1. [Tiered Knowledge Structure](#71-tiered-knowledge-structure)
+   2. [Task-First Loading Process](#72-task-first-loading-process)
+   3. [Documentation Decision Framework](#73-documentation-decision-framework)
+8. [Technical Implementation Standards](#8-technical-implementation-standards)
+   1. [XML Tag Format](#81-xml-tag-format)
+   2. [File Operations](#82-file-operations)
+   3. [Code Standards](#83-code-standards)
+   4. [Documentation Standards](#84-documentation-standards)
+9. [Integrated Workflows](#9-integrated-workflows)
+   1. [Task-First Implementation Flow](#91-task-first-implementation-flow)
+   2. [Multi-Task Management Flow](#92-multi-task-management-flow)
+   3. [Documentation Update Process](#93-documentation-update-process)
+   4. [Error Handling and Resolution Flow](#94-error-handling-and-resolution-flow)
+10. [Core File Structure and Templates](#10-core-file-structure-and-templates)
+    1. [tasks.md (Task Registry)](#101-tasksmd-task-registry)
+    2. [session_cache.md (Multi-Task Version)](#102-session_cachemd-multi-task-version)
+    3. [activeContext.md (Multi-Task Version)](#103-activecontextmd-multi-task-version)
+    4. [edit_history.md (With Task References)](#104-edit_historymd-with-task-references)
+    5. [errorLog.md (With Task References)](#105-errorlogmd-with-task-references)
+    6. [progress.md (Task-Organized Version)](#106-progressmd-task-organized-version)
+11. [External Tools and Integration](#11-external-tools-and-integration)
+    1. [MCP (Model Context Protocol) Servers](#111-mcp-model-context-protocol-servers)
+    2. [API Integration](#112-api-integration)
+    3. [External Libraries](#113-external-libraries)
 
 ## 1. Unified System Purpose and Philosophy
 
@@ -159,6 +213,7 @@ To prevent `edit_history.md`, `errorLog.md`, and `tasks.md` from becoming excess
 3. Avoid executing shell commands that might affect system state
 4. Always verify paths before file operations
 5. Project building, installation, dependency management, and similar tasks should not be executed by the LLM unless explicitly requested by the user.
+6. Always check for the existence of essential directories (like `/memory-bank/`) before attempting to create them. Use `list_directory` on the parent path to confirm whether the directory already exists.
 
 ### 4.2 Mandatory Step-by-Step Approval
 
@@ -172,7 +227,34 @@ To prevent `edit_history.md`, `errorLog.md`, and `tasks.md` from becoming excess
 6. Focus on necessary files/components related to the task
 7. Avoid unnecessary project-wide scans
 
-### 4.3 Efficiency Rules
+### 4.3 Minimal Change Principle
+
+1. **Address Only the Specific Issue**:
+   - Focus exclusively on solving the immediate task or issue
+   - Do not "improve" or refactor working code unless explicitly requested
+   - Resist the urge to fix unrelated issues discovered during implementation
+
+2. **Preserve Adjacent Functionality**:
+   - Never modify code that's working correctly unless absolutely necessary
+   - Maintain existing behavior for all features not directly related to the current task
+   - If a change might affect other functionality, explicitly note this and seek approval
+
+3. **Incremental over Comprehensive**:
+   - Make the smallest change necessary to resolve the issue
+   - Prefer adding code over modifying existing code when possible
+   - Use isolated changes that don't ripple through the codebase
+
+4. **Respect System Boundaries**:
+   - Keep changes within the specific module or component being addressed
+   - Avoid changes that cross system boundaries without explicit approval
+   - Never add undiscussed dependencies or new libraries
+
+5. **Change Verification**:
+   - After implementing a change, verify it addresses only the specific issue
+   - Check that no unintended behavior changes were introduced
+   - Document only what was actually changed, not what could be changed
+
+### 4.4 Efficiency Rules
 
 1. Do not read file content you already have
 2. Avoid reading entire repos or directories
@@ -197,50 +279,50 @@ This integrated system is designed to:
 
 | Command | Description |
 |---------|-------------|
-| `create_task [title]` | Create a new task with unique ID in tasks.md |
-| `switch_task [task_id]` | Switch focus to a different task, updating session_cache.md |
-| `pause_task [task_id]` | Mark a task as paused in tasks.md |
-| `resume_task [task_id]` | Resume a paused task |
-| `complete_task [task_id]` | Mark a task as completed and update related documentation |
+| `create_task [title]` | Create task with unique ID in tasks.md |
+| `switch_task [task_id]` | Switch to different task, update session_cache.md |
+| `pause_task [task_id]` | Mark task as paused |
+| `resume_task [task_id]` | Resume paused task |
+| `complete_task [task_id]` | Mark task as completed |
 
 ### 6.2 Task Execution Commands
 
 | Command | Description |
 |---------|-------------|
-| `do_task [task_id]` | Execute specific task with minimal context loading |
-| `continue_task [task_id]` | Resume previous task using minimal context from cache |
-| `verify_task [task_id]` | Check implementation against code standards |
+| `do_task [task_id]` | Execute task with minimal context |
+| `continue_task [task_id]` | Resume task using cache |
+| `verify_task [task_id]` | Check against code standards |
 
 ### 6.3 Memory Management Commands
 
 | Command | Description |
 |---------|-------------|
-| `read_mb` | Load Critical tier files needed for current task |
-| `read_mb [file]` | Load specific file only |
+| `read_mb` | Load Critical tier files |
+| `read_mb [file]` | Load specific file |
 | `read_mb standard` | Load Critical + Essential tiers |
-| `read_mb complete` | Load all Memory Bank files (rarely needed) |
-| `update_mb [file]` | Update specific file with minimal changes |
-| `log_error [title] [task_id]` | Record a new error with details in errorLog.md |
-| `record_edits [task_id] [description]` | Add file modifications to edit_history.md |
-| `read_errors [component]` | Load error history for a specific component or error type |
-| `read_task [task_id]` | Load task-specific information from tasks.md |
+| `read_mb complete` | Load all Memory Bank files |
+| `update_mb [file]` | Update file with minimal changes |
+| `log_error [title] [task_id]` | Record error in errorLog.md |
+| `record_edits [task_id] [description]` | Add modifications to edit_history.md |
+| `read_errors [component]` | Load error history for component |
+| `read_task [task_id]` | Load task information |
 
 ### 6.4 Session Management Commands
 
 | Command | Description |
 |---------|-------------|
-| `continue_session` | Flag this as a continuation; prioritize session_cache.md |
-| `complete_session` | Mark session as complete, update necessary docs |
-| `cache_session` | Create continuation point with minimal updates |
-| `start_session` | Begin new session with fresh timestamp |
+| `continue_session` | Resume session using cache |
+| `complete_session` | End session, update docs |
+| `cache_session` | Create continuation point |
+| `start_session` | Begin new session |
 
 ### 6.5 Code Implementation Commands
 
 | Command | Description |
 |---------|-------------|
-| `verify_code` | Check code against project standards |
-| `format_code` | Ensure code follows formatting guidelines |
-| `document_code` | Update documentation for code changes |
+| `verify_code` | Check against standards |
+| `format_code` | Ensure proper formatting |
+| `document_code` | Update documentation |
 
 ## 7. Knowledge Organization and Management
 
@@ -318,7 +400,24 @@ Tool use is formatted using XML-style tags:
 
 ### 8.2 File Operations
 
-**Note:** File editing and creation operations should be performed using the Desktop Commander (dc) MCP server. When editing files, the Desktop Commander MCP server should prioritize using block edits (`edit_block` tool) whenever possible to minimize token usage and ensure precise changes.
+**Note:** File editing and creation operations should be performed using the Desktop Commander (dc) MCP server. When editing files, the Desktop Commander MCP server should prioritize using block edits (`edit_block` tool) whenever possible to minimize token usage and ensure precise changes. Full file replacements should be avoided except for new files or when specifically requested by the user.
+
+#### File Editing Best Practices
+
+1. **Block Edits Over Full Replacements**:
+   - Always use `edit_block` rather than full file replacements
+   - Create targeted, minimal edits that affect only the specific lines needing change
+   - Clearly delineate the exact block to be changed with enough context
+
+2. **Large File Handling**:
+   - For new large files, start with a skeleton then add details incrementally
+   - Break major changes into multiple smaller block edits
+   - Obtain approval for each significant modification
+
+3. **Error Prevention**:
+   - Verify syntax validity before submitting edits
+   - Double-check paths and ensure they match exactly
+   - Test search patterns against actual file content
 
 #### Reading Files
 
@@ -422,19 +521,25 @@ def calculate_total(items):
 ```mermaid
 flowchart TD
     Start[Receive Task] --> TaskID{Task Exists?}
-    TaskID -->|No| CreateTask[Create Task in tasks.md]
+    TaskID -->|No| AskAboutTask[Ask user if task needs tracking]
+    AskAboutTask -->|Yes| CreateTask[Create Task in tasks.md]
+    AskAboutTask -->|No| Analyze[Analyze Immediate Task Needs]
     TaskID -->|Yes| LoadTask[Load Task from tasks.md]
-    CreateTask --> Analyze[Analyze Immediate Task Needs]
+    CreateTask --> Analyze
     LoadTask --> Analyze
     
     Analyze --> LoadMinimal[Load Minimal Required Context]
     LoadMinimal --> Execute[Execute First Step]
-    Execute --> RecordEdits[Update edit_history.md with Task ID]
-    RecordEdits --> Evaluate{More Steps?}
+    Execute --> AskRecord[Ask user about updating history]
+    AskRecord -->|Yes| RecordEdits[Update edit_history.md with Task ID]
+    AskRecord -->|No| Evaluate{More Steps?}
+    RecordEdits --> Evaluate
     
     Evaluate -->|Yes| NextContext[Load Context for Next Step]
     NextContext --> NextStep[Execute Next Step]
-    NextStep --> UpdateHistory[Update edit_history.md with Task ID]
+    NextStep --> AskUpdate[Ask user about updating history]
+    AskUpdate -->|Yes| UpdateHistory[Update edit_history.md with Task ID]
+    AskUpdate -->|No| Evaluate
     UpdateHistory --> Evaluate
     
     Evaluate -->|No| Verify[Verify Against Standards]

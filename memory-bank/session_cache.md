@@ -1,18 +1,19 @@
 # Session Cache
 
-*Last Updated: April 17, 2025 13:45 UTC*
+*Last Updated: April 17, 2025 17:20 UTC*
 
 ## Overview
-- Active Tasks: 3 (T1, T3, T4)
+- Active Tasks: 4 (T1, T3, T4, T5)
 - Completed Tasks: 2 (T0, T2)
-- Last Task Focus: T4
-- New Feature: Created integrated-rules-v5.md with modular task context system
+- Last Task Focus: T5
+- New Feature: Optimized integrated-rules-v4.md with improved file editing guidelines and consolidated structure
 
 ## Task Registry
 - [T1]: Update Memory Bank with multi-task support - 🔄 IN PROGRESS
 - [T2]: Plan Database Migration Strategy - ✅ DONE
 - [T3]: Implement Database Migration - 🔄 IN PROGRESS
 - [T4]: Optimize Integrated Rules for Token Efficiency - 🔄 IN PROGRESS
+- [T5]: Optimize Integrated Rules v4 Document - 🔄 IN PROGRESS
 
 ## Active Tasks
 
@@ -80,3 +81,29 @@ Rather than creating more files, we should:
 4. **Refine the approach** - Based on token measurements and usability testing
 
 By focusing on these aspects first, we can validate that the approach actually achieves the token efficiency goal before investing in detailed documentation and additional modules.
+
+### T5: Optimize Integrated Rules v4 Document
+**Status:** 🔄 IN PROGRESS
+**Priority:** MEDIUM
+**Started:** April 17, 2025
+**Last Active:** April 17, 2025 17:15 UTC
+**Dependencies:** -
+
+#### Context
+Focusing on making the existing integrated-rules-v4.md document more efficient and user-friendly while T4 works on the longer-term modular approach. This task involves streamlining commands, consolidating redundant sections, and improving the overall document structure.
+
+#### Critical Files
+- `/Users/deepak/code/memory-bank/integrated-rules-v4.md`: Main rules document being optimized
+
+#### Implementation Progress
+1. ✅ Added comprehensive table of contents with hyperlinks to all sections
+2. ✅ Streamlined command descriptions for brevity in section 6
+3. ✅ Consolidated surgical editing guidelines into file operations section
+4. ✅ Updated workflow diagrams to include user consultation steps
+5. ✅ Added explicit directory verification check for memory-bank operations
+6. 🔄 Identified future memory bank management workflow improvements
+
+#### Working State
+Have successfully reduced redundancy by merging section 4.3 (Surgical File Editing Guidelines) into section 8.2 (File Operations). Also improved the workflow diagrams to better reflect actual usage patterns, adding explicit check-points where user confirmation should be requested. Command sections have been streamlined to reduce token usage while maintaining clarity. 
+
+The changes maintain all essential guidance while reducing overall document size. Potential future optimization includes further condensing file templates and workflow diagrams, but these have been deferred as they don't significantly impact token usage.
