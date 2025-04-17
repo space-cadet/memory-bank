@@ -34,6 +34,19 @@
         "mcp"
       ],
       "source": "project"
+    },
+    {
+      "slug": "modular-rules-v2",
+      "name": "Modular Rules v2",
+      "roleDefinition": "Read the central loader file at ./optimized-rules/loader.md. This file aggregates all the modular rules and related instructions. Use its content to fully understand the modular rules structure and load any specific module as needed, then proceed in accordance with the instructions.",
+      "groups": [
+        "read",
+        "edit",
+        "browser",
+        "command",
+        "mcp"
+      ],
+      "source": "project"
     }
   ]
 }

@@ -1,0 +1,224 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Projects - For supporting multiple projects
+model Project {
+  id              String   @id @default(cuid())
+  name            String
+  path            String   @unique // File system path to the project
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Relations
+  tasks           Task[]
+  sessions        Session[]
+  editHistoryEntries EditHistoryEntry[]
+  errors          Error[]
+  activeContexts  ActiveContext[]
+  progress        Progress[]
+  projectBriefs   ProjectBrief[]
+  changelogEntries ChangelogEntry[]
+  customDocs      CustomDocument[]
+}
+
+// Tasks - Corresponds to tasks.md
+model Task {
+  id                String   @id // e.g., "T1", "T2"
+  title             String
+  description       String
+  status            String   // "IN_PROGRESS", "PLANNED", "DONE", "PAUSED"
+  priority          String?  // "HIGH", "MEDIUM", "LOW"
+  startedAt         DateTime?
+  completedAt       DateTime?
+  lastActiveAt      DateTime?
+  pausedAt          DateTime?
+  pausedReason      String?
+  owner             String?
+  completionCriteria Json? // Array of criteria
+  notes             String?
+  
+  // Relations
+  dependencies      TaskDependency[] @relation("DependingOn")
+  dependents        TaskDependency[] @relation("DependedBy")
+  relatedFiles      RelatedFile[]
+  editHistoryEntries EditHistoryEntry[]
+  errors            Error[]
+  sessions          SessionTask[]
+  project           Project   @relation(fields: [projectId], references: [id])
+  projectId         String
+}
+
+// Task dependencies with relationship type
+model TaskDependency {
+  id               String @id @default(cuid())
+  dependingTask    Task   @relation("DependingOn", fields: [dependingTaskId], references: [id])
+  dependingTaskId  String
+  dependedTask     Task   @relation("DependedBy", fields: [dependedTaskId], references: [id])
+  dependedTaskId   String
+  relationshipType String? // e.g., "BLOCKS", "DEPENDS_ON", "RELATED_TO"
+
+  @@unique([dependingTaskId, dependedTaskId])
+}
+
+// Related files to tasks
+model RelatedFile {
+  id        String @id @default(cuid())
+  path      String
+  task      Task   @relation(fields: [taskId], references: [id])
+  taskId    String
+  isPlanned Boolean @default(false)
+
+  @@unique([taskId, path])
+}
+
+// Sessions - Corresponds to session_cache.md
+model Session {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  status          String   // "CONTINUING", "COMPLETE"
+  notes           String?  // Session notes
+  implementationFocus String?
+  
+  // Relations
+  tasks           SessionTask[]
+  project         Project @relation(fields: [projectId], references: [id])
+  projectId       String
+}
+
+// Join table for sessions and tasks
+model SessionTask {
+  id             String   @id @default(cuid())
+  session        Session  @relation(fields: [sessionId], references: [id])
+  sessionId      String
+  task           Task     @relation(fields: [taskId], references: [id])
+  taskId         String
+  isFocus        Boolean  @default(false) // Whether this task was the focus of the session
+  stepProgress   Json?    // Array of step progress items with status
+  contextNotes   String?  // Notes specific to this task in this session
+  
+  @@unique([sessionId, taskId])
+}
+
+// EditHistory - Corresponds to edit_history.md
+model EditHistoryEntry {
+  id               String   @id @default(cuid())
+  timestamp        DateTime @default(now())
+  description      String
+  task             Task?    @relation(fields: [taskId], references: [id])
+  taskId           String?
+  project          Project  @relation(fields: [projectId], references: [id])
+  projectId        String
+  
+  // Relations
+  modifications    FileModification[]
+}
+
+// File modifications within edit history entries
+model FileModification {
+  id                 String          @id @default(cuid())
+  path               String
+  action             String // "CREATED", "MODIFIED", "DELETED"
+  description        String
+  editHistoryEntry   EditHistoryEntry @relation(fields: [editHistoryEntryId], references: [id])
+  editHistoryEntryId String
+}
+
+// Errors - Corresponds to errorLog.md
+model Error {
+  id                String   @id @default(cuid())
+  timestamp         DateTime @default(now())
+  title             String
+  filePath          String?
+  errorDescription  String
+  errorMessage      String?
+  cause             String
+  fix               String
+  keyCodeChanges    String?
+  task              Task?    @relation(fields: [taskId], references: [id])
+  taskId            String?
+  project           Project  @relation(fields: [projectId], references: [id])
+  projectId         String
+  
+  // Relations
+  affectedFiles     AffectedFile[]
+}
+
+// Files affected by errors
+model AffectedFile {
+  id        String @id @default(cuid())
+  path      String
+  error     Error  @relation(fields: [errorId], references: [id])
+  errorId   String
+
+  @@unique([errorId, path])
+}
+
+// ActiveContext - Corresponds to activeContext.md
+model ActiveContext {
+  id                String   @id @default(cuid())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  implementationFocus String
+  currentDecisions   Json?   // Array of decisions
+  nextActions        Json?   // Array of actions
+  project            Project @relation(fields: [projectId], references: [id])
+  projectId          String
+}
+
+// Progress - Corresponds to progress.md
+model Progress {
+  id             String   @id @default(cuid())
+  updatedAt      DateTime @updatedAt
+  milestones     Json?    // Array of milestones with status
+  knownIssues    Json?    // Array of known issues
+  goals          Json?    // Array of goals
+  project        Project  @relation(fields: [projectId], references: [id])
+  projectId      String
+}
+
+// ProjectBrief - Corresponds to projectbrief.md
+model ProjectBrief {
+  id             String   @id @default(cuid())
+  updatedAt      DateTime @updatedAt
+  overview       String
+  objectives     Json?    // Array of objectives
+  keyFiles       Json?    // Array of key files with descriptions
+  architecture   String?
+  technologies   Json?    // Array of technologies
+  project        Project  @relation(fields: [projectId], references: [id])
+  projectId      String
+}
+
+// Changelog - Corresponds to changelog.md
+model ChangelogEntry {
+  id             String   @id @default(cuid())
+  version        String
+  date           DateTime
+  changes        Json     // Array of changes
+  project        Project  @relation(fields: [projectId], references: [id])
+  projectId      String
+}
+
+// Custom project-specific documents
+model CustomDocument {
+  id             String   @id @default(cuid())
+  title          String
+  path           String   // Path within memory-bank directory
+  content        String
+  category       String?  // For grouping similar documents
+  updatedAt      DateTime @updatedAt
+  project        Project  @relation(fields: [projectId], references: [id])
+  projectId      String
+
+  @@unique([projectId, path])
+}

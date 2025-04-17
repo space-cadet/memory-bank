@@ -1,0 +1,26 @@
+{
+  "name": "memory-bank-database",
+  "version": "1.0.0",
+  "description": "Database implementation for memory bank",
+  "main": "index.js",
+  "scripts": {
+    "migrate": "prisma migrate dev",
+    "studio": "prisma studio",
+    "generate": "prisma generate",
+    "convert": "node ./migration-scripts/convert.js",
+    "seed": "node ./migration-scripts/seed.js",
+    "start:mcp": "node ./mcp-server/index.js"
+  },
+  "dependencies": {
+    "@prisma/client": "6.6.0"
+  },
+  "devDependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "gray-matter": "^4.0.3",
+    "prisma": "6.6.0",
+    "remark": "^14.0.3",
+    "remark-parse": "^10.0.2"
+  }
+}
