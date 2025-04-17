@@ -1,4 +1,10 @@
-# Changelog: Memory Bank System
+# Changelog
+
+## April 17, 2025
+- Added integrated-rules-v5.md with modular task context system
+- Implemented hierarchical task structure with dedicated context files
+- Transformed session_cache.md into a lightweight index
+- Added templates for task and subtask context files: Memory Bank System
 
 ## [0.3.0] - April 15, 2025
 ### Added

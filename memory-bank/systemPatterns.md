@@ -1,4 +1,30 @@
-# System Patterns: Memory Bank Architecture
+# System Patterns
+
+## Modular Task Context Pattern
+
+*Added: April 17, 2025*
+
+### Description
+The Modular Task Context pattern breaks down the monolithic session_cache.md into smaller, focused files. Each task and complex subtask gets a dedicated context file, while session_cache.md becomes a lightweight index.
+
+### Structure
+- `session_cache.md`: Lightweight index pointing to task context files
+- `task_contexts/`: Directory for individual task context files
+- `subtasks/`: Directory for detailed subtask context files
+
+### Benefits
+- Prevents any single file from growing too large
+- Enables focused context loading for specific tasks
+- Supports complex task hierarchies
+- Improves navigation between related task contexts
+- Facilitates better organization of work
+
+### Implementation
+Implemented in integrated-rules-v5.md with comprehensive guidelines for:
+- Task decomposition
+- Context file management
+- Task hierarchy relationships
+- Parent-child task structures: Memory Bank Architecture
 
 ## Overall Architecture
 The Memory Bank uses a tiered documentation architecture with progressive loading capabilities and session continuity mechanisms. The system is designed around these key components:

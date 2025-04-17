@@ -1,4 +1,34 @@
-# Project Brief: Memory Bank System
+# Project Brief
+
+## Memory Bank System
+
+The Memory Bank system provides structured documentation and context management for AI assistants working on software development projects. It maintains project continuity across multiple sessions while optimizing resource usage.
+
+## Core Components
+
+- **Task Management**: Registry of tasks and subtasks with status tracking
+- **Context Preservation**: Storing task state in dedicated context files
+- **Documentation Standards**: Consistent formatting and organization
+- **File Organization**: Modular structure for efficient access
+- **Implementation Workflows**: Standardized processes for development
+
+## Key Features (April 2025)
+
+- Multi-task support with clear context boundaries
+- Task hierarchies with parent-child relationships
+- Modular task context files (integrated-rules-v5.md)
+- File rotation for size management
+- Database integration for efficient storage (in progress)
+- Optimized rules system for token efficiency (in progress)
+
+## Organization
+
+- `/memory-bank/`: Core memory bank files
+- `/memory-bank/task_contexts/`: Individual task context files
+- `/memory-bank/subtasks/`: Detailed subtask contexts
+- `/memory-bank/archive/`: Archived files
+- `/templates/`: Templates for memory bank documents
+- `/optimized-rules/`: Modular rules system (in development): Memory Bank System
 
 ## Overview
 The Memory Bank is a structured documentation system designed to maintain perfect project knowledge across chat sessions. It uses a progressive loading approach to optimize token usage while preserving critical context.
