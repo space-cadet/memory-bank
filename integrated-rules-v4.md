@@ -132,6 +132,7 @@ memory-bank/
 ├── session_cache.md      # Multi-task session state
 ├── tasks.md              # Task registry and tracking
 ├── progress.md           # Implementation status
+├── component_index.md    # Maps component names to file paths (if exists)
 └── projectbrief.md       # Project overview
 
 templates/                # Template files for memory bank documents
@@ -262,6 +263,7 @@ To prevent `edit_history.md`, `errorLog.md`, and `tasks.md` from becoming excess
 4. When examining code, look for the specific components relevant to the task
 5. Trust that you can access more information if needed rather than loading it preemptively
 6. When switching tasks, only load the minimum context needed for the new task
+7. When asked to work on a specific named component (e.g., 'Log Explorer', 'User Profile Page'), consult `memory-bank/component_index.md` first (if it exists) to directly locate its primary file path, avoiding iterative directory searches.
 
 ## 5. Integration with Development Workflow
 
@@ -341,6 +343,7 @@ Knowledge is organized in four tiers with task-oriented loading priorities:
    - `session_cache.md` - Task contexts for active and paused tasks
    - `errorLog.md` - Record of errors, their causes, and resolutions for reference (load when debugging)
    - `edit_history.md` - Chronological record of file modifications with timestamps (load when context about recent changes is needed)
+   - `component_index.md` - Map of component names to file paths (load when task involves specific named components)
    - Load only files directly relevant to current task step
 
 3. **Essential Tier (Load Only When Required)**
@@ -359,7 +362,7 @@ Knowledge is organized in four tiers with task-oriented loading priorities:
 1. Analyze the immediate task requirements
 2. Identify task ID in tasks.md or create a new task
 3. Identify the minimal set of files needed for the current step
-4. Load only those files directly relevant to the current task
+4. Load only those files directly relevant to the current task. If the task involves specific named components, consult `memory-bank/component_index.md` first (if it exists) to identify relevant files efficiently.
 5. Execute the current step completely
 6. Load additional files only when needed for the next step
 7. Update only files with meaningful changes related to the task
@@ -855,6 +858,24 @@ graph TD
 ### [Task ID]: [Task Title]
 **Completed:** [Date]
 **Summary:** [Brief summary of what was accomplished]
+```
+
+### 10.7 component_index.md (Component Location Index)
+
+```markdown
+# Component Index
+*Last Updated: [Timestamp]*
+
+This file maps conceptual component names to their primary file locations. Paths are relative to the project root.
+
+| Component Name        | Primary File Path                             | Type/Description        | Related Files (Optional) |
+|-----------------------|-----------------------------------------------|-------------------------|--------------------------|
+| Example Component     | `src/components/example/ExampleComponent.tsx` | React Component         | `index.ts`, `styles.css` |
+| ...                   | ...                                           | ...                     | ...                      |
+
+## Notes
+- This index focuses on primary entry points or key files for components/features.
+- This file may be auto-generated; check the notes within the file itself.
 ```
 
 ## 11. External Tools and Integration

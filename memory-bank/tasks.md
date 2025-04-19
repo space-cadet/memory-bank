@@ -135,7 +135,7 @@ Rather than rushing to complete all modules, currently focusing on validating th
 **Status**: 🔄 IN PROGRESS
 **Priority**: MEDIUM
 **Started**: 2025-04-17
-**Last Active**: 2025-04-17 17:15 UTC
+**Last Active**: 2025-04-19 13:55 UTC
 **Dependencies**: -
 **Completion Criteria**:
 - Add table of contents with hyperlinks to all sections ✅
@@ -144,10 +144,12 @@ Rather than rushing to complete all modules, currently focusing on validating th
 - Improve workflow diagrams with user consultation steps ✅
 - Add explicit memory-bank directory verification check ✅
 - Plan workflow for memory bank management ✅
+- Integrate `component_index.md` into rules for efficient component location ✅
 - Document future optimization opportunities 🔄
 
 **Related Files**:
 - `integrated-rules-v4.md` ✅
+- `memory-bank/component_index.md` (Concept/Template)
 
 **Notes**:
-This task focuses on immediate optimizations to the existing integrated rules document rather than the complete redesign being explored in T4. The changes aim to improve usability while reducing token usage and redundancy. Additional optimizations have been identified but will be implemented in future iterations.
+This task focuses on immediate optimizations to the existing integrated rules document. Integrated `component_index.md` concept into rules (file list, knowledge tiers, loading process) to improve LLM efficiency when locating specific components. Additional optimizations have been identified but will be implemented in future iterations.
