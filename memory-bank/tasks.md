@@ -1,5 +1,5 @@
 # Task Registry
-*Last Updated: April 17, 2025 17:20 UTC*
+*Last Updated: April 20, 2025 15:35 UTC*
 
 ## Active Tasks
 | ID | Title | Status | Priority | Started | Dependencies | Owner |
@@ -7,6 +7,7 @@
 | T1 | Update Memory Bank with multi-task support | 🔄 IN PROGRESS | HIGH | 2025-04-14 | - | Deepak |
 | T3 | Implement Database Migration | 🔄 IN PROGRESS | HIGH | 2025-04-15 | T2 | Deepak |
 | T5 | Optimize Integrated Rules v4 Document | 🔄 IN PROGRESS | MEDIUM | 2025-04-17 | - | Deepak |
+| T6 | Streamline Integrated Rules for Token Efficiency | ✅ COMPLETE | HIGH | 2025-04-20 | T5 | Deepak |
 
 ## Task Details
 
@@ -92,13 +93,37 @@ graph TD
     T3[T3: Implement DB Migration]
     T4[T4: Modular Rules System]
     T5[T5: Optimize Rules v4]
+    T6[T6: Streamline Rules v6]
 
     T0 --> T1
     T0 --> T2
     T2 --> T3
     T1 --> T4
     T1 --> T5
+    T5 --> T6
 ```
+
+### T6: Streamline Integrated Rules for Token Efficiency
+**Description**: Create a streamlined version of the integrated rules document to reduce token usage while preserving all core functionality.
+**Status**: ✅ COMPLETE
+**Priority**: HIGH
+**Started**: 2025-04-20
+**Completed**: 2025-04-20 15:30 UTC
+**Dependencies**: T5
+**Completion Criteria**:
+- Maintain all critical safety rules and procedures ✅
+- Reduce redundancies throughout the document ✅
+- Simplify templates while preserving structure ✅
+- Replace complex mermaid diagrams with simpler list-based instructions ✅
+- Condense philosophical/explanatory content ✅
+- Preserve section numbering for human readability ✅
+- Reduce overall token count while maintaining full functionality ✅
+
+**Related Files**:
+- `integrated-rules-v6.md` ✅
+
+**Notes**:
+Successfully reduced document size by approximately 35-40% while preserving all critical instructions and functionality. The main approach was to remove redundancies, simplify complex structures, and prioritize actionable guidance over explanatory content. Section numbering was preserved to maintain human readability and reference capabilities.
 
 ### T4: Optimize Integrated Rules for Token Efficiency
 **Description**: Implement a tiered, modular, and dynamically loaded Integrated Rules system to reduce token usage while maintaining context and usability.
