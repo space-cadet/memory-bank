@@ -1,11 +1,10 @@
-# Integrated Code Rules and Memory Bank System
+# Integrated Code Rules and Memory Bank System, v6
 
 *Last Updated: April 20, 2025*
 
-⚠️ IMPORTANT: NEVER modify files without explicit user approval. Always present a plan and wait for confirmation before making any changes.
-
-YOU WILL NOT ADD NEW FEATURES WITHOUT APPROVAL
-YOU WILL NOT GENERATE ANY CODE WITHOUT APPROVAL
+YOU WILL NEVER UPDATE ANY FILES, INCLUDING MEMORY BANK FILES, WITHOUT EXPLICIT USER APPROVAL
+YOU WILL NEVER ADD NEW FEATURES WITHOUT APPROVAL
+YOU WILL NEVER GENERATE ANY CODE WITHOUT APPROVAL
 YOU WILL GO SLOW AND STEADY. WHEN YOU THINK YOU'RE GOING SLOW, GO EVEN SLOWER.
 
 ## 1. Unified System Purpose
@@ -23,10 +22,10 @@ YOU WILL GO SLOW AND STEADY. WHEN YOU THINK YOU'RE GOING SLOW, GO EVEN SLOWER.
 - Reference task IDs for specific work
 - When starting work:
   1. Understand the specific task
-  2. Register task ID in tasks.md
-  3. Load minimum files needed
-  4. Execute completely before getting more context
-  5. Document changes with task ID reference
+  2. **Request approval to** register task ID in tasks.md
+  3. load minimum files needed
+  4. **Request approval before** execution, then execute completely before getting more context
+  5. **Request approval to** document changes with task ID reference
 
 ## 3. Core Memory Bank Files
 
@@ -72,14 +71,17 @@ Templates are stored in the /templates/ directory and follow formats in section 
 
 ### 3.5 Maintenance Guidelines
 
-- Update `tasks.md` whenever task status changes
-- Update `edit_history.md` after each file change, with task ID reference
-- Update `session_cache.md` when switching between tasks
-- Review `errorLog.md` weekly
-- Archive `session_cache.md` after all active tasks complete
-- Keep `progress.md` organized by task ID
+* IMPORTANT: ALL file updates below require EXPLICIT user approval before implementation
+* Update tasks.md only after receiving approval, whenever task status changes
+* Update edit_history.md only after receiving approval, after each file change, with task ID reference
+* Update session_cache.md only after receiving approval, when switching between tasks
+* Review errorLog.md weekly, but make no modifications without approval
+* Archive session_cache.md only after receiving approval, after all active tasks complete
+* Keep progress.md organized by task ID, updating only with explicit approval
 
 ### 3.6 File Size Management Protocol
+
+**NOTE: The following operations require explicit approval before implementation**
 
 1. **Size-Based Rotation**:
    - Upper limit of 500 lines for `edit_history.md` and `errorLog.md`
@@ -121,6 +123,8 @@ This system supports rapid task execution while maintaining documentation qualit
 ## 6. Integrated Command System
 
 ### 6.1 Task Management Commands
+
+**IMPORTANT: All commands that modify files require explicit user approval before execution, unless such approval has already been explicitly given**
 
 | Command | Description |
 |---------|-------------|
@@ -202,15 +206,17 @@ Knowledge is organized in four tiers with task-oriented loading priorities:
 ### 7.2 Task-First Loading Process
 
 1. Analyze the immediate task requirements
-2. Identify task ID in tasks.md or create a new task
+2. **Request approval before** identifying task ID in tasks.md or creating a new task
 3. Identify the minimal set of files needed for the current step
-4. Load only those files directly relevant to the current task
-5. Execute the current step completely
-6. Load additional files only when needed for the next step
-7. Update only files with meaningful changes related to the task
-8. When switching tasks, update session_cache.md to preserve context
+4. **Request approval before** loading files relevant to the current task
+5. **Request approval before** executing the current step completely
+6. **Request approval before** loading additional files for the next step
+7. **Request approval before** updating files with meaningful changes related to the task
+8. **Request approval before** updating session_cache.md when switching tasks
 
 ### 7.3 Documentation Decision Framework
+
+**IMPORTANT: All commands that modify files require explicit user approval before execution, unless such approval has already been explicitly given**
 
 | Change Type | Documentation Requirements |
 |-------------|----------------------------|
@@ -243,6 +249,8 @@ Tool use is formatted using XML-style tags:
 ```
 
 ### 8.2 File Operations
+
+**IMPORTANT: All file operations require explicit user approval before execution**
 
 **Note:** File editing and creation operations should be performed using the Desktop Commander (dc) MCP server. When editing files, prioritize using block edits (`edit_block` tool) to minimize token usage and ensure precise changes.
 
@@ -301,24 +309,31 @@ New content to replace with
 
 ## 9. Integrated Workflows
 
-### 9.1 Task-First Implementation Flow
+### 9.1 Task-First Implementation Flow (Updated)
 
-1. Receive task → check if task exists → create or load task
-2. Analyze immediate task needs
-3. Load minimal required context
-4. Execute first step
-5. Update edit_history.md with task ID
-6. For each additional step:
-   - Load only context needed for that step
-   - Execute step
-   - Update documentation with task ID
-7. Verify against standards
-8. Mark complete or update session_cache.md
+1. Receive task → analyze requirements → request approval to create or load task
+2. After approval, check if task exists → create or load task
+3. Analyze immediate task needs
+4. Request approval to load minimal required context
+5. After approval, load minimal required context
+6. Present implementation plan and request approval before execution
+7. After approval, execute first step
+8. Request approval to update edit_history.md with task ID
+9. After approval, update edit_history.md with task ID
+10. For each additional step:
+   1. Request approval to load context needed for that step
+   2. After approval, load only context needed for that step
+   3. Present implementation plan and request approval before execution
+   4. After approval, execute step
+   5. Request approval to update documentation with task ID
+   6. After approval, update documentation with task ID
+11. Request approval to mark complete or update session_cache.md
+12. After approval, mark complete or update session_cache.md
 
 ### 9.2 Error Handling Flow
 
-1. Identify error cause → implement fix → test
-2. If fixed: document in errorLog.md with task ID, update edit_history.md
+1. Identify error cause → **request approval before** implementing fix → **after approval** test
+2. If fixed: **request approval to** document in errorLog.md with task ID, **then request approval to** update edit_history.md
 3. If not fixed: return to identification step
 
 ## 10. Core File Structure Templates

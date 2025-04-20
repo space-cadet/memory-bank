@@ -1,5 +1,5 @@
 # Task Registry
-*Last Updated: April 20, 2025 15:35 UTC*
+*Last Updated: April 20, 2025 20:45 UTC*
 
 ## Active Tasks
 | ID | Title | Status | Priority | Started | Dependencies | Owner |
@@ -7,7 +7,6 @@
 | T1 | Update Memory Bank with multi-task support | 🔄 IN PROGRESS | HIGH | 2025-04-14 | - | Deepak |
 | T3 | Implement Database Migration | 🔄 IN PROGRESS | HIGH | 2025-04-15 | T2 | Deepak |
 | T5 | Optimize Integrated Rules v4 Document | 🔄 IN PROGRESS | MEDIUM | 2025-04-17 | - | Deepak |
-| T6 | Streamline Integrated Rules for Token Efficiency | ✅ COMPLETE | HIGH | 2025-04-20 | T5 | Deepak |
 
 ## Task Details
 
@@ -64,6 +63,8 @@ Completed the implementation of conversion scripts to migrate markdown files to 
 |----|-------|-----------|---------------|
 | T0 | Initial Memory Bank setup | 2025-04-10 | - |
 | T2 | Plan Database Migration Strategy | 2025-04-15 | T3 |
+| T6 | Streamline Integrated Rules for Token Efficiency | 2025-04-20 | T5 |
+| T7 | Fix ambiguities in integrated-rules-v6.md file approval process | 2025-04-20 | T6 |
 
 ### T2: Plan Database Migration Strategy
 **Description**: Analyze requirements and propose strategies for migrating Memory Bank data from Markdown files to a database system. Document findings and comparisons.
@@ -94,6 +95,7 @@ graph TD
     T4[T4: Modular Rules System]
     T5[T5: Optimize Rules v4]
     T6[T6: Streamline Rules v6]
+    T7[T7: Fix Rules v6 Ambiguities]
 
     T0 --> T1
     T0 --> T2
@@ -101,6 +103,7 @@ graph TD
     T1 --> T4
     T1 --> T5
     T5 --> T6
+    T6 --> T7
 ```
 
 ### T6: Streamline Integrated Rules for Token Efficiency
@@ -124,6 +127,29 @@ graph TD
 
 **Notes**:
 Successfully reduced document size by approximately 35-40% while preserving all critical instructions and functionality. The main approach was to remove redundancies, simplify complex structures, and prioritize actionable guidance over explanatory content. Section numbering was preserved to maintain human readability and reference capabilities.
+
+### T7: Fix ambiguities in integrated-rules-v6.md file approval process
+**Description**: Update integrated-rules-v6.md to resolve ambiguities between primary guidelines and workflow sections
+**Status**: ✅ COMPLETE
+**Priority**: HIGH
+**Started**: 2025-04-20
+**Completed**: 2025-04-20 20:45 UTC
+**Dependencies**: T6
+**Completion Criteria**:
+- Update Section 2: Communication Style to require approval for all steps ✅
+- Update Section 3.6: File Size Management Protocol to require explicit approval ✅
+- Update Section 6: Integrated Command System with consistent approval language ✅
+- Update Section 7.2: Task-First Loading Process with explicit approval requirements ✅
+- Update Section 7.3: Documentation Decision Framework for consistency ✅
+- Update Section 8.2: File Operations with explicit approval requirement ✅
+- Update Section 9.2: Error Handling Flow to match Section 9.1 format ✅
+- Ensure 'no file modifications without explicit approval' is consistently enforced ✅
+
+**Related Files**:
+- `integrated-rules-v6.md` ✅
+
+**Notes**:
+Successfully resolved ambiguities between the primary guideline of "NEVER UPDATE ANY FILES WITHOUT EXPLICIT USER APPROVAL" and various workflow sections that previously implied file modifications without explicit approval steps. All sections now consistently emphasize the need for explicit approval before any file operation.
 
 ### T4: Optimize Integrated Rules for Token Efficiency
 **Description**: Implement a tiered, modular, and dynamically loaded Integrated Rules system to reduce token usage while maintaining context and usability.
