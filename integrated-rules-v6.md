@@ -35,27 +35,11 @@
 
 ### 1.1 Core Purpose
 
-The Integrated Code Rules and Memory Bank System is designed to:
-- Balance task execution efficiency with comprehensive project knowledge
-- Maintain consistent coding standards and documentation practices
-- Ensure project continuity across multiple sessions
-- Optimize resource usage by loading only necessary information
-- Standardize tool usage and communication formats
-- Support multiple concurrent tasks with clear context boundaries
-- Enable hierarchical task management with parent-child relationships
-- Provide modular context organization for complex projects
+The Integrated Code Rules and Memory Bank System balances task execution with project knowledge while maintaining standards across sessions and organizing complex work in a structured hierarchy.
 
 ### 1.2 Balanced Approach
 
-This system implements a balance between:
-- **Task-First Efficiency**: Prioritizing immediate task execution with minimal context
-- **Consistent Documentation**: Maintaining sufficient project knowledge for continuity
-- **Standardized Implementation**: Following consistent coding patterns and practices
-- **Progressive Knowledge**: Building and maintaining project history when valuable
-- **Multi-Task Management**: Supporting work on multiple aspects of a project simultaneously
-- **Modular Organization**: Breaking down complex tasks into manageable subtasks
-- **Context Isolation**: Keeping task contexts separate but interconnected
-- **Hierarchical Structure**: Organizing work in meaningful parent-child relationships
+This system prioritizes task execution with minimal but sufficient context while organizing work in an interconnected hierarchy of parent-child relationships.
 
 ### 1.3 Documentation Update Cadence
 
@@ -145,15 +129,8 @@ Task context files are designed to store detailed information about individual t
    - Created when a subtask requires significant independent context
 
 3. **When to Create Separate Files**
-   - Create a separate subtask file when:
-     - The subtask has substantial independent context
-     - The subtask involves a significant body of work
-     - The subtask may be worked on independently of other subtasks
-     - The parent task context would become unwieldy if it included all subtask details
-   - Use sections within the parent task context file when:
-     - The subtask is small or tightly coupled with the parent task
-     - The total context remains manageable within a single file
-     - The subtask is unlikely to be worked on independently
+   - Create a separate subtask file for substantial independent work
+   - Use sections within parent task file for smaller, tightly coupled subtasks
 
 ### 3.3 File Templates
 
@@ -180,12 +157,7 @@ graph TD
     D -->|contributes to| E
 ```
 
-The new modular structure establishes a hierarchy of relationships:
-1. `tasks.md` remains the central registry of all tasks and subtasks
-2. `session_cache.md` becomes a lightweight index pointing to individual task context files
-3. Task context files contain detailed information and may reference subtask files
-4. Subtask files are linked to their parent tasks while maintaining focused context
-5. All files continue to reference task IDs for cross-file traceability
+All files work together through task ID references for cross-file traceability.
 
 ### 3.5 Validation Rules
 
@@ -244,9 +216,7 @@ To prevent files from becoming excessively large, the following protocol should 
    - Maintain an `archive/` subfolder within the `memory-bank/` directory
 
 3. **Modular Structure Benefits:**
-   - The modular task context approach inherently prevents any single file from growing too large
-   - New tasks and subtasks automatically get their own files, distributing content
-   - Session cache remains small by functioning as an index rather than storing all details
+   - Prevents large files by distributing content
 
 4. **Context Pruning:**
    - Periodically review task context files to remove unnecessary details
@@ -287,26 +257,7 @@ To prevent files from becoming excessively large, the following protocol should 
 
 ## 5. Integration with Development Workflow
 
-This integrated system is designed to:
-
-- Support rapid task execution while maintaining documentation quality
-- Break down complex projects into manageable task hierarchies
-- Ensure code standards are maintained without excessive overhead
-- Provide just enough context for effective implementation
-- Document only what's necessary for project continuity
-- Balance immediate task needs with long-term project knowledge
-- Support multiple concurrent tasks with clear boundaries
-- Enable seamless switching between related tasks and subtasks
-- Maintain clear parent-child relationships for complex work
-- Distribute context across modular files to improve efficiency
-
-The modular task context structure particularly enhances:
-
-1. **Complex Project Management** - Breaking work into hierarchical components
-2. **Context Preservation** - Storing task state in dedicated files
-3. **Focused Implementation** - Loading only what's relevant to the current subtask
-4. **Team Collaboration** - Clear boundaries between different work streams
-5. **Long-Running Projects** - Better organization of extended development efforts
+The modular task structure enables efficient work organization with appropriate context while maintaining clear task boundaries.
 
 ## 6. Integrated Command System
 
@@ -858,24 +809,15 @@ Task hierarchies provide a structured approach to organizing complex work:
 When to decompose a task into subtasks:
 
 1. **Complexity Indicators**
-   - Task requires work across multiple components or systems
-   - Estimated work exceeds one day of development time
-   - Task involves multiple distinct steps with different skill requirements
-   - Implementation requires different types of expertise
-   - Task touches more than 3-5 files
+   - Tasks that span components or require multiple steps
+   - Tasks touching multiple files or requiring different expertise
 
 2. **Decomposition Strategy**
-   - Break down by system component or layer
-   - Break down by implementation phase
-   - Break down by feature sub-component
-   - Break down by expertise domain
-   - Ensure each subtask has clear boundaries and completion criteria
+   - Break down by component, phase, or feature 
+   - Ensure clear boundaries between subtasks
 
 3. **Optimal Subtask Size**
-   - Each subtask should be completable in 2-4 hours
-   - Each subtask should have a clear, singular focus
-   - Each subtask should result in a verifiable outcome
-   - Avoid overly granular subtasks that create documentation overhead
+   - Completable in 2-4 hours with verifiable outcome
 
 ### 11.3 Task ID and Naming Conventions
 
@@ -922,20 +864,10 @@ When to decompose a task into subtasks:
 
 ### 11.5 Managing Task Context Across Hierarchies
 
-1. **Context Inheritance**
-   - Subtasks inherit relevant context from parent tasks
-   - Parent tasks maintain summary information about subtasks
-   - Changes in subtask status propagate up to parent tasks
-
-2. **Context Distribution**
-   - Parent task contexts contain high-level information
-   - Subtask contexts contain detailed implementation information
-   - Cross-references maintain relationships between contexts
-
-3. **Context Updates**
-   - When updating a subtask, also update the parent task's subtask summary
-   - When completing a subtask, update the parent task's progress
-   - Maintain consistent status indicators across the hierarchy
+1. **Context Management**
+   - Parent tasks summarize subtask information
+   - Subtasks contain implementation details
+   - Status changes flow upward in the hierarchy
 
 ## 12. External Tools and Integration
 
@@ -1019,4 +951,4 @@ The following tools assist with the modular task context approach:
 - Track deployment issues with specific error entries in errorLog.md
 - Maintain release notes organized by completed tasks and subtasks
 
-Remember: The system's effectiveness comes from its modular structure, carefully maintaining relationships between tasks and subtasks while preserving focused context in separate files. This approach balances task efficiency with appropriate documentation, loading only what's needed when it's needed, and following a consistent, standardized approach to both code and documentation.
+Remember: Maintain consistent task relationships and load only what's needed for the current step.
