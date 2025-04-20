@@ -261,76 +261,39 @@ The modular task structure enables efficient work organization with appropriate 
 
 ## 6. Integrated Command System
 
-### 6.1 Task Management Commands
+### 6.1 Integrated Command System
 
-| Command | Description |
-|---------|-------------|
-| `create_task [title]` | Create a new task with unique ID in tasks.md |
-| `switch_task [task_id]` | Switch focus to a different task, updating context files |
-| `pause_task [task_id]` | Mark a task as paused in tasks.md |
-| `resume_task [task_id]` | Resume a paused task |
-| `complete_task [task_id]` | Mark a task as completed and update related documentation |
-| `update_task [task_id]` | Update task details in tasks.md |
-| `link_tasks [parent_id] [child_id]` | Create or update relationship between tasks |
-
-### 6.2 Subtask Management Commands
-
-| Command | Description |
-|---------|-------------|
-| `create_subtask [parent_id] [title]` | Create a new subtask under a parent task |
-| `switch_subtask [parent_id] [subtask_id]` | Switch focus to a specific subtask |
-| `complete_subtask [parent_id] [subtask_id]` | Mark a subtask as completed |
-| `update_subtask [parent_id] [subtask_id]` | Update subtask details |
-| `promote_subtask [subtask_id]` | Convert a subtask to a full task |
-| `merge_subtasks [parent_id] [subtask_ids...]` | Combine multiple subtasks |
-| `reorder_subtasks [parent_id] [ordered_ids...]` | Change execution order of subtasks |
-
-### 6.3 Task Execution Commands
-
-| Command | Description |
-|---------|-------------|
-| `do_task [task_id]` | Execute specific task with minimal context loading |
-| `do_subtask [parent_id] [subtask_id]` | Execute specific subtask |
-| `continue_task [task_id]` | Resume previous task using context from task context file |
-| `continue_subtask [parent_id] [subtask_id]` | Resume previous subtask |
-| `verify_task [task_id]` | Check implementation against code standards |
-| `verify_subtask [parent_id] [subtask_id]` | Check subtask implementation |
-
-### 6.4 Memory Management Commands
-
-| Command | Description |
-|---------|-------------|
-| `read_mb` | Load Critical tier files needed for current task |
-| `read_mb [file]` | Load specific file only |
-| `read_mb standard` | Load Critical + Essential tiers |
-| `read_mb complete` | Load all Memory Bank files (rarely needed) |
-| `read_task_context [task_id]` | Load context for a specific task |
-| `read_subtask_context [parent_id] [subtask_id]` | Load context for a specific subtask |
-| `update_mb [file]` | Update specific file with minimal changes |
-| `update_task_context [task_id]` | Update context file for a specific task |
-| `update_subtask_context [parent_id] [subtask_id]` | Update subtask context file |
-| `log_error [title] [task_id]` | Record a new error with details in errorLog.md |
-| `record_edits [task_id] [description]` | Add file modifications to edit_history.md |
-| `read_errors [component]` | Load error history for a specific component or error type |
-| `read_task [task_id]` | Load task-specific information from tasks.md |
-
-### 6.5 Session Management Commands
-
-| Command | Description |
-|---------|-------------|
-| `continue_session` | Flag this as a continuation; prioritize task context loading |
-| `complete_session` | Mark session as complete, update necessary docs |
-| `cache_session` | Create continuation point with minimal updates |
-| `start_session` | Begin new session with fresh timestamp |
-| `switch_context [task_id]` | Change primary focus to a different task |
-
-### 6.6 Code Implementation Commands
-
-| Command | Description |
-|---------|-------------|
-| `verify_code` | Check code against project standards |
-| `format_code` | Ensure code follows formatting guidelines |
-| `document_code` | Update documentation for code changes |
+| Category | Command | Description |
+|----------|---------|-------------|
+| **Task Management** | `create_task [title]` | Create new task with unique ID |
+| | `switch_task [task_id]` | Switch focus to different task |
+| | `pause_task [task_id]` | Mark task as paused |
+| | `resume_task [task_id]` | Resume a paused task |
+| | `complete_task [task_id]` | Mark task as completed |
+| | `update_task [task_id]` | Update task details |
+| | `link_tasks [parent_id] [child_id]` | Create task relationship |
+| **Subtask Management** | `create_subtask [parent_id] [title]` | Create subtask |
+| | `switch_subtask [parent_id] [subtask_id]` | Switch to subtask |
+| | `complete_subtask [parent_id] [subtask_id]` | Complete subtask |
+| | `update_subtask [parent_id] [subtask_id]` | Update subtask |
+| | `promote_subtask [subtask_id]` | Convert to full task |
+| **Task Execution** | `do_task [task_id]` | Execute specific task |
+| | `do_subtask [parent_id] [subtask_id]` | Execute specific subtask |
+| | `continue_task [task_id]` | Resume previous task |
+| | `verify_task [task_id]` | Check implementation |
+| **Memory Management** | `read_mb` | Load Critical tier files |
+| | `read_mb [file]` | Load specific file |
+| | `read_mb standard` | Load Critical + Essential tiers |
+| | `read_task_context [task_id]` | Load task context |
+| | `update_mb [file]` | Update specific file |
+| | `log_error [title] [task_id]` | Record error |
+| | `record_edits [task_id] [description]` | Log file changes |
+| **Session Management** | `continue_session` | Continue previous session |
+| | `complete_session` | End session and update docs |
+| | `start_session` | Begin new session |
+| **Code Implementation** | `verify_code` | Check code standards |
+| | `format_code` | Ensure proper formatting |
+| | `document_code` | Update documentation |
 
 ## 7. Knowledge Organization and Management
 
@@ -488,88 +451,33 @@ New content to replace with
 
 ## 9. Integrated Workflows
 
-### 9.1 Task-First Implementation Flow
+### 9.1 Workflow Processes
 
-1. Receive task and check if it exists in tasks.md
-2. Create new task or load existing task
-3. Create/load task context file
-4. Analyze task requirements and determine if subtasks are needed
-5. Create subtasks if needed or load minimal required context
-6. Execute current implementation step
-7. Record edits in edit_history.md with task ID reference
-8. Update task/subtask context file
-9. If more steps remain, load context for next step and continue
-10. Otherwise, verify implementation against standards
-11. Mark task complete or update session_cache.md
-12. Update required documentation
+#### Task Implementation Flow
+1. Create/load task → determine subtask needs → load minimal context
+2. Execute step → record edits (with task ID) → update context → repeat until complete
+3. Verify implementation → mark task complete/update session
 
-**Note:** Each step should reference the appropriate task/subtask ID, and the "Execute Current Step" and "Execute Next Step" boxes inherently include multiple edit operations, each of which should trigger the `record_edits` command to update `edit_history.md`. The task context file is updated continuously to maintain the current state of the task.
+#### Multi-Task Management
+1. Load tasks/session → select task → load appropriate context
+2. Execute steps (updating edit_history and context) → mark complete when done
+3. For subtasks, update parent when complete
+4. When switching tasks, update session_cache.md
 
-### 9.2 Multi-Task Management Flow
+#### Documentation Process
+1. Always reference task IDs in all updates
+2. Update edit_history.md after each file modification
+3. Update task context files with current state
+4. Log errors with task references
+5. Use appropriate status indicators (🔄, ✅, ⏸️, ⬜)
 
-1. Start session and load tasks.md and session_cache.md
-2. Select new or existing task
-3. For existing tasks, determine if it's a main task or subtask
-4. Load appropriate task or subtask context
-5. For new tasks, create task and context file
-6. Execute task steps including:
-   - Making implementation changes
-   - Updating edit_history.md with task ID
-   - Updating task/subtask context
-7. When task is complete, mark as complete
-8. For completed subtasks, update parent task context
-9. If continuing same task, return to execution
-10. If switching tasks, update session_cache.md and select new task
-11. If ending session, update all documentation
+#### Error Handling
+1. Identify → fix → test → if resolved: document and continue
+2. Document in errorLog.md with task ID reference
 
-**Note:** When switching between tasks or subtasks, use the appropriate command to ensure context is preserved in the task/subtask context files. The "ExecuteTask" box represents multiple cycles of implementation and documentation. Parent tasks are automatically updated when subtasks are completed.
-
-### 9.3 Documentation Update Process
-
-1. After creating a task, add it to tasks.md with a unique ID and create a task context file
-2. After creating a subtask, update tasks.md and parent task context, create subtask context file if needed
-3. When switching tasks, update both previous and new task context files to preserve state
-4. After completing a task step, determine documentation requirements based on change type
-5. Update only the necessary files based on the Documentation Decision Framework
-6. Always include task/subtask ID references in documentation updates
-7. Always update timestamps and status indicators in affected files
-8. For continuing tasks, update the task/subtask context file with current state
-9. When completing a subtask, update parent task context to reflect progress
-10. For completed tasks, update tasks.md to mark the task as complete
-11. Update edit_history.md after each file modification (using `record_edits`)
-12. Log errors in errorLog.md (using `log_error`) when encountered and document their resolution
-
-### 9.4 Error Handling and Resolution Flow
-
-1. Encounter error during task implementation
-2. Identify root cause of the error
-3. Implement fix for the identified issue
-4. Test if the resolution resolves the problem
-5. If not fixed, return to identify step
-6. If fixed, document in errorLog.md with task/subtask ID
-7. Update edit_history.md with changes made
-8. Update task/subtask context file with resolution
-9. Continue with task implementation
-
-**Note:** Use the `log_error` command when documenting errors in errorLog.md, and the `record_edits` command when updating edit_history.md with the fixes applied. Always include the task/subtask ID in both. Update the respective task or subtask context file with information about the resolution.
-
-### 9.5 Task Hierarchy Management Flow
-
-1. Identify complex task that may need decomposition
-2. Create main task in tasks.md
-3. Analyze task complexity and requirements
-4. Decide if task needs to be broken into subtasks
-5. For simple tasks, implement directly as a single task
-6. For complex tasks:
-   - Break down into logical subtasks
-   - Create subtask records linked to parent task
-   - Determine if subtasks need separate context files
-   - Create separate context files for complex subtasks or embed in parent context
-   - Plan execution order for subtasks
-7. Implement subtasks sequentially, updating parent context after each
-8. When all subtasks complete, mark parent task as complete
-
-This workflow illustrates how to manage complex tasks by breaking them down into manageable subtasks while maintaining clear parent-child relationships and keeping documentation synchronized across the hierarchy.
+#### Task Hierarchy Management
+1. For complex tasks: break down into subtasks → link to parent → create context files as needed
+2. Implement subtasks in order → update parent after each → mark parent complete when all done
 
 ## 10. Core File Structure and Templates
 
