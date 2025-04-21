@@ -311,7 +311,7 @@ New content to replace with
 
 ### 9.1 Task-First Implementation Flow (Updated)
 
-1. Receive task → analyze requirements → request approval to create or load task
+1. Receive task → analyze minimal requirements, focus strictly on specified task → request approval to create or load task
 2. After approval, check if task exists → create or load task
 3. Analyze immediate task needs
 4. Request approval to load minimal required context
