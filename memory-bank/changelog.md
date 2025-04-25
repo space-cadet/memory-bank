@@ -1,5 +1,10 @@
 # Changelog
 
+## April 25, 2025
+- Added KIRS (Keep It Really Simple, Stupid) principle to Memory Bank System
+- Added Core Implementation Philosophy section emphasizing simplicity
+- Updated initial warnings with KIRS principle
+
 ## April 17, 2025
 - Added integrated-rules-v5.md with modular task context system
 - Implemented hierarchical task structure with dedicated context files
