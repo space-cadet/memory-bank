@@ -1,6 +1,6 @@
 # Integrated Code Rules and Memory Bank System, v6.1 (Hierarchical Memory Bank Augmented)
 
-*Last Updated: April 22, 2025*
+*Last Updated: April 27, 2025*
 
 YOU WILL KEEP IT REALLY SIMPLE, STUPID (KIRSS). IF YOU THINK A SOLUTION IS SIMPLE ENOUGH, MAKE IT EVEN SIMPLER.
 YOU WILL NEVER UPDATE ANY FILES, INCLUDING MEMORY BANK FILES, WITHOUT EXPLICIT USER APPROVAL
@@ -139,7 +139,7 @@ Individual session files in the `sessions/` directory track work done in a speci
 
 * IMPORTANT: ALL file updates below require EXPLICIT user approval before implementation
 * Update `tasks.md` only after receiving approval, whenever task status changes
-* Update `edit_history.md` only after receiving approval, after each file change, with task ID reference
+* Update `edit_history.md` only after receiving approval, by APPENDING entries using block edits, with task ID reference and precise timestamp
 * Update `session_cache.md` only after receiving approval, when switching between tasks
 * Review `errorLog.md` weekly, but make no modifications without approval
 * Archive `session_cache.md` only after receiving approval, after all active tasks complete
@@ -239,7 +239,7 @@ Knowledge is organized in four tiers with task-oriented loading priorities:
 | `read_mb complete` | Load all Memory Bank files (rarely needed) |
 | `update_mb [file]` | Update specific file with minimal changes |
 | `log_error [title] [task_id]` | Record new error in errorLog.md |
-| `record_edits [task_id] [description]` | Add file mods to edit_history.md |
+| `record_edits [task_id] [description]` | Append new entry to edit_history.md (append-only, never overwrite) |
 | `read_errors [component]` | Load error history for specific component |
 | `read_task [task_id]` | Load task-specific information from tasks.md |
 
