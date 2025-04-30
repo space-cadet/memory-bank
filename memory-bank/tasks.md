@@ -4,6 +4,7 @@
 ## Active Tasks
 | ID | Title | Status | Priority | Started | Dependencies | Details |
 |----|-------|--------|----------|---------|--------------|---------|
+| T9 | Implement Rules v6.2 Changes | 🔄 | HIGH | 2025-04-30 | T7, T8 | [Details](tasks/T9.md) |
 | T8 | Add KIRS Principle | 🔄 | HIGH | 2025-04-25 | - | [Details](tasks/T8.md) |
 | T1 | Multi-task Support | 🔄 | HIGH | 2025-04-14 | - | [Details](tasks/T1.md) |
 | T3 | Implement DB Migration | 🔄 | HIGH | 2025-04-15 | T2 | [Details](tasks/T3.md) |
@@ -39,6 +40,7 @@ graph TD
     T6[T6: Rules v6]
     T7[T7: Rules v6 Fix]
     T8[T8: KIRS]
+    T9[T9: Rules v6.2]
 
     T0 --> T1
     T0 --> T2
@@ -47,4 +49,6 @@ graph TD
     T1 --> T5
     T5 --> T6
     T6 --> T7
+    T7 --> T9
+    T8 --> T9
 ```

@@ -1,6 +1,6 @@
 # Integrated Code Rules and Memory Bank System, v6.1 (Hierarchical Memory Bank Augmented)
 
-*Last Updated: April 27, 2025*
+*Last Updated: April 30, 2025*
 
 YOU WILL KEEP IT REALLY SIMPLE, STUPID (KIRSS). IF YOU THINK A SOLUTION IS SIMPLE ENOUGH, MAKE IT EVEN SIMPLER.
 YOU WILL NEVER UPDATE ANY FILES, INCLUDING MEMORY BANK FILES, WITHOUT EXPLICIT USER APPROVAL
@@ -187,25 +187,40 @@ Knowledge is organized in four tiers with task-oriented loading priorities:
    - `techContext.md` - Technical implementation details
    - Load only specific files when directly relevant to current task step
 
+
 ## 5. Documentation Decision Framework
 
-**IMPORTANT: All commands that modify files require explicit user approval before execution, unless such approval has already been explicitly given**
+### 5.1 Update Categories and Sequence
 
-| Change Type | Documentation Requirements |
-|-------------|----------------------------|
-| Task creation | Update `tasks.md` with new task ID and details |
-| Task status change | Update `tasks.md` with new status |
-| Task switching | Update `session_cache.md` to preserve context |
-| Interface changes | Update API docs, `activeContext.md` with task reference |
-| Implementation details | Code comments only, `edit_history.md` with task ID |
-| Architecture changes | Update `systemPatterns.md`, add task reference |
-| New features | Update `progress.md`, `projectbrief.md` with task reference |
-| Bug fixes | Update `progress.md` with task reference |
-| Refactoring | Minimal documentation unless patterns change |
-| Error resolution | Update `errorLog.md` with error details, fix, and task ID |
-| File modification | Update `edit_history.md` with file changes and task ID |
-| Multiple file edits | Update both `session_cache.md` and `edit_history.md` with task ID |
-| Ongoing work | Update `session_cache.md` with clear "in progress" indicators (🔄) |
+1. **Core Transaction Files** (Every Session, at the end of the session, only after user approval)
+   - tasks/[ID].md → tasks.md → session_cache.md
+   - sessions/[DATE].md → edit_history.md
+2. **Context Files** (When Changed, at the end of the session, only after user approval)
+   - activeContext.md (focus/approach changes)
+   - errorLog.md (error encounters)
+   - progress.md (milestone completion)
+   - changelog.md (feature/bug changes)
+3. **Architecture Files** (Design Changes Only. When prompted by user or when significant changes occur)
+   - systemPatterns.md (patterns)
+   - techContext.md (implementation)
+   - projectbrief.md (scope)
+
+### 5.2 Change Requirements
+
+| Change Type | Required Updates | Optional Updates |
+|-------------|------------------|------------------|
+| Task status | task file, tasks.md, session_cache.md | activeContext.md |
+| Task creation | tasks.md, new task file, session_cache.md | - |
+| Error fixes | errorLog.md, edit_history.md | changelog.md |
+| Features | changelog.md, edit_history.md, task files | projectbrief.md |
+| Architecture | systemPatterns.md, edit_history.md | techContext.md |
+| Multiple edits | edit_history.md, session_cache.md | - |
+
+### 5.3 Maintenance Rules
+- Rotate edit_history.md, errorLog.md at 500 lines
+- Archive completed tasks after 30 days
+- Maintain cross-references when archiving
+- All updates require explicit approval
 
 ## 6. Integrated Command System
 
@@ -361,6 +376,22 @@ New content to replace with
 </blockContent>
 </edit_block>
 ```
+
+### 8.2.1 File Operation Prerequisites
+
+1. REQUIRED: Before ANY file operation:
+   - Check file existence using list_directory or read_file
+   - If file doesn't exist:
+     - Request explicit user approval to create
+     - Only create after receiving approval
+   - If file exists:
+     - Request explicit user approval to modify
+     - Only modify after receiving approval
+
+2. PROHIBITED:
+   - Creating files without checking existence
+   - Creating files without explicit user approval
+   - Modifying files without explicit user approval
 
 ## 9. Core File Structure Templates
 

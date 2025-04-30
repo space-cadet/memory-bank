@@ -1,5 +1,22 @@
 # Changelog
 
+## April 30, 2025
+### [v6.2] - Documentation Framework and File Operations
+#### Added
+- New Section 8.2.1: File Operation Prerequisites
+  - Explicit requirements for checking file existence
+  - Clear approval requirements for file operations
+
+#### Changed
+- Restructured Section 5: Documentation Decision Framework
+  - Clearer update sequences for different file categories
+  - More explicit change requirements table
+  - Streamlined maintenance rules
+
+#### Fixed
+- Ambiguity in when to update which memory bank files
+- Lack of clear guidance on file existence checks
+
 ## April 25, 2025
 - Added KIRS (Keep It Really Simple, Stupid) principle to Memory Bank System
 - Added Core Implementation Philosophy section emphasizing simplicity
