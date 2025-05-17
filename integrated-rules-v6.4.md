@@ -202,8 +202,21 @@ Individual session files in the `sessions/` directory track work done in a speci
 
 ## 3. Integration with Development Workflow
 
+### 3.1 GitHub Projects Integration
 
-This system supports rapid task execution while maintaining documentation quality and balancing immediate needs with long-term project knowledge.
+The Memory Bank system integrates with GitHub Projects for team collaboration and task tracking. Key integration files:
+
+1. **Setup Guide**: 
+   - Located at `implementation-details/gh-project-init.md`
+   - Contains exact gh CLI commands for project setup
+   - Reference for initial GitHub Projects configuration
+
+2. **Integration Documentation**:
+   - Located at `implementation-details/github-integration/`
+   - Complete documentation of GitHub integration
+   - Templates and synchronization processes
+
+The system supports rapid task execution while maintaining documentation quality and balancing immediate needs with long-term project knowledge.
 
 ## 4. Tiered Knowledge Structure
 

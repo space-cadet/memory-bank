@@ -4,6 +4,7 @@
 ## Active Tasks
 | ID | Title | Status | Priority | Started | Dependencies | Details |
 |----|-------|--------|----------|---------|--------------|---------|
+| T11 | Document GitHub Project Integration | 🔄 | HIGH | 2025-05-17 | - | [Details](tasks/T11.md) |
 
 | T9 | Implement Rules v6.2 Changes | 🔄 | HIGH | 2025-04-30 | T7, T8 | [Details](tasks/T9.md) |
 | T8 | Add KIRS Principle | 🔄 | HIGH | 2025-04-25 | - | [Details](tasks/T8.md) |
@@ -44,6 +45,7 @@ graph TD
     T8[T8: KIRS]
     T9[T9: Rules v6.2]
     T10[T10: Dir Structure v6.3]
+    T11[T11: GitHub Integration Doc]
 
     T0 --> T1
     T0 --> T2
@@ -55,4 +57,5 @@ graph TD
     T7 --> T9
     T8 --> T9
     T9 --> T10
+    T10 --> T11
 ```

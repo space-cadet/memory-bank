@@ -1,6 +1,22 @@
 # Edit History
 
 ## 2025-05-17
+### 17:00 - T11: GitHub Project Quick Setup Reference
+- Created `implementation-details/gh-project-init.md` - Quick reference guide for gh CLI setup
+- Modified `integrated-rules-v6.4.md` - Added section 3.1 on GitHub Projects integration
+- Updated documentation references and file locations
+
+### 16:30 - T11: GitHub Projects Integration Documentation
+- Created `implementation-details/github-integration/` directory structure
+- Created `implementation-details/github-integration/README.md` - Overview of integration
+- Created `implementation-details/github-integration/setup-guide.md` - Detailed gh CLI setup instructions
+- Created `implementation-details/github-integration/sync-process.md` - Synchronization documentation
+- Created `implementation-details/github-integration/templates/` - Template directory
+- Created `implementation-details/github-integration/templates/issue.md` - GitHub issue template
+- Created `implementation-details/github-integration/templates/task.md` - Memory Bank task template
+- Modified `tasks/T11.md` - Updated progress and status
+- Modified `tasks.md` - Updated T11 status to IN PROGRESS
+
 ### 15:00 - T10: Directory Structure Clarification
 - Created `tasks/T10.md` - New task for clarifying directory structure
 - Modified `tasks.md` - Added T10 to active tasks
