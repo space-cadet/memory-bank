@@ -1,5 +1,13 @@
 # Edit History
 
+## 2025-05-17
+### 15:00 - T10: Directory Structure Clarification
+- Created `tasks/T10.md` - New task for clarifying directory structure
+- Modified `tasks.md` - Added T10 to active tasks
+- Created `integrated-rules-v6.4.md` - New version with project root clarifications
+- Modified `tasks/T10.md` - Updated status to completed
+- Modified `tasks.md` - Moved T10 to completed tasks
+
 *Created: April 10, 2025*
 
 ## File Modification Log

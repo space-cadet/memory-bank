@@ -4,6 +4,7 @@
 ## Active Tasks
 | ID | Title | Status | Priority | Started | Dependencies | Details |
 |----|-------|--------|----------|---------|--------------|---------|
+
 | T9 | Implement Rules v6.2 Changes | 🔄 | HIGH | 2025-04-30 | T7, T8 | [Details](tasks/T9.md) |
 | T8 | Add KIRS Principle | 🔄 | HIGH | 2025-04-25 | - | [Details](tasks/T8.md) |
 | T1 | Multi-task Support | 🔄 | HIGH | 2025-04-14 | - | [Details](tasks/T1.md) |
@@ -23,6 +24,7 @@ See individual task files for:
 ## Completed Tasks
 | ID | Title | Completed | Related Tasks | Archive |
 |----|-------|-----------|---------------|---------|
+| T10 | Clarify Directory Structure in Rules v6.3 | 2025-05-17 | T9 | [Details](tasks/T10.md) |
 | T0 | Initial Memory Bank setup | 2025-04-10 | - | [Details](archive/T0.md) |
 | T2 | Plan Database Migration | 2025-04-15 | T3 | [Details](archive/T2.md) |
 | T6 | Streamline Rules v6 | 2025-04-20 | T5 | [Details](archive/T6.md) |
@@ -41,6 +43,7 @@ graph TD
     T7[T7: Rules v6 Fix]
     T8[T8: KIRS]
     T9[T9: Rules v6.2]
+    T10[T10: Dir Structure v6.3]
 
     T0 --> T1
     T0 --> T2
@@ -51,4 +54,5 @@ graph TD
     T6 --> T7
     T7 --> T9
     T8 --> T9
+    T9 --> T10
 ```
