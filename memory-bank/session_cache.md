@@ -1,15 +1,16 @@
 # Session Cache
 
-*Last Updated: May 17, 2025 17:00 UTC*
+*Last Updated: May 17, 2025 18:30 UTC*
 
 ## Overview
-- Active Tasks: 6
+- Active Tasks: 8
 - Paused Tasks: 0
-- Last Task Focus: T11 (In Progress)
+- Last Task Focus: T12, T13 (Documentation Revamp and CLI Implementation)
 
 ## Task Registry
+- T13: Implement Memory Bank CLI - 🔄 IN PROGRESS
+- T12: Rewrite Documentation for Practical Usage - 🔄 IN PROGRESS
 - T11: Document GitHub Project Integration - 🔄 IN PROGRESS
-- T10: Clarify Directory Structure in Rules v6.3 - ✅ COMPLETED
 - T9: Implement Rules v6.2 Changes - 🔄 IN PROGRESS
 - T8: Add KIRS & Implement Hierarchical Structure - 🔄 IN PROGRESS
 - T1: Multi-task Support Implementation - 🔄 IN PROGRESS
@@ -18,6 +19,51 @@
 - T5: Rules v4 Optimization - 🔄 IN PROGRESS
 
 ## Active Tasks
+
+### T13: Implement Memory Bank CLI
+**Status:** 🔄 IN PROGRESS
+**Priority:** HIGH
+**Started:** 2025-05-17
+**Last Active:** 2025-05-17 18:30 UTC
+
+#### Context
+Designing and implementing a CLI to replace manual copy-paste workflow
+
+#### Critical Files
+- `tasks/T13.md`
+- `tasks.md`
+
+#### Implementation Progress
+1. ⬜ Design CLI architecture
+2. ⬜ Define command specifications
+3. ⬜ Create basic framework
+
+#### Working State
+Task created, planning phase initiated
+
+### T12: Rewrite Documentation for Practical Usage
+**Status:** 🔄 IN PROGRESS
+**Priority:** HIGH
+**Started:** 2025-05-17
+**Last Active:** 2025-05-17 18:30 UTC
+
+#### Context
+Making documentation more practical and user-focused
+
+#### Critical Files
+- `docs/index.html`
+- `docs/assets/style.css`
+- `docs/getting-started.html`
+- `tasks/T12.md`
+
+#### Implementation Progress
+1. ✅ Review and analyze documentation issues
+2. ✅ Create new documentation structure
+3. 🔄 Write new overview
+4. 🔄 Develop getting-started guide
+
+#### Working State
+Created modern documentation design with improved navigation and structure. Implemented reusable CSS components. Identified need for CLI (T13).
 
 ### T11: Document GitHub Project Integration
 **Status:** 🔄 IN PROGRESS
@@ -204,9 +250,10 @@ Streamlining rules document while maintaining clarity
 7. 🔄 Future planning
 
 ## Session History
-- Current: 2025-05-17-1.md (Afternoon)
-- Previous: 2025-04-25-2.md (Afternoon)
+- Current: 2025-05-17-2.md (Evening)
+- Previous: 2025-05-17-1.md (Afternoon)
 - Active Sessions: 
+  - 2025-05-17: Documentation Revamp and CLI Implementation
   - 2025-04-25: Adding KIRS & Hierarchical Structure
   - 2025-04-17: Rules v4 Optimization
   - 2025-04-15: Database Migration

@@ -1,9 +1,11 @@
 # Task Registry
-*Last Updated: April 25, 2025*
+*Last Updated: May 17, 2025*
 
 ## Active Tasks
 | ID | Title | Status | Priority | Started | Dependencies | Details |
 |----|-------|--------|----------|---------|--------------|---------|
+| T13 | Implement Memory Bank CLI | 🔄 | HIGH | 2025-05-17 | T12 | [Details](tasks/T13.md) |
+| T12 | Rewrite Documentation for Practical Usage | 🔄 | HIGH | 2025-05-17 | T11 | [Details](tasks/T12.md) |
 | T11 | Document GitHub Project Integration | 🔄 | HIGH | 2025-05-17 | - | [Details](tasks/T11.md) |
 
 | T9 | Implement Rules v6.2 Changes | 🔄 | HIGH | 2025-04-30 | T7, T8 | [Details](tasks/T9.md) |
@@ -46,8 +48,12 @@ graph TD
     T9[T9: Rules v6.2]
     T10[T10: Dir Structure v6.3]
     T11[T11: GitHub Integration Doc]
+    T12[T12: Practical Docs Rewrite]
+    T13[T13: Memory Bank CLI]
 
     T0 --> T1
+    T11 --> T12
+    T12 --> T13
     T0 --> T2
     T2 --> T3
     T1 --> T4

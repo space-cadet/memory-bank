@@ -1,6 +1,13 @@
 # Edit History
 
 ## 2025-05-17
+### 18:30 - T12, T13: Documentation Revamp and CLI Planning
+- Modified `docs/index.html` - Created new modern, practical homepage design
+- Created `docs/assets/style.css` - Implemented reusable CSS components
+- Modified `docs/getting-started.html` - Created practical getting-started guide template
+- Created `tasks/T13.md` - New task for implementing Memory Bank CLI
+- Modified `tasks/T12.md` - Updated progress on documentation rewrite
+- Modified `tasks.md` - Added T13 and updated task relationships
 ### 17:00 - T11: GitHub Project Quick Setup Reference
 - Created `implementation-details/gh-project-init.md` - Quick reference guide for gh CLI setup
 - Modified `integrated-rules-v6.4.md` - Added section 3.1 on GitHub Projects integration

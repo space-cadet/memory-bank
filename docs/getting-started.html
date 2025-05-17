@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started with Memory Bank</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <button class="menu-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Sidebar (same as index.html) -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h1>Memory Bank</h1>
+            <p>Project Documentation</p>
+        </div>
+        
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search documentation...">
+        </div>
+        
+        <nav>
+            <div class="nav-section">Quick Start</div>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="index.html">Home</a></li>
+                <li class="nav-item"><a href="getting-started.html" class="active">Getting Started</a></li>
+                <li class="nav-item"><a href="first-project.html">Your First Project</a></li>
+            </ul>
+            
+            <div class="nav-section">Guides</div>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="basic-usage.html">Basic Usage</a></li>
+                <li class="nav-item"><a href="task-management.html">Task Management</a></li>
+                <li class="nav-item"><a href="project-structure.html">Project Structure</a></li>
+                <li class="nav-item"><a href="collaboration.html">Team Collaboration</a></li>
+            </ul>
+            
+            <div class="nav-section">Features</div>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="github-integration.html">GitHub Integration</a></li>
+                <li class="nav-item"><a href="ai-assistance.html">AI Assistant Usage</a></li>
+                <li class="nav-item"><a href="task-tracking.html">Task Tracking</a></li>
+                <li class="nav-item"><a href="knowledge-base.html">Knowledge Base</a></li>
+            </ul>
+            
+            <div class="nav-section">Reference</div>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="commands.html">Command Reference</a></li>
+                <li class="nav-item"><a href="templates.html">Templates</a></li>
+                <li class="nav-item"><a href="examples.html">Example Projects</a></li>
+                <li class="nav-item"><a href="troubleshooting.html">Troubleshooting</a></li>
+            </ul>
+        </nav>
+    </aside>
+    
+    <main class="content">
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-step complete">
+                <div class="step-number">1</div>
+                <div class="step-label">Setup</div>
+            </div>
+            <div class="progress-step">
+                <div class="step-number">2</div>
+                <div class="step-label">Configure</div>
+            </div>
+            <div class="progress-step">
+                <div class="step-number">3</div>
+                <div class="step-label">First Task</div>
+            </div>
+        </div>
+
+        <div class="page-header">
+            <h1>Getting Started with Memory Bank</h1>
+            <p>Get up and running with Memory Bank in under 5 minutes. No complex setup required.</p>
+        </div>
+
+        <!-- Prerequisites Card -->
+        <div class="setup-card">
+            <div class="card-header">
+                <i class="fas fa-clipboard-check"></i>
+                <h2>Prerequisites</h2>
+            </div>
+            <div class="card-content">
+                <div class="checklist">
+                    <div class="check-item">
+                        <input type="checkbox" id="check1">
+                        <label for="check1">Git installed on your system</label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="check2">
+                        <label for="check2">GitHub account (for GitHub integration)</label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="check3">
+                        <label for="check3">Text editor or IDE</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Setup Section -->
+        <section class="setup-section">
+            <h2>Quick Setup</h2>
+            
+            <!-- Step 1: Installation -->
+            <div class="setup-step">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h3>Install Memory Bank</h3>
+                </div>
+                <div class="step-content">
+                    <p>Run this command in your terminal:</p>
+                    <div class="code-block">
+                        <button class="copy-button" title="Copy to clipboard">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <code>npm install -g memory-bank-cli</code>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Create Project -->
+            <div class="setup-step">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <h3>Create Your First Project</h3>
+                </div>
+                <div class="step-content">
+                    <p>Navigate to your project directory and initialize:</p>
+                    <div class="code-block">
+                        <button class="copy-button" title="Copy to clipboard">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <code>cd your-project
+mb init</code>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Configure -->
+            <div class="setup-step">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <h3>Basic Configuration</h3>
+                </div>
+                <div class="step-content">
+                    <p>Set up your basic configuration:</p>
+                    <div class="code-block">
+                        <button class="copy-button" title="Copy to clipboard">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <code>mb config --init</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Verification Section -->
+        <section class="verify-section">
+            <h2>Verify Installation</h2>
+            <div class="verification-card">
+                <h3>Run a Quick Test</h3>
+                <p>Create your first task to verify everything is working:</p>
+                <div class="code-block">
+                    <button class="copy-button" title="Copy to clipboard">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                    <code>mb task create "My first task"</code>
+                </div>
+                <div class="expected-output">
+                    <h4>Expected Output:</h4>
+                    <pre>✓ Task created successfully
+Task ID: T1
+Status: Active
+Location: memory-bank/tasks/T1.md</pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- What's Next Section -->
+        <section class="whats-next">
+            <h2>What's Next?</h2>
+            <div class="next-steps-grid">
+                <a href="first-project.html" class="next-step-card">
+                    <div class="card-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <h3>Create Your First Project</h3>
+                    <p>Follow our guided tutorial to create a complete project</p>
+                </a>
+                
+                <a href="basic-usage.html" class="next-step-card">
+                    <div class="card-icon">
+                        <i class="fas fa-book-reader"></i>
+                    </div>
+                    <h3>Learn the Basics</h3>
+                    <p>Understand the core concepts and common workflows</p>
+                </a>
+                
+                <a href="examples.html" class="next-step-card">
+                    <div class="card-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Example Projects</h3>
+                    <p>Explore real-world examples and templates</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Need Help Section -->
+        <section class="help-section">
+            <h2>Need Help?</h2>
+            <div class="help-options">
+                <a href="troubleshooting.html" class="help-card">
+                    <i class="fas fa-bug"></i>
+                    <h3>Troubleshooting Guide</h3>
+                    <p>Common issues and their solutions</p>
+                </a>
+                
+                <a href="https://github.com/memory-bank/issues" class="help-card">
+                    <i class="fab fa-github"></i>
+                    <h3>GitHub Issues</h3>
+                    <p>Report bugs or request features</p>
+                </a>
+                
+                <a href="https://discord.gg/memory-bank" class="help-card">
+                    <i class="fab fa-discord"></i>
+                    <h3>Community Discord</h3>
+                    <p>Get help from the community</p>
+                </a>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>© 2025 Memory Bank System. Last Updated: May 17, 2025</p>
+        </footer>
+    </main>
+
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        });
+
+        // Copy button functionality
+        document.querySelectorAll('.copy-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const codeBlock = this.nextElementSibling;
+                navigator.clipboard.writeText(codeBlock.textContent);
+                
+                // Visual feedback
+                const originalIcon = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(() => {
+                    this.innerHTML = originalIcon;
+                }, 2000);
+            });
+        });
+
+        // Checkbox persistence
+        document.querySelectorAll('.check-item input[type="checkbox"]').forEach(checkbox => {
+            const id = checkbox.id;
+            const saved = localStorage.getItem('mb-check-' + id);
+            if (saved) checkbox.checked = JSON.parse(saved);
+            
+            checkbox.addEventListener('change', function() {
+                localStorage.setItem('mb-check-' + this.id, this.checked);
+            });
+        });
+    </script>
+</body>
+</html>
