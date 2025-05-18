@@ -1,6 +1,13 @@
 # Edit History
 
 ## 2025-05-18
+### 16:30 - T13: Basic CLI Implementation
+- Created `mb-cli/` directory - New CLI project using Commander.js
+- Created `mb-cli/src/commands/init.js` - Implemented init command with dry-run support
+- Modified `implementation-details/cli-command-specification.md` - Updated with complete folder structure
+- Modified `tasks/T13.md` - Updated progress with basic CLI implementation
+- Modified `tasks.md` - Updated T13 status
+
 ### 14:30 - T13: CLI Architecture and Command Specification
 - Created `implementation-details/cli-architecture.md` - Detailed CLI architecture design
 - Created `implementation-details/cli-command-specification.md` - Comprehensive command specifications

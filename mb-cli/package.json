@@ -1,0 +1,27 @@
+{
+  "name": "mb-cli",
+  "version": "0.1.0",
+  "description": "Memory Bank CLI",
+  "main": "src/index.js",
+  "bin": {
+    "mb": "./src/index.js"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cli",
+    "memory-bank"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "14.0.0"
+  },
+  "devDependencies": {
+    "eslint": "9.27.0",
+    "prettier": "3.5.3"
+  }
+}

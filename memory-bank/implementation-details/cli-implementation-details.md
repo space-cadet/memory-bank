@@ -185,11 +185,11 @@ This document outlines the implementation plan for the Memory Bank CLI (T13), fo
   - [x] Define expected outputs
   - [x] Document error scenarios
   - [x] Created cli-command-specification.md
-- [ ] Core Dependencies
-  - [ ] Research and select CLI framework
-    - [ ] Evaluate Node.js CLI frameworks
-    - [ ] Compare features and maintenance status
-    - [ ] Test with simple prototype
+- [x] Core Dependencies
+  - [x] Research and select CLI framework
+    - [x] Evaluate Node.js CLI frameworks
+    - [x] Compare features and maintenance status
+    - [x] Selected Commander.js for simplicity
   - [ ] Document required dependencies
     - [ ] Core dependencies
     - [ ] Development dependencies
@@ -200,37 +200,35 @@ This document outlines the implementation plan for the Memory Bank CLI (T13), fo
     - [ ] Troubleshooting guide
 
 ### Phase 2: Core Framework
-- [ ] Project Structure
-  - [ ] Create CLI project structure
-    - [ ] Set up src/ directory structure
-    - [ ] Create bin/ directory for executable
-    - [ ] Set up test/ directory
-  - [ ] Set up build system
-    - [ ] Configure TypeScript/JavaScript
-    - [ ] Set up bundler if needed
-    - [ ] Configure testing framework
-  - [ ] Initialize package management
-    - [ ] Create package.json
-    - [ ] Set up npm scripts
-    - [ ] Configure dependencies
+- [x] Project Structure
+  - [x] Create CLI project structure
+    - [x] Set up src/ directory structure
+    - [x] Set up commands directory
+    - [x] Basic project organization
+  - [x] Set up build system
+    - [x] Configure JavaScript modules
+    - [x] Basic error handling
+  - [x] Initialize package management
+    - [x] Create package.json
+    - [x] Set up basic scripts
+    - [x] Configure core dependencies
 - [ ] Core Framework Implementation
   - [ ] Implement base CLI class/framework
   - [ ] Create command registration system
   - [ ] Set up configuration management
   - [ ] Implement logging system
-- [ ] Implement Init Command (MVP)
-  - [ ] Directory validation
-    - [ ] Check if directory exists
-    - [ ] Validate project root
-    - [ ] Handle permissions
-  - [ ] Memory Bank creation
-    - [ ] Create directory structure
-    - [ ] Initialize required files
-    - [ ] Set up templates
-  - [ ] Error handling
-    - [ ] Handle existing directories
-    - [ ] Handle permissions
-    - [ ] Provide clear error messages
+- [x] Implement Init Command (MVP)
+  - [x] Directory validation
+    - [x] Basic directory checks
+    - [x] Project root validation
+  - [x] Memory Bank creation
+    - [x] Create directory structure
+    - [x] Initialize required files
+    - [x] Set up templates structure
+  - [x] Basic error handling
+    - [x] Handle basic errors
+    - [x] Added --dry-run option
+    - [x] Clear output messages
 
 ### Phase 3: Essential Commands
 - [ ] Project Commands

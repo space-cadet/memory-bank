@@ -122,9 +122,46 @@ mb template use <template-name> <target>
 - `[directory]`: Target directory (default: current directory)
 - `--template <name>`: Use specific project template
 **Behavior**:
-- Creates project directory structure
+- Creates project directory structure:
+```bash
+memory-bank/
+├── activeContext.md        # From template
+├── changelog.md           # From template
+├── edit_history.md       # From template
+├── errorLog.md          # From template
+├── progress.md         # From template
+├── projectbrief.md    # From template
+├── session_cache.md  # From template
+├── systemPatterns.md
+├── tasks.md         # From template
+├── techContext.md  # From template
+├── .cursorrules
+├── tasks/          # Individual task files
+├── sessions/       # Session files
+├── templates/      # Core file templates
+│   ├── activeContext.md
+│   ├── changelog.md
+│   ├── component_index.md
+│   ├── edit_history.md
+│   ├── errorLog.md
+│   ├── progress.md
+│   ├── projectbrief.md
+│   ├── session_cache.md
+│   ├── tasks.md
+│   └── task-template.md
+├── database/       # Database configuration
+│   ├── admin/
+│   ├── migration-scripts/
+│   ├── migrations/
+│   ├── schema.prisma
+│   ├── .env
+│   ├── package.json
+│   └── pnpm-lock.yaml
+├── implementation-details/  # Project-specific implementation docs
+└── archive/               # Archived files
+```
 - Initializes configuration files
-- Sets up default templates
+- Sets up default templates using template directory
 - Creates initial session
 
 #### `mb status`
