@@ -1,5 +1,13 @@
 # Edit History
 
+## 2025-05-18
+### 14:30 - T13: CLI Architecture and Command Specification
+- Created `implementation-details/cli-architecture.md` - Detailed CLI architecture design
+- Created `implementation-details/cli-command-specification.md` - Comprehensive command specifications
+- Modified `implementation-details/cli-implementation-details.md` - Added detailed implementation checklist
+- Modified `tasks/T13.md` - Updated progress with completed architecture and command specs
+- Modified `tasks.md` - Updated T13 status with architecture completion
+
 ## 2025-05-17
 ### 18:30 - T12, T13: Documentation Revamp and CLI Planning
 - Modified `docs/index.html` - Created new modern, practical homepage design
