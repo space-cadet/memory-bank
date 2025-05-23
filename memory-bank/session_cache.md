@@ -1,13 +1,14 @@
 # Session Cache
 
-*Last Updated: May 18, 2025 16:30 UTC*
+*Last Updated: May 23, 2025 14:45 UTC*
 
 ## Overview
-- Active Tasks: 8
+- Active Tasks: 9
 - Paused Tasks: 0
-- Last Task Focus: T12, T13 (Documentation Revamp and CLI Implementation)
+- Last Task Focus: T14 (Project-Specific Rule Adaptations)
 
 ## Task Registry
+- T14: Project-Specific Rule Adaptations - 🔄 IN PROGRESS
 - T13: Implement Memory Bank CLI - 🔄 IN PROGRESS
 - T12: Rewrite Documentation for Practical Usage - 🔄 IN PROGRESS
 - T11: Document GitHub Project Integration - 🔄 IN PROGRESS
@@ -19,6 +20,33 @@
 - T5: Rules v4 Optimization - 🔄 IN PROGRESS
 
 ## Active Tasks
+
+### T14: Project-Specific Rule Adaptations
+**Status:** 🔄 IN PROGRESS
+**Priority:** MEDIUM
+**Started:** 2025-05-23
+**Last Active:** 2025-05-23 14:45 UTC
+
+#### Context
+Creating adaptations of integrated memory bank rules for different project types, starting with physics research papers
+
+#### Critical Files
+- `integrated-rules-research-v1.md`
+- `integrated-rules-v6.4.md`
+- `tasks/T14.md`
+- `tasks.md`
+
+#### Implementation Progress
+1. ✅ Analyze current rules for software-development bias
+2. ✅ Create physics research adaptation (integrated-rules-research-v1.md)
+3. ✅ Add research-specific files (bibTracker.md, litReview.md)
+4. ✅ Update task examples to research context
+5. 🔄 Document adaptation methodology
+6. ⬜ Test with sample physics project
+7. ⬜ Create adaptation guidelines
+
+#### Working State
+Completed initial physics research adaptation. Successfully adapted terminology, file structure, and task examples while maintaining core memory bank principles. Created new research-specific files for bibliography tracking and literature review.
 
 ### T13: Implement Memory Bank CLI
 **Status:** 🔄 IN PROGRESS

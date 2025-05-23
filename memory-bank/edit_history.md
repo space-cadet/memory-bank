@@ -1,5 +1,11 @@
 # Edit History
 
+## 2025-05-23
+### 14:45 - T14: Project-Specific Rule Adaptations
+- Created `integrated-rules-research-v1.md` - Research-adapted rules for physics/LaTeX projects
+- Created `tasks/T14.md` - New task for project-specific rule adaptations
+- Modified `tasks.md` - Added T14 to active tasks and updated timestamp
+
 ## 2025-05-18
 ### 16:30 - T13: Basic CLI Implementation
 - Created `mb-cli/` directory - New CLI project using Commander.js
