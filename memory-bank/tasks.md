@@ -4,7 +4,7 @@
 ## Active Tasks
 | ID | Title | Status | Priority | Started | Dependencies | Details |
 |----|-------|--------|----------|---------|--------------|---------|
-| T14 | Project-Specific Rule Adaptations | 🔄 | MEDIUM | 2025-05-23 | - | [Details](tasks/T14.md) - Physics research adaptation completed |
+| T14 | Project-Specific Rule Adaptations | 🔄 | MEDIUM | 2025-05-23 | - | [Details](tasks/T14.md) - Research adaptation, templates, and documentation completed |
 | T13 | Implement Memory Bank CLI | 🔄 | HIGH | 2025-05-17 | T12 | [Details](tasks/T13.md) - Basic CLI implementation with init command completed |
 | T12 | Rewrite Documentation for Practical Usage | 🔄 | HIGH | 2025-05-17 | T11 | [Details](tasks/T12.md) |
 | T11 | Document GitHub Project Integration | 🔄 | HIGH | 2025-05-17 | - | [Details](tasks/T11.md) |
