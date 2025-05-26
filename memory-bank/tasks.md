@@ -1,5 +1,5 @@
 # Task Registry
-*Last Updated: May 23, 2025*
+*Last Updated: May 26, 2025*
 
 ## Active Tasks
 | ID | Title | Status | Priority | Started | Dependencies | Details |
@@ -28,6 +28,7 @@ See individual task files for:
 ## Completed Tasks
 | ID | Title | Completed | Related Tasks | Archive |
 |----|-------|-----------|---------------|---------|
+| T15 | Implement Creative Expression Balance (Rules v6.5) | 2025-05-26 | T14 | [Details](tasks/T15.md) |
 | T10 | Clarify Directory Structure in Rules v6.3 | 2025-05-17 | T9 | [Details](tasks/T10.md) |
 | T0 | Initial Memory Bank setup | 2025-04-10 | - | [Details](archive/T0.md) |
 | T2 | Plan Database Migration | 2025-04-15 | T3 | [Details](archive/T2.md) |
