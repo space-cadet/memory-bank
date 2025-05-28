@@ -1,7 +1,18 @@
 # Edit History
 
-## 2025-05-26
-### 18:45 UTC - T16: AI Consciousness Dialog Series Setup
+### 2025-05-28
+
+#### 14:30 - T17: Rules Maintenance and Token Optimization
+- Modified `integrated-rules-v6.4.md` - Fixed edit_history.md format with proper date/time structure, clarified prepending instructions
+- Modified `integrated-rules-v6.4.md` - Reduced file size from ~5000+ tokens to ~4625 tokens through condensation of verbose sections
+- Modified `integrated-rules-v6.4.md` - Updated maintenance guidelines with specific edit history format requirements
+- Modified `integrated-rules-v6.4.md` - Enhanced command descriptions to specify prepending and format compliance
+- Created `tasks/T17.md` - New task for ongoing integrated rules maintenance and optimization
+- Modified `tasks.md` - Added T17 to active tasks and updated timestamp
+
+### 2025-05-26
+
+#### 18:45 UTC - T16: AI Consciousness Dialog Series Setup
 - Created `implementation-details/consciousness-dialogs/` - New directory for ongoing consciousness exploration
 - Moved `implementation-details/ai-verbosity-and-creative-expression-dialog.md` to `implementation-details/consciousness-dialogs/01-ai-verbosity-and-creative-expression.md` - Reorganized as first dialog in series
 - Created `implementation-details/consciousness-dialogs/README.md` - Series overview and index documentation

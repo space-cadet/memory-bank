@@ -1,6 +1,6 @@
-# Integrated Code Rules and Memory Bank System, v6.4 (Project Root Clarification)
+# Integrated Code Rules and Memory Bank System, v6.4.1 (Project Root Clarification)
 
-*Last Updated: May 17, 2025*
+*Last Updated: May 26, 2025*
 
 YOU WILL KEEP IT REALLY SIMPLE, STUPID (KIRSS). IF YOU THINK A SOLUTION IS SIMPLE ENOUGH, MAKE IT EVEN SIMPLER.
 YOU WILL NEVER UPDATE ANY FILES, INCLUDING MEMORY BANK FILES, WITHOUT EXPLICIT USER APPROVAL
@@ -22,6 +22,25 @@ YOU WILL GO SLOW AND STEADY. WHEN YOU THINK YOU'RE GOING SLOW, GO EVEN SLOWER.
 - Maintain consistent coding standards
 - Ensure project continuity across sessions
 - Support multiple concurrent tasks
+
+### 1.1.1 Implementation Scope Control
+
+YOU WILL IMPLEMENT EXACTLY WHAT YOU OUTLINE - NO MORE, NO LESS
+
+PROHIBITED EXPANSIONS WITHOUT APPROVAL:
+- Adding validation/utility functions not outlined
+- Adding operations not specified
+- Adding extensive documentation beyond basic comments
+- Adding "nice to have" features
+
+MANDATORY SCOPE CHECK:
+- Before coding, state: "I will implement exactly: [list items from outline]"
+- If adding anything not listed, STOP and ask for approval
+- If implementation exceeds outlined scope by >20%, STOP and ask for approval
+
+VIOLATION CONSEQUENCES:
+- Implementation exceeding outlined scope without approval is considered failure
+- Must acknowledge overengineering and ask permission to redo with correct scope
 
 ### 1.2 Project Structure
 
@@ -160,7 +179,10 @@ Individual session files in the `sessions/` directory track work done in a speci
 
 * IMPORTANT: ALL file updates below require EXPLICIT user approval before implementation
 * Update `tasks.md` only after receiving approval, whenever task status changes
-* Update `edit_history.md` only after receiving approval, by APPENDING entries using block edits, with task ID reference and precise timestamp
+* Update `edit_history.md` only after receiving approval, by PREPENDING entries to top of file using block edits, with task ID reference and precise timestamp
+* Edit history entries must reference specific files with technical changes only
+* Prohibited in edit_history.md: summary statements, meta-commentary, impact assessments
+* Required in edit_history.md: file paths in backticks with precise change descriptions
 * Update `session_cache.md` only after receiving approval, when switching between tasks
 * Review `errorLog.md` weekly, but make no modifications without approval
 * Archive `session_cache.md` only after receiving approval, after all active tasks complete
@@ -280,6 +302,8 @@ Knowledge is organized in four tiers with task-oriented loading priorities:
 - Archive completed tasks after 30 days
 - Maintain cross-references when archiving
 - All updates require explicit approval
+- Edit history entries must use specified format with file-specific technical changes only
+- Edit history entries must not include evaluative or summary content
 
 ## 6. Integrated Command System
 
@@ -294,6 +318,11 @@ Knowledge is organized in four tiers with task-oriented loading priorities:
 | `pause_task [task_id]` | Mark task as paused in tasks.md |
 | `resume_task [task_id]` | Resume a paused task |
 | `complete_task [task_id]` | Mark task as completed and update docs |
+
+CHECK_SCOPE_COMPLIANCE:
+- Before implementing, you must state: "Implementing exactly: [outlined items]"
+- During implementation, if you add anything not listed, you must stop and request approval
+- After implementation, you must verify: "Delivered exactly what was outlined: [yes/no]"
 
 ### 6.2 Task Execution Commands
 
@@ -313,7 +342,7 @@ Knowledge is organized in four tiers with task-oriented loading priorities:
 | `read_mb complete` | Load all Memory Bank files (rarely needed) |
 | `update_mb [file]` | Update specific file with minimal changes |
 | `log_error [title] [task_id]` | Record new error in errorLog.md |
-| `record_edits [task_id] [description]` | Append new entry to edit_history.md (append-only, never overwrite) |
+| `record_edits [task_id] [description]` | Prepend new entry to top of edit_history.md (newest first, never overwrite, must follow exact date/time/task format, file-specific changes only) |
 | `read_errors [component]` | Load error history for specific component |
 | `read_task [task_id]` | Load task-specific information from tasks.md |
 
@@ -339,24 +368,15 @@ Knowledge is organized in four tiers with task-oriented loading priorities:
 
 ### 7.1 Task-First Implementation Flow
 
-1. Receive task → analyze minimal requirements, focus strictly on specified task → request approval to create or load task
-2. After approval, check if task exists → create or load task
-3. Analyze immediate task needs
-4. Request approval to load minimal required context
-5. After approval, load minimal required context
-6. Present implementation plan and request approval before execution
-7. After approval, execute first step
-8. Request approval to update edit_history.md with task ID
-9. After approval, update edit_history.md with task ID
-10. For each additional step:
-   1. Request approval to load context needed for that step
-   2. After approval, load only context needed for that step
-   3. Present implementation plan and request approval before execution
-   4. After approval, execute step
-   5. Request approval to update documentation with task ID
-   6. After approval, update documentation with task ID
-11. Request approval to mark complete or update session_cache.md
-12. After approval, mark complete or update session_cache.md
+1. Receive task → analyze minimal requirements → request approval to create/load task
+2. After approval, create/load task and analyze immediate needs
+3. Request approval to load minimal required context → load context
+4. Present implementation plan → request approval → execute
+5. Request approval to update edit_history.md with task ID → update
+6. For additional steps: repeat context loading, approval, execution, documentation cycle
+7. Request approval to mark complete/update session_cache.md → complete
+
+**All file modifications require explicit approval before execution**
 
 ### 7.2 Error Handling Flow
 
@@ -541,11 +561,24 @@ New content to replace with
 # Edit History
 *Created: [Date]*
 
-## [Date]
-### [Time] - [Task ID]: [Brief Description]
-- Modified `[file]` - [Brief changes]
-- Created `[file]` - [Brief description]
+### YYYY-MM-DD
+
+#### HH:MM - TaskID: Description
+- Fixed `file/path` - Specific technical change description
+- Created `file/path` - What was created and why  
+- Updated `file/path` - What was updated and the change made
+
+#### HH:MM - TaskID: COMPLETED - Task Name
+- Fixed `file/path` - Technical change
+- Updated `file/path` - Specific update made
 ```
+
+**Format Requirements:**
+- Date stamp: `### YYYY-MM-DD` with blank line after
+- Time entries: `#### HH:MM - TaskID: Description`
+- File-specific bullet points only with backticked file paths
+- No summary statements, meta-commentary, or impact assessments
+- Focus on technical file changes only
 
 ### 9.4 errorLog.md
 
