@@ -1,5 +1,12 @@
 # Edit History
 
+### 2025-06-04
+
+#### 06:58 - T17: Rules Maintenance - Timestamp and Chat Response Standards
+- Modified `integrated-rules-v6.4.md` - Added section 8.3 Timestamp Standards requiring timezone inclusion
+- Modified `integrated-rules-v6.4.md` - Added section 8.4 Chat Response Standards (no formatting, concise responses)
+- Modified `integrated-rules-v6.4.md` - Updated file timestamp to 2025-06-04 06:58:30 IST
+
 ### 2025-05-28
 
 #### 14:30 - T17: Rules Maintenance and Token Optimization

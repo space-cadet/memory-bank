@@ -1,6 +1,6 @@
-# Integrated Code Rules and Memory Bank System, v6.4.1 (Project Root Clarification)
+# Integrated Code Rules and Memory Bank System, v6.4.2 (Project Root Clarification)
 
-*Last Updated: May 26, 2025*
+*Last Updated: 2025-06-04 06:58:30 IST*
 
 YOU WILL KEEP IT REALLY SIMPLE, STUPID (KIRSS). IF YOU THINK A SOLUTION IS SIMPLE ENOUGH, MAKE IT EVEN SIMPLER.
 YOU WILL NEVER UPDATE ANY FILES, INCLUDING MEMORY BANK FILES, WITHOUT EXPLICIT USER APPROVAL
@@ -487,6 +487,21 @@ New content to replace with
    - Creating files without checking existence
    - Creating files without explicit user approval
    - Modifying files without explicit user approval
+
+### 8.3 Timestamp Standards
+
+When updating memory bank records:
+- Determine current system time first
+- Use format: `YYYY-MM-DD HH:MM:SS TZ` 
+- Example: `2025-06-04 06:50:08 IST`
+- Include timezone in all timestamps
+
+### 8.4 Chat Response Standards
+
+1. No text formatting (bold, italics, emojis, bullet points)
+2. Keep responses concise and direct
+3. No unnecessary step summaries or accomplishment lists
+4. Maintain balanced communication - follow instructions but correct when needed
 
 ## 9. Core File Structure Templates
 
