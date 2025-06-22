@@ -1,5 +1,29 @@
 # Edit History
 
+### 2025-06-22
+
+#### 21:51 - T17: Integrated Rules v6.7 Session Workflow Fixes
+- Created `integrated-rules-v6.7.md` - Comprehensive update addressing session cache overwriting issues
+- Updated `integrated-rules-v6.7.md` - Added Section 2.10 Session Cache Update Protocol with mandatory sequence
+- Updated `integrated-rules-v6.7.md` - Added Section 2.11 Core File Update Workflows with trigger matrix
+- Updated `integrated-rules-v6.7.md` - Enhanced Section 6.4 session management commands
+- Updated `integrated-rules-v6.7.md` - Added Section 9.5 Individual Session File Template
+- Updated `integrated-rules-v6.7.md` - Enhanced Critical Compliance Requirements with session cache violations
+- Created `memory-bank/sessions/2025-06-22-evening.md` - Session file documenting v6.7 development work
+- Updated `memory-bank/edit_history.md` - Added current session workflow improvement entries
+
+### 2025-06-08
+
+#### 01:50 - T17: Rules v6.6 Priority Structure Reorganization
+- Created `integrated-rules-v6.6.md` - Copy of v6.4 with priority-based structure
+- Updated `integrated-rules-v6.6.md` - Added Critical Compliance section at top
+- Updated `integrated-rules-v6.6.md` - Consolidated approval requirements from scattered sections
+- Updated `integrated-rules-v6.6.md` - Reorganized maintenance guidelines, moved details to templates
+- Updated `integrated-rules-v6.6.md` - Added table of contents after opening warnings
+- Updated `memory-bank/tasks/T17.md` - Added progress entries for v6.6 work
+- Updated `memory-bank/tasks.md` - Updated timestamp
+- Updated `memory-bank/edit_history.md` - Added current session entries
+
 ### 2025-06-04
 
 #### 06:58 - T17: Rules Maintenance - Timestamp and Chat Response Standards
