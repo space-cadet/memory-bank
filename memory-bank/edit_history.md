@@ -1,5 +1,14 @@
 # Edit History
 
+### 2025-07-14
+
+#### 23:55 - T18: Integrated rules redesign session
+- Created `implementation-details/integrated-rule-redesign.md` - Essential sections structure with Critical Compliance details and executable paths
+- Created `sessions/2025-07-14-night.md` - Session documentation
+- Created `tasks/T18.md` - New task for integrated rules redesign
+- Updated `tasks.md` - Added T18 to active tasks and updated timestamp
+- Updated `session_cache.md` - Current session and history
+
 ### 2025-06-22
 
 #### 21:51 - T17: Integrated Rules v6.7 Session Workflow Fixes

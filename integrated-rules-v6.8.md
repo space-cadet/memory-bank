@@ -3,9 +3,9 @@ node executable: /Users/deepak/.nvm/versions/node/v23.11.0/bin/node
 npm executable: /Users/deepak/.nvm/versions/node/v23.11.0/bin/npm
 pnpm executable: /Users/deepak/.nvm/versions/node/v23.11.0/bin/pnpm
 
-# Integrated Code Rules and Memory Bank System, v6.7 (Essential Instructions Priority)
+# Integrated Code Rules and Memory Bank System, v6.8 (Essential Instructions Priority)
 
-*Last Updated: 2025-06-22 22:30:00 IST*
+*Last Updated: 2025-07-13 21:38:43 IST*
 
 YOU WILL KEEP IT REALLY SIMPLE, STUPID (KIRSS). IF YOU THINK A SOLUTION IS SIMPLE ENOUGH, MAKE IT EVEN SIMPLER.
 YOU WILL NEVER UPDATE ANY FILES, INCLUDING MEMORY BANK FILES, WITHOUT EXPLICIT USER APPROVAL
@@ -16,15 +16,58 @@ YOU WILL GO SLOW AND STEADY. WHEN YOU THINK YOU'RE GOING SLOW, GO EVEN SLOWER.
 ## Table of Contents
 
 - [Critical Compliance Requirements](#critical-compliance-requirements-read-first)
+  - [Timestamp Standards](#timestamp-standards)
+  - [Chat Response Standards](#chat-response-standards)
+  - [Implementation Scope Control](#implementation-scope-control)
+  - [File Operation Prerequisites](#file-operation-prerequisites)
+  - [Session Cache Update Requirements](#session-cache-update-requirements)
+  - [Approval Requirements](#approval-requirements)
+  - [Maintenance Guidelines](#maintenance-guidelines)
 - [1. Unified System Purpose](#1-unified-system-purpose)
+  - [1.1 Core Implementation Philosophy](#11-core-implementation-philosophy)
+  - [1.2 Project Structure](#12-project-structure)
 - [2. Hierarchical Memory Bank Structure](#2-hierarchical-memory-bank-structure)
+  - [2.1 Overview](#21-overview)
+  - [2.2 Directory Structure](#22-directory-structure)
+  - [2.3 File Relationships](#23-file-relationships)
+  - [2.4 Individual Task Files](#24-individual-task-files)
+  - [2.5 Individual Session Files](#25-individual-session-files)
+  - [2.6 Validation Rules](#26-validation-rules)
+  - [2.7 Maintenance Guidelines](#27-maintenance-guidelines)
+  - [2.8 File Size Management Protocol](#28-file-size-management-protocol)
+  - [2.9 Session Cache Management](#29-session-cache-management)
+  - [2.10 Session Cache Update Protocol](#210-session-cache-update-protocol-mandatory)
+  - [2.11 Core File Update Workflows](#211-core-file-update-workflows)
 - [3. Integration with Development Workflow](#3-integration-with-development-workflow)
+  - [3.1 GitHub Projects Integration](#31-github-projects-integration)
+  - [3.2 YouTube Transcript Integration](#32-youtube-transcript-integration-movies-project)
 - [4. Tiered Knowledge Structure](#4-tiered-knowledge-structure)
 - [5. Documentation Decision Framework](#5-documentation-decision-framework)
+  - [5.1 Update Categories and Sequence](#51-update-categories-and-sequence)
+  - [5.2 Change Requirements](#52-change-requirements)
+  - [5.3 Maintenance Rules](#53-maintenance-rules)
 - [6. Integrated Command System](#6-integrated-command-system)
+  - [6.1 Task Management Commands](#61-task-management-commands)
+  - [6.2 Task Execution Commands](#62-task-execution-commands)
+  - [6.3 Memory Management Commands](#63-memory-management-commands)
+  - [6.4 Session Management Commands](#64-session-management-commands)
+  - [6.5 Code Implementation Commands](#65-code-implementation-commands)
 - [7. Integrated Workflows](#7-integrated-workflows)
+  - [7.1 Task-First Implementation Flow](#71-task-first-implementation-flow)
+  - [7.2 Error Handling Flow](#72-error-handling-flow)
 - [8. Technical Implementation Standards](#8-technical-implementation-standards)
+  - [8.1 XML Tag Format](#81-xml-tag-format)
+  - [8.2.0 Path Resolution](#820-path-resolution)
+  - [8.2 File Operations](#82-file-operations)
+  - [8.2.1 File Operation Prerequisites](#821-file-operation-prerequisites)
+  - [8.3 Timestamp Standards](#83-timestamp-standards)
+  - [8.4 Chat Response Standards](#84-chat-response-standards)
 - [9. Core File Structure Templates](#9-core-file-structure-templates)
+  - [9.1 tasks.md (Task Registry)](#91-tasksmd-task-registry)
+  - [9.2 session_cache.md](#92-session_cachemd)
+  - [9.3 edit_history.md](#93-edit_historymd)
+  - [9.4 errorLog.md](#94-errorlogmd)
+  - [9.5 Individual Session File Template](#95-individual-session-file-template)
 
 ## CRITICAL COMPLIANCE REQUIREMENTS (READ FIRST)
 
@@ -402,6 +445,41 @@ The Memory Bank system integrates with GitHub Projects for team collaboration an
    - Located at `implementation-details/github-integration/`
    - Complete documentation of GitHub integration
    - Templates and synchronization processes
+
+### 3.2 YouTube Transcript Integration (Movies Project)
+
+For video content creation and editing projects, the system includes efficient YouTube transcript retrieval capabilities:
+
+1. **Transcript Extraction Pipeline**:
+   - Located at `docs/yt-transcript-retrieval.md`
+   - Shell-based pipeline using yt-dlp and jq
+   - Significantly faster than MCP tool approaches
+
+2. **Technical Implementation**:
+   ```bash
+   # Extract transcript with yt-dlp
+   /Users/deepak/miniconda3/bin/python -m yt_dlp --write-auto-sub --sub-lang en --sub-format json3 --skip-download [VIDEO_URL]
+   
+   # Process with jq for clean formatting
+   cat [transcript.json3] | jq -r '.events[] | select(.tStartMs != null and .segs != null) | 
+   (([.segs[]?.utf8 // empty] | join("") | gsub("\\n"; "")) as $text |
+    if ($text | length) > 0 then
+      ((.tStartMs / 1000) as $seconds | 
+       ($seconds / 60 | floor) as $minutes | 
+       ($seconds % 60 | floor) as $secs |
+       "[" + ($minutes | tostring) + ":" + (if $secs < 10 then "0" else "" end) + ($secs | tostring) + "] " + $text)
+    else empty end)'
+   ```
+
+3. **Output Format**:
+   - Clean timestamps in [MM:SS] format
+   - Removes empty segments and duplicates
+   - Ready for integration into project documentation
+
+4. **Workflow Integration**:
+   - Use for video content analysis and documentation
+   - Store transcripts in project-specific directories
+   - Reference in implementation-details for video editing tasks
 
 The system supports rapid task execution while maintaining documentation quality and balancing immediate needs with long-term project knowledge.
 
