@@ -1,4 +1,12 @@
 # Edit History
+*Created: 2025-04-10*
+*Last Updated: 2025-07-15 14:01:31 IST*
+
+### 2025-07-15
+
+#### 13:59:27 IST - Completed T18 (Integrated Rules Redesign)
+- Updated `integrated-rules-v6.9.md` - Finalized v6.9 rules documentation
+- Created `memory-bank/versions/integrated-rules-v6.8.md` - v6.8 rules documentation saved in versions folder
 
 ### 2025-07-14
 
