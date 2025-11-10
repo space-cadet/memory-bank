@@ -1,0 +1,23 @@
+{
+  "name": "memory-bank-viewer",
+  "version": "1.0.0",
+  "description": "Single-file HTML viewer for memory bank contents with dual file discovery approaches",
+  "main": "server.js",
+  "scripts": {
+    "server": "node server.js",
+    "scan": "node generate-manifest.js"
+  },
+  "keywords": [
+    "memory-bank",
+    "viewer",
+    "markdown",
+    "chronological",
+    "task-based",
+    "topic-based"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
