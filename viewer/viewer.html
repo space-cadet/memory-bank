@@ -263,6 +263,12 @@
                 >
                     🏷️ Topic-Wise
                 </button>
+                <button
+                    class="tab-button px-4 py-2 border-b-2 border-transparent text-gray-600 font-medium hover:text-gray-900"
+                    data-tab="filecontents"
+                >
+                    📄 File Contents
+                </button>
             </div>
         </div>
 
@@ -285,6 +291,22 @@
             <div class="loading">
                 <div class="spinner"></div>
                 <p class="mt-4 text-gray-600">Loading topic-wise view...</p>
+            </div>
+        </div>
+
+        <div id="filecontentsView" class="view-container hidden">
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Select File to View:</label>
+                <select id="fileSelector" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">-- Choose a memory bank file --</option>
+                    <option value="edit_history.md">Edit History</option>
+                    <option value="session_cache.md">Session Cache</option>
+                    <option value="errorLog.md">Error Log</option>
+                </select>
+            </div>
+            <div id="fileContent" class="loading">
+                <div class="spinner"></div>
+                <p class="mt-4 text-gray-600">Loading file content...</p>
             </div>
         </div>
 
@@ -345,6 +367,19 @@
             cacheTime: 3600,
             searchDebounce: 300,
             maxSearchResults: 50,
+
+            /**
+             * Resolve file path based on current mode
+             */
+            resolvePath(filePath) {
+                // If using server mode, prepend leading slash and remove ../
+                if (appState.activeMode === 'server') {
+                    const normalized = filePath.replace(/\.\.\//g, '').replace(/^\//, '');
+                    return '/' + normalized;
+                }
+                // If using manifest mode, return relative path as-is
+                return filePath;
+            }
         };
 
         // ============================================================================
@@ -434,7 +469,9 @@
              */
             async parse(filePath) {
                 try {
-                    const response = await fetch(filePath);
+                    // Resolve path based on current mode
+                    const resolvedPath = CONFIG.resolvePath(filePath);
+                    const response = await fetch(resolvedPath);
                     if (!response.ok) {
                         throw new Error(`HTTP ${response.status}`);
                     }
@@ -792,6 +829,122 @@
         };
 
         // ============================================================================
+        // MODULE: FILE CONTENTS VIEW
+        // ============================================================================
+
+        const FileContentsView = {
+            /**
+             * Parse edit_history.md entries chronologically
+             */
+            parseEditHistory(content) {
+                const entries = [];
+                const dateRegex = /^### (\d{4}-\d{2}-\d{2})$/m;
+                const entryRegex = /^#### (\d{2}:\d{2}(?::\d{2})?(?:\s+\w+)?)\s*-\s*(.+?)$/m;
+
+                const sections = content.split(/^### /m);
+
+                for (const section of sections) {
+                    if (!section.trim()) continue;
+
+                    const lines = section.split('\n');
+                    const dateStr = lines[0].trim();
+
+                    if (!dateStr.match(/\d{4}-\d{2}-\d{2}/)) continue;
+
+                    for (let i = 1; i < lines.length; i++) {
+                        const line = lines[i];
+                        const match = line.match(/^#### (\d{2}:\d{2}(?::\d{2})?(?:\s+\w+)?)\s*-\s*(.+)$/);
+
+                        if (match) {
+                            const time = match[1].trim();
+                            const title = match[2].trim();
+                            const changes = [];
+
+                            for (let j = i + 1; j < lines.length; j++) {
+                                if (lines[j].match(/^####/)) break;
+                                if (lines[j].match(/^-\s+/)) {
+                                    changes.push(lines[j].replace(/^-\s+/, '').trim());
+                                }
+                            }
+
+                            entries.push({
+                                date: dateStr,
+                                time: time,
+                                title: title,
+                                changes: changes
+                            });
+                        }
+                    }
+                }
+
+                return entries.sort((a, b) => {
+                    const dateCompare = new Date(b.date) - new Date(a.date);
+                    if (dateCompare !== 0) return dateCompare;
+                    return b.time.localeCompare(a.time);
+                });
+            },
+
+            /**
+             * Render edit history entries
+             */
+            renderEditHistory(content) {
+                const entries = this.parseEditHistory(content);
+
+                if (entries.length === 0) {
+                    return '<div class="no-data">📭 No entries found</div>';
+                }
+
+                let html = '<div class="space-y-4">';
+                let currentDate = null;
+
+                for (const entry of entries) {
+                    if (currentDate !== entry.date) {
+                        if (currentDate !== null) {
+                            html += '</div>';
+                        }
+                        currentDate = entry.date;
+                        const dateObj = new Date(entry.date);
+                        const dateStr = dateObj.toLocaleDateString('en-US', {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                        html += `<h3 class="text-xl font-bold text-gray-900 mt-6 mb-3">${dateStr}</h3>`;
+                        html += '<div class="space-y-3">';
+                    }
+
+                    html += `
+                        <div class="bg-white p-4 rounded-lg shadow expandable cursor-pointer hover:shadow-md transition-shadow" onclick="UIController.toggleDetail(this)">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <p class="text-xs text-gray-500 font-mono">${entry.time}</p>
+                                    <p class="font-medium text-gray-900 mt-1">${entry.title}</p>
+                                </div>
+                                <span class="expand-arrow text-xl ml-4">▶</span>
+                            </div>
+                            <div class="entry-details hidden mt-3 pt-3 border-t border-gray-200">
+                                <ul class="space-y-2">
+                                    ${entry.changes.map(change => `
+                                        <li class="text-sm text-gray-700">
+                                            <span class="text-gray-500">•</span> ${change}
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if (currentDate !== null) {
+                    html += '</div>';
+                }
+                html += '</div>';
+                return html;
+            }
+        };
+
+        // ============================================================================
         // MODULE: SEARCH ENGINE
         // ============================================================================
 
@@ -957,22 +1110,24 @@
         async function loadFileListing() {
             appState.loading = true;
 
-            // Try server first
-            try {
-                const response = await fetch(CONFIG.apiBaseUrl + 'api/files', {
-                    timeout: 2000
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    appState.activeMode = 'server';
-                    UIController.showModeIndicator('Server (Dynamic)');
-                    return data.files;
+            // Only try server if we're using http protocol
+            if (window.location.protocol !== 'file:') {
+                try {
+                    const response = await fetch(CONFIG.apiBaseUrl + 'api/files', {
+                        timeout: 2000
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        appState.activeMode = 'server';
+                        UIController.showModeIndicator('Server (Dynamic)');
+                        return data.files;
+                    }
+                } catch (err) {
+                    console.log('Server not available, trying manifest...');
                 }
-            } catch (err) {
-                console.log('Server not available, trying manifest...');
             }
 
-            // Try manifest
+            // Try manifest (works with both file:// and http://)
             try {
                 const response = await fetch(CONFIG.manifestPath, {
                     timeout: 2000
@@ -984,7 +1139,7 @@
                     return data.files;
                 }
             } catch (err) {
-                console.log('Manifest not available');
+                console.log('Manifest not available:', err.message);
             }
 
             return null;
@@ -1079,6 +1234,50 @@
         }
 
         /**
+         * Render file contents view
+         */
+        async function renderFileContentsView(filename) {
+            if (!filename) {
+                document.getElementById('fileContent').innerHTML = '<div class="text-gray-500">Select a file to view</div>';
+                return;
+            }
+
+            const container = document.getElementById('fileContent');
+            container.innerHTML = '<div class="loading"><div class="spinner"></div><p class="mt-4 text-gray-600">Loading file...</p></div>';
+
+            try {
+                const resolvedPath = CONFIG.resolvePath(filename);
+                const response = await fetch(resolvedPath);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                const content = await response.text();
+
+                if (filename === 'edit_history.md') {
+                    container.innerHTML = FileContentsView.renderEditHistory(content);
+                } else {
+                    container.innerHTML = '<pre class="bg-gray-100 p-4 rounded text-sm overflow-auto"><code>' + escapeHtml(content) + '</code></pre>';
+                }
+            } catch (err) {
+                container.innerHTML = '<div class="bg-red-50 p-4 rounded border border-red-200"><p class="text-red-800">Error loading file: ' + err.message + '</p></div>';
+            }
+        }
+
+        /**
+         * Escape HTML special characters
+         */
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
+        /**
          * Perform search
          */
         function performSearch(query) {
@@ -1101,6 +1300,11 @@
             const results = SearchEngine.search(query, appState.parsedFiles, appState.indices);
 
             const container = document.getElementById(appState.activeView + 'View');
+            if (!container) {
+                console.warn('Container not found for view:', appState.activeView);
+                return;
+            }
+
             if (results.length === 0) {
                 container.innerHTML = '<div class="no-data">No results found for "' + query + '"</div>';
             } else {
@@ -1132,9 +1336,20 @@
                         renderTaskWiseView();
                     } else if (btn.dataset.tab === 'topicwise') {
                         renderTopicWiseView();
+                    } else if (btn.dataset.tab === 'filecontents') {
+                        const filename = document.getElementById('fileSelector').value;
+                        renderFileContentsView(filename);
                     }
                 });
             });
+
+            // File selector change
+            const fileSelector = document.getElementById('fileSelector');
+            if (fileSelector) {
+                fileSelector.addEventListener('change', (e) => {
+                    renderFileContentsView(e.target.value);
+                });
+            }
 
             // Search with debounce
             let searchTimeout;

@@ -1,9 +1,59 @@
 # Memory Bank Viewer - Complete Planning and Architecture
 
 *Created: 2025-11-10 18:27:15 IST*
-*Last Updated: 2025-11-10 18:55:26 IST*
+*Last Updated: 2025-11-10 19:15:38 IST*
 
 ## Session Development Log
+
+### Session 3: Phase 2 Bug Fixes and File Content Viewer (2025-11-10 19:00-19:15 IST)
+**Duration**: ~15 minutes
+**Status**: 🔄 Phase 2 In Progress
+
+**Work Completed:**
+1. **Fixed CORS Error in Approach 1**
+   - Detected file:// protocol to avoid server-only requests
+   - Falls back cleanly to manifest.json when server unavailable
+   - Works with static file:// protocol access without CORS errors
+
+2. **Fixed Path Resolution for Approach 2**
+   - Added CONFIG.resolvePath() method
+   - Converts relative paths to absolute server paths (leading slash)
+   - Normalizes paths across both approaches
+
+3. **Implemented FileContentsView Module**
+   - parseEditHistory() - Parses edit_history.md chronologically
+   - renderEditHistory() - Groups entries by date, newest-first sorting
+   - Expandable/collapsible entry details showing file changes
+   - Time-stamped entries with task IDs and descriptions
+
+4. **Added File Contents Browser Tab**
+   - New "📄 File Contents" tab in navigation
+   - Dropdown selector: edit_history.md, session_cache.md, errorLog.md
+   - Real-time file loading via CONFIG.resolvePath()
+   - Error handling for missing or unreadable files
+
+5. **Fixed Search Null Reference Error**
+   - Added container existence check before innerHTML access
+   - Prevents "can't access property innerHTML" error
+   - Graceful logging of container lookup failures
+
+6. **Enhanced Code Quality**
+   - Added escapeHtml() utility for safe content display
+   - Consistent expandable entry UI across all views
+   - Better error messages and user feedback
+
+**Files Modified:**
+- viewer/viewer.html (+230 lines, now 1373 lines total)
+
+**Testing Status:**
+- All new code paths implemented and ready for testing
+- Both approaches (static manifest and server) enhanced with fixes
+- File content viewer ready to test with edit_history.md
+
+**Next Steps:**
+- User testing of bug fixes with both approaches
+- Expand file content viewer to parse session_cache.md and errorLog.md
+- Cross-browser testing
 
 ### Session 2: Phase 1 Implementation (2025-11-10 18:27-18:55 IST)
 **Duration**: ~28 minutes
