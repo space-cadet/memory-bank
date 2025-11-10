@@ -1,0 +1,172 @@
+.task-wise-view {
+  height: 100%;
+}
+
+.view-container {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 100%;
+}
+
+.task-sidebar {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.5rem;
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.task-sidebar h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+}
+
+.task-item:hover {
+  background: #f0f0f0;
+  border-color: #007bff;
+}
+
+.task-item.active {
+  background: #007bff;
+  color: white;
+  border-color: #0056b3;
+}
+
+.task-id {
+  font-weight: 600;
+}
+
+.task-count {
+  display: inline-block;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.85rem;
+}
+
+.task-item.active .task-count {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.task-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.view-header {
+  margin-bottom: 2rem;
+}
+
+.view-header h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.75rem;
+}
+
+.view-header p {
+  margin: 0;
+  color: #666;
+  font-size: 1rem;
+}
+
+.documents-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #666;
+  background: white;
+  border: 1px dashed #ddd;
+  border-radius: 8px;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.loading,
+.error {
+  padding: 2rem;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.error {
+  color: #dc3545;
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .view-container {
+    grid-template-columns: 200px 1fr;
+    gap: 1.5rem;
+  }
+
+  .task-sidebar {
+    padding: 1rem;
+  }
+
+  .task-item {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .view-container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .task-sidebar {
+    position: static;
+  }
+
+  .task-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 0.5rem;
+  }
+
+  .task-item {
+    flex-direction: column;
+    padding: 0.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  .task-count {
+    font-size: 0.75rem;
+  }
+}

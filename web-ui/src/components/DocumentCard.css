@@ -1,0 +1,90 @@
+.document-card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.document-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #007bff;
+  transform: translateY(-2px);
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.doc-type {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.doc-title {
+  margin: 0;
+  flex: 1;
+  color: #333;
+  font-size: 1.1rem;
+  word-break: break-word;
+}
+
+.card-meta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.date {
+  font-weight: 500;
+}
+
+.word-count {
+  color: #999;
+}
+
+.doc-tasks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.task-tag {
+  display: inline-block;
+  background-color: #e3f2fd;
+  color: #007bff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.doc-path {
+  font-size: 0.85rem;
+  color: #999;
+  margin: 0;
+  word-break: break-all;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .document-card {
+    padding: 1rem;
+  }
+
+  .card-header {
+    flex-wrap: wrap;
+  }
+
+  .doc-title {
+    flex-basis: 100%;
+  }
+}
