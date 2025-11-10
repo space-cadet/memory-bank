@@ -1,9 +1,10 @@
 # Task Registry
-*Last Updated: 2025-07-15 13:59:27 IST*
+*Last Updated: 2025-11-10 18:27:15 IST*
 
 ## Active Tasks
 | ID | Title | Status | Priority | Started | Dependencies | Details |
 |----|-------|--------|----------|---------|--------------|---------|
+| T19 | Memory Bank Viewer Web Interface | 🔄 | HIGH | 2025-11-10 | - | [Details](tasks/T19.md) - Single HTML file viewer with dual file discovery approaches |
 | T18 | Integrated Rules Redesign | ✅ | HIGH | 2025-07-14 | T17 | [Details](tasks/T18.md) - Comprehensive redesign for clarity and conciseness |
 | T17 | Maintenance and Upkeep of Integrated Rules | 🔄 | MEDIUM | 2025-05-28 | T15, T16 | [Details](tasks/T17.md) - Rules maintenance, session workflow fixes, v6.7 implementation |
 | T16 | AI Consciousness Dialog Series | 🔄 | HIGH | 2025-05-26 | T15 | [Details](tasks/T16.md) - Ongoing documentation of consciousness exploration |
@@ -54,6 +55,7 @@ graph TD
     T11[T11: GitHub Integration Doc]
     T12[T12: Practical Docs Rewrite]
     T13[T13: Memory Bank CLI]
+    T19[T19: Memory Bank Viewer]
 
     T0 --> T1
     T11 --> T12
