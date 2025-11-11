@@ -1,8 +1,25 @@
 # Edit History
 *Created: 2025-04-10*
-*Last Updated: 2025-11-11 18:02:49 IST*
+*Last Updated: 2025-11-11 18:24:10 IST*
 
 ### 2025-11-11
+
+#### 18:24:10 IST - T3: Updated Task File with Session 2025-11-11 Achievements
+- Updated `tasks/T3.md` - Updated timestamp to 18:24:10 IST, status to 95% complete; added progress steps 7-8 (timezone fixes and selective init); added resolved issues section with 3 fixed items (timezone parsing, IST hardcoding, missing migration scripts); updated context with database specifications, completion status, session achievements, and next steps
+
+#### 18:24:10 IST - T13: Implemented Selective Initialization System and Updated Memory Bank
+- Updated `mb-cli/src/commands/init.js` - Added scanExistingContent(), promptForSelectiveInit(), determineComponentsToInit() functions; new flags: --core, --templates, --database, --full, --skip-existing; non-destructive behavior with [+] created / [✓] skipped indicators
+- Updated `mb-cli/src/index.js` - Added comprehensive help documentation with 7 practical examples, component definitions, behavior explanations
+- Updated `tasks/T13.md` - Updated timestamp to 18:24:10 IST, status to 85% complete, added selective initialization details
+- Updated `tasks.md` - Updated T13 entry with selective init status
+- Updated `session_cache.md` - Updated timestamp to 18:24:10 IST, T3 status to 95%, added T13 with 85% status and selective init details
+- Updated `sessions/2025-11-11-evening.md` - Added Session Part 4 (timezone fix), Session Part 5 (selective init), updated duration and focus
+
+#### 18:18:00 IST - T3: Fixed Timezone Handling and Added Migration Scripts
+- Updated `mb-cli/src/commands/init.js` - Changed getISTTimestamp() to getCurrentTimestamp() with user timezone detection; added MIGRATION_SCRIPT_FILES array; added migration script copying to init output
+- Updated `memory-bank/database/migration-scripts/convert.js` - Fixed extractDate() to strip timezone abbreviations before parsing (supports any timezone: IST, UTC, EST, PST, etc.)
+- Updated `tasks/T13.md` - Added Phase 6 (timezone fix & migration scripts) dated 2025-11-11 18:18:00 IST
+- Updated `session_cache.md` - Updated duration and T3 progress notes
 
 #### 18:02:49 IST - T13: Refactored Init.js for Code Quality and Updated Memory Bank
 - Updated `mb-cli/src/commands/init.js` - Refactored for maintainability: extracted getISTTimestamp() utility, split content generators into focused functions, added initial content to core files (tasks.md, projectbrief.md, session_cache.md, .cursorrules)

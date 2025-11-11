@@ -20,9 +20,16 @@ function extractDate(dateString) {
   if (!dateString) return null;
   
   try {
-    // Handle various date formats
-    // Examples: "April 15, 2025", "2025-04-15", "2025-04-15 12:30 UTC"
-    const date = new Date(dateString);
+    // Handle various date formats and timezone abbrevations
+    // Examples: "April 15, 2025", "2025-04-15", "2025-04-15 12:30 UTC", "2025-04-15 12:30 IST"
+    
+    let cleanedDate = dateString.trim();
+    
+    // Remove timezone abbreviations (e.g., IST, UTC, EST, PST, etc.)
+    // Pattern matches: space + 2-4 uppercase letters (optionally followed by space or end)
+    cleanedDate = cleanedDate.replace(/\s+[A-Z]{2,4}(\s|$)/g, ' ').trim();
+    
+    const date = new Date(cleanedDate);
     
     // Check if date is valid
     if (isNaN(date.getTime())) {

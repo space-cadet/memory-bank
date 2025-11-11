@@ -1,13 +1,13 @@
 # Session Cache
 *Created: 2025-11-10 18:27:15 IST*
-*Last Updated: 2025-11-11 18:02:49 IST*
+*Last Updated: 2025-11-11 18:24:10 IST*
 
 ## Current Session
 **Started**: 2025-11-11 17:20:00 IST
-**Duration**: ~2 hours 43 minutes (database migration, CLI enhancements, CLI refactoring)
+**Duration**: ~3 hours 4 minutes (database migration, CLI fixes, CLI selective init)
 **Focus Task**: T3, T13
 **Session File**: `sessions/2025-11-11-evening.md`
-**Status**: 🔄 Database Migration Complete, CLI Init Refactored
+**Status**: 🔄 Complete: T3 migration verified, T13 selective init implemented
 
 ## Overview
 - Active: 10 | Paused: 0 | Completed: 7
@@ -30,43 +30,53 @@
 ## Active Tasks
 
 ### T3: Implement Database Migration
-**Status:** 🔄 90% Complete **Priority:** HIGH
-**Started:** 2025-04-15 **Last:** 2025-11-11 17:44:17 IST
-**Context**: Database migration verification, testing, comprehensive documentation, and CLI enhancements. All 364 records successfully migrated with zero integrity issues. mb init command enhanced with proper templates, README files, existing memory bank detection, and IST timestamps. MCP server postponed to Phase 2.
-**Files**: `database/`, `mb-cli/src/commands/init.js`, `memory-bank/README.md`, `memory-bank/database/DATABASE_README.md`, `implementation-details/database-planning/`, `tasks/T3.md`
+**Status:** 🔄 95% Complete **Priority:** HIGH
+**Started:** 2025-04-15 **Last:** 2025-11-11 18:18:00 IST
+**Context**: Database migration verification complete with zero errors. Fixed timezone handling in convert.js (supports any timezone). Added migration scripts to init command. Non-destructive init command with selective initialization. MCP server postponed to Phase 2.
+**Files**: `database/`, `mb-cli/src/commands/init.js`, `memory-bank/database/migration-scripts/`, `implementation-details/database-planning/`, `tasks/T3.md`
 **Progress**:
 1. ✅ Schema creation (2025-04-15)
 2. ✅ Environment setup (2025-04-15)
 3. ✅ Conversion scripts (2025-04-15-17)
-4. ✅ Data integrity testing (2025-11-11 17:21:26 IST)
-   - 364 total records verified across 4 projects
-   - 14 tasks with 28 dependency relationships
-   - 131 edit history entries, 137 error logs
-   - Zero orphaned records, zero circular dependencies
+4. ✅ Data integrity testing (2025-11-11 17:21:26 IST) - 364 records verified
 5. ✅ Comprehensive documentation (2025-11-11 17:22:09 IST)
-   - database-implementation-plan.md (13,478 bytes, 7-part guide)
-   - Updated database_planning.md with implementation status
-   - Enhanced database_migration.md with patterns and solutions
-6. ✅ Memory Bank CLI enhancements (2025-11-11 17:44:17 IST)
-   - Fixed package.json template with proper JSON structure
-   - Added .env with SQLite configuration
-   - Added schema.prisma with Prisma setup
-   - Added pnpm-lock.yaml YAML structure
-   - Created README.md for memory-bank/ with onboarding guidance
-   - Created DATABASE_README.md for database/ directory with complete workflow
-   - Added existing memory bank detection preventing accidental overwrites
-   - Implemented --force option for intentional overwrites
-   - All timestamps using IST timezone (Asia/Kolkata)
-7. ⏸️ MCP server implementation (Postponed to Phase 2)
-8. ⏸️ LLM workflow integration (Postponed to Phase 2)
+6. ✅ CLI enhancements Phase 1 (2025-11-11 17:44:17 IST) - basic templates
+7. ✅ Timezone fix & migration scripts (2025-11-11 18:18:00 IST)
+   - Fixed convert.js to strip timezone abbreviations (any timezone supported)
+   - Updated init.js to auto-detect user's timezone
+   - Added migration scripts to init output
+8. ✅ Selective initialization system (2025-11-11 18:24:10 IST)
+   - Non-destructive by default (skips existing files)
+   - Flags: --core, --templates, --database, --full, --skip-existing
+   - Detection of partial memory banks with guidance prompts
+9. ⏸️ MCP server implementation (Postponed to Phase 2)
+
+### T13: Implement Memory Bank CLI
+**Status:** 🔄 85% Complete **Priority:** HIGH
+**Started:** 2025-05-17 **Last:** 2025-11-11 18:24:10 IST
+**Context**: mb init command now fully featured with selective initialization. Users can initialize only needed components. Non-destructive by default. Full help system with examples.
+**Files**: `mb-cli/src/commands/init.js`, `mb-cli/src/index.js`, `tasks/T13.md`
+**Progress**:
+1. ✅ CLI framework & init command Phase 1 (2025-05-18)
+2. ✅ Database templates & README files (2025-11-11 17:44)
+3. ✅ Migration scripts included (2025-11-11 18:18)
+4. ✅ Timezone-agnostic init (2025-11-11 18:18)
+5. ✅ Selective initialization system (2025-11-11 18:24)
+   - scanExistingContent() for detection
+   - determineComponentsToInit() for smart logic
+   - promptForSelectiveInit() for user guidance
+   - Comprehensive help with examples
+6. ⬜ mb task command (create, list, show, update)
+7. ⬜ mb session command (start, complete)
+8. ⬜ mb template command (list, use)
 
 ### T19: Memory Bank Viewer Web Interface
 **Status:** 🔄 In Progress **Priority:** HIGH
 **Started:** 2025-11-10 **Last:** 2025-11-10 19:15:38 IST
-**Context**: Single-file HTML viewer with dual file discovery approaches for browsing memory bank in three modes (chronological, task-wise, topic-wise). Phase 2 adds file content viewer with chronological entry browsing and bug fixes.
+**Context**: Single-file HTML viewer with dual file discovery approaches for browsing memory bank in three modes.
 **Files**: `tasks/T19.md`, `implementation-details/memory-bank-viewer.md`, `viewer/*`
 **Progress**:
-1. ✅ Complete architecture planning and design
+1. ✅ Architecture planning and design
 2. ✅ Implementation Phase 1: Core infrastructure
 3. 🔄 Implementation Phase 2: Bug fixes and file content viewer
 4. ⬜ Implementation Phase 3: Advanced features

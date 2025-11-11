@@ -59,19 +59,164 @@ const DATABASE_DIRS = [
   'migrations'
 ];
 
-// Utility: Generate IST timestamp
-function getISTTimestamp() {
+const MIGRATION_SCRIPT_FILES = [
+  'convert.js',
+  'verify.js',
+  'seed.js',
+  'migration_guide.md'
+];
+
+// Utility: Get current timestamp in user's timezone
+function getCurrentTimestamp() {
   const now = new Date();
-  const formatted = now.toLocaleString('en-IN', { 
+  const formatted = now.toLocaleString('en-US', { 
     year: 'numeric', 
     month: '2-digit', 
     day: '2-digit',
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit',
-    timeZone: 'Asia/Kolkata'
+    hour12: false
   });
-  return formatted.replace(/(\d+)\/(\d+)\/(\d+),\s(\d+):(\d+):(\d+)/, '$3-$2-$1 $4:$5:$6') + ' IST';
+  
+  // Extract timezone abbreviation - compatible with all Node versions
+  let timeZoneName = 'UTC';
+  try {
+    const formatter = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' });
+    const parts = formatter.formatToParts ? formatter.formatToParts(now) : [];
+    const tzPart = parts.find(part => part.type === 'timeZoneName');
+    if (tzPart) {
+      timeZoneName = tzPart.value;
+    }
+  } catch (e) {
+    // Fallback if Intl.DateTimeFormat doesn't support timeZoneName
+    timeZoneName = 'UTC';
+  }
+  
+  return formatted.replace(/(\d+)\/(\d+)\/(\d+),\s(\d+):(\d+):(\d+)/, '$3-$2-$1 $4:$5:$6') + ' ' + timeZoneName;
+}
+
+// Utility: Scan existing memory bank content
+function scanExistingContent(targetDir) {
+  const mbDir = path.join(targetDir, 'memory-bank');
+  
+  const scan = {
+    exists: fs.existsSync(mbDir),
+    dirsExist: [],
+    coreFilesExist: [],
+    templateFilesExist: [],
+    databaseFilesExist: [],
+    migrationScriptsExist: []
+  };
+
+  if (!scan.exists) {
+    return scan;
+  }
+
+  // Check directories
+  for (const dir of DIRS) {
+    const dirPath = path.join(targetDir, dir);
+    if (fs.existsSync(dirPath)) {
+      scan.dirsExist.push(dir);
+    }
+  }
+
+  // Check core files
+  for (const file of CORE_FILES) {
+    const filePath = path.join(mbDir, file);
+    if (fs.existsSync(filePath)) {
+      scan.coreFilesExist.push(file);
+    }
+  }
+
+  // Check template files
+  for (const file of TEMPLATE_FILES) {
+    const filePath = path.join(mbDir, 'templates', file);
+    if (fs.existsSync(filePath)) {
+      scan.templateFilesExist.push(file);
+    }
+  }
+
+  // Check database files
+  for (const file of DATABASE_FILES) {
+    const filePath = path.join(mbDir, 'database', file);
+    if (fs.existsSync(filePath)) {
+      scan.databaseFilesExist.push(file);
+    }
+  }
+
+  // Check migration scripts
+  for (const file of MIGRATION_SCRIPT_FILES) {
+    const filePath = path.join(mbDir, 'database', 'migration-scripts', file);
+    if (fs.existsSync(filePath)) {
+      scan.migrationScriptsExist.push(file);
+    }
+  }
+
+  return scan;
+}
+
+// Utility: Display scan results and prompt user
+async function promptForSelectiveInit(scan) {
+  const components = [
+    { name: 'core', label: 'Core files (tasks.md, session_cache.md, etc.)', exists: scan.coreFilesExist.length },
+    { name: 'templates', label: 'Template files', exists: scan.templateFilesExist.length },
+    { name: 'database', label: 'Database setup and migration scripts', exists: scan.databaseFilesExist.length + scan.migrationScriptsExist.length }
+  ];
+
+  console.log('\nExisting Memory Bank detected!\n');
+  console.log('Components:');
+  
+  for (const comp of components) {
+    if (comp.exists > 0) {
+      console.log(`  ✓ ${comp.label} (${comp.exists} files exist)`);
+    } else {
+      console.log(`  ⬜ ${comp.label} (missing)`);
+    }
+  }
+
+  console.log('\nOptions for selective initialization:');
+  console.log('  --full           Initialize all components (overwrites existing)');
+  console.log('  --core           Initialize only core files');
+  console.log('  --templates      Initialize only template files');
+  console.log('  --database       Initialize only database files');
+  console.log('  --skip-existing  Initialize only missing files (default)');
+  console.log('  --force          Override all existing files\n');
+}
+
+// Determine which components to initialize based on options and existing content
+function determineComponentsToInit(scan, options) {
+  const components = {
+    core: false,
+    templates: false,
+    database: false,
+    directories: true  // Always create needed directories
+  };
+
+  // If --full flag, initialize everything
+  if (options.full) {
+    return { ...components, core: true, templates: true, database: true };
+  }
+
+  // If specific components requested
+  if (options.core || options.templates || options.database) {
+    if (options.core) components.core = true;
+    if (options.templates) components.templates = true;
+    if (options.database) components.database = true;
+    return components;
+  }
+
+  // Default: skip existing, initialize missing
+  if (!scan.exists || options.skipExisting) {
+    return { ...components, core: true, templates: true, database: true };
+  }
+
+  // If memory bank exists and no flags specified
+  components.core = scan.coreFilesExist.length < CORE_FILES.length;
+  components.templates = scan.templateFilesExist.length < TEMPLATE_FILES.length;
+  components.database = (scan.databaseFilesExist.length + scan.migrationScriptsExist.length) < (DATABASE_FILES.length + MIGRATION_SCRIPT_FILES.length);
+
+  return components;
 }
 
 export async function initCommand(options) {
@@ -81,94 +226,141 @@ export async function initCommand(options) {
   console.log(`Memory Bank Initialization ${options.dryRun ? '(DRY RUN)' : ''}`);
   console.log(`Target directory: ${targetDir}\n`);
 
-  // Check if memory bank already exists
-  if (fs.existsSync(mbDir) && !options.force) {
-    const files = fs.readdirSync(mbDir);
-    if (files.length > 0) {
-      console.error('Error: Memory bank already exists at memory-bank/');
-      console.error(`Found ${files.length} existing file(s):\n`);
-      files.slice(0, 10).forEach(file => console.error(`  - ${file}`));
-      if (files.length > 10) {
-        console.error(`  ... and ${files.length - 10} more files`);
-      }
-      console.error('\nOptions:');
-      console.error('  1. Use --force to overwrite existing memory bank');
-      console.error('  2. Run init in a different directory');
-      console.error('  3. Back up and remove existing memory-bank/ directory first');
-      process.exit(1);
-    }
+  // Scan existing content
+  const scan = scanExistingContent(targetDir);
+
+  // If memory bank exists and no selective flags, show options
+  if (scan.exists && !options.force && !options.core && !options.templates && !options.database && !options.skipExisting && !options.full) {
+    await promptForSelectiveInit(scan);
+    return;
   }
 
+  // Determine which components to initialize
+  const components = determineComponentsToInit(scan, options);
+
   try {
-    // 1. Create directories
-    console.log('The following structure will be created:');
-    console.log('\nDirectories:');
-    for (const dir of DIRS) {
-      console.log(`  ${dir}/`);
-      if (!options.dryRun) {
-        await mkdir(path.join(targetDir, dir), { recursive: true });
+    console.log('The following will be initialized:\n');
+
+    // 1. Create directories (always)
+    if (components.directories) {
+      console.log('Directories:');
+      for (const dir of DIRS) {
+        const dirPath = path.join(targetDir, dir);
+        const exists = fs.existsSync(dirPath);
+        const status = exists ? '✓' : '+';
+        console.log(`  [${status}] ${dir}/`);
+        if (!options.dryRun && !exists) {
+          await mkdir(dirPath, { recursive: true });
+        }
       }
+      console.log('');
     }
 
-    // 2. Create template files
-    console.log('\nTemplate files in memory-bank/templates/:');
-    for (const file of TEMPLATE_FILES) {
-      console.log(`  ${file}`);
-      if (!options.dryRun) {
-        const filePath = path.join(targetDir, 'memory-bank', 'templates', file);
-        await writeEmptyFile(filePath);
+    // 2. Create core files
+    if (components.core) {
+      console.log('Core files in memory-bank/:');
+      for (const file of CORE_FILES) {
+        const filePath = path.join(mbDir, file);
+        const exists = fs.existsSync(filePath);
+        const status = exists ? '✓' : '+';
+        console.log(`  [${status}] ${file}`);
+        if (!options.dryRun && (!exists || options.force || options.full)) {
+          if (file === 'README.md') {
+            await writeReadmeFile(filePath);
+          } else if (file === 'tasks.md') {
+            await writeTasksFile(filePath);
+          } else if (file === 'projectbrief.md') {
+            await writeProjectBriefFile(filePath);
+          } else if (file === 'session_cache.md') {
+            await writeSessionCacheFile(filePath);
+          } else if (file === '.cursorrules') {
+            await writeCursorrulesFile(filePath);
+          } else {
+            await writeEmptyFile(filePath);
+          }
+        }
       }
+      console.log('');
     }
 
-    // 3. Create core files with content
-    console.log('\nCore files in memory-bank/:');
-    for (const file of CORE_FILES) {
-      console.log(`  ${file}`);
-      if (!options.dryRun) {
-        const filePath = path.join(targetDir, 'memory-bank', file);
-        if (file === 'README.md') {
-          await writeReadmeFile(filePath);
-        } else if (file === 'tasks.md') {
-          await writeTasksFile(filePath);
-        } else if (file === 'projectbrief.md') {
-          await writeProjectBriefFile(filePath);
-        } else if (file === 'session_cache.md') {
-          await writeSessionCacheFile(filePath);
-        } else if (file === '.cursorrules') {
-          await writeCursorrulesFile(filePath);
-        } else {
+    // 3. Create template files
+    if (components.templates) {
+      console.log('Template files in memory-bank/templates/:');
+      for (const file of TEMPLATE_FILES) {
+        const filePath = path.join(mbDir, 'templates', file);
+        const exists = fs.existsSync(filePath);
+        const status = exists ? '✓' : '+';
+        console.log(`  [${status}] ${file}`);
+        if (!options.dryRun && (!exists || options.force || options.full)) {
           await writeEmptyFile(filePath);
         }
       }
+      console.log('');
     }
 
-    // 4. Create database directories
-    console.log('\nDatabase structure in memory-bank/database/:');
-    for (const dir of DATABASE_DIRS) {
-      console.log(`  ${dir}/`);
-      if (!options.dryRun) {
-        await mkdir(path.join(targetDir, 'memory-bank', 'database', dir), { recursive: true });
-      }
-    }
-    
-    // 5. Create database files
-    console.log('\nDatabase files in memory-bank/database/:');
-    for (const file of DATABASE_FILES) {
-      console.log(`  ${file}`);
-      if (!options.dryRun) {
-        const filePath = path.join(targetDir, 'memory-bank', 'database', file);
-        if (file === 'DATABASE_README.md') {
-          await writeDatabaseReadmeFile(filePath);
-        } else {
-          await writeTemplateFile(filePath, file);
+    // 4. Create database files and directories
+    if (components.database) {
+      console.log('Database directories:');
+      for (const dir of DATABASE_DIRS) {
+        const dirPath = path.join(mbDir, 'database', dir);
+        const exists = fs.existsSync(dirPath);
+        const status = exists ? '✓' : '+';
+        console.log(`  [${status}] database/${dir}/`);
+        if (!options.dryRun && !exists) {
+          await mkdir(dirPath, { recursive: true });
         }
       }
+
+      console.log('\nDatabase files in memory-bank/database/:');
+      for (const file of DATABASE_FILES) {
+        const filePath = path.join(mbDir, 'database', file);
+        const exists = fs.existsSync(filePath);
+        const status = exists ? '✓' : '+';
+        console.log(`  [${status}] ${file}`);
+        if (!options.dryRun && (!exists || options.force || options.full)) {
+          if (file === 'DATABASE_README.md') {
+            await writeDatabaseReadmeFile(filePath);
+          } else {
+            await writeTemplateFile(filePath, file);
+          }
+        }
+      }
+
+      console.log('\nMigration scripts in memory-bank/database/migration-scripts/:');
+      for (const file of MIGRATION_SCRIPT_FILES) {
+        const filePath = path.join(mbDir, 'database', 'migration-scripts', file);
+        const exists = fs.existsSync(filePath);
+        const status = exists ? '✓' : '+';
+        console.log(`  [${status}] ${file}`);
+        if (!options.dryRun && (!exists || options.force || options.full)) {
+          const sourceFile = path.join(__dirname, '..', '..', '..', 'memory-bank', 'database', 'migration-scripts', file);
+          
+          try {
+            if (fs.existsSync(sourceFile)) {
+              const content = fs.readFileSync(sourceFile, 'utf8');
+              await writeFile(filePath, content, { flag: 'w' });
+            } else {
+              if (file === 'migration_guide.md') {
+                await writeFile(filePath, generateMigrationGuide(), { flag: 'w' });
+              } else {
+                await writeFile(filePath, `// ${file}\n// Placeholder - download from memory bank source\n`, { flag: 'w' });
+              }
+            }
+          } catch (error) {
+            console.warn(`  ⚠️  Could not copy ${file}: ${error.message}`);
+          }
+        }
+      }
+      console.log('');
     }
 
     if (options.dryRun) {
-      console.log('\nDRY RUN: No files were actually created');
+      console.log('DRY RUN: No files were actually created');
     } else {
-      console.log('\nMemory Bank initialization completed successfully!');
+      console.log('Memory Bank initialization completed successfully!');
+      if (scan.exists && !options.full && !options.force) {
+        console.log('\nLegende: [+] created | [✓] skipped (already exists)');
+      }
     }
   } catch (error) {
     console.error('Error:', error.message);
@@ -261,7 +453,7 @@ settings:
 }
 
 async function writeDatabaseReadmeFile(filePath) {
-  const timestamp = getISTTimestamp();
+  const timestamp = getCurrentTimestamp();
   const content = `# Memory Bank Database
 
 *Initialized: ${timestamp}*
@@ -330,7 +522,7 @@ database/
 }
 
 async function writeReadmeFile(filePath) {
-  const timestamp = getISTTimestamp();
+  const timestamp = getCurrentTimestamp();
   const content = `# Memory Bank Project
 
 *Initialized: ${timestamp}*
@@ -414,7 +606,7 @@ When using with an AI assistant:
 }
 
 async function writeTasksFile(filePath) {
-  const timestamp = getISTTimestamp();
+  const timestamp = getCurrentTimestamp();
   const content = `# Task Registry
 *Last Updated: ${timestamp}*
 
@@ -453,7 +645,7 @@ Context and important decisions for this task
 }
 
 async function writeProjectBriefFile(filePath) {
-  const timestamp = getISTTimestamp();
+  const timestamp = getCurrentTimestamp();
   const content = `# Project Brief
 *Last Updated: ${timestamp}*
 
@@ -497,7 +689,7 @@ async function writeProjectBriefFile(filePath) {
 }
 
 async function writeSessionCacheFile(filePath) {
-  const timestamp = getISTTimestamp();
+  const timestamp = getCurrentTimestamp();
   const content = `# Session Cache
 *Created: ${timestamp}*
 *Last Updated: ${timestamp}*
@@ -565,6 +757,92 @@ async function writeCursorrulesFile(filePath) {
 - [Best practices for this codebase]
 `;
   await writeFile(filePath, content, { flag: 'w' });
+}
+
+function generateMigrationGuide() {
+  return `# Database Migration Guide
+
+## Overview
+This directory contains scripts to migrate your markdown-based memory bank to the database system.
+
+## Migration Scripts
+
+### convert.js
+Converts existing markdown files to database entries. Handles:
+- tasks.md → Task records
+- session_cache.md → Session records
+- edit_history.md → Edit history with file modifications
+- errorLog.md → Error records with affected files
+- activeContext.md, progress.md, projectbrief.md, changelog.md
+
+Usage:
+\`\`\`bash
+node convert.js
+\`\`\`
+
+Features:
+- Automatic timezone detection from markdown timestamps
+- Multi-project support (converts example projects in examples/ directory)
+- Archived file conversion
+- Relationship mapping for task dependencies
+
+### verify.js
+Verifies database integrity after migration.
+
+Usage:
+\`\`\`bash
+node verify.js
+\`\`\`
+
+Checks:
+- Record counts across all tables
+- Orphaned records and broken references
+- Circular dependencies
+- Data consistency
+
+### seed.js
+Populates the database with sample data (optional).
+
+Usage:
+\`\`\`bash
+node seed.js
+\`\`\`
+
+## Migration Process
+
+1. Install dependencies: \`pnpm install\`
+2. Set up database: \`pnpm run migrate\`
+3. Run conversion: \`pnpm run convert\`
+4. Verify integrity: \`node verify.js\`
+5. Review and confirm data in Prisma Studio: \`pnpm run studio\`
+
+## Timezone Handling
+
+The migration scripts automatically detect and parse timestamps regardless of timezone:
+- Supports ISO format: \`2025-11-11 18:02:49 IST\`
+- Supports date strings: \`April 15, 2025\`
+- Falls back to current date if parsing fails (with warning)
+
+## Troubleshooting
+
+### Issue: "Invalid date string"
+The script encountered an unparseable date format and used the current date as fallback.
+Check your markdown files for consistent date formatting.
+
+### Issue: Missing relationships
+Ensure task IDs in your markdown match the pattern T[number] (e.g., T1, T2, T123).
+
+### Issue: Example projects not migrating
+Verify the examples/ directory structure matches expected layout.
+
+## Next Steps
+
+After successful migration:
+1. Review records in Prisma Studio
+2. Test database queries
+3. Set up MCP server if needed
+4. Begin using database-backed workflows
+`;
 }
 
 // Helper: Create empty files
