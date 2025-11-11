@@ -1,5 +1,5 @@
 # Task Registry
-*Last Updated: 2025-11-10 18:55:26 IST*
+*Last Updated: 2025-11-11 17:44:17 IST*
 
 ## Active Tasks
 | ID | Title | Status | Priority | Started | Dependencies | Details |
@@ -15,7 +15,7 @@
 | T9 | Implement Rules v6.2 Changes | 🔄 | HIGH | 2025-04-30 | T7, T8 | [Details](tasks/T9.md) |
 | T8 | Add KIRS Principle | 🔄 | HIGH | 2025-04-25 | - | [Details](tasks/T8.md) |
 | T1 | Multi-task Support | 🔄 | HIGH | 2025-04-14 | - | [Details](tasks/T1.md) |
-| T3 | Implement DB Migration | 🔄 | HIGH | 2025-04-15 | T2 | [Details](tasks/T3.md) - 90% complete, verification done, documentation created |
+| T3 | Implement DB Migration | 🔄 | HIGH | 2025-04-15 | T2 | [Details](tasks/T3.md) - Enhanced CLI: fixed package.json, added README files, detection checks, IST timestamps |
 | T4 | Optimize Rules System | 🔄 | HIGH | 2025-04-15 | T1 | [Details](tasks/T4.md) |
 | T5 | Optimize Rules v4 | 🔄 | MEDIUM | 2025-04-17 | - | [Details](tasks/T5.md) |
 
