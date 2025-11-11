@@ -14,3 +14,9 @@ Thumbs.db
 
 # Node modules (if any)
 node_modules/
+
+# log folders
+
+console-logs/
+memory-bank/console-logs/
+memory-bank/memory-bank/viewer-logs/
