@@ -4,7 +4,7 @@
 ## Active Tasks
 | ID | Title | Status | Priority | Started | Dependencies | Details |
 |----|-------|--------|----------|---------|--------------|---------|
-| T20 | Memory Bank Database Parser | 🔄 | MEDIUM | 2025-11-12 | - | [Details](tasks/T20.md) - Phase 1 complete: edit_history.md parser with SQLite database and query tool |
+| T20 | Memory Bank Database Parser | ✅ | MEDIUM | 2025-11-12 | - | [Details](tasks/T20.md) - Phase 1+2 complete: edit_history.md and tasks.md parsers operational |
 | T19 | Memory Bank Viewer Web Interface | 🔄 | HIGH | 2025-11-10 | - | [Details](tasks/T19.md) - Phase 2 in progress: File content viewer, bug fixes, path resolution (1373 lines) |
 | T18 | Integrated Rules Redesign | ✅ | HIGH | 2025-07-14 | T17 | [Details](tasks/T18.md) - Comprehensive redesign for clarity and conciseness |
 | T17 | Maintenance and Upkeep of Integrated Rules | 🔄 | MEDIUM | 2025-05-28 | T15, T16 | [Details](tasks/T17.md) - Rules maintenance, session workflow fixes, v6.7 implementation |

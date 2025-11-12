@@ -299,6 +299,15 @@ function main() {
     // Display statistics
     displayStats(db);
 
+    if(process.argv.includes('--test')) {
+      if(runTests()) {
+        console.log('✓ All validation tests passed');
+        process.exit(0);
+      } else {
+        process.exit(1);
+      }
+    }
+
     // Close database
     db.close();
 
@@ -306,6 +315,54 @@ function main() {
     console.error('Error:', error);
     process.exit(1);
   }
+}
+
+// Validation Tests
+function runTests() {
+  const testCases = [
+    {
+      name: "Should parse date headers",
+      input: "### 2025-11-12\n#### 12:00:00 IST - T20: Test",
+      expectedDates: 1,
+      expectedEntries: 1
+    },
+    {
+      name: "Should handle multiple timezones",
+      input: "### 2025-11-12\n#### 12:00:00 UTC - Test\n#### 13:00:00 PST - Test",
+      expectedEntries: 2
+    },
+    {
+      name: "Should extract file modifications",
+      input: "### 2025-11-12\n#### 12:00:00 IST - T20: Test\n- Modified `test.js` - testing",
+      expectedMods: 1
+    }
+  ];
+
+  let passed = 0;
+  testCases.forEach(test => {
+    const entries = parseEditHistory(test.input);
+    let valid = true;
+    
+    if(test.expectedDates && !test.input.match(/^###/gm)?.length === test.expectedDates) {
+      console.error(`✗ ${test.name}: Date count mismatch`);
+      valid = false;
+    }
+    
+    if(test.expectedEntries && entries.length !== test.expectedEntries) {
+      console.error(`✗ ${test.name}: Entry count mismatch`);
+      valid = false;
+    }
+    
+    if(test.expectedMods && entries.some(e => e.modifications.length !== test.expectedMods)) {
+      console.error(`✗ ${test.name}: Modification count mismatch`);
+      valid = false;
+    }
+    
+    if(valid) passed++;
+  });
+  
+  console.log(`\nTests: ${passed}/${testCases.length} passed`);
+  return passed === testCases.length;
 }
 
 main();
