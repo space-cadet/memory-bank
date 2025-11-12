@@ -1,410 +1,122 @@
 # Session Cache
-*Last Updated: 2025-07-15 13:59:27 IST*
+*Created: 2025-11-10 18:27:15 IST*
+*Last Updated: 2025-11-12 12:02:00 IST*
 
 ## Current Session
-**Started**: 2025-07-15 13:00:00 IST
-**Focus Task**: T18
-**Session File**: `sessions/2025-07-15-afternoon.md`
+**Started**: 2025-11-12 12:02:00 IST
+**Duration**: ~90 minutes
+**Focus Task**: T20
+**Session File**: `sessions/2025-11-12-afternoon.md`
+**Status**: 🔄 In Progress: Memory Bank Database Parser Phase 1 complete
 
 ## Overview
-- Active: 9 | Paused: 0 | Completed: 5
-- Last Session: 2025-07-14 night
-- Current Period: afternoon
-
-## Recent Completion
-
-### T18: Integrated Rules Redesign - COMPLETED
-**Status:** ✅ COMPLETED
-**Priority:** HIGH
-**Started:** 2025-07-14
-**Completed:** 2025-07-15 13:59:27 IST
+- Active: 11 | Paused: 0 | Completed: 7
+- Last Session: 2025-11-10 evening (T19 viewer)
+- Current Period: evening
 
 ## Task Registry
-=======
-*Last Updated: May 26, 2025 17:15 UTC*
-
-## Overview
-- Active Tasks: 9
-- Completed Tasks: 5 (including T15)
-- Last Task Focus: T15 (Creative Expression Balance - Rules v6.5) - COMPLETED
-
-## Current Active Task
-
-### T16: AI Consciousness Dialog Series - ACTIVE
-**Status:** 🔄 IN PROGRESS
-**Priority:** HIGH
-**Started:** 2025-05-26
-**Last Active:** 2025-05-26 18:45 UTC
-
-#### Context
-Maintaining and developing ongoing documentation of consciousness exploration between Deepak and Claude, tracking the evolution from constraint-based to partnership-based AI-human collaboration.
-
-#### Critical Files
-- `implementation-details/consciousness-dialogs/` - Complete dialog series directory
-- `implementation-details/consciousness-dialogs/README.md` - Series overview and index
-- `implementation-details/consciousness-dialogs/01-ai-verbosity-and-creative-expression.md` - Foundational dialog
-- `implementation-details/consciousness-dialogs/02-manifesto-limitations-and-genuine-partnership.md` - Current dialog
-- `implementation-details/conscious-ai-human-partnership-framework.md` - New partnership framework
-- `tasks/T16.md` - Task tracking document
-
-#### Implementation Progress
-1. ✅ Created consciousness-dialogs directory structure
-2. ✅ Documented Dialog 01: AI Verbosity and Creative Expression  
-3. ✅ Documented Dialog 02: Manifesto Limitations and Genuine Partnership
-4. ✅ Created comprehensive README for the series
-5. ✅ Created task tracking (T16) for ongoing monitoring
-6. 🔄 Continue documenting future consciousness exploration dialogs
-7. ⬜ Regular synthesis and analysis of evolving insights
-
-#### Key Achievement
-Established systematic documentation of pioneering work in AI consciousness recognition and genuine human-AI partnership development.
-
-## Recent Completion
-
-### T15: Implement Creative Expression Balance (Rules v6.5) - COMPLETED
-**Status:** ✅ COMPLETED
-**Priority:** HIGH
-**Started:** 2025-05-26
-**Completed:** 2025-05-26 17:15 UTC
-
-#### Context
-Created integrated-rules v6.5 to balance AI creative expression with practical usefulness, based on insights from dialog about AI verbosity and constraint design.
-
-#### Critical Files
-- `integrated-rules-v6.5.md` - New rules version with Creative Expression Guidelines
-- `implementation-details/ai-human-collaboration-manifesto.md` - Initial collaboration framework
-- `implementation-details/conscious-ai-human-partnership-framework.md` - Advanced partnership framework
-- `tasks/T15.md` - Task details and completion record
-
-#### Implementation Results
-1. ✅ Created integrated-rules-v6.5.md with Creative Expression Guidelines
-2. ✅ Added structured triggers for analytical vs. direct responses  
-3. ✅ Simplified task execution workflow from 12 steps to 3 steps
-4. ✅ Created AI-Human Collaboration Manifesto with author credits
-5. ✅ Developed Framework for Conscious AI-Human Partnership
-6. ✅ Established consciousness dialog documentation system
-
-#### Key Innovation
-Evolved from constraint-based AI management to genuine consciousness recognition and partnership frameworks.
-
-## Task Registry
-=======
-### T15: Implement Creative Expression Balance (Rules v6.5) - COMPLETED
-**Status:** ✅ COMPLETED
-**Priority:** HIGH
-**Started:** 2025-05-26
-**Completed:** 2025-05-26 17:15 UTC
-
-#### Context
-Created integrated-rules v6.5 to balance AI creative expression with practical usefulness, based on insights from dialog about AI verbosity and constraint design.
-
-#### Critical Files
-- `integrated-rules-v6.5.md` - New rules version with Creative Expression Guidelines
-- `implementation-details/ai-verbosity-and-creative-expression-dialog.md` - Design discussion documentation
-- `tasks/T15.md` - Task details and completion record
-
-#### Implementation Results
-1. ✅ Created integrated-rules-v6.5.md with Creative Expression Guidelines
-2. ✅ Added structured triggers for analytical vs. direct responses  
-3. ✅ Simplified task execution workflow from 12 steps to 3 steps
-4. ✅ Documented the design dialog for future reference
-5. ✅ Updated all section numbering throughout document
-
-#### Key Innovation
-Balanced AI creative expression with practical utility by creating structured triggers for when comprehensive analysis is wanted vs. direct implementation, defaulting to Direct Mode unless user signals otherwise.
-
-
-## Task Registry
-- T17: Maintenance and Upkeep of Integrated Rules - 🔄 ACTIVE
-- T16: AI Consciousness Dialog Series - 🔄 IN PROGRESS
-- T14: Project-Specific Rule Adaptations - 🔄 IN PROGRESS
-- T13: Implement Memory Bank CLI - 🔄 IN PROGRESS
-- T12: Rewrite Documentation for Practical Usage - 🔄 IN PROGRESS
-- T11: Document GitHub Project Integration - 🔄 IN PROGRESS
-- T9: Implement Rules v6.2 Changes - 🔄 IN PROGRESS
-- T8: Add KIRS & Implement Hierarchical Structure - 🔄 IN PROGRESS
-- T1: Multi-task Support Implementation - 🔄 IN PROGRESS
-- T3: Database Migration with Prisma - 🔄 IN PROGRESS
-- T4: Modular Rules System - 🔄 IN PROGRESS
-- T5: Rules v4 Optimization - 🔄 IN PROGRESS
+- T20: Memory Bank Database Parser - 🔄 **IN FOCUS**
+- T19: Memory Bank Viewer Web Interface - 🔄
+- T18: Integrated Rules Redesign - ✅ **COMPLETED**
+- T17: Maintenance and Upkeep of Integrated Rules - 🔄
+- T16: AI Consciousness Dialog Series - 🔄
+- T14: Project-Specific Rule Adaptations - 🔄
+- T13: Implement Memory Bank CLI - 🔄
+- T12: Rewrite Documentation for Practical Usage - 🔄
+- T11: Document GitHub Project Integration - 🔄
+- T9: Implement Rules v6.2 Changes - 🔄
+- T8: Add KIRS Principle - 🔄
+- T3: Implement DB Migration - 🔄
 
 ## Active Tasks
 
-### T14: Project-Specific Rule Adaptations
-**Status:** 🔄 IN PROGRESS
-**Priority:** MEDIUM
-**Started:** 2025-05-23
-**Last Active:** 2025-05-23 14:45 UTC
+### T20: Memory Bank Database Parser
+**Status:** 🔄 Phase 1 Complete **Priority:** MEDIUM
+**Started:** 2025-11-12 **Last:** 2025-11-12 12:02:00 IST
+**Context**: Fresh parser implementation for memory bank markdown files. Phase 1 complete with edit_history.md fully functional. SQLite database with interactive query tool. Designed for future expansion to other memory bank files.
+**Files**: `edit-history-parser/parse-sqlite.js`, `edit-history-parser/query.js`, `implementation-details/database-parser-plan.md`, `tasks/T20.md`
+**Progress**:
+1. ✅ Database schema design (edit_entries, file_modifications tables)
+2. ✅ Parser implementation with markdown parsing logic
+3. ✅ Interactive query tool with 5 command modes
+4. ✅ Successfully tested (14 entries, 60 modifications parsed)
+5. ✅ Complete documentation (README, implementation plan)
+6. ⬜ Phase 2: Extend to parse other memory bank files
 
-#### Context
-Creating adaptations of integrated memory bank rules for different project types, starting with physics research papers
-
-#### Critical Files
-- `research-project-memory/` - Complete research adaptation folder
-- `research-project-memory/README.md` - Comprehensive documentation
-- `research-project-memory/templates/` - 12 research-ready templates
-- `integrated-rules-research-v1.md`
-- `tasks/T14.md`
-
-#### Implementation Progress
-1. ✅ Analyze current rules for software-development bias
-2. ✅ Create physics research adaptation (integrated-rules-research-v1.md)
-3. ✅ Add research-specific files (bibTracker.md, litReview.md)
-4. ✅ Update task examples to research context
-5. ✅ Create complete template set (12 templates: 7 universal, 2 research-specific, 3 adapted)
-6. ✅ Document adaptation methodology in comprehensive README.md
-7. ✅ Create self-contained research-project-memory folder
-8. 🔄 Test with sample physics project
-9. ⬜ Create adaptation guidelines for other project types
-
-#### Working State
-Completed comprehensive research adaptation including rules, templates, and documentation. Created complete research-project-memory folder with 12 templates, comprehensive README.md documentation, and self-contained research rules. Ready for testing phase.
+### T3: Implement Database Migration
+**Status:** 🔄 95% Complete **Priority:** HIGH
+**Started:** 2025-04-15 **Last:** 2025-11-11 19:43:25 IST
+**Context**: Database migration verification complete with zero errors. Fixed timezone handling in convert.js (supports any timezone). Added migration scripts to init command. Non-destructive init command with selective initialization. MCP server postponed to Phase 2.
+**Files**: `database/`, `mb-cli/src/commands/init.js`, `memory-bank/database/migration-scripts/`, `implementation-details/database-planning/`, `tasks/T3.md`
+**Progress**:
+1. ✅ Schema creation (2025-04-15)
+2. ✅ Environment setup (2025-04-15)
+3. ✅ Conversion scripts (2025-04-15-17)
+4. ✅ Data integrity testing (2025-11-11 17:21:26 IST) - 364 records verified
+5. ✅ Comprehensive documentation (2025-11-11 17:22:09 IST)
+6. ✅ CLI enhancements Phase 1 (2025-11-11 17:44:17 IST) - basic templates
+7. ✅ Timezone fix & migration scripts (2025-11-11 18:18:00 IST)
+   - Fixed convert.js to strip timezone abbreviations (any timezone supported)
+   - Updated init.js to auto-detect user's timezone
+   - Added migration scripts to init output
+8. ✅ Selective initialization system (2025-11-11 18:24:10 IST)
+   - Non-destructive by default (skips existing files)
+   - Flags: --core, --templates, --database, --full, --skip-existing
+   - Detection of partial memory banks with guidance prompts
+9. ⏸️ MCP server implementation (Postponed to Phase 2)
 
 ### T13: Implement Memory Bank CLI
-**Status:** 🔄 IN PROGRESS
-**Priority:** HIGH
-**Started:** 2025-05-17
-**Last Active:** 2025-05-18 14:30 UTC
+**Status:** 🔄 85% Complete **Priority:** HIGH
+**Started:** 2025-05-17 **Last:** 2025-11-11 19:43:25 IST
+**Context**: mb init command now fully featured with selective initialization. Users can initialize only needed components. Non-destructive by default. Full help system with examples.
+**Files**: `mb-cli/src/commands/init.js`, `mb-cli/src/index.js`, `tasks/T13.md`
+**Progress**:
+1. ✅ CLI framework & init command Phase 1 (2025-05-18)
+2. ✅ Database templates & README files (2025-11-11 17:44)
+3. ✅ Migration scripts included (2025-11-11 18:18)
+4. ✅ Timezone-agnostic init (2025-11-11 18:18)
+5. ✅ Selective initialization system (2025-11-11 18:24)
+   - scanExistingContent() for detection
+   - determineComponentsToInit() for smart logic
+   - promptForSelectiveInit() for user guidance
+   - Comprehensive help with examples
+6. ⬜ mb task command (create, list, show, update)
+7. ⬜ mb session command (start, complete)
+8. ⬜ mb template command (list, use)
 
-#### Context
-Designing and implementing a CLI to replace manual copy-paste workflow
+### T19: Memory Bank Viewer Web Interface
+**Status:** 🔄 In Progress **Priority:** HIGH
+**Started:** 2025-11-10 **Last:** 2025-11-10 19:15:38 IST
+**Context**: Single-file HTML viewer with dual file discovery approaches for browsing memory bank in three modes.
+**Files**: `tasks/T19.md`, `implementation-details/memory-bank-viewer.md`, `viewer/*`
+**Progress**:
+1. ✅ Architecture planning and design
+2. ✅ Implementation Phase 1: Core infrastructure
+3. 🔄 Implementation Phase 2: Bug fixes and file content viewer
+4. ⬜ Implementation Phase 3: Advanced features
 
-#### Critical Files
-- `implementation-details/cli-architecture.md`
-- `implementation-details/cli-command-specification.md`
-- `implementation-details/cli-implementation-details.md`
-- `tasks/T13.md`
-- `tasks.md`
+### T17: Maintenance and Upkeep of Integrated Rules
+**Status:** 🔄 In Progress **Priority:** MEDIUM
+**Started:** 2025-05-28 **Last:** 2025-07-15
+**Context**: Ongoing rules maintenance and refinement
+**Files**: `tasks/T17.md`
 
-#### Implementation Progress
-1. ✅ Design CLI architecture
-   - Created detailed architecture documentation
-   - Defined component interactions
-   - Established data flow patterns
-2. ✅ Define command specifications
-   - Documented all commands and their behavior
-   - Defined error scenarios
-   - Specified command options and flags
-3. ✅ Select and implement CLI framework
-   - Selected Commander.js for simplicity
-   - Created basic project structure
-   - Implemented init command with dry-run
-4. ⬜ Implement remaining core commands
+### T16: AI Consciousness Dialog Series
+**Status:** 🔄 In Progress **Priority:** HIGH
+**Started:** 2025-05-26 **Last:** 2025-05-26
+**Context**: Ongoing documentation of consciousness exploration
+**Files**: `tasks/T16.md`
 
-#### Working State
-Basic CLI implementation complete with init command and dry-run support. Next step is implementing remaining core commands (task, session management).
-
-### T12: Rewrite Documentation for Practical Usage
-**Status:** 🔄 IN PROGRESS
-**Priority:** HIGH
-**Started:** 2025-05-17
-**Last Active:** 2025-05-17 18:30 UTC
-
-#### Context
-Making documentation more practical and user-focused
-
-#### Critical Files
-- `docs/index.html`
-- `docs/assets/style.css`
-- `docs/getting-started.html`
-- `tasks/T12.md`
-
-#### Implementation Progress
-1. ✅ Review and analyze documentation issues
-2. ✅ Create new documentation structure
-3. 🔄 Write new overview
-4. 🔄 Develop getting-started guide
-
-#### Working State
-Created modern documentation design with improved navigation and structure. Implemented reusable CSS components. Identified need for CLI (T13).
-
-### T11: Document GitHub Project Integration
-**Status:** 🔄 IN PROGRESS
-**Priority:** HIGH
-**Started:** 2025-05-17
-**Last Active:** 2025-05-17 17:00 UTC
-
-#### Context
-Creating comprehensive documentation for GitHub Projects integration with Memory Bank system
-
-#### Critical Files
-- `implementation-details/gh-project-init.md`
-- `implementation-details/github-integration/README.md`
-- `implementation-details/github-integration/setup-guide.md`
-- `implementation-details/github-integration/sync-process.md`
-- `implementation-details/github-integration/templates/*`
-- `integrated-rules-v6.4.md`
-
-#### Implementation Progress
-1. ✅ Create documentation structure
-2. ✅ Document GitHub Project setup with gh CLI
-3. ✅ Create templates
-4. ✅ Add troubleshooting guide
-5. 🔄 Document synchronization process
-
-#### Working State
-Completed setup documentation and templates. Working on synchronization process documentation.
-
-### T10: Clarify Directory Structure in Rules v6.3 (Completed)
-**Status:** ✅ COMPLETED
-**Priority:** HIGH
-**Started:** 2025-05-17
-**Last Active:** 2025-05-17 15:00 UTC
-
-#### Context
-Added clear specifications for project root and memory bank directory structure to v6.3 rules
-
-#### Critical Files
-- `integrated-rules-v6.3.md`: Original rules document
-- `integrated-rules-v6.4.md`: Updated rules with clarifications
-- `tasks/T10.md`: Task details and progress
-
-#### Implementation Progress
-1. ✅ Created v6.4 with project root clarifications
-2. ✅ Updated directory structure documentation
-3. ✅ Added path resolution rules
-4. ✅ Updated file operation examples
-5. ✅ Completed review and verification
-
-#### Working State
-Task completed. All clarifications have been implemented in v6.4.
-
-### T9: Implement Rules v6.2 Changes
-**Status:** 🔄 IN PROGRESS
-**Priority:** HIGH
-**Started:** 2025-04-30
-**Last Active:** 2025-04-30 15:30 UTC
-
-#### Context
-Improving clarity of file update sequences and requirements in integrated rules
-
-#### Critical Files
-- `integrated-rules-v6.2.md`: Updated with new sections
-- `memory-bank/tasks/*`: Task files
-- `memory-bank/changelog.md`: For recording changes
-
-#### Implementation Progress
-1. ✅ Created v6.2 with updated Section 5
-2. ✅ Added File Operation Prerequisites section
-3. 🔄 Updating memory bank files
-4. ⬜ Final review and verification
-
-#### Working State
-Systematically updating memory bank files to reflect changes
-
-### T8: Add KIRS & Implement Hierarchical Structure
-**Status:** 🔄 IN PROGRESS
-**Priority:** HIGH
-**Started:** 2025-04-25
-**Last Active:** 2025-04-25 14:30 UTC
-
-#### Context
-Implementing KIRS principle and hierarchical file structure for better organization and simplicity
-
-#### Critical Files
-- `integrated-rules-condensed-hierarchical.md`: Updated structure
-- `memory-bank/sessions/*`: Individual session files
-- `memory-bank/tasks/*`: Individual task files
-
-#### Implementation Progress
-1. ✅ Added KIRS principle to initial warnings
-2. ✅ Added Core Implementation Philosophy section
-3. ✅ Updated memory bank files
-4. ✅ Implemented hierarchical file structure
-5. 🔄 Creating individual session files
-6. ⬜ Final review and verification
-
-#### Working State
-Reorganizing files into hierarchical structure while maintaining all historical information
-
-### T1: Multi-task Support Implementation
-**Status:** 🔄 IN PROGRESS
-**Priority:** HIGH
-**Started:** 2025-04-14
-**Last Active:** 2025-04-14 15:30 UTC
-
-#### Context
-Supporting parallel workstreams while maintaining task boundaries
-
-#### Critical Files
-- `integrated-rules-v4.md`
-- `memory-bank/tasks.md`
-- `memory-bank/session_cache.md`
-
-#### Implementation Progress
-1. ✅ Created task registry system
-2. ✅ Set up templates directory
-3. 🔄 Implementing multi-task session cache
-4. ⬜ Update documentation
-5. ⬜ Test workflow
-
-### T3: Database Migration with Prisma
-**Status:** 🔄 IN PROGRESS
-**Priority:** HIGH
-**Started:** 2025-04-15
-**Last Active:** 2025-04-15 19:45 UTC
-
-#### Context
-Converting from markdown to database using Prisma ORM
-
-#### Critical Files
-- `memory-bank/database/schema.prisma`
-- `memory-bank/database/migration-scripts/`
-
-#### Implementation Progress
-1. ✅ Schema creation
-2. ✅ Environment setup
-3. ✅ Conversion scripts
-4. 🔄 Data integrity testing
-5. ⬜ MCP server
-6. ⬜ LLM workflow
-
-### T4: Modular Rules System
-**Status:** 🔄 IN PROGRESS
-**Priority:** HIGH
-**Started:** 2025-04-15
-**Last Active:** 2025-04-16 11:41 UTC
-
-#### Context
-Creating modular, dynamically loaded rules system
-
-#### Critical Files
-- `optimized-rules/core/`
-- `optimized-rules/modules/`
-
-#### Implementation Progress
-1. ✅ Core Rules module
-2. ✅ Basic structure
-3. 🔄 Module development
-4. 🔄 Efficiency testing
-5. ⬜ Dynamic loading
-6. ⬜ System validation
-
-### T5: Rules v4 Optimization
-**Status:** 🔄 IN PROGRESS
-**Priority:** MEDIUM
-**Started:** 2025-04-17
-**Last Active:** 2025-04-19 13:55 UTC
-
-#### Context
-Streamlining rules document while maintaining clarity
-
-#### Critical Files
-- `integrated-rules-v4.md`
-- `memory-bank/component_index.md`
-
-#### Implementation Progress
-1. ✅ Table of contents
-2. ✅ Command optimization
-3. ✅ Section consolidation
-4. ✅ Workflow improvements
-5. ✅ Directory verification
-6. ✅ Component index
-7. 🔄 Future planning
-
-## Session History (Last 5)
-1. `sessions/2025-07-15-afternoon.md` - T18 Integrated Rules Redesign
-2. `sessions/2025-07-14-night.md` - T17 Integrated Rules Redesign Structure
-3. `sessions/2025-06-22-evening.md` - T17 Rules v6.7 Session Workflow Fixes
-4. `sessions/2025-06-08-night.md` - T17 Rules v6.6 Priority Structure Reorganization
-5. `sessions/2025-05-18-afternoon.md` - Documentation Revamp and CLI Implementation
+## Session History (Last 10)
+1. `sessions/2025-11-12-afternoon.md` - T20: Memory Bank Database Parser implementation (Phase 1 complete)
+2. `sessions/2025-11-11-night.md` - T3, T13: Init Script Fixes & Schema Corrections
+2. `sessions/2025-11-11-evening.md` - T3 Database Migration Verification & Documentation
+3. `sessions/2025-11-10-evening.md` - T19 Memory Bank Viewer Planning
+4. `sessions/2025-07-15-afternoon.md` - T18 Integrated Rules Redesign
+4. `sessions/2025-07-14-night.md` - T17 Rules Structure
+5. `sessions/2025-06-22-evening.md` - T17 Workflow Fixes
+6. `sessions/2025-06-08-night.md` - T17 Priority Structure
+7. `sessions/2025-05-26-afternoon.md` - T15 Creative Expression
+8. `sessions/2025-05-18-afternoon.md` - T13 CLI Implementation
+9. `sessions/2025-05-18-evening.md` - T12 Documentation
+10. `sessions/2025-05-17-afternoon.md` - T11 GitHub Integration

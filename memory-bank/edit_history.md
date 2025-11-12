@@ -1,6 +1,145 @@
 # Edit History
 *Created: 2025-04-10*
-*Last Updated: 2025-07-15 14:01:31 IST*
+*Last Updated: 2025-11-12 12:02:00 IST*
+
+### 2025-11-12
+
+#### 12:02:00 IST - T20: Memory Bank Database Parser - Phase 1 Implementation
+- Created `edit-history-parser/schema.prisma` - Prisma schema definition for reference (two-table relational model)
+- Created `edit-history-parser/package.json` - Node.js project configuration with better-sqlite3 dependency
+- Created `edit-history-parser/parse-sqlite.js` - Main parser script with markdown parsing logic, date/entry/modification extraction, transaction-based inserts
+- Created `edit-history-parser/query.js` - Interactive query tool with stats, all, task, files, and date command modes
+- Created `edit-history-parser/README.md` - Comprehensive documentation with setup, usage, examples, and implementation details
+- Created `edit-history-parser/package-sqlite.json` - Alternative package configuration for SQLite-only approach
+- Created `implementation-details/database-parser-plan.md` - Implementation plan documenting parser structure, database schema, and future expansion plans
+- Created `tasks/T20.md` - Task tracking file with completion criteria, progress tracking, and technical context
+- Updated `tasks.md` - Added T20 to active tasks registry with Phase 1 status
+- Created `sessions/2025-11-12-afternoon.md` - Session documentation with focus task, progress made, files modified, and key decisions
+- Updated `session_cache.md` - Added T20 to task registry and active tasks, updated current session, prepended session history entry
+
+### 2025-11-11
+
+#### 19:43:25 IST - T3, T13: Real-World Integration Testing and Schema Validation
+- Updated `tasks/T3.md` - Added progress step 9: real-world integration testing in new project, verified automation works end-to-end, identified schema/convert.js alignment issues
+- Updated `tasks/T13.md` - Added progress step 9: real-world testing in production scenario, confirmed init --database works correctly, identified Prisma model field mismatches
+- Updated `tasks.md` - Updated T3 and T13 registry entries with real-world testing status and schema validation notes
+- Updated `implementation-details/cli-implementation-details.md` - Added Session 3 work section documenting integration testing in new project directory
+- Updated `implementation-details/database-planning/database-implementation-plan.md` - Added Part 8 section with comprehensive real-world testing results, issues discovered, and Phase 2 recommendations
+- Updated `sessions/2025-11-11-night.md` - Updated to reflect real-world integration testing work and schema validation findings
+- Updated `session_cache.md` - Updated timestamp and session status to reflect completion of testing session
+
+#### 19:38:34 IST - T3, T13: Init Script Fixes, Schema Corrections, Database Setup Automation
+- Updated `mb-cli/src/commands/init.js` - Added confirmation prompt with correct target directory display, embedded migration script generation functions, automated database setup with non-interactive pnpm/migration flow, schema field correction (rootPath→path), setupDatabase function with source script copying
+
+#### 18:24:10 IST - T3: Updated Task File with Session 2025-11-11 Achievements
+- Updated `tasks/T3.md` - Updated timestamp to 18:24:10 IST, status to 95% complete; added progress steps 7-8 (timezone fixes and selective init); added resolved issues section with 3 fixed items (timezone parsing, IST hardcoding, missing migration scripts); updated context with database specifications, completion status, session achievements, and next steps
+
+#### 18:24:10 IST - T13: Implemented Selective Initialization System and Updated Memory Bank
+- Updated `mb-cli/src/commands/init.js` - Added scanExistingContent(), promptForSelectiveInit(), determineComponentsToInit() functions; new flags: --core, --templates, --database, --full, --skip-existing; non-destructive behavior with [+] created / [✓] skipped indicators
+- Updated `mb-cli/src/index.js` - Added comprehensive help documentation with 7 practical examples, component definitions, behavior explanations
+- Updated `tasks/T13.md` - Updated timestamp to 18:24:10 IST, status to 85% complete, added selective initialization details
+- Updated `tasks.md` - Updated T13 entry with selective init status
+- Updated `session_cache.md` - Updated timestamp to 18:24:10 IST, T3 status to 95%, added T13 with 85% status and selective init details
+- Updated `sessions/2025-11-11-evening.md` - Added Session Part 4 (timezone fix), Session Part 5 (selective init), updated duration and focus
+
+#### 18:18:00 IST - T3: Fixed Timezone Handling and Added Migration Scripts
+- Updated `mb-cli/src/commands/init.js` - Changed getISTTimestamp() to getCurrentTimestamp() with user timezone detection; added MIGRATION_SCRIPT_FILES array; added migration script copying to init output
+- Updated `memory-bank/database/migration-scripts/convert.js` - Fixed extractDate() to strip timezone abbreviations before parsing (supports any timezone: IST, UTC, EST, PST, etc.)
+- Updated `tasks/T13.md` - Added Phase 6 (timezone fix & migration scripts) dated 2025-11-11 18:18:00 IST
+- Updated `session_cache.md` - Updated duration and T3 progress notes
+
+#### 18:02:49 IST - T13: Refactored Init.js for Code Quality and Updated Memory Bank
+- Updated `mb-cli/src/commands/init.js` - Refactored for maintainability: extracted getISTTimestamp() utility, split content generators into focused functions, added initial content to core files (tasks.md, projectbrief.md, session_cache.md, .cursorrules)
+- Created `mb-cli/src/commands/init.js.backup` - Backup of original version before refactoring
+- Updated `tasks/T13.md` - Updated timestamp, status (75% complete), added refactoring work details including timestamp utility extraction and content generator refactoring
+- Updated `tasks.md` - Updated T13 registry entry with refactored init.js status
+- Updated `implementation-details/cli-implementation-details.md` - Added comprehensive Implementation Session Log for November 11 sessions documenting both enhancement and refactoring work
+- Updated `sessions/2025-11-11-evening.md` - Added Session Part 3 documentation covering init.js refactoring work with technical details and improvements
+- Updated `session_cache.md` - Updated timestamp and session duration reflecting total work on T3 and T13 for evening session
+
+#### 17:53:52 IST - T13: Updated Task and Implementation Documentation for CLI Enhancements
+- Updated `tasks/T13.md` - Updated timestamp, status (70% complete), and last active date; added comprehensive progress notes for init command work including database templates, README files, and detection checks
+- Updated `tasks.md` - Updated T13 registry entry with complete init command status and database template details
+- Updated `implementation-details/cli-implementation-details.md` - Added Implementation Session Log documenting November 11 init command enhancements, testing results, and next steps
+
+#### 17:44:17 IST - T3: Memory Bank CLI Enhancements
+- Updated `mb-cli/src/commands/init.js` - Fixed package.json empty file, added template generation for .env, schema.prisma, pnpm-lock.yaml, added fs import for directory checking, implemented memory bank existence check, added --force option for intentional overwrites, added writeReadmeFile() and writeDatabaseReadmeFile() functions for IST timestamps
+- Created `memory-bank/README.md` - Onboarding guide with database setup workflow and IST timestamps
+- Created `memory-bank/database/DATABASE_README.md` - Complete database documentation with 13 models, scripts, troubleshooting, IST timestamps
+- Updated `tasks/T3.md` - Added CLI enhancement progress with technical details
+- Updated `tasks.md` - Updated T3 registry entry with CLI work
+- Updated `sessions/2025-11-11-evening.md` - Added session Part 2 documentation with CLI work
+- Updated `session_cache.md` - Updated duration, T3 progress, and timestamps
+
+#### 17:24:27 IST - T3: Database Migration Verification & Documentation
+- Created `implementation-details/database-planning/database-implementation-plan.md` - Complete 7-part implementation guide (13,478 bytes)
+- Updated `implementation-details/database-planning/database_planning.md` - Marked status as IMPLEMENTED with outcomes
+- Updated `implementation-details/database-planning/database_migration.md` - Added practical patterns and solutions
+- Updated `tasks/T3.md` - Status 90% complete with verification and known issues
+- Updated `tasks.md` - T3 registry entry updated with current status
+- Created `sessions/2025-11-11-evening.md` - Evening session documentation
+- Updated `session_cache.md` - Current session and history updated
+- Updated `activeContext.md` - Current tasks and focus updated
+- Created `migration-scripts/verify.js` - Database verification script
+
+### 2025-11-10
+
+#### 19:15:38 IST - T19 Phase 2: Bug Fixes and File Content Viewer
+- Updated `viewer/viewer.html` - Phase 2 enhancements (+230 lines, 1373 total, 9 modules)
+  * Added FileContentsView module with parseEditHistory() and renderEditHistory()
+  * Implemented file contents browser tab with dropdown selector
+  * Fixed CORS error in approach 1 by detecting file:// protocol
+  * Fixed path resolution for approach 2 with CONFIG.resolvePath()
+  * Fixed search null reference error with container existence check
+  * Added escapeHtml() utility for safe content display
+  * Enhanced expandable entry UI patterns
+- Updated `tasks/T19.md` - Documented Phase 2 progress, module updates, and implementation details
+- Updated `implementation-details/memory-bank-viewer.md` - Added Phase 3 session log with detailed work breakdown
+- Updated `sessions/2025-11-10-evening.md` - Added Phase 2 implementation section with 15-minute work summary
+- Updated `session_cache.md` - Updated T19 progress tracking and session status (Phase 2 in progress)
+- Updated `tasks.md` - Updated T19 entry with Phase 2 status and new line count
+
+#### 18:55:26 IST - T19 Phase 1 Complete: Memory Bank Viewer Core Infrastructure Implementation
+- Created `viewer/viewer.html` - Single-file HTML application (1158 lines) with 8 embedded modules
+  * FileScanner, MarkdownParser, DataIndexer modules for data processing
+  * ChronologicalView, TaskWiseView, TopicWiseView modules for visualization
+  * SearchEngine module for full-text search functionality
+  * UIController module for navigation and interactions
+  * Auto-detection of file discovery approach (server vs. manifest)
+  * Responsive design with TailwindCSS
+- Created `viewer/generate-manifest.js` - Scan script (240 lines) for static manifest approach
+  * Recursively scans memory-bank/ directory
+  * Extracts file metadata and creates manifest.json
+  * Tested and verified: 218 files indexed
+- Created `viewer/server.js` - Dynamic Node.js server (280 lines)
+  * HTTP server on port 8000
+  * /api/files endpoint for live file discovery
+  * Static file serving with CORS support
+  * Directory traversal protection
+- Created launcher scripts:
+  * `viewer/start-scan.sh` and `viewer/start-scan.bat` - Static manifest approach
+  * `viewer/start-server.sh` and `viewer/start-server.bat` - Dynamic server approach
+  * Auto-detection of Node.js and platform
+- Created `viewer/README.md` - Comprehensive documentation (430 lines)
+  * Setup instructions for both approaches
+  * Feature overview and usage guide
+  * Troubleshooting section
+  * Browser support and accessibility notes
+- Created `viewer/package.json` - Minimal npm configuration (no dependencies)
+- Auto-generated `viewer/manifest.json` - 218 files indexed
+- Updated `tasks/T19.md` - Marked Phase 1 completion, updated timestamps, detailed progress
+- Updated `implementation-details/memory-bank-viewer.md` - Added Session Development Log documenting Phase 1 work
+- Updated `sessions/2025-11-10-evening.md` - Comprehensive session documentation with work summary and progress
+- Updated `tasks.md` - Updated T19 entry with Phase 1 status
+- Updated `session_cache.md` - Updated session status, T19 progress, and timestamps
+- Committed all changes to git (commit: 8db7130, 10 files created, 4,368 insertions)
+
+#### 18:27:15 IST - T19: Memory Bank Viewer Planning and Documentation
+- Created `tasks/T19.md` - New task for Memory Bank Viewer web interface with complete feature specifications
+- Updated `tasks.md` - Added T19 to active tasks, updated timestamp, added to task relationships diagram
+- Created `implementation-details/memory-bank-viewer.md` - Comprehensive architecture documentation including dual file discovery approaches
+- Created `sessions/2025-11-10-evening.md` - Evening session documentation for T19 planning work
+- Updated `session_cache.md` - Cleaned and reformatted to current template, updated active tasks and session history
 
 ### 2025-07-15
 

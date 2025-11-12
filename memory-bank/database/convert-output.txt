@@ -1,0 +1,208 @@
+Starting database migration...
+Converting tasks.md...
+Tasks conversion completed.
+Converting session_cache.md...
+Session cache conversion completed.
+Converting edit_history.md...
+Created edit history entry for April 20, 2025 20:45
+Created edit history entry for April 20, 2025 15:30
+Created edit history entry for April 17, 2025 17:15
+Created edit history entry for April 17, 2025 13:30
+Created edit history entry for April 17, 2025 12:20
+Created edit history entry for April 16, 2025 11:45
+Created edit history entry for April 16, 2025 00:15
+Created edit history entry for April 15, 2025 22:14
+Created edit history entry for April 15, 2025 13:30
+Created edit history entry for April 15, 2025 19:45
+Created edit history entry for April 15, 2025 15:10
+Created edit history entry for April 15, 2025 13:35
+Created edit history entry for April 14, 2025 16:30
+Created edit history entry for April 14, 2025 16:00
+Created edit history entry for April 13, 2025 11:00
+Created edit history entry for April 10, 2025 15:30
+Created edit history entry for April 10, 2025 16:00
+Created edit history entry for April 10, 2025 16:15
+Created edit history entry for April 10, 2025 16:30
+Edit history conversion completed.
+Converting errorLog.md...
+Created error entry: : SQLite Native Type Validation Errors with Prisma
+Created error entry: : Database Migration Issues with Invalid Dates
+Created error entry: : T1 - Context Loss When Switching Tasks
+Error log conversion completed.
+Converting activeContext.md...
+Created active context entry
+Active context conversion completed.
+Converting progress.md...
+Created progress entry
+Progress conversion completed.
+Converting projectbrief.md...
+Created project brief entry
+Project brief conversion completed.
+Converting changelog.md...
+Invalid date in changelog for version v6.2: "Documentation Framework and File Operations", using current date
+Created changelog entry for vv6.2
+Created changelog entry for v0.3.0
+Created changelog entry for v0.2.0
+Created changelog entry for v0.1.1
+Created changelog entry for v0.1.0
+Created changelog entry for v0.0.1
+Changelog conversion completed.
+Checking for archived files...
+Archive directory not found, skipping
+Converting example project at /Users/deepak/code/memory-bank/examples/app-dash...
+Converting tasks.md...
+tasks.md not found, skipping
+Converting session_cache.md...
+session_cache.md not found, skipping
+Converting edit_history.md...
+edit_history.md not found, skipping
+Converting errorLog.md...
+Created error entry: : Module Not Found Error in LLM Conversation Component
+Created error entry: : Build Error in SettingsGroup Component
+Error log conversion completed.
+Converting activeContext.md...
+Created active context entry
+Active context conversion completed.
+Converting progress.md...
+Created progress entry
+Progress conversion completed.
+Converting projectbrief.md...
+Created project brief entry
+Project brief conversion completed.
+Converting changelog.md...
+Changelog conversion completed.
+Checking for archived files...
+Archive directory not found, skipping
+Example project app-dash conversion completed.
+Converting example project at /Users/deepak/code/memory-bank/examples/spin_network_app...
+Converting tasks.md...
+Task T14 already exists, updating...
+Task T13 already exists, updating...
+Task T12 already exists, updating...
+Task T11 already exists, updating...
+Task T8 already exists, updating...
+Task T7 already exists, updating...
+Task T6 already exists, updating...
+Task T1 already exists, updating...
+Task T2 already exists, updating...
+Task T3 already exists, updating...
+Task T9 already exists, updating...
+Task T10 already exists, updating...
+Task T5 already exists, updating...
+Task T4 already exists, updating...
+Tasks conversion completed.
+Converting session_cache.md...
+Session cache conversion completed.
+Converting edit_history.md...
+Created edit history entry for April 17, 2025 14:30
+Created edit history entry for April 16, 2025 23:45
+Created edit history entry for April 16, 2025 21:30
+Created edit history entry for April 16, 2025 08:15
+Created edit history entry for April 16, 2025 07:45
+Created edit history entry for April 15, 2025 22:30
+Created edit history entry for April 15, 2025 22:15
+Created edit history entry for April 15, 2025 20:45
+Created edit history entry for April 15, 2025 18:30
+Created edit history entry for April 15, 2025 21:47
+Created edit history entry for April 15, 2025 16:45
+Created edit history entry for April 14, 2025 22:45
+Created edit history entry for April 14, 2025 19:15
+Created edit history entry for April 14, 2025 18:30
+Created edit history entry for April 14, 2025 17:35
+Created edit history entry for April 14, 2025 17:45
+Created edit history entry for April 14, 2025 17:15
+Created edit history entry for April 14, 2025 16:30
+Edit history conversion completed.
+Converting errorLog.md...
+Created error entry: T11: Library Build Error with Interface Export
+Created error entry: T10: Standalone Test Simulation Execution Issue
+Created error entry: T10: Infinite Logging After Simulation Completion
+Created error entry: T9: Persistent TypeScript Build Errors
+Created error entry: T9: TypeScript Build Errors in UI and Simulation Components
+Created error entry: T6: Database Service Type Errors and Missing Functions
+Created error entry: TypeScript Build Errors in Simulation Component
+Created error entry: : Debug Tags and Merge Conflicts in useTypeBasedStyles
+Created error entry: Build Errors in TypeScript Compilation
+Created error entry: : Settings Dropdown Not Appearing
+Error log conversion completed.
+Converting activeContext.md...
+Created active context entry
+Active context conversion completed.
+Converting progress.md...
+Created progress entry
+Progress conversion completed.
+Converting projectbrief.md...
+Created project brief entry
+Project brief conversion completed.
+Converting changelog.md...
+Invalid date in changelog for version 2025-04: "16] Numerical Stability Fixes and Graph Configuration", using current date
+Created changelog entry for v2025-04
+Invalid date in changelog for version 2025-04: "10] Simulation UI Integration and Error Handling Improvements", using current date
+Created changelog entry for v2025-04
+Invalid date in changelog for version 2025-04: "09] Real-time Type Management and Collapsible UI", using current date
+Created changelog entry for v2025-04
+Invalid date in changelog for version 2025-04: "08] Type Management UI Implementation", using current date
+Created changelog entry for v2025-04
+Invalid date in changelog for version 2025-04: "07] Proposed 3D Network Viewer Development Plan", using current date
+Created changelog entry for v2025-04
+Invalid date in changelog for version 2025-04: "07] Enhanced UI Persistence with Collapsible Section State", using current date
+Created changelog entry for v2025-04
+Changelog conversion completed.
+Checking for archived files...
+Converting archived edit history: edit_history_2025-04.md
+Created archived edit history entry for April 14, 2025 22:45
+Created archived edit history entry for April 14, 2025 19:15
+Created archived edit history entry for April 14, 2025 18:30
+Created archived edit history entry for April 14, 2025 17:35
+Created archived edit history entry for April 14, 2025 17:45
+Created archived edit history entry for April 14, 2025 17:15
+Created archived edit history entry for April 14, 2025 16:30
+Converting archived error log: errorLog_2025-04.md
+Created archived error entry: T6: Database Service Type Errors and Missing Functions
+Created archived error entry: T4: PrimeReact Dropdown Transparency Issue
+Created archived error entry: Syntax Error in Template Literals
+Created archived error entry: Infinite Loop and React Render Loop on Simulation Pause
+Created archived error entry: Test Simulation HTML Not Displaying Data
+Created archived error entry: Simulation Pause Functionality Not Working
+Created archived error entry: TypeScript Build Errors in test-simulation.ts
+Created archived error entry: Large JavaScript Bundle Size
+Created archived error entry: Simulation Results Panel Not Showing Data
+Created archived error entry: Test Simulation Error After Initialization
+Created archived error entry: TypeScript Build Errors in Cytoscape Types
+Created archived error entry: Node ID Synchronization Error in Simulation Engine
+Created archived error entry: Adapter.configure is not a function Error
+Created archived error entry: Cytoscape Instance Not Available Error
+Created archived error entry: Matrix Multiplication Error in Simulation
+Created archived error entry: Build and Runtime Errors in Simulation Component
+Created archived error entry: TypeScript Build Errors in Simulation Component
+Created archived error entry: : Debug Tags and Merge Conflicts in useTypeBasedStyles
+Created archived error entry: Build Errors in TypeScript Compilation
+Created archived error entry: : Settings Dropdown Not Appearing
+Archived files conversion completed.
+Example project spin_network_app conversion completed.
+Converting example project at /Users/deepak/code/memory-bank/examples/unified-app...
+Converting tasks.md...
+tasks.md not found, skipping
+Converting session_cache.md...
+session_cache.md not found, skipping
+Converting edit_history.md...
+edit_history.md not found, skipping
+Converting errorLog.md...
+Created error entry: : Build Error in Typing Tutor Page
+Created error entry: : Build Error in Typing Tutor Page
+Error log conversion completed.
+Converting activeContext.md...
+Created active context entry
+Active context conversion completed.
+Converting progress.md...
+Created progress entry
+Progress conversion completed.
+Converting projectbrief.md...
+Created project brief entry
+Project brief conversion completed.
+Converting changelog.md...
+Changelog conversion completed.
+Checking for archived files...
+Archive directory not found, skipping
+Example project unified-app conversion completed.
+Database migration completed successfully.

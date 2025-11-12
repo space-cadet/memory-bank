@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Bank Viewer</title>
+
+    <!-- TailwindCSS for responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Marked.js for markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <style>
+        /* Custom styles for timeline and animations */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #3b82f6, #a855f7, #ec4899);
+        }
+
+        .timeline-item {
+            padding-left: 60px;
+            padding-bottom: 30px;
+            position: relative;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 10px;
+            top: 5px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 3px solid #3b82f6;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .timeline-item.completed .timeline-dot {
+            background: #10b981;
+            border-color: #059669;
+        }
+
+        .timeline-item.in-progress .timeline-dot {
+            background: #3b82f6;
+            border-color: #1e40af;
+        }
+
+        .tree-item {
+            padding-left: 20px;
+            border-left: 1px solid #e5e7eb;
+            margin-left: 10px;
+        }
+
+        .expandable {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .expandable:hover {
+            background-color: #f3f4f6;
+        }
+
+        .expand-arrow {
+            display: inline-block;
+            margin-right: 8px;
+            transition: transform 0.2s;
+        }
+
+        .expand-arrow.expanded {
+            transform: rotate(90deg);
+        }
+
+        .hidden-content {
+            display: none;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 4px;
+        }
+
+        .badge-success {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-info {
+            background-color: #dbeafe;
+            color: #0c2340;
+        }
+
+        .badge-warning {
+            background-color: #fef3c7;
+            color: #78350f;
+        }
+
+        .priority-high {
+            border-left: 4px solid #ef4444;
+        }
+
+        .priority-medium {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .priority-low {
+            border-left: 4px solid #9ca3af;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        .search-highlight {
+            background-color: #fef3c7;
+            padding: 2px 4px;
+            border-radius: 2px;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6b7280;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .mode-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 8px 12px;
+            background: #10b981;
+            color: white;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 100;
+        }
+
+        .mode-indicator.manifest {
+            background: #3b82f6;
+        }
+
+        .mode-indicator.server {
+            background: #8b5cf6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">📚 Memory Bank Viewer</h1>
+                    <p class="text-sm text-gray-600 mt-1">Browse your memory bank with multiple perspectives</p>
+                </div>
+                <div class="text-sm text-gray-600" id="headerStats">
+                    Loading...
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Search Bar -->
+        <div class="mb-6">
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="🔍 Search across all content..."
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+            <p class="text-xs text-gray-500 mt-2">Search in task titles, descriptions, sessions, and file content</p>
+        </div>
+
+        <!-- Tabs Navigation -->
+        <div class="mb-6 border-b border-gray-200">
+            <div class="flex space-x-4">
+                <button
+                    class="tab-button px-4 py-2 border-b-2 border-blue-500 text-blue-600 font-medium"
+                    data-tab="chronological"
+                >
+                    📅 Chronological
+                </button>
+                <button
+                    class="tab-button px-4 py-2 border-b-2 border-transparent text-gray-600 font-medium hover:text-gray-900"
+                    data-tab="taskwise"
+                >
+                    📊 Task-Wise
+                </button>
+                <button
+                    class="tab-button px-4 py-2 border-b-2 border-transparent text-gray-600 font-medium hover:text-gray-900"
+                    data-tab="topicwise"
+                >
+                    🏷️ Topic-Wise
+                </button>
+                <button
+                    class="tab-button px-4 py-2 border-b-2 border-transparent text-gray-600 font-medium hover:text-gray-900"
+                    data-tab="filecontents"
+                >
+                    📄 File Contents
+                </button>
+            </div>
+        </div>
+
+        <!-- View Containers -->
+        <div id="chronologicalView" class="view-container">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p class="mt-4 text-gray-600">Loading chronological view...</p>
+            </div>
+        </div>
+
+        <div id="taskwiseView" class="view-container hidden">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p class="mt-4 text-gray-600">Loading task-wise view...</p>
+            </div>
+        </div>
+
+        <div id="topicwiseView" class="view-container hidden">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p class="mt-4 text-gray-600">Loading topic-wise view...</p>
+            </div>
+        </div>
+
+        <div id="filecontentsView" class="view-container hidden">
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Select File to View:</label>
+                <select id="fileSelector" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">-- Choose a memory bank file --</option>
+                    <option value="edit_history.md">Edit History</option>
+                    <option value="session_cache.md">Session Cache</option>
+                    <option value="errorLog.md">Error Log</option>
+                </select>
+            </div>
+            <div id="fileContent" class="loading">
+                <div class="spinner"></div>
+                <p class="mt-4 text-gray-600">Loading file content...</p>
+            </div>
+        </div>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="hidden p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p class="text-red-800 font-medium">⚠️ Error Loading Memory Bank</p>
+            <p id="errorDetails" class="text-red-600 mt-2 text-sm"></p>
+        </div>
+
+        <!-- Setup Instructions -->
+        <div id="setupInstructions" class="hidden p-6 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <h2 class="text-lg font-bold text-yellow-900 mb-4">📖 Setup Required</h2>
+            <p class="text-yellow-800 mb-4">The viewer couldn't find any files. You need to set up one of the file discovery approaches:</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-4 bg-white border border-yellow-300 rounded">
+                    <h3 class="font-bold text-yellow-900 mb-2">Approach 1: Static Manifest</h3>
+                    <p class="text-sm text-gray-700 mb-3">For offline browsing:</p>
+                    <code class="block bg-gray-100 p-2 rounded text-xs mb-2">./start-scan.sh</code>
+                    <p class="text-xs text-gray-600">Then refresh this page</p>
+                </div>
+
+                <div class="p-4 bg-white border border-yellow-300 rounded">
+                    <h3 class="font-bold text-yellow-900 mb-2">Approach 2: Dynamic Server</h3>
+                    <p class="text-sm text-gray-700 mb-3">For real-time updates:</p>
+                    <code class="block bg-gray-100 p-2 rounded text-xs mb-2">./start-server.sh</code>
+                    <p class="text-xs text-gray-600">Then visit http://localhost:8000/viewer.html</p>
+                </div>
+            </div>
+
+            <p class="text-xs text-gray-600 mt-4">See <strong>README.md</strong> for detailed setup instructions.</p>
+        </div>
+    </main>
+
+    <!-- Modal for detail view -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h2 id="modalTitle" class="text-2xl font-bold"></h2>
+                <button id="modalClose" class="text-gray-400 hover:text-gray-600">✕</button>
+            </div>
+            <div id="modalContent" class="prose prose-sm max-w-none"></div>
+        </div>
+    </div>
+
+    <!-- Mode Indicator -->
+    <div id="modeIndicator" class="mode-indicator hidden"></div>
+
+    <script>
+        // ============================================================================
+        // CONFIGURATION
+        // ============================================================================
+
+        const CONFIG = {
+            apiBaseUrl: '/',
+            manifestPath: './manifest.json',
+            forceMode: null,
+            cacheTime: 3600,
+            searchDebounce: 300,
+            maxSearchResults: 50,
+
+            /**
+             * Resolve file path based on current mode
+             */
+            resolvePath(filePath) {
+                // If using server mode, prepend leading slash and remove ../
+                if (appState.activeMode === 'server') {
+                    const normalized = filePath.replace(/\.\.\//g, '').replace(/^\//, '');
+                    return '/' + normalized;
+                }
+                // If using manifest mode, return relative path as-is
+                return filePath;
+            }
+        };
+
+        // ============================================================================
+        // GLOBAL STATE
+        // ============================================================================
+
+        let appState = {
+            files: [],
+            parsedFiles: {},
+            indices: {
+                chronological: {},
+                tasks: {},
+                topics: {}
+            },
+            activeView: 'chronological',
+            activeMode: null,
+            searchResults: [],
+            loading: false,
+            error: null
+        };
+
+        // ============================================================================
+        // MODULE: FILE SCANNER
+        // ============================================================================
+
+        const FileScanner = {
+            /**
+             * Process file listing from manifest or API
+             */
+            process(fileListing) {
+                if (!Array.isArray(fileListing)) {
+                    throw new Error('Invalid file listing format');
+                }
+
+                const files = fileListing.map(file => ({
+                    path: file.path,
+                    type: file.type || 'other',
+                    size: file.size || 0,
+                    modified: file.modified || null,
+                    created: file.created || null,
+                    updated: file.updated || null,
+                    title: file.title || this.extractTitle(file.path),
+                    status: file.status || null,
+                    taskId: file.taskId || null,
+                    sessionId: file.sessionId || null
+                }));
+
+                // Validate and group
+                return {
+                    all: files,
+                    byType: this.groupByType(files),
+                    count: files.length,
+                    validMdFiles: files.filter(f => f.path.endsWith('.md')).length
+                };
+            },
+
+            /**
+             * Extract title from path
+             */
+            extractTitle(path) {
+                const filename = path.split('/').pop().replace(/\.md$/, '');
+                return filename.replace(/[-_]/g, ' ');
+            },
+
+            /**
+             * Group files by type
+             */
+            groupByType(files) {
+                const groups = {};
+                for (const file of files) {
+                    if (!groups[file.type]) {
+                        groups[file.type] = [];
+                    }
+                    groups[file.type].push(file);
+                }
+                return groups;
+            }
+        };
+
+        // ============================================================================
+        // MODULE: MARKDOWN PARSER
+        // ============================================================================
+
+        const MarkdownParser = {
+            /**
+             * Parse markdown file and extract metadata + content
+             */
+            async parse(filePath) {
+                try {
+                    // Resolve path based on current mode
+                    const resolvedPath = CONFIG.resolvePath(filePath);
+                    const response = await fetch(resolvedPath);
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    const content = await response.text();
+                    return this.parseContent(content, filePath);
+                } catch (err) {
+                    console.error(`Error fetching ${filePath}:`, err);
+                    return { error: err.message, path: filePath, content: '', metadata: {} };
+                }
+            },
+
+            /**
+             * Parse markdown content
+             */
+            parseContent(content, filePath) {
+                const frontmatter = this.extractFrontmatter(content);
+                const markdownContent = this.removeFrontmatter(content);
+                const htmlContent = marked.parse(markdownContent);
+
+                return {
+                    path: filePath,
+                    content: markdownContent,
+                    htmlContent: htmlContent,
+                    metadata: frontmatter,
+                    searchText: (frontmatter.title + ' ' + markdownContent).toLowerCase()
+                };
+            },
+
+            /**
+             * Extract YAML frontmatter
+             */
+            extractFrontmatter(content) {
+                const match = content.match(/^---\n([\s\S]*?)\n---/);
+                if (!match) {
+                    return {};
+                }
+
+                const frontmatterStr = match[1];
+                const result = {};
+
+                const lines = frontmatterStr.split('\n');
+                for (const line of lines) {
+                    const keyMatch = line.match(/^([a-zA-Z_]+):\s*(.+)$/);
+                    if (keyMatch) {
+                        const [, key, value] = keyMatch;
+                        result[key] = value.replace(/^["']|["']$/g, '').trim();
+                    }
+                }
+
+                return result;
+            },
+
+            /**
+             * Remove frontmatter from content
+             */
+            removeFrontmatter(content) {
+                return content.replace(/^---\n[\s\S]*?\n---\n/, '');
+            }
+        };
+
+        // ============================================================================
+        // MODULE: DATA INDEXER
+        // ============================================================================
+
+        const DataIndexer = {
+            /**
+             * Build all indices from parsed files
+             */
+            build(filesData, scanResult) {
+                return {
+                    chronological: this.buildChronologicalIndex(filesData, scanResult),
+                    tasks: this.buildTaskIndex(filesData, scanResult),
+                    topics: this.buildTopicIndex(filesData, scanResult)
+                };
+            },
+
+            /**
+             * Build chronological index (sessions by date/period)
+             */
+            buildChronologicalIndex(filesData, scanResult) {
+                const index = {};
+
+                for (const file of scanResult.all) {
+                    if (file.type !== 'session') continue;
+
+                    const parsed = filesData[file.path];
+                    if (!parsed) continue;
+
+                    const date = parsed.metadata.created || parsed.metadata.updated || new Date().toISOString();
+                    const dateStr = date.split('T')[0];
+
+                    if (!index[dateStr]) {
+                        index[dateStr] = [];
+                    }
+
+                    index[dateStr].push({
+                        ...file,
+                        metadata: parsed.metadata,
+                        title: file.title
+                    });
+                }
+
+                return index;
+            },
+
+            /**
+             * Build task index (hierarchical with relationships)
+             */
+            buildTaskIndex(filesData, scanResult) {
+                const index = {};
+
+                for (const file of scanResult.all) {
+                    if (file.type !== 'task') continue;
+
+                    const parsed = filesData[file.path];
+                    if (!parsed) continue;
+
+                    const taskId = file.taskId || file.title.match(/T\d+/)?.[0];
+
+                    index[taskId] = {
+                        ...file,
+                        metadata: parsed.metadata,
+                        content: parsed.content,
+                        dependencies: this.extractDependencies(parsed.content),
+                        relatedTasks: []
+                    };
+                }
+
+                return index;
+            },
+
+            /**
+             * Build topic index (auto-extracted)
+             */
+            buildTopicIndex(filesData, scanResult) {
+                const topics = {};
+
+                for (const file of scanResult.all) {
+                    const parsed = filesData[file.path];
+                    if (!parsed) continue;
+
+                    const extractedTopics = this.extractTopics(parsed.content, file.title);
+
+                    for (const topic of extractedTopics) {
+                        if (!topics[topic]) {
+                            topics[topic] = [];
+                        }
+                        topics[topic].push({
+                            path: file.path,
+                            type: file.type,
+                            title: file.title,
+                            taskId: file.taskId
+                        });
+                    }
+                }
+
+                return topics;
+            },
+
+            /**
+             * Extract dependencies from content
+             */
+            extractDependencies(content) {
+                const depMatch = content.match(/Depend[a-z]*:\s*(.+)/i);
+                if (!depMatch) return [];
+
+                return depMatch[1]
+                    .split(/[,;]/)
+                    .map(d => d.trim().match(/T\d+/)?.[0])
+                    .filter(Boolean);
+            },
+
+            /**
+             * Extract topics from content
+             */
+            extractTopics(content, title) {
+                const topics = new Set();
+
+                // From title (first noun phrase)
+                const titleMatch = title.match(/([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/);
+                if (titleMatch) {
+                    topics.add(titleMatch[1].toLowerCase());
+                }
+
+                // From common keywords
+                const keywords = ['task', 'implementation', 'feature', 'bug', 'fix', 'refactor', 'test', 'document', 'design', 'plan'];
+                for (const keyword of keywords) {
+                    if (content.toLowerCase().includes(keyword)) {
+                        topics.add(keyword);
+                    }
+                }
+
+                // From section headers
+                const headers = content.match(/^#+\s+(.+)$/gm) || [];
+                for (const header of headers) {
+                    const match = header.match(/^#+\s+(.+)$/);
+                    if (match) {
+                        topics.add(match[1].toLowerCase().substring(0, 30));
+                    }
+                }
+
+                return Array.from(topics);
+            }
+        };
+
+        // ============================================================================
+        // MODULE: CHRONOLOGICAL VIEW
+        // ============================================================================
+
+        const ChronologicalView = {
+            /**
+             * Render chronological view
+             */
+            render(index) {
+                if (Object.keys(index).length === 0) {
+                    return '<div class="no-data">📭 No sessions found</div>';
+                }
+
+                const dates = Object.keys(index).sort().reverse();
+                let html = '<div class="timeline">';
+
+                for (const date of dates) {
+                    const sessions = index[date];
+                    const dateObj = new Date(date);
+                    const dateStr = dateObj.toLocaleDateString('en-US', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+
+                    html += `
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="bg-white p-4 rounded-lg shadow mb-4">
+                                <h3 class="text-lg font-bold text-gray-900">${dateStr}</h3>
+                                <p class="text-sm text-gray-600">${sessions.length} session(s)</p>
+                                <div class="mt-4 space-y-2">
+                                    ${sessions.map(session => `
+                                        <div class="p-3 bg-gray-50 rounded border-l-4 border-blue-500">
+                                            <p class="font-medium text-gray-900">${session.title || session.path}</p>
+                                            ${session.metadata.status ? `<span class="badge badge-info">${session.metadata.status}</span>` : ''}
+                                            <p class="text-xs text-gray-600 mt-1">${session.path}</p>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                html += '</div>';
+                return html;
+            }
+        };
+
+        // ============================================================================
+        // MODULE: TASK-WISE VIEW
+        // ============================================================================
+
+        const TaskWiseView = {
+            /**
+             * Render task-wise hierarchical view
+             */
+            render(index) {
+                if (Object.keys(index).length === 0) {
+                    return '<div class="no-data">📭 No tasks found</div>';
+                }
+
+                const taskIds = Object.keys(index).sort();
+                let html = '<div class="space-y-4">';
+
+                for (const taskId of taskIds) {
+                    const task = index[taskId];
+                    const priority = task.metadata.priority || 'MEDIUM';
+                    const status = task.metadata.status || '⏸️';
+                    const priorityClass = `priority-${priority.toLowerCase()}`;
+
+                    html += `
+                        <div class="bg-white p-4 rounded-lg shadow ${priorityClass} expandable cursor-pointer hover:shadow-md transition-shadow" onclick="UIController.toggleDetail(this)">
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-bold text-gray-900">${taskId}: ${task.title}</h3>
+                                    <div class="mt-2 flex flex-wrap gap-2">
+                                        <span class="badge badge-info">${status}</span>
+                                        <span class="badge ${priority === 'HIGH' ? 'bg-red-100 text-red-800' : priority === 'MEDIUM' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800'}">${priority}</span>
+                                    </div>
+                                </div>
+                                <span class="expand-arrow text-2xl ml-4">▶</span>
+                            </div>
+                            <div class="task-details hidden mt-4 pt-4 border-t border-gray-200">
+                                <p class="text-sm text-gray-600">Path: <code class="bg-gray-100 px-2 py-1 rounded text-xs">${task.path}</code></p>
+                                ${task.dependencies.length > 0 ? `
+                                    <p class="text-sm text-gray-600 mt-2">Dependencies: ${task.dependencies.join(', ')}</p>
+                                ` : ''}
+                                ${task.metadata.created ? `
+                                    <p class="text-sm text-gray-600 mt-2">Created: ${task.metadata.created}</p>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                html += '</div>';
+                return html;
+            }
+        };
+
+        // ============================================================================
+        // MODULE: TOPIC-WISE VIEW
+        // ============================================================================
+
+        const TopicWiseView = {
+            /**
+             * Render topic-wise hierarchical view
+             */
+            render(index) {
+                if (Object.keys(index).length === 0) {
+                    return '<div class="no-data">🏷️ No topics found</div>';
+                }
+
+                const topics = Object.keys(index).sort();
+                let html = '<div class="space-y-4">';
+
+                for (const topic of topics) {
+                    const items = index[topic];
+                    const itemCount = items.length;
+
+                    html += `
+                        <div class="bg-white p-4 rounded-lg shadow expandable cursor-pointer hover:shadow-md transition-shadow" onclick="UIController.toggleDetail(this)">
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-bold text-gray-900">🏷️ ${topic}</h3>
+                                    <p class="text-sm text-gray-600 mt-1">${itemCount} item(s)</p>
+                                </div>
+                                <span class="expand-arrow text-2xl ml-4">▶</span>
+                            </div>
+                            <div class="topic-details hidden mt-4 pt-4 border-t border-gray-200">
+                                <div class="space-y-2">
+                                    ${items.map(item => `
+                                        <div class="p-2 bg-gray-50 rounded text-sm">
+                                            <p class="font-medium text-gray-900">${item.type.toUpperCase()}: ${item.title}</p>
+                                            <p class="text-xs text-gray-600">${item.path}</p>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                html += '</div>';
+                return html;
+            }
+        };
+
+        // ============================================================================
+        // MODULE: FILE CONTENTS VIEW
+        // ============================================================================
+
+        const FileContentsView = {
+            /**
+             * Parse edit_history.md entries chronologically
+             */
+            parseEditHistory(content) {
+                const entries = [];
+                const dateRegex = /^### (\d{4}-\d{2}-\d{2})$/m;
+                const entryRegex = /^#### (\d{2}:\d{2}(?::\d{2})?(?:\s+\w+)?)\s*-\s*(.+?)$/m;
+
+                const sections = content.split(/^### /m);
+
+                for (const section of sections) {
+                    if (!section.trim()) continue;
+
+                    const lines = section.split('\n');
+                    const dateStr = lines[0].trim();
+
+                    if (!dateStr.match(/\d{4}-\d{2}-\d{2}/)) continue;
+
+                    for (let i = 1; i < lines.length; i++) {
+                        const line = lines[i];
+                        const match = line.match(/^#### (\d{2}:\d{2}(?::\d{2})?(?:\s+\w+)?)\s*-\s*(.+)$/);
+
+                        if (match) {
+                            const time = match[1].trim();
+                            const title = match[2].trim();
+                            const changes = [];
+
+                            for (let j = i + 1; j < lines.length; j++) {
+                                if (lines[j].match(/^####/)) break;
+                                if (lines[j].match(/^-\s+/)) {
+                                    changes.push(lines[j].replace(/^-\s+/, '').trim());
+                                }
+                            }
+
+                            entries.push({
+                                date: dateStr,
+                                time: time,
+                                title: title,
+                                changes: changes
+                            });
+                        }
+                    }
+                }
+
+                return entries.sort((a, b) => {
+                    const dateCompare = new Date(b.date) - new Date(a.date);
+                    if (dateCompare !== 0) return dateCompare;
+                    return b.time.localeCompare(a.time);
+                });
+            },
+
+            /**
+             * Render edit history entries
+             */
+            renderEditHistory(content) {
+                const entries = this.parseEditHistory(content);
+
+                if (entries.length === 0) {
+                    return '<div class="no-data">📭 No entries found</div>';
+                }
+
+                let html = '<div class="space-y-4">';
+                let currentDate = null;
+
+                for (const entry of entries) {
+                    if (currentDate !== entry.date) {
+                        if (currentDate !== null) {
+                            html += '</div>';
+                        }
+                        currentDate = entry.date;
+                        const dateObj = new Date(entry.date);
+                        const dateStr = dateObj.toLocaleDateString('en-US', {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                        html += `<h3 class="text-xl font-bold text-gray-900 mt-6 mb-3">${dateStr}</h3>`;
+                        html += '<div class="space-y-3">';
+                    }
+
+                    html += `
+                        <div class="bg-white p-4 rounded-lg shadow expandable cursor-pointer hover:shadow-md transition-shadow" onclick="UIController.toggleDetail(this)">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <p class="text-xs text-gray-500 font-mono">${entry.time}</p>
+                                    <p class="font-medium text-gray-900 mt-1">${entry.title}</p>
+                                </div>
+                                <span class="expand-arrow text-xl ml-4">▶</span>
+                            </div>
+                            <div class="entry-details hidden mt-3 pt-3 border-t border-gray-200">
+                                <ul class="space-y-2">
+                                    ${entry.changes.map(change => `
+                                        <li class="text-sm text-gray-700">
+                                            <span class="text-gray-500">•</span> ${change}
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if (currentDate !== null) {
+                    html += '</div>';
+                }
+                html += '</div>';
+                return html;
+            }
+        };
+
+        // ============================================================================
+        // MODULE: SEARCH ENGINE
+        // ============================================================================
+
+        const SearchEngine = {
+            /**
+             * Perform full-text search
+             */
+            search(query, filesData, indices) {
+                if (!query || query.length < 2) {
+                    return [];
+                }
+
+                const results = [];
+                const queryLower = query.toLowerCase();
+
+                // Search in parsed content
+                for (const [path, parsed] of Object.entries(filesData)) {
+                    if (!parsed || parsed.error) continue;
+
+                    const searchText = parsed.searchText;
+                    const matchCount = (searchText.match(new RegExp(queryLower, 'g')) || []).length;
+
+                    if (matchCount > 0) {
+                        results.push({
+                            path: path,
+                            title: parsed.metadata.title || path,
+                            score: matchCount,
+                            excerpt: this.getExcerpt(searchText, queryLower)
+                        });
+                    }
+                }
+
+                // Sort by relevance
+                results.sort((a, b) => b.score - a.score);
+
+                return results.slice(0, CONFIG.maxSearchResults);
+            },
+
+            /**
+             * Get excerpt around search term
+             */
+            getExcerpt(text, query) {
+                const idx = text.indexOf(query);
+                const start = Math.max(0, idx - 50);
+                const end = Math.min(text.length, idx + 100);
+                let excerpt = text.substring(start, end);
+
+                if (start > 0) excerpt = '...' + excerpt;
+                if (end < text.length) excerpt = excerpt + '...';
+
+                return excerpt;
+            }
+        };
+
+        // ============================================================================
+        // MODULE: UI CONTROLLER
+        // ============================================================================
+
+        const UIController = {
+            /**
+             * Switch between views
+             */
+            switchView(viewName) {
+                // Update active button
+                document.querySelectorAll('.tab-button').forEach(btn => {
+                    if (btn.dataset.tab === viewName) {
+                        btn.classList.add('border-b-2', 'border-blue-500', 'text-blue-600');
+                        btn.classList.remove('border-transparent', 'text-gray-600');
+                    } else {
+                        btn.classList.remove('border-b-2', 'border-blue-500', 'text-blue-600');
+                        btn.classList.add('border-transparent', 'text-gray-600');
+                    }
+                });
+
+                // Update view visibility
+                document.querySelectorAll('.view-container').forEach(container => {
+                    container.classList.add('hidden');
+                });
+
+                const viewElement = document.getElementById(viewName + 'View');
+                if (viewElement) {
+                    viewElement.classList.remove('hidden');
+                    viewElement.classList.add('fade-in');
+                }
+
+                appState.activeView = viewName;
+            },
+
+            /**
+             * Toggle detail expansion
+             */
+            toggleDetail(element) {
+                const arrow = element.querySelector('.expand-arrow');
+                const details = element.querySelector('[class$="-details"]');
+
+                if (details) {
+                    details.classList.toggle('hidden');
+                    arrow.classList.toggle('expanded');
+                }
+            },
+
+            /**
+             * Show modal with details
+             */
+            showModal(title, content) {
+                document.getElementById('modalTitle').textContent = title;
+                document.getElementById('modalContent').innerHTML = content;
+                document.getElementById('detailModal').classList.add('active');
+            },
+
+            /**
+             * Close modal
+             */
+            closeModal() {
+                document.getElementById('detailModal').classList.remove('active');
+            },
+
+            /**
+             * Show error message
+             */
+            showError(message, details) {
+                document.getElementById('errorDetails').textContent = details || message;
+                document.getElementById('errorMessage').classList.remove('hidden');
+            },
+
+            /**
+             * Show setup instructions
+             */
+            showSetupInstructions() {
+                document.getElementById('setupInstructions').classList.remove('hidden');
+            },
+
+            /**
+             * Update statistics
+             */
+            updateStats(fileCount, taskCount, sessionCount) {
+                document.getElementById('headerStats').innerHTML = `
+                    <div class="text-right">
+                        <p><strong>${fileCount}</strong> files</p>
+                        <p><strong>${taskCount}</strong> tasks • <strong>${sessionCount}</strong> sessions</p>
+                    </div>
+                `;
+            },
+
+            /**
+             * Show mode indicator
+             */
+            showModeIndicator(mode) {
+                const indicator = document.getElementById('modeIndicator');
+                indicator.textContent = `📍 ${mode}`;
+                indicator.classList.remove('hidden');
+                indicator.classList.add(mode.includes('Manifest') ? 'manifest' : 'server');
+            }
+        };
+
+        // ============================================================================
+        // MAIN APPLICATION LOGIC
+        // ============================================================================
+
+        /**
+         * Load file listing from server or manifest
+         */
+        async function loadFileListing() {
+            appState.loading = true;
+
+            // Only try server if we're using http protocol
+            if (window.location.protocol !== 'file:') {
+                try {
+                    const response = await fetch(CONFIG.apiBaseUrl + 'api/files', {
+                        timeout: 2000
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        appState.activeMode = 'server';
+                        UIController.showModeIndicator('Server (Dynamic)');
+                        return data.files;
+                    }
+                } catch (err) {
+                    console.log('Server not available, trying manifest...');
+                }
+            }
+
+            // Try manifest (works with both file:// and http://)
+            try {
+                const response = await fetch(CONFIG.manifestPath, {
+                    timeout: 2000
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    appState.activeMode = 'manifest';
+                    UIController.showModeIndicator('Manifest (Static)');
+                    return data.files;
+                }
+            } catch (err) {
+                console.log('Manifest not available:', err.message);
+            }
+
+            return null;
+        }
+
+        /**
+         * Load and parse all files
+         */
+        async function loadAndParseFiles(fileListing) {
+            const filesData = {};
+            let successCount = 0;
+
+            // Process all files
+            for (const file of fileListing) {
+                const parsed = await MarkdownParser.parse(file.path);
+                filesData[file.path] = parsed;
+                if (!parsed.error) {
+                    successCount++;
+                }
+
+                // Update progress
+                appState.parsedFiles = filesData;
+            }
+
+            console.log(`Loaded ${successCount}/${fileListing.length} files`);
+            return filesData;
+        }
+
+        /**
+         * Initialize viewer with data
+         */
+        async function initializeViewer() {
+            try {
+                // Load file listing
+                const fileListing = await loadFileListing();
+
+                if (!fileListing || fileListing.length === 0) {
+                    UIController.showSetupInstructions();
+                    return;
+                }
+
+                // Process files
+                const scanResult = FileScanner.process(fileListing);
+                appState.files = scanResult.all;
+
+                // Parse markdown files
+                const filesData = await loadAndParseFiles(scanResult.all);
+
+                // Build indices
+                const indices = DataIndexer.build(filesData, scanResult);
+                appState.indices = indices;
+
+                // Count items by type
+                const taskCount = Object.keys(indices.tasks).length;
+                const sessionCount = Object.keys(indices.chronological).length;
+
+                // Update UI
+                UIController.updateStats(scanResult.count, taskCount, sessionCount);
+
+                // Render initial view
+                renderChronologicalView();
+
+                appState.loading = false;
+            } catch (err) {
+                console.error('Initialization error:', err);
+                UIController.showError('Failed to initialize viewer', err.message);
+            }
+        }
+
+        /**
+         * Render chronological view
+         */
+        function renderChronologicalView() {
+            const container = document.getElementById('chronologicalView');
+            container.innerHTML = ChronologicalView.render(appState.indices.chronological);
+        }
+
+        /**
+         * Render task-wise view
+         */
+        function renderTaskWiseView() {
+            const container = document.getElementById('taskwiseView');
+            container.innerHTML = TaskWiseView.render(appState.indices.tasks);
+        }
+
+        /**
+         * Render topic-wise view
+         */
+        function renderTopicWiseView() {
+            const container = document.getElementById('topicwiseView');
+            container.innerHTML = TopicWiseView.render(appState.indices.topics);
+        }
+
+        /**
+         * Render file contents view
+         */
+        async function renderFileContentsView(filename) {
+            if (!filename) {
+                document.getElementById('fileContent').innerHTML = '<div class="text-gray-500">Select a file to view</div>';
+                return;
+            }
+
+            const container = document.getElementById('fileContent');
+            container.innerHTML = '<div class="loading"><div class="spinner"></div><p class="mt-4 text-gray-600">Loading file...</p></div>';
+
+            try {
+                const resolvedPath = CONFIG.resolvePath(filename);
+                const response = await fetch(resolvedPath);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                const content = await response.text();
+
+                if (filename === 'edit_history.md') {
+                    container.innerHTML = FileContentsView.renderEditHistory(content);
+                } else {
+                    container.innerHTML = '<pre class="bg-gray-100 p-4 rounded text-sm overflow-auto"><code>' + escapeHtml(content) + '</code></pre>';
+                }
+            } catch (err) {
+                container.innerHTML = '<div class="bg-red-50 p-4 rounded border border-red-200"><p class="text-red-800">Error loading file: ' + err.message + '</p></div>';
+            }
+        }
+
+        /**
+         * Escape HTML special characters
+         */
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
+        /**
+         * Perform search
+         */
+        function performSearch(query) {
+            if (query.length < 2) {
+                // Reset to original view
+                switch (appState.activeView) {
+                    case 'chronological':
+                        renderChronologicalView();
+                        break;
+                    case 'taskwise':
+                        renderTaskWiseView();
+                        break;
+                    case 'topicwise':
+                        renderTopicWiseView();
+                        break;
+                }
+                return;
+            }
+
+            const results = SearchEngine.search(query, appState.parsedFiles, appState.indices);
+
+            const container = document.getElementById(appState.activeView + 'View');
+            if (!container) {
+                console.warn('Container not found for view:', appState.activeView);
+                return;
+            }
+
+            if (results.length === 0) {
+                container.innerHTML = '<div class="no-data">No results found for "' + query + '"</div>';
+            } else {
+                container.innerHTML = '<div class="space-y-3">' + results.map(result => `
+                    <div class="bg-white p-4 rounded-lg shadow">
+                        <p class="font-medium text-gray-900">${result.title}</p>
+                        <p class="text-xs text-gray-600 mt-1">${result.path}</p>
+                        <p class="text-sm text-gray-700 mt-2">${result.excerpt}</p>
+                    </div>
+                `).join('') + '</div>';
+            }
+        }
+
+        // ============================================================================
+        // EVENT LISTENERS
+        // ============================================================================
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Tab switching
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const view = btn.dataset.tab + 'View';
+                    UIController.switchView(view);
+
+                    // Render view content
+                    if (btn.dataset.tab === 'chronological') {
+                        renderChronologicalView();
+                    } else if (btn.dataset.tab === 'taskwise') {
+                        renderTaskWiseView();
+                    } else if (btn.dataset.tab === 'topicwise') {
+                        renderTopicWiseView();
+                    } else if (btn.dataset.tab === 'filecontents') {
+                        const filename = document.getElementById('fileSelector').value;
+                        renderFileContentsView(filename);
+                    }
+                });
+            });
+
+            // File selector change
+            const fileSelector = document.getElementById('fileSelector');
+            if (fileSelector) {
+                fileSelector.addEventListener('change', (e) => {
+                    renderFileContentsView(e.target.value);
+                });
+            }
+
+            // Search with debounce
+            let searchTimeout;
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    performSearch(e.target.value);
+                }, CONFIG.searchDebounce);
+            });
+
+            // Modal close
+            document.getElementById('modalClose').addEventListener('click', () => {
+                UIController.closeModal();
+            });
+
+            // Initialize viewer
+            initializeViewer();
+        });
+    </script>
+</body>
+</html>

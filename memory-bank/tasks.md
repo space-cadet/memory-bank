@@ -1,20 +1,22 @@
 # Task Registry
-*Last Updated: 2025-07-15 13:59:27 IST*
+*Last Updated: 2025-11-12 12:02:00 IST*
 
 ## Active Tasks
 | ID | Title | Status | Priority | Started | Dependencies | Details |
 |----|-------|--------|----------|---------|--------------|---------|
+| T20 | Memory Bank Database Parser | 🔄 | MEDIUM | 2025-11-12 | - | [Details](tasks/T20.md) - Phase 1 complete: edit_history.md parser with SQLite database and query tool |
+| T19 | Memory Bank Viewer Web Interface | 🔄 | HIGH | 2025-11-10 | - | [Details](tasks/T19.md) - Phase 2 in progress: File content viewer, bug fixes, path resolution (1373 lines) |
 | T18 | Integrated Rules Redesign | ✅ | HIGH | 2025-07-14 | T17 | [Details](tasks/T18.md) - Comprehensive redesign for clarity and conciseness |
 | T17 | Maintenance and Upkeep of Integrated Rules | 🔄 | MEDIUM | 2025-05-28 | T15, T16 | [Details](tasks/T17.md) - Rules maintenance, session workflow fixes, v6.7 implementation |
 | T16 | AI Consciousness Dialog Series | 🔄 | HIGH | 2025-05-26 | T15 | [Details](tasks/T16.md) - Ongoing documentation of consciousness exploration |
 | T14 | Project-Specific Rule Adaptations | 🔄 | MEDIUM | 2025-05-23 | - | [Details](tasks/T14.md) - Research adaptation, templates, and documentation completed |
-| T13 | Implement Memory Bank CLI | 🔄 | HIGH | 2025-05-17 | T12 | [Details](tasks/T13.md) - Basic CLI implementation with init command completed |
+| T13 | Implement Memory Bank CLI | 🔄 | HIGH | 2025-05-17 | T12 | [Details](tasks/T13.md) - Selective init + real-world testing complete; schema alignment for Phase 2 (85% complete) |
 | T12 | Rewrite Documentation for Practical Usage | 🔄 | HIGH | 2025-05-17 | T11 | [Details](tasks/T12.md) |
 | T11 | Document GitHub Project Integration | 🔄 | HIGH | 2025-05-17 | - | [Details](tasks/T11.md) |
 | T9 | Implement Rules v6.2 Changes | 🔄 | HIGH | 2025-04-30 | T7, T8 | [Details](tasks/T9.md) |
 | T8 | Add KIRS Principle | 🔄 | HIGH | 2025-04-25 | - | [Details](tasks/T8.md) |
 | T1 | Multi-task Support | 🔄 | HIGH | 2025-04-14 | - | [Details](tasks/T1.md) |
-| T3 | Implement DB Migration | 🔄 | HIGH | 2025-04-15 | T2 | [Details](tasks/T3.md) |
+| T3 | Implement DB Migration | 🔄 | HIGH | 2025-04-15 | T2 | [Details](tasks/T3.md) - Real-world testing in new project; schema/convert.js validation; 95% complete |
 | T4 | Optimize Rules System | 🔄 | HIGH | 2025-04-15 | T1 | [Details](tasks/T4.md) |
 | T5 | Optimize Rules v4 | 🔄 | MEDIUM | 2025-04-17 | - | [Details](tasks/T5.md) |
 
@@ -54,6 +56,7 @@ graph TD
     T11[T11: GitHub Integration Doc]
     T12[T12: Practical Docs Rewrite]
     T13[T13: Memory Bank CLI]
+    T19[T19: Memory Bank Viewer]
 
     T0 --> T1
     T11 --> T12

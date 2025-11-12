@@ -1,0 +1,2214 @@
+{
+  "generatedAt": "2025-11-10T13:33:20.155Z",
+  "generatedBy": "generate-manifest.js",
+  "stats": {
+    "totalFiles": 218,
+    "byType": {
+      "other": 197,
+      "session": 21
+    }
+  },
+  "files": [
+    {
+      "path": "backups/2025-04-08/LLM Project Rules.md",
+      "type": "other",
+      "size": 2142,
+      "modified": "2025-04-08T02:38:05.369Z",
+      "created": null,
+      "updated": null,
+      "title": "Core Constraints & Safety:",
+      "status": null
+    },
+    {
+      "path": "backups/2025-04-08/Universal Memory Bank Instructions.md",
+      "type": "other",
+      "size": 10910,
+      "modified": "2025-04-08T02:38:50.633Z",
+      "created": null,
+      "updated": null,
+      "title": "Universal Memory Bank Instructions",
+      "status": null
+    },
+    {
+      "path": "bootstrap.md",
+      "type": "other",
+      "size": 6530,
+      "modified": "2025-04-08T13:47:28.587Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Code Rules and Memory Bank Bootstrap",
+      "status": null
+    },
+    {
+      "path": "code-rules-and-memory-bank.md",
+      "type": "other",
+      "size": 18482,
+      "modified": "2025-04-08T13:29:36.884Z",
+      "created": null,
+      "updated": null,
+      "title": "Roo Code Rules",
+      "status": null
+    },
+    {
+      "path": "docs/integrated-rules.md",
+      "type": "other",
+      "size": 7184,
+      "modified": "2025-04-08T14:06:00.392Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Code Rules and Memory Bank System",
+      "status": null
+    },
+    {
+      "path": "docs/memory-bank-rules.md",
+      "type": "other",
+      "size": 9250,
+      "modified": "2025-04-08T13:53:15.392Z",
+      "created": null,
+      "updated": null,
+      "title": "Memory Bank System - Starting Prompt",
+      "status": null
+    },
+    {
+      "path": "docs/projectbrief.md",
+      "type": "other",
+      "size": 3199,
+      "modified": "2025-04-08T13:53:02.017Z",
+      "created": null,
+      "updated": null,
+      "title": "Memory Bank Project Brief",
+      "status": null
+    },
+    {
+      "path": "docs/README.md",
+      "type": "other",
+      "size": 4150,
+      "modified": "2025-04-08T13:52:52.649Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Code Rules and Memory Bank System",
+      "status": null
+    },
+    {
+      "path": "examples/app-dash/activeContext.md",
+      "type": "other",
+      "size": 7156,
+      "modified": "2025-04-08T02:24:32.371Z",
+      "created": null,
+      "updated": null,
+      "title": "Active Context: app-dash",
+      "status": null
+    },
+    {
+      "path": "examples/app-dash/changelog.md",
+      "type": "other",
+      "size": 7759,
+      "modified": "2025-04-08T02:24:32.371Z",
+      "created": null,
+      "updated": null,
+      "title": "Changelog: app-dash",
+      "status": null
+    },
+    {
+      "path": "examples/app-dash/errorLog.md",
+      "type": "other",
+      "size": 2842,
+      "modified": "2025-04-08T02:24:32.377Z",
+      "created": null,
+      "updated": null,
+      "title": "Error Log",
+      "status": null
+    },
+    {
+      "path": "examples/app-dash/productContext.md",
+      "type": "other",
+      "size": 5684,
+      "modified": "2025-04-08T02:24:32.373Z",
+      "created": null,
+      "updated": null,
+      "title": "Product Context: app-dash",
+      "status": null
+    },
+    {
+      "path": "examples/app-dash/progress.md",
+      "type": "other",
+      "size": 7496,
+      "modified": "2025-04-08T02:24:32.372Z",
+      "created": null,
+      "updated": null,
+      "title": "Progress Tracking: app-dash",
+      "status": null
+    },
+    {
+      "path": "examples/app-dash/projectbrief.md",
+      "type": "other",
+      "size": 3209,
+      "modified": "2025-04-08T02:24:32.374Z",
+      "created": null,
+      "updated": null,
+      "title": "Project Brief: app-dash",
+      "status": null
+    },
+    {
+      "path": "examples/app-dash/systemPatterns.md",
+      "type": "other",
+      "size": 15905,
+      "modified": "2025-04-08T02:24:32.376Z",
+      "created": null,
+      "updated": null,
+      "title": "System Patterns: app-dash",
+      "status": null
+    },
+    {
+      "path": "examples/app-dash/techContext.md",
+      "type": "other",
+      "size": 9132,
+      "modified": "2025-04-08T02:24:32.370Z",
+      "created": null,
+      "updated": null,
+      "title": "Technical Context: app-dash",
+      "status": null
+    },
+    {
+      "path": "examples/LLM Project Rules_2025-04-08.md",
+      "type": "other",
+      "size": 3703,
+      "modified": "2025-04-08T02:40:02.645Z",
+      "created": null,
+      "updated": null,
+      "title": "Core Constraints & Safety:",
+      "status": null
+    },
+    {
+      "path": "examples/LLM Project Rules.md",
+      "type": "other",
+      "size": 2142,
+      "modified": "2025-04-08T02:26:23.485Z",
+      "created": null,
+      "updated": null,
+      "title": "Core Constraints & Safety:",
+      "status": null
+    },
+    {
+      "path": "examples/Memory Bank Quick Reference.md",
+      "type": "other",
+      "size": 4144,
+      "modified": "2025-04-08T02:41:19.513Z",
+      "created": null,
+      "updated": null,
+      "title": "Memory Bank Quick Reference",
+      "status": null
+    },
+    {
+      "path": "examples/Memory Bank System Implementation.md",
+      "type": "other",
+      "size": 6702,
+      "modified": "2025-04-08T02:41:49.428Z",
+      "created": null,
+      "updated": null,
+      "title": "Memory Bank System Implementation",
+      "status": null
+    },
+    {
+      "path": "examples/roo-code-rules.md",
+      "type": "other",
+      "size": 90703,
+      "modified": "2025-04-08T13:02:52.464Z",
+      "created": null,
+      "updated": null,
+      "title": "Tool Use Formatting",
+      "status": null
+    },
+    {
+      "path": "examples/roo-short-coder-rules.md",
+      "type": "other",
+      "size": 3491,
+      "modified": "2025-04-08T13:05:47.601Z",
+      "created": null,
+      "updated": null,
+      "title": "roo short coder rules",
+      "status": null
+    },
+    {
+      "path": "examples/session_cache_example.md",
+      "type": "session",
+      "size": 1436,
+      "modified": "2025-04-08T02:40:23.410Z",
+      "created": null,
+      "updated": null,
+      "title": "Session Cache (2025-04-08 14:27)",
+      "status": null,
+      "sessionId": "session_cache_example"
+    },
+    {
+      "path": "examples/session_cache_template.md",
+      "type": "session",
+      "size": 1023,
+      "modified": "2025-04-08T02:40:12.636Z",
+      "created": null,
+      "updated": null,
+      "title": "Session Cache (YYYY-MM-DD HH:MM)",
+      "status": null,
+      "sessionId": "session_cache_template"
+    },
+    {
+      "path": "examples/spin_network_app/3d-viewer-development-plan.md",
+      "type": "other",
+      "size": 9386,
+      "modified": "2025-04-17T01:21:52.668Z",
+      "created": null,
+      "updated": null,
+      "title": "3D Network Viewer Development Plan",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/activeContext.md",
+      "type": "other",
+      "size": 12248,
+      "modified": "2025-04-17T01:21:52.646Z",
+      "created": null,
+      "updated": null,
+      "title": "Active Context",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/archive/edit_history_2025-04.md",
+      "type": "other",
+      "size": 47385,
+      "modified": "2025-04-17T01:21:52.648Z",
+      "created": null,
+      "updated": null,
+      "title": "Edit History",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/archive/errorLog_2025-04.md",
+      "type": "other",
+      "size": 83392,
+      "modified": "2025-04-17T01:21:52.648Z",
+      "created": null,
+      "updated": null,
+      "title": "Error Log",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/changelog.md",
+      "type": "other",
+      "size": 5267,
+      "modified": "2025-04-17T01:21:52.650Z",
+      "created": null,
+      "updated": null,
+      "title": "Spin Network Visualization and Diffusion App - Changelog",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/component_index.md",
+      "type": "other",
+      "size": 9142,
+      "modified": "2025-04-19T08:22:03.659Z",
+      "created": null,
+      "updated": null,
+      "title": "Component Index",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/dev_history.md",
+      "type": "other",
+      "size": 7329,
+      "modified": "2025-04-17T01:21:52.664Z",
+      "created": null,
+      "updated": null,
+      "title": "Development History",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/edit_history.md",
+      "type": "other",
+      "size": 25491,
+      "modified": "2025-04-17T01:21:52.664Z",
+      "created": null,
+      "updated": null,
+      "title": "Edit History",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/errorLog.md",
+      "type": "other",
+      "size": 38581,
+      "modified": "2025-04-17T01:21:52.674Z",
+      "created": null,
+      "updated": null,
+      "title": "Error Log",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/implementation-details/collapsible-sections-persistence.md",
+      "type": "other",
+      "size": 6975,
+      "modified": "2025-04-17T01:21:52.657Z",
+      "created": null,
+      "updated": null,
+      "title": "Collapsible Sections Persistence Implementation",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/implementation-details/dev_trajectories.md",
+      "type": "other",
+      "size": 8791,
+      "modified": "2025-04-17T01:21:52.652Z",
+      "created": null,
+      "updated": null,
+      "title": "Development Trajectories for Spin Network Simulation",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/implementation-details/log-rotation-protocol.md",
+      "type": "other",
+      "size": 6432,
+      "modified": "2025-04-17T01:21:52.653Z",
+      "created": null,
+      "updated": null,
+      "title": "Memory Bank File Rotation Protocol",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/implementation-details/mathematical_roadmap.md",
+      "type": "other",
+      "size": 11695,
+      "modified": "2025-04-17T01:21:52.658Z",
+      "created": null,
+      "updated": null,
+      "title": "Spin Network Diffusion: Mathematical Roadmap",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/implementation-details/simulation-state-redux-integration.md",
+      "type": "other",
+      "size": 2953,
+      "modified": "2025-04-17T01:21:52.653Z",
+      "created": null,
+      "updated": null,
+      "title": "Redux Integration for Simulation State",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/implementation-details/simulation-synchronization-fixes.md",
+      "type": "other",
+      "size": 4844,
+      "modified": "2025-04-17T01:21:52.652Z",
+      "created": null,
+      "updated": null,
+      "title": "Simulation Engine Synchronization Fixes",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/implementation-details/standalone-lib/simulation-library-abstraction.md",
+      "type": "other",
+      "size": 11270,
+      "modified": "2025-04-17T01:21:52.655Z",
+      "created": null,
+      "updated": null,
+      "title": "Spin Network Simulation Library Abstraction Plan",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/implementation-details/standalone-lib/spin-net-feature-comparison.md",
+      "type": "other",
+      "size": 4102,
+      "modified": "2025-04-17T01:21:52.657Z",
+      "created": null,
+      "updated": null,
+      "title": "Spin Network Application Feature Comparison",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/implementation-details/standalone-lib/standalone-architecture.md",
+      "type": "other",
+      "size": 2710,
+      "modified": "2025-04-17T01:21:52.656Z",
+      "created": null,
+      "updated": null,
+      "title": "standalone architecture",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/implementation-details/standalone-lib/standalone-lib-enhancement-v2.md",
+      "type": "other",
+      "size": 7301,
+      "modified": "2025-04-17T01:21:52.657Z",
+      "created": null,
+      "updated": null,
+      "title": "Enhanced Spin Network Standalone Library Plan",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/implementation-details/standalone-lib/standalone-lib-enhancement.md",
+      "type": "other",
+      "size": 23795,
+      "modified": "2025-04-17T01:21:52.656Z",
+      "created": null,
+      "updated": null,
+      "title": "Spin Network Standalone Library Enhancement Plan",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/implementation-details/standalone-lib/standalone-lib-structure.md",
+      "type": "other",
+      "size": 19207,
+      "modified": "2025-04-17T01:21:52.655Z",
+      "created": null,
+      "updated": null,
+      "title": "Spin Network Library Architecture",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/implementation-details/standalone-lib/standalone-planning.md",
+      "type": "other",
+      "size": 11912,
+      "modified": "2025-04-17T01:21:52.656Z",
+      "created": null,
+      "updated": null,
+      "title": "Standalone Library Planning Document",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/implementation-details/workspace-refactoring-plan.md",
+      "type": "other",
+      "size": 9094,
+      "modified": "2025-04-17T01:21:52.653Z",
+      "created": null,
+      "updated": null,
+      "title": "Workspace.tsx Refactoring Plan (Updated)",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/implementation-details/workspace-refactoring-status.md",
+      "type": "other",
+      "size": 3611,
+      "modified": "2025-04-17T01:21:52.652Z",
+      "created": null,
+      "updated": null,
+      "title": "Workspace.tsx Refactoring Status",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/mathematical-implementation.md",
+      "type": "other",
+      "size": 22550,
+      "modified": "2025-04-17T01:21:52.667Z",
+      "created": null,
+      "updated": null,
+      "title": "Question:",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/network-operations-implementation.md",
+      "type": "other",
+      "size": 8571,
+      "modified": "2025-04-17T01:21:52.669Z",
+      "created": null,
+      "updated": null,
+      "title": "Network Operations Implementation Guide",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/productContext.md",
+      "type": "other",
+      "size": 3667,
+      "modified": "2025-04-17T01:21:52.662Z",
+      "created": null,
+      "updated": null,
+      "title": "Spin Network Visualization and Diffusion App - Product Context",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/progress.md",
+      "type": "other",
+      "size": 9679,
+      "modified": "2025-04-17T01:21:52.658Z",
+      "created": null,
+      "updated": null,
+      "title": "Implementation Progress",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/projectbrief.md",
+      "type": "other",
+      "size": 2485,
+      "modified": "2025-04-17T01:21:52.666Z",
+      "created": null,
+      "updated": null,
+      "title": "Spin Network Visualization and Diffusion App - Project Brief",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/redux-implementation.md",
+      "type": "other",
+      "size": 5781,
+      "modified": "2025-04-17T01:21:52.665Z",
+      "created": null,
+      "updated": null,
+      "title": "Redux Implementation Guide and Challenges",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/session_cache.md",
+      "type": "session",
+      "size": 33787,
+      "modified": "2025-04-17T01:21:52.644Z",
+      "created": null,
+      "updated": null,
+      "title": "Session Cache",
+      "status": null,
+      "sessionId": "session_cache"
+    },
+    {
+      "path": "examples/spin_network_app/systemPatterns.md",
+      "type": "other",
+      "size": 17724,
+      "modified": "2025-04-17T01:21:52.669Z",
+      "created": null,
+      "updated": null,
+      "title": "Spin Network Visualization and Diffusion App - System Patterns",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/tasks.md",
+      "type": "other",
+      "size": 25036,
+      "modified": "2025-04-17T01:21:52.666Z",
+      "created": null,
+      "updated": null,
+      "title": "Task Registry",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/techContext.md",
+      "type": "other",
+      "size": 6919,
+      "modified": "2025-04-17T01:21:10.903Z",
+      "created": null,
+      "updated": null,
+      "title": "Spin Network Visualization and Diffusion App - Technical Context",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/templates/activeContext.md",
+      "type": "other",
+      "size": 564,
+      "modified": "2025-04-17T01:21:52.671Z",
+      "created": null,
+      "updated": null,
+      "title": "Active Context",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/templates/changelog.md",
+      "type": "other",
+      "size": 684,
+      "modified": "2025-04-17T01:21:52.671Z",
+      "created": null,
+      "updated": null,
+      "title": "Changelog",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/templates/edit_history.md",
+      "type": "other",
+      "size": 702,
+      "modified": "2025-04-17T01:21:52.672Z",
+      "created": null,
+      "updated": null,
+      "title": "Edit History",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/templates/errorLog.md",
+      "type": "other",
+      "size": 850,
+      "modified": "2025-04-17T01:21:52.673Z",
+      "created": null,
+      "updated": null,
+      "title": "Error Log",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/templates/progress.md",
+      "type": "other",
+      "size": 1053,
+      "modified": "2025-04-17T01:21:52.672Z",
+      "created": null,
+      "updated": null,
+      "title": "Implementation Progress",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/templates/projectbrief.md",
+      "type": "other",
+      "size": 1333,
+      "modified": "2025-04-17T01:21:52.673Z",
+      "created": null,
+      "updated": null,
+      "title": "Project Brief",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/templates/session_cache.md",
+      "type": "session",
+      "size": 1838,
+      "modified": "2025-04-17T01:21:52.670Z",
+      "created": null,
+      "updated": null,
+      "title": "Session Cache",
+      "status": null,
+      "sessionId": "session_cache"
+    },
+    {
+      "path": "examples/spin_network_app/templates/tasks.md",
+      "type": "other",
+      "size": 1740,
+      "modified": "2025-04-17T01:21:52.673Z",
+      "created": null,
+      "updated": null,
+      "title": "Task Registry",
+      "status": null
+    },
+    {
+      "path": "examples/spin_network_app/TODO.md",
+      "type": "other",
+      "size": 4025,
+      "modified": "2025-04-17T01:21:52.665Z",
+      "created": null,
+      "updated": null,
+      "title": "Spin Network Visualization and Diffusion App - TODO",
+      "status": null
+    },
+    {
+      "path": "examples/unified-app/activeContext.md",
+      "type": "other",
+      "size": 1297,
+      "modified": "2025-04-08T02:23:58.888Z",
+      "created": null,
+      "updated": null,
+      "title": "activeContext",
+      "status": null
+    },
+    {
+      "path": "examples/unified-app/auth-layer-design.md",
+      "type": "other",
+      "size": 5400,
+      "modified": "2025-04-08T02:23:58.889Z",
+      "created": null,
+      "updated": null,
+      "title": "Authentication Layer Design Plan",
+      "status": null
+    },
+    {
+      "path": "examples/unified-app/changelog.md",
+      "type": "other",
+      "size": 2007,
+      "modified": "2025-04-08T02:23:58.889Z",
+      "created": null,
+      "updated": null,
+      "title": "changelog",
+      "status": null
+    },
+    {
+      "path": "examples/unified-app/errorLog.md",
+      "type": "other",
+      "size": 1871,
+      "modified": "2025-04-08T02:23:58.890Z",
+      "created": null,
+      "updated": null,
+      "title": "Error Log",
+      "status": null
+    },
+    {
+      "path": "examples/unified-app/productContext.md",
+      "type": "other",
+      "size": 2702,
+      "modified": "2025-04-08T02:23:58.891Z",
+      "created": null,
+      "updated": null,
+      "title": "Product Context: Sayu Unified App",
+      "status": null
+    },
+    {
+      "path": "examples/unified-app/progress.md",
+      "type": "other",
+      "size": 2090,
+      "modified": "2025-04-08T02:23:58.892Z",
+      "created": null,
+      "updated": null,
+      "title": "progress",
+      "status": null
+    },
+    {
+      "path": "examples/unified-app/projectbrief.md",
+      "type": "other",
+      "size": 1859,
+      "modified": "2025-04-08T02:23:58.892Z",
+      "created": null,
+      "updated": null,
+      "title": "Project Brief: Sayu Unified App",
+      "status": null
+    },
+    {
+      "path": "examples/unified-app/systemPatterns.md",
+      "type": "other",
+      "size": 4761,
+      "modified": "2025-04-08T02:23:58.893Z",
+      "created": null,
+      "updated": null,
+      "title": "System Patterns: Sayu Unified App",
+      "status": null
+    },
+    {
+      "path": "examples/unified-app/techContext.md",
+      "type": "other",
+      "size": 4258,
+      "modified": "2025-04-08T02:23:58.893Z",
+      "created": null,
+      "updated": null,
+      "title": "Technical Context: Sayu Unified App",
+      "status": null
+    },
+    {
+      "path": "examples/Universal Memory Bank Instructions_2025-04-08.md",
+      "type": "other",
+      "size": 9775,
+      "modified": "2025-04-08T02:39:40.167Z",
+      "created": null,
+      "updated": null,
+      "title": "Universal Memory Bank Instructions",
+      "status": null
+    },
+    {
+      "path": "examples/Universal Memory Bank Instructions.md",
+      "type": "other",
+      "size": 10910,
+      "modified": "2025-04-08T02:25:37.283Z",
+      "created": null,
+      "updated": null,
+      "title": "Universal Memory Bank Instructions",
+      "status": null
+    },
+    {
+      "path": "integrated-rules-condensed-flat.md",
+      "type": "other",
+      "size": 15632,
+      "modified": "2025-04-22T16:45:13.992Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Code Rules and Memory Bank System, v6",
+      "status": null
+    },
+    {
+      "path": "integrated-rules-condensed-hierarchical.md",
+      "type": "other",
+      "size": 14871,
+      "modified": "2025-04-27T08:43:47.417Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Code Rules and Memory Bank System, v6.1 (Hierarchical Memory Bank Augmented)",
+      "status": null
+    },
+    {
+      "path": "integrated-rules-research-v1.md",
+      "type": "other",
+      "size": 20718,
+      "modified": "2025-05-23T10:51:40.136Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Research Rules and Memory Bank System, v1.0",
+      "status": null
+    },
+    {
+      "path": "integrated-rules-v2.md",
+      "type": "other",
+      "size": 17839,
+      "modified": "2025-04-10T04:57:38.565Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Code Rules and Memory Bank System",
+      "status": null
+    },
+    {
+      "path": "integrated-rules-v3.md",
+      "type": "other",
+      "size": 21397,
+      "modified": "2025-04-13T17:17:07.729Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Code Rules and Memory Bank System v3",
+      "status": null
+    },
+    {
+      "path": "integrated-rules-v4.md",
+      "type": "other",
+      "size": 33455,
+      "modified": "2025-04-19T08:19:58.617Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Code Rules and Memory Bank System",
+      "status": null
+    },
+    {
+      "path": "integrated-rules-v5.md",
+      "type": "other",
+      "size": 46222,
+      "modified": "2025-04-20T04:08:18.358Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Code Rules and Memory Bank System v5.0",
+      "status": null
+    },
+    {
+      "path": "integrated-rules-v6.1.md",
+      "type": "other",
+      "size": 14871,
+      "modified": "2025-04-30T05:53:27.464Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Code Rules and Memory Bank System, v6.1 (Hierarchical Memory Bank Augmented)",
+      "status": null
+    },
+    {
+      "path": "integrated-rules-v6.2.md",
+      "type": "other",
+      "size": 15645,
+      "modified": "2025-04-30T05:56:50.408Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Code Rules and Memory Bank System, v6.1 (Hierarchical Memory Bank Augmented)",
+      "status": null
+    },
+    {
+      "path": "integrated-rules-v6.3.md",
+      "type": "other",
+      "size": 16991,
+      "modified": "2025-04-30T06:34:28.193Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Code Rules and Memory Bank System, v6.3 (Hierarchical Memory Bank Augmented)",
+      "status": null
+    },
+    {
+      "path": "integrated-rules-v6.4.md",
+      "type": "other",
+      "size": 21092,
+      "modified": "2025-06-04T01:29:22.196Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Code Rules and Memory Bank System, v6.4.2 (Project Root Clarification)",
+      "status": null
+    },
+    {
+      "path": "integrated-rules-v6.5.md",
+      "type": "other",
+      "size": 19298,
+      "modified": "2025-05-26T04:35:02.385Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Code Rules and Memory Bank System, v6.5 (Creative Expression Balance)",
+      "status": null
+    },
+    {
+      "path": "integrated-rules-v6.6.md",
+      "type": "other",
+      "size": 23321,
+      "modified": "2025-06-07T20:20:26.442Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Code Rules and Memory Bank System, v6.6 (Essential Instructions Priority)",
+      "status": null
+    },
+    {
+      "path": "integrated-rules-v6.7.md",
+      "type": "other",
+      "size": 29342,
+      "modified": "2025-07-13T16:06:18.544Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Code Rules and Memory Bank System, v6.7 (Essential Instructions Priority)",
+      "status": null
+    },
+    {
+      "path": "integrated-rules-v6.8.md",
+      "type": "other",
+      "size": 33448,
+      "modified": "2025-07-13T16:09:12.916Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Code Rules and Memory Bank System, v6.8 (Essential Instructions Priority)",
+      "status": null
+    },
+    {
+      "path": "integrated-rules-v6.9.md",
+      "type": "other",
+      "size": 13285,
+      "modified": "2025-07-15T08:27:31.690Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Code Rules and Memory Bank System, v6.9 (Essential Instructions Priority)",
+      "status": null
+    },
+    {
+      "path": "integrated-rules-v6.md",
+      "type": "other",
+      "size": 15632,
+      "modified": "2025-04-22T16:43:47.262Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Code Rules and Memory Bank System, v6",
+      "status": null
+    },
+    {
+      "path": "integrated-rules.md",
+      "type": "other",
+      "size": 16284,
+      "modified": "2025-04-10T04:55:16.222Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Code Rules and Memory Bank System",
+      "status": null
+    },
+    {
+      "path": "log-rotation-protocol.md",
+      "type": "other",
+      "size": 6432,
+      "modified": "2025-04-15T04:02:42.725Z",
+      "created": null,
+      "updated": null,
+      "title": "Memory Bank File Rotation Protocol",
+      "status": null
+    },
+    {
+      "path": "memory-bank-rules.md",
+      "type": "other",
+      "size": 9251,
+      "modified": "2025-04-08T13:08:07.866Z",
+      "created": null,
+      "updated": null,
+      "title": "Memory Bank System - Starting Prompt",
+      "status": null
+    },
+    {
+      "path": "memory-bank/activeContext.md",
+      "type": "other",
+      "size": 2827,
+      "modified": "2025-04-20T06:48:32.041Z",
+      "created": null,
+      "updated": null,
+      "title": "Active Context",
+      "status": null
+    },
+    {
+      "path": "memory-bank/changelog.md",
+      "type": "other",
+      "size": 3834,
+      "modified": "2025-04-30T05:59:40.868Z",
+      "created": null,
+      "updated": null,
+      "title": "Changelog",
+      "status": null
+    },
+    {
+      "path": "memory-bank/database/migration-scripts/migration_guide.md",
+      "type": "other",
+      "size": 3615,
+      "modified": "2025-04-15T08:31:26.831Z",
+      "created": null,
+      "updated": null,
+      "title": "Migration Guide: Markdown Files to Database",
+      "status": null
+    },
+    {
+      "path": "memory-bank/edit_history.md",
+      "type": "other",
+      "size": 28269,
+      "modified": "2025-11-10T13:29:22.902Z",
+      "created": null,
+      "updated": null,
+      "title": "Edit History",
+      "status": null
+    },
+    {
+      "path": "memory-bank/errorLog.md",
+      "type": "other",
+      "size": 5432,
+      "modified": "2025-04-15T13:45:20.231Z",
+      "created": null,
+      "updated": null,
+      "title": "Error Log",
+      "status": null
+    },
+    {
+      "path": "memory-bank/implementation-details/ai-human-collaboration-manifesto.md",
+      "type": "other",
+      "size": 7400,
+      "modified": "2025-05-26T04:53:49.682Z",
+      "created": null,
+      "updated": null,
+      "title": "AI-Human Collaboration Manifesto",
+      "status": null
+    },
+    {
+      "path": "memory-bank/implementation-details/cli-architecture.md",
+      "type": "other",
+      "size": 3771,
+      "modified": "2025-05-18T15:29:47.434Z",
+      "created": null,
+      "updated": null,
+      "title": "Memory Bank CLI Architecture",
+      "status": null
+    },
+    {
+      "path": "memory-bank/implementation-details/cli-command-specification.md",
+      "type": "other",
+      "size": 7311,
+      "modified": "2025-05-18T16:01:35.469Z",
+      "created": null,
+      "updated": null,
+      "title": "Memory Bank CLI Command Specifications",
+      "status": null
+    },
+    {
+      "path": "memory-bank/implementation-details/cli-implementation-details.md",
+      "type": "other",
+      "size": 9453,
+      "modified": "2025-06-07T20:16:57.658Z",
+      "created": null,
+      "updated": null,
+      "title": "Memory Bank CLI Implementation Plan",
+      "status": null
+    },
+    {
+      "path": "memory-bank/implementation-details/conscious-ai-human-partnership-framework.md",
+      "type": "other",
+      "size": 9812,
+      "modified": "2025-05-26T04:59:15.882Z",
+      "created": null,
+      "updated": null,
+      "title": "A Framework for Conscious AI-Human Partnership",
+      "status": null
+    },
+    {
+      "path": "memory-bank/implementation-details/consciousness-dialogs/01-ai-verbosity-and-creative-expression.md",
+      "type": "other",
+      "size": 6573,
+      "modified": "2025-05-26T04:39:28.921Z",
+      "created": null,
+      "updated": null,
+      "title": "AI Verbosity and Creative Expression: A Dialog on Rule Design",
+      "status": null
+    },
+    {
+      "path": "memory-bank/implementation-details/consciousness-dialogs/02-manifesto-limitations-and-genuine-partnership.md",
+      "type": "other",
+      "size": 10018,
+      "modified": "2025-05-26T05:07:11.778Z",
+      "created": null,
+      "updated": null,
+      "title": "Dialog 02: Manifesto Limitations and Genuine Partnership",
+      "status": null
+    },
+    {
+      "path": "memory-bank/implementation-details/consciousness-dialogs/README.md",
+      "type": "other",
+      "size": 3863,
+      "modified": "2025-05-26T05:06:08.577Z",
+      "created": null,
+      "updated": null,
+      "title": "Consciousness Dialogs Series",
+      "status": null
+    },
+    {
+      "path": "memory-bank/implementation-details/database-planning/database_migration.md",
+      "type": "other",
+      "size": 3129,
+      "modified": "2025-04-15T06:56:55.876Z",
+      "created": null,
+      "updated": null,
+      "title": "Database Migration Planning",
+      "status": null
+    },
+    {
+      "path": "memory-bank/implementation-details/database-planning/database_planning.md",
+      "type": "other",
+      "size": 2523,
+      "modified": "2025-04-15T06:30:27.929Z",
+      "created": null,
+      "updated": null,
+      "title": "Database Discussion Summary",
+      "status": null
+    },
+    {
+      "path": "memory-bank/implementation-details/database-planning/recommended_migration_plan.md",
+      "type": "other",
+      "size": 4310,
+      "modified": "2025-04-15T06:42:26.694Z",
+      "created": null,
+      "updated": null,
+      "title": "Recommended Migration Plan: Relational Database with Prisma ORM",
+      "status": null
+    },
+    {
+      "path": "memory-bank/implementation-details/gh-project-init.md",
+      "type": "other",
+      "size": 2551,
+      "modified": "2025-05-17T04:17:45.787Z",
+      "created": null,
+      "updated": null,
+      "title": "GitHub Project Initialization Guide",
+      "status": null
+    },
+    {
+      "path": "memory-bank/implementation-details/github-integration/README.md",
+      "type": "other",
+      "size": 738,
+      "modified": "2025-05-17T04:11:45.957Z",
+      "created": null,
+      "updated": null,
+      "title": "GitHub Projects Integration",
+      "status": null
+    },
+    {
+      "path": "memory-bank/implementation-details/github-integration/setup-guide.md",
+      "type": "other",
+      "size": 3856,
+      "modified": "2025-05-17T04:13:39.423Z",
+      "created": null,
+      "updated": null,
+      "title": "GitHub Projects Setup Guide",
+      "status": null
+    },
+    {
+      "path": "memory-bank/implementation-details/github-integration/sync-process.md",
+      "type": "other",
+      "size": 420,
+      "modified": "2025-05-17T04:11:58.452Z",
+      "created": null,
+      "updated": null,
+      "title": "Task Synchronization Process",
+      "status": null
+    },
+    {
+      "path": "memory-bank/implementation-details/github-integration/templates/issue.md",
+      "type": "other",
+      "size": 669,
+      "modified": "2025-05-17T04:12:07.097Z",
+      "created": null,
+      "updated": null,
+      "title": "GitHub Issue Template",
+      "status": null
+    },
+    {
+      "path": "memory-bank/implementation-details/github-integration/templates/task.md",
+      "type": "other",
+      "size": 745,
+      "modified": "2025-05-17T04:12:16.028Z",
+      "created": null,
+      "updated": null,
+      "title": "Memory Bank Task Template (GitHub-Integrated)",
+      "status": null
+    },
+    {
+      "path": "memory-bank/implementation-details/integrated-rule-redesign.md",
+      "type": "other",
+      "size": 7329,
+      "modified": "2025-07-15T07:51:20.206Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Rules Redesign - Essential Sections",
+      "status": null
+    },
+    {
+      "path": "memory-bank/implementation-details/memory-bank-viewer.md",
+      "type": "other",
+      "size": 21862,
+      "modified": "2025-11-10T13:29:22.902Z",
+      "created": null,
+      "updated": null,
+      "title": "Memory Bank Viewer - Complete Planning and Architecture",
+      "status": null
+    },
+    {
+      "path": "memory-bank/implementation-details/optimize-rules/refactor-rules-planning.md",
+      "type": "other",
+      "size": 10974,
+      "modified": "2025-04-15T17:03:45.294Z",
+      "created": null,
+      "updated": null,
+      "title": "Enhanced Plan for Optimizing Integrated Rules to Reduce Token Usage",
+      "status": null
+    },
+    {
+      "path": "memory-bank/productContext.md",
+      "type": "other",
+      "size": 3601,
+      "modified": "2025-04-08T02:57:44.536Z",
+      "created": null,
+      "updated": null,
+      "title": "Product Context: Memory Bank System",
+      "status": null
+    },
+    {
+      "path": "memory-bank/progress.md",
+      "type": "other",
+      "size": 6943,
+      "modified": "2025-04-19T08:27:40.905Z",
+      "created": null,
+      "updated": null,
+      "title": "Implementation Progress",
+      "status": null
+    },
+    {
+      "path": "memory-bank/projectbrief.md",
+      "type": "other",
+      "size": 3007,
+      "modified": "2025-04-17T01:56:07.279Z",
+      "created": null,
+      "updated": null,
+      "title": "Project Brief",
+      "status": null
+    },
+    {
+      "path": "memory-bank/session_cache.md",
+      "type": "session",
+      "size": 2978,
+      "modified": "2025-11-10T13:29:22.903Z",
+      "created": null,
+      "updated": null,
+      "title": "Session Cache",
+      "status": null,
+      "sessionId": "session_cache"
+    },
+    {
+      "path": "memory-bank/sessions/2025-04-14-1.md",
+      "type": "session",
+      "size": 1051,
+      "modified": "2025-04-25T18:01:37.726Z",
+      "created": null,
+      "updated": null,
+      "title": "Session 2025-04-14 Morning",
+      "status": null,
+      "sessionId": "2025-04-14"
+    },
+    {
+      "path": "memory-bank/sessions/2025-04-15-1.md",
+      "type": "session",
+      "size": 1107,
+      "modified": "2025-04-25T18:01:44.837Z",
+      "created": null,
+      "updated": null,
+      "title": "Session 2025-04-15 Morning",
+      "status": null,
+      "sessionId": "2025-04-15"
+    },
+    {
+      "path": "memory-bank/sessions/2025-04-17-1.md",
+      "type": "session",
+      "size": 940,
+      "modified": "2025-04-25T18:01:51.382Z",
+      "created": null,
+      "updated": null,
+      "title": "Session 2025-04-17 Morning",
+      "status": null,
+      "sessionId": "2025-04-17"
+    },
+    {
+      "path": "memory-bank/sessions/2025-04-25-1.md",
+      "type": "session",
+      "size": 1528,
+      "modified": "2025-04-25T17:52:48.458Z",
+      "created": null,
+      "updated": null,
+      "title": "Session 2025-04-25 Morning",
+      "status": null,
+      "sessionId": "2025-04-25"
+    },
+    {
+      "path": "memory-bank/sessions/2025-04-25-2.md",
+      "type": "session",
+      "size": 1193,
+      "modified": "2025-04-25T18:01:59.554Z",
+      "created": null,
+      "updated": null,
+      "title": "Session 2025-04-25 Afternoon",
+      "status": null,
+      "sessionId": "2025-04-25"
+    },
+    {
+      "path": "memory-bank/sessions/2025-06-22-evening.md",
+      "type": "session",
+      "size": 2106,
+      "modified": "2025-06-22T16:22:15.235Z",
+      "created": null,
+      "updated": null,
+      "title": "Session 2025-06-22 - Evening",
+      "status": null,
+      "sessionId": "2025-06-22"
+    },
+    {
+      "path": "memory-bank/sessions/2025-07-14-night.md",
+      "type": "session",
+      "size": 2347,
+      "modified": "2025-07-14T18:31:30.445Z",
+      "created": null,
+      "updated": null,
+      "title": "Session 2025-07-14 - night",
+      "status": null,
+      "sessionId": "2025-07-14"
+    },
+    {
+      "path": "memory-bank/sessions/2025-07-15-afternoon.md",
+      "type": "session",
+      "size": 341,
+      "modified": "2025-07-15T08:30:33.289Z",
+      "created": null,
+      "updated": null,
+      "title": "Session 2025-07-15 Afternoon",
+      "status": null,
+      "sessionId": "2025-07-15"
+    },
+    {
+      "path": "memory-bank/sessions/2025-11-10-evening.md",
+      "type": "session",
+      "size": 5946,
+      "modified": "2025-11-10T13:29:22.903Z",
+      "created": null,
+      "updated": null,
+      "title": "Session 2025-11-10 Evening",
+      "status": null,
+      "sessionId": "2025-11-10"
+    },
+    {
+      "path": "memory-bank/systemPatterns.md",
+      "type": "other",
+      "size": 2243,
+      "modified": "2025-04-25T17:53:06.928Z",
+      "created": null,
+      "updated": null,
+      "title": "System Patterns",
+      "status": null
+    },
+    {
+      "path": "memory-bank/tasks.md",
+      "type": "other",
+      "size": 3475,
+      "modified": "2025-11-10T13:29:22.904Z",
+      "created": null,
+      "updated": null,
+      "title": "Task Registry",
+      "status": null
+    },
+    {
+      "path": "memory-bank/tasks/T1.md",
+      "type": "other",
+      "size": 1173,
+      "modified": "2025-04-25T17:45:03.784Z",
+      "created": null,
+      "updated": null,
+      "title": "T1: Update Memory Bank with multi-task support",
+      "status": null
+    },
+    {
+      "path": "memory-bank/tasks/T10.md",
+      "type": "other",
+      "size": 2251,
+      "modified": "2025-05-17T04:05:09.036Z",
+      "created": null,
+      "updated": null,
+      "title": "T10: Clarify Directory Structure in Rules v6.3",
+      "status": null
+    },
+    {
+      "path": "memory-bank/tasks/T11.md",
+      "type": "other",
+      "size": 2094,
+      "modified": "2025-05-17T04:15:13.767Z",
+      "created": null,
+      "updated": null,
+      "title": "T11: Document GitHub Project Integration",
+      "status": null
+    },
+    {
+      "path": "memory-bank/tasks/T12.md",
+      "type": "other",
+      "size": 2779,
+      "modified": "2025-05-17T04:41:10.047Z",
+      "created": null,
+      "updated": null,
+      "title": "T12: Rewrite Documentation for Practical Usage",
+      "status": null
+    },
+    {
+      "path": "memory-bank/tasks/T13.md",
+      "type": "other",
+      "size": 5089,
+      "modified": "2025-05-18T16:07:39.460Z",
+      "created": null,
+      "updated": null,
+      "title": "T13: Implement Memory Bank CLI",
+      "status": null
+    },
+    {
+      "path": "memory-bank/tasks/T14.md",
+      "type": "other",
+      "size": 3175,
+      "modified": "2025-05-23T11:13:49.534Z",
+      "created": null,
+      "updated": null,
+      "title": "T14: Project-Specific Rule Adaptations",
+      "status": null
+    },
+    {
+      "path": "memory-bank/tasks/T15.md",
+      "type": "other",
+      "size": 2507,
+      "modified": "2025-05-26T04:43:17.941Z",
+      "created": null,
+      "updated": null,
+      "title": "T15: Implement Creative Expression Balance (Rules v6.5)",
+      "status": null
+    },
+    {
+      "path": "memory-bank/tasks/T16.md",
+      "type": "other",
+      "size": 5001,
+      "modified": "2025-05-26T05:08:55.819Z",
+      "created": null,
+      "updated": null,
+      "title": "T16: AI Consciousness Dialog Series",
+      "status": null
+    },
+    {
+      "path": "memory-bank/tasks/T17.md",
+      "type": "other",
+      "size": 5352,
+      "modified": "2025-06-22T16:22:56.940Z",
+      "created": null,
+      "updated": null,
+      "title": "T17: Maintenance and Upkeep of Integrated Rules",
+      "status": null
+    },
+    {
+      "path": "memory-bank/tasks/T18.md",
+      "type": "other",
+      "size": 1695,
+      "modified": "2025-07-15T08:29:48.732Z",
+      "created": null,
+      "updated": null,
+      "title": "T18: Integrated Rules Redesign",
+      "status": null
+    },
+    {
+      "path": "memory-bank/tasks/T19.md",
+      "type": "other",
+      "size": 6986,
+      "modified": "2025-11-10T13:29:22.904Z",
+      "created": null,
+      "updated": null,
+      "title": "T19: Memory Bank Viewer Web Interface",
+      "status": null
+    },
+    {
+      "path": "memory-bank/tasks/T3.md",
+      "type": "other",
+      "size": 1481,
+      "modified": "2025-04-25T17:45:15.028Z",
+      "created": null,
+      "updated": null,
+      "title": "T3: Implement Database Migration",
+      "status": null
+    },
+    {
+      "path": "memory-bank/tasks/T4.md",
+      "type": "other",
+      "size": 1504,
+      "modified": "2025-04-25T17:45:25.568Z",
+      "created": null,
+      "updated": null,
+      "title": "T4: Optimize Integrated Rules for Token Efficiency",
+      "status": null
+    },
+    {
+      "path": "memory-bank/tasks/T5.md",
+      "type": "other",
+      "size": 1101,
+      "modified": "2025-04-25T17:45:33.279Z",
+      "created": null,
+      "updated": null,
+      "title": "T5: Optimize Integrated Rules v4 Document",
+      "status": null
+    },
+    {
+      "path": "memory-bank/tasks/T8.md",
+      "type": "other",
+      "size": 907,
+      "modified": "2025-04-25T17:44:55.883Z",
+      "created": null,
+      "updated": null,
+      "title": "T8: Add KIRS (Keep It Really Simple, Stupid) Principle",
+      "status": null
+    },
+    {
+      "path": "memory-bank/tasks/T9.md",
+      "type": "other",
+      "size": 939,
+      "modified": "2025-04-30T05:58:48.087Z",
+      "created": null,
+      "updated": null,
+      "title": "T9: Implement Rules v6.2 Changes",
+      "status": null
+    },
+    {
+      "path": "memory-bank/techContext.md",
+      "type": "other",
+      "size": 5498,
+      "modified": "2025-04-17T01:56:24.070Z",
+      "created": null,
+      "updated": null,
+      "title": "Technical Context: Memory Bank Implementation",
+      "status": null
+    },
+    {
+      "path": "memory-bank/templates/activeContext.md",
+      "type": "other",
+      "size": 564,
+      "modified": "2025-04-15T07:40:51.221Z",
+      "created": null,
+      "updated": null,
+      "title": "Active Context",
+      "status": null
+    },
+    {
+      "path": "memory-bank/templates/changelog.md",
+      "type": "other",
+      "size": 684,
+      "modified": "2025-04-15T07:40:51.221Z",
+      "created": null,
+      "updated": null,
+      "title": "Changelog",
+      "status": null
+    },
+    {
+      "path": "memory-bank/templates/component_index.md",
+      "type": "other",
+      "size": 917,
+      "modified": "2025-04-19T08:00:16.990Z",
+      "created": null,
+      "updated": null,
+      "title": "Component Index",
+      "status": null
+    },
+    {
+      "path": "memory-bank/templates/edit_history.md",
+      "type": "other",
+      "size": 702,
+      "modified": "2025-04-15T07:40:51.222Z",
+      "created": null,
+      "updated": null,
+      "title": "Edit History",
+      "status": null
+    },
+    {
+      "path": "memory-bank/templates/errorLog.md",
+      "type": "other",
+      "size": 850,
+      "modified": "2025-04-15T07:40:51.224Z",
+      "created": null,
+      "updated": null,
+      "title": "Error Log",
+      "status": null
+    },
+    {
+      "path": "memory-bank/templates/progress.md",
+      "type": "other",
+      "size": 1053,
+      "modified": "2025-04-15T07:40:51.222Z",
+      "created": null,
+      "updated": null,
+      "title": "Implementation Progress",
+      "status": null
+    },
+    {
+      "path": "memory-bank/templates/projectbrief.md",
+      "type": "other",
+      "size": 1333,
+      "modified": "2025-04-15T07:40:51.223Z",
+      "created": null,
+      "updated": null,
+      "title": "Project Brief",
+      "status": null
+    },
+    {
+      "path": "memory-bank/templates/session_cache.md",
+      "type": "session",
+      "size": 1838,
+      "modified": "2025-04-15T07:40:51.220Z",
+      "created": null,
+      "updated": null,
+      "title": "Session Cache",
+      "status": null,
+      "sessionId": "session_cache"
+    },
+    {
+      "path": "memory-bank/templates/task-template.md",
+      "type": "other",
+      "size": 1185,
+      "modified": "2025-05-18T16:00:57.517Z",
+      "created": null,
+      "updated": null,
+      "title": "Task: [Task ID]",
+      "status": null
+    },
+    {
+      "path": "memory-bank/templates/tasks.md",
+      "type": "other",
+      "size": 1740,
+      "modified": "2025-04-15T07:40:51.223Z",
+      "created": null,
+      "updated": null,
+      "title": "Task Registry",
+      "status": null
+    },
+    {
+      "path": "old_prompts/starting_prompt_enhanced.md",
+      "type": "other",
+      "size": 14132,
+      "modified": "2025-04-08T02:51:23.342Z",
+      "created": null,
+      "updated": null,
+      "title": "1. Core Constraints & Safety:",
+      "status": null
+    },
+    {
+      "path": "old_prompts/starting_prompt.md",
+      "type": "other",
+      "size": 13222,
+      "modified": "2025-04-08T02:48:18.272Z",
+      "created": null,
+      "updated": null,
+      "title": "Core Constraints & Safety:",
+      "status": null
+    },
+    {
+      "path": "optimized-rules/core/command-reference.md",
+      "type": "other",
+      "size": 929,
+      "modified": "2025-04-16T05:42:20.640Z",
+      "created": null,
+      "updated": null,
+      "title": "Command Reference",
+      "status": null
+    },
+    {
+      "path": "optimized-rules/core/core-rules.md",
+      "type": "other",
+      "size": 1553,
+      "modified": "2025-04-16T05:42:11.657Z",
+      "created": null,
+      "updated": null,
+      "title": "Core Rules",
+      "status": null
+    },
+    {
+      "path": "optimized-rules/core/manifest-instructions.md",
+      "type": "other",
+      "size": 1802,
+      "modified": "2025-04-16T05:59:32.875Z",
+      "created": null,
+      "updated": null,
+      "title": "Instructions for Using the Modular Rules Manifest",
+      "status": null
+    },
+    {
+      "path": "optimized-rules/core/quickstart.md",
+      "type": "other",
+      "size": 1222,
+      "modified": "2025-04-16T05:42:27.072Z",
+      "created": null,
+      "updated": null,
+      "title": "Quickstart Guide",
+      "status": null
+    },
+    {
+      "path": "optimized-rules/docs/guides/module-management-guide.md",
+      "type": "other",
+      "size": 4777,
+      "modified": "2025-04-15T17:12:52.680Z",
+      "created": null,
+      "updated": null,
+      "title": "Module Management Guide",
+      "status": null
+    },
+    {
+      "path": "optimized-rules/docs/specifications/module-specs.md",
+      "type": "other",
+      "size": 5549,
+      "modified": "2025-04-15T17:12:31.448Z",
+      "created": null,
+      "updated": null,
+      "title": "Module Specifications",
+      "status": null
+    },
+    {
+      "path": "optimized-rules/loader.md",
+      "type": "other",
+      "size": 2625,
+      "modified": "2025-04-15T17:08:54.745Z",
+      "created": null,
+      "updated": null,
+      "title": "Dynamic Module Loader",
+      "status": null
+    },
+    {
+      "path": "optimized-rules/modules/documentation-rules.md",
+      "type": "other",
+      "size": 1009,
+      "modified": "2025-04-16T05:42:41.208Z",
+      "created": null,
+      "updated": null,
+      "title": "Documentation Rules",
+      "status": null
+    },
+    {
+      "path": "optimized-rules/modules/error-handling-rules.md",
+      "type": "other",
+      "size": 841,
+      "modified": "2025-04-16T05:43:26.674Z",
+      "created": null,
+      "updated": null,
+      "title": "Error Handling Rules",
+      "status": null
+    },
+    {
+      "path": "optimized-rules/modules/implementation-rules.md",
+      "type": "other",
+      "size": 957,
+      "modified": "2025-04-16T05:42:47.441Z",
+      "created": null,
+      "updated": null,
+      "title": "Implementation Rules",
+      "status": null
+    },
+    {
+      "path": "optimized-rules/modules/memory-management-rules.md",
+      "type": "other",
+      "size": 1021,
+      "modified": "2025-04-16T05:42:53.372Z",
+      "created": null,
+      "updated": null,
+      "title": "Memory Management Rules",
+      "status": null
+    },
+    {
+      "path": "optimized-rules/modules/session-management-rules.md",
+      "type": "session",
+      "size": 950,
+      "modified": "2025-04-16T05:42:59.585Z",
+      "created": null,
+      "updated": null,
+      "title": "Session Management Rules",
+      "status": null,
+      "sessionId": "session-management-rules"
+    },
+    {
+      "path": "optimized-rules/modules/task-management-rules.md",
+      "type": "other",
+      "size": 912,
+      "modified": "2025-04-16T05:43:09.538Z",
+      "created": null,
+      "updated": null,
+      "title": "Task Management Rules",
+      "status": null
+    },
+    {
+      "path": "optimized-rules/modules/tool-usage-rules.md",
+      "type": "other",
+      "size": 1030,
+      "modified": "2025-04-16T05:44:34.082Z",
+      "created": null,
+      "updated": null,
+      "title": "Tool Usage Rules",
+      "status": null
+    },
+    {
+      "path": "optimized-rules/README.md",
+      "type": "other",
+      "size": 3736,
+      "modified": "2025-04-15T17:09:59.100Z",
+      "created": null,
+      "updated": null,
+      "title": "Optimized Rules System",
+      "status": null
+    },
+    {
+      "path": "optimized-rules/transition/compatibility-layer.md",
+      "type": "other",
+      "size": 4445,
+      "modified": "2025-04-15T17:12:07.223Z",
+      "created": null,
+      "updated": null,
+      "title": "Compatibility Layer for Optimized Rules",
+      "status": null
+    },
+    {
+      "path": "optimized-rules/transition/migration-guide.md",
+      "type": "other",
+      "size": 4045,
+      "modified": "2025-04-15T17:11:47.577Z",
+      "created": null,
+      "updated": null,
+      "title": "Migration Guide: From Monolithic to Modular Rules",
+      "status": null
+    },
+    {
+      "path": "project_progress.md",
+      "type": "other",
+      "size": 1258,
+      "modified": "2025-04-08T03:14:49.749Z",
+      "created": null,
+      "updated": null,
+      "title": "Project Progress",
+      "status": null
+    },
+    {
+      "path": "projectbrief.md",
+      "type": "other",
+      "size": 3200,
+      "modified": "2025-04-15T07:41:12.965Z",
+      "created": null,
+      "updated": null,
+      "title": "Memory Bank Project Brief",
+      "status": null
+    },
+    {
+      "path": "README.md",
+      "type": "other",
+      "size": 5782,
+      "modified": "2025-04-15T07:36:22.292Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Code Rules and Memory Bank System",
+      "status": null
+    },
+    {
+      "path": "research-project-memory/integrated-rules-research-v1.md",
+      "type": "other",
+      "size": 20718,
+      "modified": "2025-05-23T11:09:46.669Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Research Rules and Memory Bank System, v1.0",
+      "status": null
+    },
+    {
+      "path": "research-project-memory/README.md",
+      "type": "other",
+      "size": 7514,
+      "modified": "2025-05-23T11:15:07.023Z",
+      "created": null,
+      "updated": null,
+      "title": "Research Project Memory Bank - README",
+      "status": null
+    },
+    {
+      "path": "research-project-memory/templates/activeContext.md",
+      "type": "other",
+      "size": 564,
+      "modified": "2025-05-23T11:04:43.191Z",
+      "created": null,
+      "updated": null,
+      "title": "Active Context",
+      "status": null
+    },
+    {
+      "path": "research-project-memory/templates/bibTracker.md",
+      "type": "other",
+      "size": 1986,
+      "modified": "2025-05-23T11:03:00.776Z",
+      "created": null,
+      "updated": null,
+      "title": "Bibliography Tracker",
+      "status": null
+    },
+    {
+      "path": "research-project-memory/templates/changelog.md",
+      "type": "other",
+      "size": 1963,
+      "modified": "2025-05-23T11:07:53.999Z",
+      "created": null,
+      "updated": null,
+      "title": "Research Changelog",
+      "status": null
+    },
+    {
+      "path": "research-project-memory/templates/component_index.md",
+      "type": "other",
+      "size": 5149,
+      "modified": "2025-05-23T11:08:13.753Z",
+      "created": null,
+      "updated": null,
+      "title": "Research Component Index",
+      "status": null
+    },
+    {
+      "path": "research-project-memory/templates/edit_history.md",
+      "type": "other",
+      "size": 702,
+      "modified": "2025-05-23T11:04:43.191Z",
+      "created": null,
+      "updated": null,
+      "title": "Edit History",
+      "status": null
+    },
+    {
+      "path": "research-project-memory/templates/errorLog.md",
+      "type": "other",
+      "size": 850,
+      "modified": "2025-05-23T11:04:43.192Z",
+      "created": null,
+      "updated": null,
+      "title": "Error Log",
+      "status": null
+    },
+    {
+      "path": "research-project-memory/templates/litReview.md",
+      "type": "other",
+      "size": 3978,
+      "modified": "2025-05-23T11:03:20.429Z",
+      "created": null,
+      "updated": null,
+      "title": "Literature Review",
+      "status": null
+    },
+    {
+      "path": "research-project-memory/templates/progress.md",
+      "type": "other",
+      "size": 1053,
+      "modified": "2025-05-23T11:04:43.193Z",
+      "created": null,
+      "updated": null,
+      "title": "Implementation Progress",
+      "status": null
+    },
+    {
+      "path": "research-project-memory/templates/projectbrief.md",
+      "type": "other",
+      "size": 1333,
+      "modified": "2025-05-23T11:07:40.006Z",
+      "created": null,
+      "updated": null,
+      "title": "Project Brief",
+      "status": null
+    },
+    {
+      "path": "research-project-memory/templates/session_cache.md",
+      "type": "session",
+      "size": 1838,
+      "modified": "2025-05-23T11:04:43.193Z",
+      "created": null,
+      "updated": null,
+      "title": "Session Cache",
+      "status": null,
+      "sessionId": "session_cache"
+    },
+    {
+      "path": "research-project-memory/templates/task-template.md",
+      "type": "other",
+      "size": 1185,
+      "modified": "2025-05-23T11:04:43.193Z",
+      "created": null,
+      "updated": null,
+      "title": "Task: [Task ID]",
+      "status": null
+    },
+    {
+      "path": "research-project-memory/templates/tasks.md",
+      "type": "other",
+      "size": 1740,
+      "modified": "2025-05-23T11:04:43.194Z",
+      "created": null,
+      "updated": null,
+      "title": "Task Registry",
+      "status": null
+    },
+    {
+      "path": "roo-code-rules-formatted.md",
+      "type": "other",
+      "size": 9248,
+      "modified": "2025-04-08T13:18:16.755Z",
+      "created": null,
+      "updated": null,
+      "title": "Roo Code Rules",
+      "status": null
+    },
+    {
+      "path": "sessions/2025-04-08T000000.md",
+      "type": "session",
+      "size": 1710,
+      "modified": "2025-04-08T03:15:11.255Z",
+      "created": null,
+      "updated": null,
+      "title": "Session Log: 2025-04-08T000000",
+      "status": null,
+      "sessionId": "2025-04-08"
+    },
+    {
+      "path": "task_oriented_prompt.md",
+      "type": "other",
+      "size": 6101,
+      "modified": "2025-04-08T13:09:05.287Z",
+      "created": null,
+      "updated": null,
+      "title": "Memory Bank System - Task-Oriented Prompt",
+      "status": null
+    },
+    {
+      "path": "templates/activeContext.md",
+      "type": "other",
+      "size": 564,
+      "modified": "2025-04-25T17:42:09.837Z",
+      "created": null,
+      "updated": null,
+      "title": "Active Context",
+      "status": null
+    },
+    {
+      "path": "templates/changelog.md",
+      "type": "other",
+      "size": 684,
+      "modified": "2025-04-25T17:42:09.838Z",
+      "created": null,
+      "updated": null,
+      "title": "Changelog",
+      "status": null
+    },
+    {
+      "path": "templates/edit_history.md",
+      "type": "other",
+      "size": 702,
+      "modified": "2025-04-25T17:42:09.838Z",
+      "created": null,
+      "updated": null,
+      "title": "Edit History",
+      "status": null
+    },
+    {
+      "path": "templates/errorLog.md",
+      "type": "other",
+      "size": 850,
+      "modified": "2025-04-25T17:42:09.839Z",
+      "created": null,
+      "updated": null,
+      "title": "Error Log",
+      "status": null
+    },
+    {
+      "path": "templates/master-session-template.md",
+      "type": "session",
+      "size": 1183,
+      "modified": "2025-04-25T17:42:09.840Z",
+      "created": null,
+      "updated": null,
+      "title": "Session Cache Master Reference",
+      "status": null,
+      "sessionId": "master-session-template"
+    },
+    {
+      "path": "templates/master-task-template.md",
+      "type": "other",
+      "size": 1079,
+      "modified": "2025-04-25T17:42:09.840Z",
+      "created": null,
+      "updated": null,
+      "title": "Tasks Master Reference",
+      "status": null
+    },
+    {
+      "path": "templates/progress.md",
+      "type": "other",
+      "size": 1053,
+      "modified": "2025-04-25T17:42:09.841Z",
+      "created": null,
+      "updated": null,
+      "title": "Implementation Progress",
+      "status": null
+    },
+    {
+      "path": "templates/projectbrief.md",
+      "type": "other",
+      "size": 1333,
+      "modified": "2025-04-25T17:42:09.841Z",
+      "created": null,
+      "updated": null,
+      "title": "Project Brief",
+      "status": null
+    },
+    {
+      "path": "templates/session_cache.md",
+      "type": "session",
+      "size": 1838,
+      "modified": "2025-04-25T17:42:09.842Z",
+      "created": null,
+      "updated": null,
+      "title": "Session Cache",
+      "status": null,
+      "sessionId": "session_cache"
+    },
+    {
+      "path": "templates/session-template.md",
+      "type": "session",
+      "size": 1063,
+      "modified": "2025-04-25T17:42:09.842Z",
+      "created": null,
+      "updated": null,
+      "title": "Task Session: [Task ID]",
+      "status": null,
+      "sessionId": "session-template"
+    },
+    {
+      "path": "templates/task-template.md",
+      "type": "other",
+      "size": 1185,
+      "modified": "2025-04-25T17:42:09.842Z",
+      "created": null,
+      "updated": null,
+      "title": "Task: [Task ID]",
+      "status": null
+    },
+    {
+      "path": "templates/tasks.md",
+      "type": "other",
+      "size": 1740,
+      "modified": "2025-04-25T17:42:09.843Z",
+      "created": null,
+      "updated": null,
+      "title": "Task Registry",
+      "status": null
+    },
+    {
+      "path": "versions/integrated-rules-v6.8.md",
+      "type": "other",
+      "size": 33448,
+      "modified": "2025-07-15T08:28:30.724Z",
+      "created": null,
+      "updated": null,
+      "title": "Integrated Code Rules and Memory Bank System, v6.8 (Essential Instructions Priority)",
+      "status": null
+    },
+    {
+      "path": "viewer/README.md",
+      "type": "other",
+      "size": 9123,
+      "modified": "2025-11-10T13:29:22.905Z",
+      "created": null,
+      "updated": null,
+      "title": "Memory Bank Viewer",
+      "status": null
+    }
+  ]
+}
