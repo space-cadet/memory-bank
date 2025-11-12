@@ -1,15 +1,18 @@
 # Memory Bank Database Parser Implementation Plan
 *Created: 2025-11-12 12:02:00 IST*
-*Last Updated: 2025-11-12 16:13:21 IST*
+*Last Updated: 2025-11-12 16:59:56 IST*
 
 ## Overview
 
-The Memory Bank Database Parser is a fresh implementation that parses memory bank markdown files and populates a SQLite database for analysis and querying. The current implementation focuses on `edit_history.md` parsing, with a design that supports future expansion to other memory bank files.
+The Memory Bank Database Parser is a fresh implementation that parses memory bank markdown files and populates a SQLite database for analysis and querying. Originally located in `edit-history-parser/` at project root, it has been moved to `memory-bank/database/` and integrated with the mb-cli init system (2025-11-12). The implementation focuses on `edit_history.md` and `tasks.md` parsing with flexible format support.
 
-## Current Implementation: Edit History Parser
+## Current Implementation Status
 
-### Location
-`edit-history-parser/` directory at project root
+### Location (Updated 2025-11-12)
+`memory-bank/database/` - Integrated with memory bank initialization system
+- Previously: `edit-history-parser/` at project root
+- Migration: Replaced T3 Prisma ORM system with T20 better-sqlite3 approach
+- Backup: Old T3 database code at `database.old/` (root level)
 
 ### Components
 
@@ -73,12 +76,23 @@ The Memory Bank Database Parser is a fresh implementation that parses memory ban
 
 ### Parser Logic
 
+**parse-edits.js:**
 1. **Date Extraction**: Scans for `### YYYY-MM-DD` headers
-2. **Entry Parsing**: Within each date, finds `#### HH:MM:SS TZ - ...` headers
+2. **Entry Parsing**: Within each date, finds `#### HH:MM:SS [TZ] - ...` headers
+   - Timezone optional (defaults to UTC if not provided) - NEW 2025-11-12
+   - Supports both `#### 19:43:25 IST - T3: Description` and `#### 03:37 - T13: Description`
 3. **Task ID Extraction**: Regex match for `T\d+(?:,\s*T\d+)*` patterns
 4. **File Modification Parsing**: Extracts lines starting with `-` containing backticked paths
 5. **Timestamp Normalization**: Converts date/time/timezone to ISO 8601 format
 6. **Batch Insert**: Uses SQLite transactions for performance
+
+**parse-tasks.js:**
+1. **Flexible Column Parsing**: Handles 6-8 column formats
+2. **Status Extraction**: Handles both `🔄` and `🔄 (70%)` formats - NEW 2025-11-12
+3. **Task ID Extraction**: From first pipe-delimited column
+4. **Dependency Processing**: Parses comma-separated task IDs or single `-`
+5. **Per-Task Feedback**: Console output for each inserted task - NEW 2025-11-12
+6. **Transaction Insert**: Batch operations for performance
 
 ### Technical Features
 
@@ -209,17 +223,19 @@ graph LR
 4. Query unified database: `node query.js <command>`
 5. Or use external SQLite tools: DB Browser, sqlite3, VS Code extensions
 
-## File Locations
+## File Locations (Updated 2025-11-12)
 
 ```
-/edit-history-parser/
-├── parse-edits.js      # Edit history parser
-├── parse-tasks.js      # Tasks parser
-├── query.js            # Unified query tool
-├── schema.prisma       # Reference schema
-├── package.json        # Dependencies
-├── README.md           # Documentation
-└── memory_bank.db      # Unified database
+/memory-bank/database/
+├── parse-edits.js           # Edit history parser (improved)
+├── parse-tasks.js           # Tasks parser (improved)
+├── query.js                 # Unified query tool
+├── query-tasks.js           # Task query tool
+├── schema.prisma            # Reference schema
+├── package.json             # Dependencies (better-sqlite3)
+├── pnpm-lock.yaml           # Dependency lock
+├── DATABASE_README.md       # Database setup documentation
+└── memory_bank.db           # Unified database
 ```
 
 ## Notes

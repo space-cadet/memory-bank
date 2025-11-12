@@ -36,22 +36,29 @@ function initSchema(db) {
 
 // Parse tasks table line
 function parseTaskLine(line) {
-  const match = line.match(/^\|\s+(T\d+)\s+\|\s+(.+?)\s+\|\s+(🔄|✅|⏸️)\s+\|\s+(LOW|MEDIUM|HIGH)\s+\|\s+(\d{4}-\d{2}-\d{2})\s+\|\s+([^|]*?)\s+\|\s+(.+)\s+\|$/);
+  // Regex matches task rows with flexible column count (6-8 columns)
+  // Handles rows with or without extra details column
+  const match = line.match(/^\|\s+(T\d+)\s+\|\s+(.+?)\s+\|\s+(🔄|✅|⏸️|\(.*?\))\s+\|\s+(LOW|MEDIUM|HIGH)\s+\|\s+(\d{4}-\d{2}-\d{2})\s+\|\s+([^|]*?)(?:\s+\|\s+(.+?))?\s*\|$/);
   if (!match) return null;
   
+  // Extract status, handling cases like "🔄 (70%)" or "🔄"
+  let statusStr = match[3].trim();
+  const statusMatch = statusStr.match(/(🔄|✅|⏸️)/);
+  const status = statusMatch ? statusMatch[1] : '🔄';
+  
   // Handle empty dependencies
-  const deps = match[6].trim() === '-' ? [] : 
+  const deps = match[6].trim() === '-' || !match[6] ? [] : 
     match[6].trim().split(/\s*,\s*/).filter(Boolean);
   
   return {
     id: match[1],
-    title: match[2],
-    status: match[3] === '🔄' ? 'in_progress' : 
-           match[3] === '✅' ? 'completed' : 'paused',
+    title: match[2].trim(),
+    status: status === '🔄' ? 'in_progress' : 
+           status === '✅' ? 'completed' : 'paused',
     priority: match[4].toLowerCase(),
     started: match[5],
     dependencies: deps,
-    details: match[7].trim()
+    details: (match[7] || '').trim()
   };
 }
 
@@ -64,6 +71,8 @@ function parseTasks(content) {
 
 // Insert tasks into database
 function populateDatabase(db, tasks) {
+  console.log(`Populating database with ${tasks.length} tasks...\n`);
+
   const insertTask = db.prepare(`
     INSERT OR IGNORE INTO task_items (id, title, status, priority, started, details)
     VALUES (?, ?, ?, ?, ?, ?)
@@ -77,17 +86,27 @@ function populateDatabase(db, tasks) {
   // Disable foreign keys temporarily
   db.pragma('foreign_keys = OFF');
   
+  let successCount = 0;
+  let errorCount = 0;
+  
   // Insert all tasks first
   db.transaction(() => {
     tasks.forEach(task => {
-      insertTask.run(
-        task.id,
-        task.title,
-        task.status,
-        task.priority,
-        task.started,
-        task.details
-      );
+      try {
+        insertTask.run(
+          task.id,
+          task.title,
+          task.status,
+          task.priority,
+          task.started,
+          task.details
+        );
+        successCount++;
+        console.log(`✓ ${task.id} - ${task.status} - ${task.title.substring(0, 50)}${task.title.length > 50 ? '...' : ''}`);
+      } catch (error) {
+        errorCount++;
+        console.error(`✗ Failed to insert task ${task.id}: ${error.message}`);
+      }
     });
   })();
   
@@ -95,13 +114,22 @@ function populateDatabase(db, tasks) {
   db.transaction(() => {
     tasks.forEach(task => {
       task.dependencies.forEach(depId => {
-        insertDependency.run(task.id, depId);
+        try {
+          insertDependency.run(task.id, depId);
+        } catch (error) {
+          console.warn(`  ⚠️  Could not create dependency ${task.id} -> ${depId}: ${error.message}`);
+        }
       });
     });
   })();
   
   // Re-enable foreign keys
   db.pragma('foreign_keys = ON');
+  
+  console.log(`\n✓ Successfully inserted ${successCount} tasks`);
+  if (errorCount > 0) {
+    console.log(`✗ Failed to insert ${errorCount} tasks`);
+  }
 }
 
 export function parseTasksFile(content) {
@@ -155,24 +183,49 @@ function main() {
   }
 
   try {
+    console.log('Tasks Parser for Memory Bank\n');
+    console.log('=====================================\n');
+
+    const tasksPath = join(__dirname, '..', 'tasks.md');
+    console.log(`Reading: ${tasksPath}\n`);
+
+    const content = readFileSync(tasksPath, 'utf-8');
+    
+    // Clear existing task tables
+    console.log('Clearing existing task data...\n');
     const dbPath = join(__dirname, 'memory_bank.db');
     const db = new Database(dbPath);
     
-    // Clear existing task tables
-    console.log('Clearing existing task data...');
     db.exec('DROP TABLE IF EXISTS task_dependencies');
     db.exec('DROP TABLE IF EXISTS task_items');
     
     initSchema(db);
+    console.log('✓ Database schema initialized\n');
 
-    const content = readFileSync(
-      join(__dirname, '..', 'memory-bank', 'tasks.md'), 
-      'utf-8'
-    );
-    populateDatabase(db, parseTasks(content));
+    console.log('Parsing tasks...\n');
+    const tasks = parseTasks(content);
+    console.log(`Found ${tasks.length} tasks\n`);
+
+    if (tasks.length === 0) {
+      console.log('No tasks found to process.');
+      db.close();
+      return;
+    }
+
+    populateDatabase(db, tasks);
     
-    console.log('✓ Tasks database updated');
+    console.log('\n=====================================');
+    console.log('Database Statistics:\n');
+    
+    const totalTasks = db.prepare('SELECT COUNT(*) as count FROM task_items').get().count;
+    const totalDeps = db.prepare('SELECT COUNT(*) as count FROM task_dependencies').get().count;
+    
+    console.log(`Total Tasks: ${totalTasks}`);
+    console.log(`Total Dependencies: ${totalDeps}`);
+    
+    console.log('\n✓ Tasks database updated successfully!');
     console.log('Database file: memory_bank.db\n');
+    
     db.close();
   } catch (error) {
     console.error('Error:', error);

@@ -91,13 +91,20 @@ function parseEditEntry(lines, index) {
   const headerLine = lines[index];
 
   // Parse header: #### 19:43:25 IST - T3, T13: Real-World Integration Testing
-  const headerMatch = headerLine.match(/####\s+(\d{1,2}:\d{2}(?::\d{2})?)\s+([A-Z]{3,4})\s+-\s+(.+)/);
+  // or: #### 03:37 - T13 & T1: Virtual servers
+  // Timezone is optional
+  const headerMatch = headerLine.match(/####\s+(\d{1,2}:\d{2}(?::\d{2})?)\s+(?:([A-Z]{3,4})\s+)?-\s+(.+)/);
 
   if (!headerMatch) {
     return null;
   }
 
   let [, time, timezone, remainder] = headerMatch;
+  
+  // If timezone not provided, default to UTC
+  if (!timezone) {
+    timezone = 'UTC';
+  }
 
   // Normalize time format (add :00 if missing seconds)
   if (!time.includes(':00') && time.split(':').length === 2) {
@@ -281,7 +288,7 @@ function main() {
     console.log('=====================================\n');
 
     // Read the edit history file
-    const editHistoryPath = join(__dirname, '..', 'memory-bank', 'edit_history.md');
+    const editHistoryPath = join(__dirname, '..', 'edit_history.md');
     console.log(`Reading: ${editHistoryPath}\n`);
 
     const content = readFileSync(editHistoryPath, 'utf-8');

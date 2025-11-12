@@ -188,7 +188,7 @@ async function main() {
     console.log('=====================================\n');
 
     // Read the edit history file
-    const editHistoryPath = join(__dirname, '..', 'memory-bank', 'edit_history.md');
+    const editHistoryPath = join(__dirname, '..', 'edit_history.md');
     console.log(`Reading: ${editHistoryPath}\n`);
 
     const content = readFileSync(editHistoryPath, 'utf-8');

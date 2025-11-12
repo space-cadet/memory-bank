@@ -46,24 +46,16 @@ const TEMPLATE_FILES = [
 ];
 
 const DATABASE_FILES = [
-  'schema.prisma',
-  '.env',
   'package.json',
   'pnpm-lock.yaml',
   'DATABASE_README.md'
 ];
 
-const DATABASE_DIRS = [
-  'admin',
-  'migration-scripts',
-  'migrations'
-];
-
-const MIGRATION_SCRIPT_FILES = [
-  'convert.js',
-  'verify.js',
-  'seed.js',
-  'migration_guide.md'
+const DATABASE_SCRIPTS = [
+  'parse-edits.js',
+  'parse-tasks.js',
+  'query.js',
+  'query-tasks.js'
 ];
 
 // Utility: Get current timestamp in user's timezone
@@ -79,7 +71,6 @@ function getCurrentTimestamp() {
     hour12: false
   });
   
-  // Extract timezone abbreviation - compatible with all Node versions
   let timeZoneName = 'UTC';
   try {
     const formatter = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' });
@@ -89,7 +80,6 @@ function getCurrentTimestamp() {
       timeZoneName = tzPart.value;
     }
   } catch (e) {
-    // Fallback if Intl.DateTimeFormat doesn't support timeZoneName
     timeZoneName = 'UTC';
   }
   
@@ -106,7 +96,7 @@ function scanExistingContent(targetDir) {
     coreFilesExist: [],
     templateFilesExist: [],
     databaseFilesExist: [],
-    migrationScriptsExist: []
+    databaseScriptsExist: []
   };
 
   if (!scan.exists) {
@@ -145,11 +135,11 @@ function scanExistingContent(targetDir) {
     }
   }
 
-  // Check migration scripts
-  for (const file of MIGRATION_SCRIPT_FILES) {
-    const filePath = path.join(mbDir, 'database', 'migration-scripts', file);
+  // Check database scripts
+  for (const file of DATABASE_SCRIPTS) {
+    const filePath = path.join(mbDir, 'database', file);
     if (fs.existsSync(filePath)) {
-      scan.migrationScriptsExist.push(file);
+      scan.databaseScriptsExist.push(file);
     }
   }
 
@@ -161,7 +151,7 @@ async function promptForSelectiveInit(scan) {
   const components = [
     { name: 'core', label: 'Core files (tasks.md, session_cache.md, etc.)', exists: scan.coreFilesExist.length },
     { name: 'templates', label: 'Template files', exists: scan.templateFilesExist.length },
-    { name: 'database', label: 'Database setup and migration scripts', exists: scan.databaseFilesExist.length + scan.migrationScriptsExist.length }
+    { name: 'database', label: 'Database setup and parser scripts', exists: scan.databaseFilesExist.length + scan.databaseScriptsExist.length }
   ];
 
   console.log('\nExisting Memory Bank detected!\n');
@@ -190,15 +180,13 @@ function determineComponentsToInit(scan, options) {
     core: false,
     templates: false,
     database: false,
-    directories: true  // Always create needed directories
+    directories: true
   };
 
-  // If --full flag, initialize everything
   if (options.full) {
     return { ...components, core: true, templates: true, database: true };
   }
 
-  // If specific components requested
   if (options.core || options.templates || options.database) {
     if (options.core) components.core = true;
     if (options.templates) components.templates = true;
@@ -206,93 +194,15 @@ function determineComponentsToInit(scan, options) {
     return components;
   }
 
-  // Default: skip existing, initialize missing
   if (!scan.exists || options.skipExisting) {
     return { ...components, core: true, templates: true, database: true };
   }
 
-  // If memory bank exists and no flags specified
   components.core = scan.coreFilesExist.length < CORE_FILES.length;
   components.templates = scan.templateFilesExist.length < TEMPLATE_FILES.length;
-  components.database = (scan.databaseFilesExist.length + scan.migrationScriptsExist.length) < (DATABASE_FILES.length + MIGRATION_SCRIPT_FILES.length);
+  components.database = (scan.databaseFilesExist.length + scan.databaseScriptsExist.length) < (DATABASE_FILES.length + DATABASE_SCRIPTS.length);
 
   return components;
-}
-
-async function setupDatabase(dbPath) {
-  const { execSync } = await import('child_process');
-  
-  // Copy working scripts from source if available
-  const sourceDir = path.join(__dirname, '..', '..', '..', 'memory-bank', 'database', 'migration-scripts');
-  const destDir = path.join(dbPath, 'migration-scripts');
-  
-  if (fs.existsSync(sourceDir)) {
-    console.log('\n📋 Copying migration scripts from source...');
-    try {
-      for (const file of ['convert.js', 'verify.js', 'seed.js']) {
-        const sourceFile = path.join(sourceDir, file);
-        const destFile = path.join(destDir, file);
-        if (fs.existsSync(sourceFile)) {
-          const content = fs.readFileSync(sourceFile, 'utf8');
-          await writeFile(destFile, content, { flag: 'w' });
-          console.log(`  ✓ Copied ${file}`);
-        }
-      }
-    } catch (error) {
-      console.warn('Warning: Could not copy migration scripts, using defaults...');
-    }
-  }
-  
-  console.log('\n📦 Installing dependencies...');
-  try {
-    execSync('pnpm install', { cwd: dbPath, stdio: 'inherit' });
-  } catch (error) {
-    console.error('Failed to install dependencies');
-    return false;
-  }
-
-  console.log('\n🔧 Configuring pnpm to allow build scripts...');
-  try {
-    // Write .npmrc to auto-approve build scripts instead of prompting
-    const npmrcPath = path.join(dbPath, '.npmrc');
-    const npmrcContent = `auto-install-peers=true
-shell-emulator=true
-`;
-    await writeFile(npmrcPath, npmrcContent, { flag: 'w' });
-  } catch (error) {
-    console.warn('Warning: Could not configure .npmrc, continuing anyway...');
-  }
-
-  console.log('\n📦 Running install with build scripts...');
-  try {
-    execSync('pnpm install', { cwd: dbPath, stdio: 'inherit' });
-  } catch (error) {
-    console.error('Failed to install dependencies');
-    return false;
-  }
-
-  console.log('\n🗄️  Running database migrations...');
-  try {
-    // Use --name flag and --skip-generate to avoid interactive prompts
-    execSync('pnpm run migrate -- --name init --skip-generate', { cwd: dbPath, stdio: 'inherit' });
-  } catch (error) {
-    // Migration might fail if it requires user input, try with echo to auto-confirm
-    try {
-      console.log('Retrying migration with auto-confirm...');
-      execSync('echo "init" | pnpm run migrate', { cwd: dbPath, stdio: 'inherit', shell: '/bin/bash' });
-    } catch (retryError) {
-      console.error('Failed to run migrations');
-      return false;
-    }
-  }
-
-  console.log('\n✅ Database setup completed successfully!');
-  console.log('\nNext steps:');
-  console.log(`  cd ${dbPath}`);
-  console.log('  pnpm run studio  # View data in Prisma Studio');
-  console.log('  pnpm run convert # Convert markdown files to database (optional)');
-  
-  return true;
 }
 
 export async function initCommand(options) {
@@ -302,29 +212,25 @@ export async function initCommand(options) {
   console.log(`Memory Bank Initialization ${options.dryRun ? '(DRY RUN)' : ''}`);
   console.log(`Target directory: ${targetDir}\n`);
 
-  // Scan existing content
   const scan = scanExistingContent(targetDir);
 
-  // If memory bank exists and no selective flags, show options
   if (scan.exists && !options.force && !options.core && !options.templates && !options.database && !options.skipExisting && !options.full) {
     await promptForSelectiveInit(scan);
     return;
   }
 
-  // Determine which components to initialize
   const components = determineComponentsToInit(scan, options);
 
   try {
     console.log('The following will be initialized:\n');
 
-    // Display summary of what will be created
     let summary = [];
     let targetDisplay = targetDir;
     
     if (components.core) summary.push('Core memory bank files');
     if (components.templates) summary.push('Template files');
     if (components.database) {
-      summary.push('Database setup with schema and migrations');
+      summary.push('Database setup with SQLite parser scripts');
       targetDisplay = path.join(targetDir, 'memory-bank', 'database');
     }
     
@@ -333,7 +239,6 @@ export async function initCommand(options) {
       console.log(`Target directory: ${targetDisplay}\n`);
     }
 
-    // Ask for confirmation unless --force flag is used
     if (!options.force && !process.argv.includes('--skip-confirmation')) {
       const readline = await import('readline');
       const rl = readline.createInterface({
@@ -356,7 +261,7 @@ export async function initCommand(options) {
 
     console.log('Starting initialization...\n');
 
-    // 1. Create directories (always)
+    // 1. Create directories
     if (components.directories) {
       console.log('Directories:');
       for (const dir of DIRS) {
@@ -413,20 +318,9 @@ export async function initCommand(options) {
       console.log('');
     }
 
-    // 4. Create database files and directories
+    // 4. Create database files
     if (components.database) {
-      console.log('Database directories:');
-      for (const dir of DATABASE_DIRS) {
-        const dirPath = path.join(mbDir, 'database', dir);
-        const exists = fs.existsSync(dirPath);
-        const status = exists ? '✓' : '+';
-        console.log(`  [${status}] database/${dir}/`);
-        if (!options.dryRun && !exists) {
-          await mkdir(dirPath, { recursive: true });
-        }
-      }
-
-      console.log('\nDatabase files in memory-bank/database/:');
+      console.log('Database files in memory-bank/database/:');
       for (const file of DATABASE_FILES) {
         const filePath = path.join(mbDir, 'database', file);
         const exists = fs.existsSync(filePath);
@@ -435,48 +329,31 @@ export async function initCommand(options) {
         if (!options.dryRun && (!exists || options.force || options.full)) {
           if (file === 'DATABASE_README.md') {
             await writeDatabaseReadmeFile(filePath);
-          } else {
-            await writeTemplateFile(filePath, file);
+          } else if (file === 'package.json') {
+            await writeFile(filePath, generatePackageJson(), { flag: 'w' });
+          } else if (file === 'pnpm-lock.yaml') {
+            await writeFile(filePath, generatePnpmLock(), { flag: 'w' });
           }
         }
       }
 
-      console.log('\nMigration scripts in memory-bank/database/migration-scripts/:');
-      for (const file of MIGRATION_SCRIPT_FILES) {
-        const filePath = path.join(mbDir, 'database', 'migration-scripts', file);
+      console.log('\nDatabase parser scripts in memory-bank/database/:');
+      for (const file of DATABASE_SCRIPTS) {
+        const filePath = path.join(mbDir, 'database', file);
         const exists = fs.existsSync(filePath);
         const status = exists ? '✓' : '+';
         console.log(`  [${status}] ${file}`);
         if (!options.dryRun && (!exists || options.force || options.full)) {
-          let content = '';
-          
-          if (file === 'convert.js') {
-            content = generateConvertScript();
-          } else if (file === 'verify.js') {
-            content = generateVerifyScript();
-          } else if (file === 'seed.js') {
-            content = generateSeedScript();
-          } else if (file === 'migration_guide.md') {
-            content = generateMigrationGuide();
+          const sourceFile = path.join(__dirname, '..', '..', '..', 'memory-bank', 'database', file);
+          if (fs.existsSync(sourceFile)) {
+            const content = fs.readFileSync(sourceFile, 'utf8');
+            await writeFile(filePath, content, { flag: 'w' });
+          } else {
+            console.warn(`  ⚠️  Warning: Source file not found: ${file}`);
           }
-          
-          await writeFile(filePath, content, { flag: 'w' });
         }
       }
       console.log('');
-
-      // Verify .env file is not empty
-      if (!options.dryRun) {
-        const envPath = path.join(mbDir, 'database', '.env');
-        if (fs.existsSync(envPath)) {
-          const envStats = fs.statSync(envPath);
-          if (envStats.size === 0) {
-            console.warn(`  ⚠️  ERROR: .env file is empty. Populating with defaults...`);
-            await writeFile(envPath, generateEnv(), { flag: 'w' });
-            console.log(`  ✓ .env file fixed with default DATABASE_URL`);
-          }
-        }
-      }
     }
 
     if (options.dryRun) {
@@ -484,38 +361,19 @@ export async function initCommand(options) {
     } else {
       console.log('Memory Bank initialization completed successfully!');
       if (scan.exists && !options.full && !options.force) {
-        console.log('\nLegende: [+] created | [✓] skipped (already exists)');
+        console.log('\nLegend: [+] created | [✓] skipped (already exists)');
       }
 
-      // Offer automated database setup if database was initialized
-      if (components.database && !options.skipDbSetup) {
+      if (components.database) {
         console.log('\n' + '='.repeat(60));
         console.log('DATABASE SETUP');
         console.log('='.repeat(60));
-        
-        const readline = await import('readline');
-        const rl = readline.createInterface({
-          input: process.stdin,
-          output: process.stdout
-        });
-
-        const setupDb = await new Promise((resolve) => {
-          rl.question('\nWould you like to set up the database now? (yes/no): ', (answer) => {
-            rl.close();
-            resolve(answer.toLowerCase() === 'yes' || answer.toLowerCase() === 'y');
-          });
-        });
-
-        if (setupDb) {
-          await setupDatabase(path.join(mbDir, 'database'));
-        } else {
-          console.log('\nTo set up the database later, run:');
-          console.log(`  cd ${path.join(mbDir, 'database')}`);
-          console.log('  pnpm install');
-          console.log('  pnpm approve-builds');
-          console.log('  pnpm install');
-          console.log('  pnpm run migrate');
-        }
+        console.log('\nTo set up the database parser:');
+        console.log(`  cd ${path.join(mbDir, 'database')}`);
+        console.log('  pnpm install');
+        console.log('  node parse-edits.js      # Parse edit history');
+        console.log('  node parse-tasks.js      # Parse tasks');
+        console.log('  node query.js stats      # View database statistics');
       }
     }
   } catch (error) {
@@ -524,179 +382,22 @@ export async function initCommand(options) {
   }
 }
 
-// Content generators - refactored from writeTemplateFile
-async function writeTemplateFile(filePath, fileName) {
-  let content = '';
-  switch(fileName) {
-    case 'package.json':
-      content = generatePackageJson();
-      break;
-    case 'schema.prisma':
-      content = generateSchemaPrisma();
-      break;
-    case '.env':
-      content = generateEnv();
-      break;
-    case 'pnpm-lock.yaml':
-      content = generatePnpmLock();
-      break;
-  }
-  
-  // Validate content before writing
-  if (!content || content.trim() === '') {
-    console.warn(`  ⚠️  Warning: Empty content for ${fileName}`);
-  }
-  
-  await writeFile(filePath, content, { flag: 'w' });
-}
-
 function generatePackageJson() {
   return JSON.stringify({
     name: "memory-bank-database",
     version: "1.0.0",
-    description: "Database implementation for memory bank",
-    main: "index.js",
+    description: "SQLite database for memory bank with better-sqlite3",
+    type: "module",
     scripts: {
-      migrate: "prisma migrate dev",
-      studio: "prisma studio",
-      generate: "prisma generate",
-      convert: "node ./migration-scripts/convert.js",
-      seed: "node ./migration-scripts/seed.js",
-      "start:mcp": "node ./mcp-server/index.js"
+      parse: "node parse-edits.js && node parse-tasks.js",
+      query: "node query.js",
+      "query-tasks": "node query-tasks.js"
     },
     dependencies: {
-      "@prisma/client": "6.6.0"
-    },
-    devDependencies: {
-      cors: "^2.8.5",
-      dotenv: "^16.3.1",
-      express: "^4.18.2",
-      "gray-matter": "^4.0.3",
-      prisma: "6.6.0",
-      remark: "^14.0.3",
-      "remark-parse": "^10.0.2"
+      "better-sqlite3": "^12.4.1"
     },
     packageManager: "pnpm@10.20.0+sha512.cf9998222162dd85864d0a8102e7892e7ba4ceadebbf5a31f9c2fce48dfce317a9c53b9f6464d1ef9042cba2e02ae02a9f7c143a2b438cd93c91840f0192b9dd"
   }, null, 2);
-}
-
-function generateSchemaPrisma() {
-  return `// Memory Bank Data Models
-// Learn more: https://pris.ly/d/prisma-schema
-
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
-}
-
-// Task tracking
-model Task {
-  id            String   @id @default(cuid())
-  taskId        String   @unique
-  title         String
-  description   String?
-  status        String   @default("active") // active, completed, paused
-  priority      String   @default("MEDIUM") // HIGH, MEDIUM, LOW
-  startedAt     DateTime @default(now())
-  lastUpdatedAt DateTime @updatedAt
-  completedAt   DateTime?
-  dependencies  String?  // JSON array of task IDs
-  relatedFiles  String?  // JSON array of file paths
-  notes         String?
-  projectId     String?
-  
-  editEntries   EditHistory[]
-  errorLogs     ErrorLog[]
-  
-  @@index([status])
-  @@index([projectId])
-}
-
-// Session tracking
-model Session {
-  id            String   @id @default(cuid())
-  sessionId     String   @unique
-  startedAt     DateTime @default(now())
-  endedAt       DateTime?
-  focusTaskId   String?
-  period        String?  // morning, afternoon, evening, night
-  duration      Int?     // minutes
-  summary       String?
-  notes         String?
-  projectId     String?
-  
-  editEntries   EditHistory[]
-  
-  @@index([startedAt])
-  @@index([projectId])
-}
-
-// Edit history tracking
-model EditHistory {
-  id            String   @id @default(cuid())
-  timestamp     DateTime @default(now())
-  taskId        String?
-  sessionId     String?
-  filePath      String
-  changeType    String   // created, modified, deleted
-  description   String
-  technicalDetails String?
-  projectId     String?
-  
-  task          Task?    @relation(fields: [taskId], references: [id])
-  session       Session? @relation(fields: [sessionId], references: [id])
-  
-  @@index([timestamp])
-  @@index([taskId])
-  @@index([sessionId])
-  @@index([projectId])
-}
-
-// Error tracking
-model ErrorLog {
-  id            String   @id @default(cuid())
-  timestamp     DateTime @default(now())
-  taskId        String?
-  errorTitle    String
-  filePath      String?
-  errorMessage  String
-  cause         String?
-  fix           String?
-  codeChanges   String?
-  projectId     String?
-  
-  task          Task?    @relation(fields: [taskId], references: [id])
-  
-  @@index([timestamp])
-  @@index([taskId])
-  @@index([projectId])
-}
-
-// Project context
-model Project {
-  id            String   @id @default(cuid())
-  projectId     String   @unique
-  name          String
-  description   String?
-  path          String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  
-  @@index([projectId])
-}
-`;
-}
-
-function generateEnv() {
-  return `# Database URL for Prisma
-DATABASE_URL="file:./dev.db"
-
-# Add your environment variables here
-`;
 }
 
 function generatePnpmLock() {
@@ -705,6 +406,11 @@ function generatePnpmLock() {
 settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
+
+dependencies:
+  better-sqlite3:
+    specifier: ^12.4.1
+    version: 12.4.1
 `;
 }
 
@@ -716,72 +422,121 @@ async function writeDatabaseReadmeFile(filePath) {
 
 ## Overview
 
-This directory contains the database implementation for your Memory Bank using Prisma ORM and SQLite.
+This directory contains the SQLite database for your Memory Bank using better-sqlite3 for direct database access.
 
 ## Quick Start
 
 ### 1. Install Dependencies
 \`\`\`bash
 pnpm install
-pnpm approve-builds
-pnpm install
 \`\`\`
 
-### 2. Run Database Migration
+### 2. Parse Memory Bank Files
+
+Parse edit history:
 \`\`\`bash
-pnpm run migrate
+node parse-edits.js
 \`\`\`
 
-This creates the database schema based on the models defined in schema.prisma.
-
-### 3. Generate Prisma Client
+Parse tasks:
 \`\`\`bash
-pnpm run generate
+node parse-tasks.js
 \`\`\`
 
-### 4. Migrate from Markdown (Optional)
+Or parse both at once:
 \`\`\`bash
-node migration-scripts/convert.js
+pnpm run parse
 \`\`\`
 
-### 5. Verify Database (Optional)
+**Supported Formats:**
+
+Edit history entries support both formats:
+- With timezone: \`#### 19:43:25 IST - T3: Description\`
+- Without timezone: \`#### 03:37 - T13: Description\` (defaults to UTC)
+
+File modifications:
+- \`- Created \\\`file\\\` - description\`
+- \`- Modified \\\`file\\\` - description\`
+- \`- Updated \\\`file\\\` - description\`
+
+Tasks table format (flexible column count):
+- Basic: \`| T1 | Title | 🔄 | HIGH | 2025-11-03 | Dependencies |\`
+- With status details: \`| T1 | Title | 🔄 (70%) | HIGH | 2025-11-03 | - | Extra info |\`
+- Status icons: 🔄 (in progress), ✅ (completed), ⏸️ (paused)
+
+### 3. Query the Database
+
+View statistics:
 \`\`\`bash
-node migration-scripts/verify.js
+node query.js stats
 \`\`\`
 
-## Directory Structure
-
-\`\`\`
-database/
-├── schema.prisma           # Data model definitions
-├── .env                    # Database configuration
-├── package.json            # Dependencies and scripts
-├── pnpm-lock.yaml          # Dependency lock file
-├── migrations/             # Prisma migration history
-├── migration-scripts/      # Database operation scripts
-│   ├── convert.js          # Convert markdown to database
-│   ├── seed.js             # Seed with sample data
-│   └── verify.js           # Verify database integrity
-├── admin/                  # Administrative utilities
-└── mcp-server/             # MCP server implementation
+View all entries:
+\`\`\`bash
+node query.js all 50
 \`\`\`
 
-## Available Scripts
+Query by task:
+\`\`\`bash
+node query.js task T3
+\`\`\`
 
-- \`pnpm run migrate\` - Run database migrations
-- \`pnpm run studio\` - Open Prisma Studio browser
-- \`pnpm run generate\` - Regenerate Prisma client
-- \`pnpm run convert\` - Convert markdown files to database
-- \`pnpm run seed\` - Populate with sample data
-- \`pnpm run start:mcp\` - Start MCP server
+Search files:
+\`\`\`bash
+node query.js files schema.prisma
+\`\`\`
+
+### 4. View Tasks
+
+\`\`\`bash
+node query-tasks.js
+\`\`\`
+
+## Files
+
+- **parse-edits.js** - Parser for edit_history.md
+- **parse-tasks.js** - Parser for tasks.md
+- **query.js** - Interactive query tool for edit history
+- **query-tasks.js** - Task query tool
+- **memory_bank.db** - SQLite database (generated after parsing)
+
+## Database Structure
+
+The database contains two main tables:
+
+**edit_entries** - Records from edit_history.md
+- date, time, timezone, timestamp
+- task_id (optional)
+- task_description
+
+**edit_modifications** - File changes within each entry
+- action (Created, Modified, Updated)
+- file_path
+- description
+
+**task_items** - Records from tasks.md
+- id (task ID like T1, T2)
+- title, status, priority
+- started date
+- details
+
+**task_dependencies** - Relationships between tasks
+- task_id -> depends_on
+
+## Using with SQLite Tools
+
+The memory_bank.db file is a standard SQLite database and can be opened with:
+- DB Browser for SQLite (https://sqlitebrowser.org/)
+- sqlite3 command-line tool: \`sqlite3 memory_bank.db\`
+- VS Code SQLite extensions
+- Any SQLite viewer
 
 ## Next Steps
 
 1. Install dependencies: \`pnpm install\`
-2. Set up database: \`pnpm run migrate\`
-3. View data: \`pnpm run studio\`
-4. Migrate markdown (if existing): \`node migration-scripts/convert.js\`
-5. Start building your memory bank application
+2. Parse your markdown files: \`pnpm run parse\`
+3. Query the database: \`node query.js stats\`
+4. Open memory_bank.db in your favorite SQLite viewer
 `;
   await writeFile(filePath, content, { flag: 'w' });
 }
@@ -824,7 +579,8 @@ After initializing the memory bank, set up the database:
 \`\`\`bash
 cd memory-bank/database
 pnpm install
-pnpm run migrate
+pnpm run parse
+node query.js stats
 \`\`\`
 
 ### 3. File Structure Reference
@@ -845,7 +601,7 @@ memory-bank/
 ├── tasks/                 # Individual task files
 ├── sessions/              # Session records
 ├── templates/             # File templates
-├── database/              # Database implementation
+├── database/              # Database and parser scripts
 ├── implementation-details/ # Technical notes
 └── archive/               # Completed/archived items
 \`\`\`
@@ -864,7 +620,7 @@ When using with an AI assistant:
 1. Fill in **projectbrief.md** with your project details
 2. Add your first tasks to **tasks.md**
 3. Define development standards in **.cursorrules**
-4. If using database: \`cd memory-bank/database && pnpm install && pnpm run migrate\`
+4. If using database: \`cd memory-bank/database && pnpm install && pnpm run parse\`
 5. Start working and update context files as you progress
 `;
   await writeFile(filePath, content, { flag: 'w' });
@@ -1022,225 +778,6 @@ async function writeCursorrulesFile(filePath) {
 - [Best practices for this codebase]
 `;
   await writeFile(filePath, content, { flag: 'w' });
-}
-
-function generateConvertScript() {
-  // Return a basic wrapper that imports and runs the conversion logic
-  // This will be replaced with actual convert.js content from source
-  return `const fs = require('fs');
-const path = require('path');
-
-// This is a placeholder convert script
-// To use the full conversion script, copy convert.js from the memory-bank source
-
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
-
-async function main() {
-  try {
-    console.log('Convert script is ready.');
-    console.log('To migrate markdown files to database:');
-    console.log('1. Update convert.js with your conversion logic');
-    console.log('2. Ensure markdown files exist in the memory-bank directory');
-    console.log('3. Run: pnpm run convert');
-  } catch (error) {
-    console.error('Error:', error);
-  } finally {
-    await prisma.$disconnect();
-  }
-}
-
-main();
-`;
-}
-
-function generateVerifyScript() {
-  return `/**
- * Database Verification Script
- * 
- * This script provides a comprehensive summary of the migrated data
- * without requiring manual inspection of individual entries.
- */
-
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
-
-async function main() {
-  try {
-    console.log('\\n========================================');
-    console.log('DATABASE VERIFICATION REPORT');
-    console.log('========================================\\n');
-
-    // Count records by type
-    const taskCount = await prisma.task.count();
-    const sessionCount = await prisma.session.count();
-    const editCount = await prisma.editHistory.count();
-    const errorCount = await prisma.errorLog.count();
-
-    console.log('Summary Statistics:');
-    console.log(\`  Tasks: \${taskCount}\`);
-    console.log(\`  Sessions: \${sessionCount}\`);
-    console.log(\`  Edit History: \${editCount}\`);
-    console.log(\`  Error Logs: \${errorCount}\`);
-
-    const totalRecords = taskCount + sessionCount + editCount + errorCount;
-    console.log(\`\\n  TOTAL RECORDS: \${totalRecords}\`);
-
-    console.log('\\n========================================');
-    console.log('VERIFICATION COMPLETE');
-    console.log('========================================\\n');
-
-  } catch (error) {
-    console.error('Error during verification:', error);
-  } finally {
-    await prisma.$disconnect();
-  }
-}
-
-main();
-`;
-}
-
-function generateSeedScript() {
-  return `/**
- * Database Seed Script
- * 
- * This script seeds the database with sample data for testing and development.
- */
-
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
-
-async function main() {
-  try {
-    console.log('Starting database seeding...');
-
-    // Create sample project if it doesn't exist
-    const project = await prisma.project.upsert({
-      where: { projectId: 'sample-project' },
-      update: {},
-      create: {
-        projectId: 'sample-project',
-        name: 'Sample Project',
-        description: 'A sample project for testing',
-        rootPath: '/sample/path'
-      }
-    });
-
-    console.log(\`Created/updated project: \${project.name}\`);
-
-    // Create sample tasks
-    const task1 = await prisma.task.upsert({
-      where: { taskId: 'T1' },
-      update: {},
-      create: {
-        taskId: 'T1',
-        title: 'Setup Database',
-        description: 'Initialize database schema and migrations',
-        status: 'active',
-        priority: 'HIGH',
-        projectId: project.id
-      }
-    });
-
-    console.log(\`Created/updated task: \${task1.title}\`);
-
-    console.log('\\nDatabase seeding completed successfully!');
-  } catch (error) {
-    console.error('Error during seeding:', error);
-  } finally {
-    await prisma.$disconnect();
-  }
-}
-
-main();
-`;
-}
-
-function generateMigrationGuide() {
-  return `# Database Migration Guide
-
-## Overview
-This directory contains scripts to migrate your markdown-based memory bank to the database system.
-
-## Migration Scripts
-
-### convert.js
-Converts existing markdown files to database entries. Handles:
-- tasks.md → Task records
-- session_cache.md → Session records
-- edit_history.md → Edit history with file modifications
-- errorLog.md → Error records with affected files
-- activeContext.md, progress.md, projectbrief.md, changelog.md
-
-Usage:
-\`\`\`bash
-node convert.js
-\`\`\`
-
-Features:
-- Automatic timezone detection from markdown timestamps
-- Multi-project support (converts example projects in examples/ directory)
-- Archived file conversion
-- Relationship mapping for task dependencies
-
-### verify.js
-Verifies database integrity after migration.
-
-Usage:
-\`\`\`bash
-node verify.js
-\`\`\`
-
-Checks:
-- Record counts across all tables
-- Orphaned records and broken references
-- Circular dependencies
-- Data consistency
-
-### seed.js
-Populates the database with sample data (optional).
-
-Usage:
-\`\`\`bash
-node seed.js
-\`\`\`
-
-## Migration Process
-
-1. Install dependencies: \`pnpm install\`
-2. Set up database: \`pnpm run migrate\`
-3. Run conversion: \`pnpm run convert\`
-4. Verify integrity: \`node verify.js\`
-5. Review and confirm data in Prisma Studio: \`pnpm run studio\`
-
-## Timezone Handling
-
-The migration scripts automatically detect and parse timestamps regardless of timezone:
-- Supports ISO format: \`2025-11-11 18:02:49 IST\`
-- Supports date strings: \`April 15, 2025\`
-- Falls back to current date if parsing fails (with warning)
-
-## Troubleshooting
-
-### Issue: "Invalid date string"
-The script encountered an unparseable date format and used the current date as fallback.
-Check your markdown files for consistent date formatting.
-
-### Issue: Missing relationships
-Ensure task IDs in your markdown match the pattern T[number] (e.g., T1, T2, T123).
-
-### Issue: Example projects not migrating
-Verify the examples/ directory structure matches expected layout.
-
-## Next Steps
-
-After successful migration:
-1. Review records in Prisma Studio
-2. Test database queries
-3. Set up MCP server if needed
-4. Begin using database-backed workflows
-`;
 }
 
 // Helper: Create empty files
