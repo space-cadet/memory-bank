@@ -1,0 +1,25 @@
+{
+  "name": "edit-history-parser",
+  "version": "1.0.0",
+  "description": "Parser for Memory Bank edit history to SQLite database",
+  "main": "parse.js",
+  "type": "module",
+  "scripts": {
+    "parse": "node parse.js",
+    "studio": "prisma studio",
+    "migrate": "prisma migrate dev --name init",
+    "generate": "prisma generate"
+  },
+  "keywords": [
+    "memory-bank",
+    "parser",
+    "prisma"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "better-sqlite3": "^12.4.1",
+    "prisma": "^5.22.0"
+  }
+}
