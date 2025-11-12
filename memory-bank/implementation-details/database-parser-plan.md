@@ -1,6 +1,6 @@
 # Memory Bank Database Parser Implementation Plan
 *Created: 2025-11-12 12:02:00 IST*
-*Last Updated: 2025-11-12 12:49:00 IST*
+*Last Updated: 2025-11-12 16:13:21 IST*
 
 ## Overview
 
@@ -13,12 +13,12 @@ The Memory Bank Database Parser is a fresh implementation that parses memory ban
 
 ### Components
 
-1. **parse-sqlite.js** - Main parser script
+1. **parse-edits.js** - Edit history parser script (renamed from parse-sqlite.js)
    - Reads `memory-bank/edit_history.md`
    - Parses date headers (### YYYY-MM-DD format)
    - Parses entry headers (#### HH:MM:SS TZ - TaskID: Description)
    - Extracts file modifications (- Action `path` - description)
-   - Populates SQLite database with structured data
+   - Populates memory_bank.db with edit_entries and edit_modifications tables
    - Uses transactions for performance
    - Comprehensive error handling
 
@@ -45,12 +45,25 @@ The Memory Bank Database Parser is a fresh implementation that parses memory ban
 - `task_id` TEXT (e.g., "T3", "T13", "T3, T13")
 - `task_description` TEXT NOT NULL
 
-**file_modifications table:**
+**edit_modifications table:**
 - `id` INTEGER PRIMARY KEY AUTOINCREMENT
 - `edit_entry_id` INTEGER NOT NULL (foreign key)
 - `action` TEXT NOT NULL (Created, Modified, Updated)
 - `file_path` TEXT NOT NULL
 - `description` TEXT NOT NULL
+
+**task_items table:**
+- `id` TEXT PRIMARY KEY
+- `title` TEXT NOT NULL
+- `status` TEXT NOT NULL (pending, in_progress, completed, paused)
+- `priority` TEXT NOT NULL (low, medium, high)
+- `started` TEXT NOT NULL (YYYY-MM-DD)
+- `details` TEXT NOT NULL
+
+**task_dependencies table:**
+- `task_id` TEXT NOT NULL (foreign key)
+- `depends_on` TEXT NOT NULL (foreign key)
+- PRIMARY KEY (task_id, depends_on)
 
 **Indexes:**
 - `idx_edit_entries_date` ON edit_entries(date)
@@ -78,16 +91,24 @@ The Memory Bank Database Parser is a fresh implementation that parses memory ban
 
 ## Current Implementation Status
 
-### Edit History Parser
+### Phase 1: Edit History Parser
 ✅ Completed - Version 1.2
 - Handles all timezones
 - Processes 15+ entries with 70+ file modifications
+- Renamed to parse-edits.js
 
-### Tasks Parser
+### Phase 2: Tasks Parser
 ✅ Completed - Version 1.0
 - Processes task table with dependencies
 - Handles priority/status conversions
 - Verified with 12 tasks and 9 dependencies
+
+### Phase 3: Unified Database Integration
+✅ Completed - Version 1.0
+- Single memory_bank.db file for all data
+- Table prefixes: edit_* and task_*
+- Updated query.js for unified access
+- Added edit_entry_modifications view
 
 ### Next Priority
 1. Session Cache Parser
@@ -183,20 +204,22 @@ graph LR
 ## Usage Workflow
 
 1. Install dependencies: `npm install`
-2. Parse edit history: `node parse-sqlite.js`
-3. Query database: `node query.js <command>`
-4. Or use external SQLite tools: DB Browser, sqlite3, VS Code extensions
+2. Parse edit history: `node parse-edits.js`
+3. Parse tasks: `node parse-tasks.js`
+4. Query unified database: `node query.js <command>`
+5. Or use external SQLite tools: DB Browser, sqlite3, VS Code extensions
 
 ## File Locations
 
 ```
 /edit-history-parser/
-├── parse-sqlite.js     # Main parser
-├── query.js            # Query tool
+├── parse-edits.js      # Edit history parser
+├── parse-tasks.js      # Tasks parser
+├── query.js            # Unified query tool
 ├── schema.prisma       # Reference schema
 ├── package.json        # Dependencies
 ├── README.md           # Documentation
-└── edit_history.db     # Generated database
+└── memory_bank.db      # Unified database
 ```
 
 ## Notes

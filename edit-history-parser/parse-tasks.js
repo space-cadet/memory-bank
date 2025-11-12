@@ -13,7 +13,7 @@ function initSchema(db) {
   db.exec(`
     PRAGMA foreign_keys = OFF;
     
-    CREATE TABLE IF NOT EXISTS tasks (
+    CREATE TABLE IF NOT EXISTS task_items (
       id TEXT PRIMARY KEY,
       title TEXT NOT NULL,
       status TEXT NOT NULL CHECK(status IN ('pending','in_progress','completed','paused')),
@@ -25,8 +25,8 @@ function initSchema(db) {
     CREATE TABLE IF NOT EXISTS task_dependencies (
       task_id TEXT NOT NULL,
       depends_on TEXT NOT NULL,
-      FOREIGN KEY(task_id) REFERENCES tasks(id) ON DELETE CASCADE,
-      FOREIGN KEY(depends_on) REFERENCES tasks(id) ON DELETE CASCADE,
+      FOREIGN KEY(task_id) REFERENCES task_items(id) ON DELETE CASCADE,
+      FOREIGN KEY(depends_on) REFERENCES task_items(id) ON DELETE CASCADE,
       PRIMARY KEY(task_id, depends_on)
     );
     
@@ -65,7 +65,7 @@ function parseTasks(content) {
 // Insert tasks into database
 function populateDatabase(db, tasks) {
   const insertTask = db.prepare(`
-    INSERT OR IGNORE INTO tasks (id, title, status, priority, started, details)
+    INSERT OR IGNORE INTO task_items (id, title, status, priority, started, details)
     VALUES (?, ?, ?, ?, ?, ?)
   `);
   
@@ -157,6 +157,12 @@ function main() {
   try {
     const dbPath = join(__dirname, 'memory_bank.db');
     const db = new Database(dbPath);
+    
+    // Clear existing task tables
+    console.log('Clearing existing task data...');
+    db.exec('DROP TABLE IF EXISTS task_dependencies');
+    db.exec('DROP TABLE IF EXISTS task_items');
+    
     initSchema(db);
 
     const content = readFileSync(
@@ -166,6 +172,7 @@ function main() {
     populateDatabase(db, parseTasks(content));
     
     console.log('✓ Tasks database updated');
+    console.log('Database file: memory_bank.db\n');
     db.close();
   } catch (error) {
     console.error('Error:', error);

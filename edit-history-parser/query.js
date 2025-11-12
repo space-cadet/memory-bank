@@ -57,7 +57,7 @@ function showEntriesByTask(db, taskId) {
     // Show modifications for this entry
     const mods = db.prepare(`
       SELECT action, file_path, description
-      FROM file_modifications
+      FROM edit_modifications
       WHERE edit_entry_id = ?
     `).all(entry.id);
 
@@ -81,7 +81,7 @@ function showFileModifications(db, searchTerm = null, limit = 30) {
   let query = `
     SELECT fm.id, fm.action, fm.file_path, fm.description,
            ee.date, ee.time, ee.task_id
-    FROM file_modifications fm
+    FROM edit_modifications fm
     JOIN edit_entries ee ON fm.edit_entry_id = ee.id
   `;
 
@@ -124,10 +124,20 @@ function showStatistics(db) {
 
   // Total counts
   const totalEntries = db.prepare('SELECT COUNT(*) as count FROM edit_entries').get().count;
-  const totalMods = db.prepare('SELECT COUNT(*) as count FROM file_modifications').get().count;
+  const totalMods = db.prepare('SELECT COUNT(*) as count FROM edit_modifications').get().count;
+  
+  let totalTasks = 0;
+  try {
+    totalTasks = db.prepare('SELECT COUNT(*) as count FROM task_items').get().count;
+  } catch (e) {
+    // task_items table may not exist yet
+  }
 
   console.log(`Total Edit Entries: ${totalEntries}`);
   console.log(`Total File Modifications: ${totalMods}`);
+  if (totalTasks > 0) {
+    console.log(`Total Tasks: ${totalTasks}`);
+  }
   console.log('');
 
   // Entries by task
@@ -148,7 +158,7 @@ function showStatistics(db) {
   // Action types
   const actionCounts = db.prepare(`
     SELECT action, COUNT(*) as count
-    FROM file_modifications
+    FROM edit_modifications
     GROUP BY action
     ORDER BY count DESC
   `).all();
@@ -162,7 +172,7 @@ function showStatistics(db) {
   // Most modified files
   const topFiles = db.prepare(`
     SELECT file_path, COUNT(*) as count
-    FROM file_modifications
+    FROM edit_modifications
     GROUP BY file_path
     ORDER BY count DESC
     LIMIT 10
@@ -243,7 +253,7 @@ function main() {
   const args = process.argv.slice(2);
   const command = args[0];
 
-  const dbPath = join(__dirname, 'edit_history.db');
+  const dbPath = join(__dirname, 'memory_bank.db');
 
   try {
     const db = new Database(dbPath, { readonly: true });
@@ -286,7 +296,9 @@ function main() {
   } catch (error) {
     if (error.code === 'SQLITE_CANTOPEN') {
       console.error('\n❌ Database file not found!');
-      console.error('Please run the parser first: node parse-sqlite.js\n');
+      console.error('Please run the parsers first:');
+      console.error('  node parse-sqlite.js');
+      console.error('  node parse-tasks.js\n');
     } else {
       console.error('Error:', error.message);
     }

@@ -1,8 +1,16 @@
 # Edit History
 *Created: 2025-04-10*
-*Last Updated: 2025-11-12 13:03:00 IST*
+*Last Updated: 2025-11-12 16:13:21 IST*
 
 ### 2025-11-12
+
+#### 16:13:21 IST - T20: Unified Database Integration and Parser Rename
+- Renamed `edit-history-parser/parse-sqlite.js` to `parse-edits.js` - Clearer naming for edit history parser
+- Updated `edit-history-parser/parse-edits.js` - Changed database from edit_history.db to memory_bank.db, renamed file_modifications to edit_modifications
+- Updated `edit-history-parser/parse-tasks.js` - Changed database to memory_bank.db, renamed tasks to task_items, added table clearing
+- Updated `edit-history-parser/query.js` - Updated all table references, added task statistics, unified database path
+- Updated `memory-bank/tasks/T20.md` - Added Phase 3 progress details, updated file references
+- Updated `implementation-details/database-parser-plan.md` - Documented unified database integration, updated schema and usage workflow
 
 #### 13:03:00 IST - T20: Tasks Parser Implementation
 - Updated `edit-history-parser/parse-tasks.js` - Completed implementation with task table parsing, dependency handling, and status/priority conversion
