@@ -1,9 +1,17 @@
 # Memory Bank Database Parser Implementation Plan
 *Created: 2025-11-12 12:02:00 IST*
-*Last Updated: 2025-11-12 16:59:56 IST*
+*Last Updated: 2025-11-12 17:25:21 IST*
 
 ## Overview
 
+The Memory Bank Database Parser consists of two complementary systems:
+
+1. **T20**: Direct format-specific parsers (current implementation) - Fast, deterministic parsing of memory bank markdown files
+2. **T20a**: Adaptive LLM-based format parser (planned) - Intelligent format detection and normalization for multi-project compatibility
+
+This document focuses on T20. See `adaptive-parser-plan.md` for T20a system design.
+
+### T20 Status
 The Memory Bank Database Parser is a fresh implementation that parses memory bank markdown files and populates a SQLite database for analysis and querying. Originally located in `edit-history-parser/` at project root, it has been moved to `memory-bank/database/` and integrated with the mb-cli init system (2025-11-12). The implementation focuses on `edit_history.md` and `tasks.md` parsing with flexible format support.
 
 ## Current Implementation Status
@@ -129,9 +137,20 @@ The Memory Bank Database Parser is a fresh implementation that parses memory ban
 2. Error Log Parser
 3. Progress Parser
 
+## T20a Integration
+
+T20a (Adaptive LLM-Based Format Parser) builds on T20's foundation to handle format variations across different projects. Rather than modifying T20 to handle all format variants, T20a implements:
+
+1. **Format Detection**: LLM analyzes file structure and generates format profile
+2. **Parser Selection**: Chooses appropriate parser based on detected format
+3. **Normalization**: Maps extracted data to universal schema
+4. **Multi-Project Support**: Handles different projects with different format conventions
+
+See `adaptive-parser-plan.md` for complete T20a architecture.
+
 ## Future Expansion Plans
 
-### Phase 2: Additional File Parsers
+### Phase 2: Additional File Parsers (T20)
 
 The system is designed to be extended with additional parsers:
 

@@ -1,8 +1,26 @@
 # Edit History
 *Created: 2025-04-10*
-*Last Updated: 2025-11-12 16:59:56 IST*
+*Last Updated: 2025-11-12 17:25:21 IST*
 
 ### 2025-11-12
+
+#### 17:25 - T20a: Adaptive LLM-Based Format Parser System - Design Phase Complete
+- Created `memory-bank/tasks/T20a.md` - New task file with design phase completion criteria and architecture overview
+- Created `memory-bank/implementation-details/adaptive-parser-plan.md` - Comprehensive three-phase system design (Analysis → Parser Selection → Normalization)
+- Updated `memory-bank/implementation-details/database-parser-plan.md` - Added T20a integration reference and updated overview section
+- Updated `memory-bank/tasks.md` - Added T20a to active tasks registry with HIGH priority and T20 dependency
+- Updated `memory-bank/sessions/2025-11-12-evening.md` - Added T20a design phase completion, format analysis findings, and architecture decisions
+- Updated `memory-bank/session_cache.md` - Added T20a to active tasks, updated focus task to T20a, updated task registry
+- Updated `memory-bank/edit_history.md` - This entry recording T20a design phase completion
+
+#### 16:30 - Format Variation Analysis Across Projects
+- Examined `spin-network-app/memory-bank/edit_history.md` - 42KB file with verbose multi-line descriptions
+- Examined `qc-diffusion-code/memory-bank/edit_history.md` - 48KB file with hierarchical entry grouping
+- Examined `arxivite/memory-bank/edit_history.md` - 28KB file with mixed format variations
+- Identified 8 critical format variations: metadata syntax, entry headers, task IDs, file paths, description length, entry length, status indicators, path styles
+- Documented findings would break universal regex parser
+- Determined LLM-driven format detection superior to complex regex approach
+- Designed format-agnostic system with universal schema
 
 #### 16:59:56 IST - T13, T20, T3: T20 SQLite Integration Complete - T3 Superseded
 - Renamed `memory-bank/database/` to `memory-bank/database.old/` - Backed up old Prisma ORM system

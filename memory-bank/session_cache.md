@@ -4,10 +4,10 @@
 
 ## Current Session
 **Started**: 2025-11-12 16:30:00 IST
-**Duration**: ~30 minutes
-**Focus Task**: T20 🔄
+**Duration**: ~2.5 hours
+**Focus Task**: T20a 🔄
 **Session File**: `sessions/2025-11-12-evening.md`
-**Status**: 🔄 In Progress: Phase 3 continued - Format handling improvements, T20 integration with T13
+**Status**: 🔄 In Progress: Design phase - Format analysis, system architecture, T20a task creation
 
 ## Overview
 - Active: 11 | Paused: 0 | Completed: 7
@@ -15,9 +15,10 @@
 - Current Period: evening
 
 ## Task Registry
-- T20: Memory Bank Database Parser - ✅ **COMPLETED**
+- T20a: Adaptive LLM-Based Format Parser - 🔄 (NEW)
+- T20: Memory Bank Database Parser - 🔄
 - T19: Memory Bank Viewer Web Interface - 🔄
-- T18: Integrated Rules Redesign - ✅ **COMPLETED**
+- T18: Integrated Rules Redesign - ✅
 - T17: Maintenance and Upkeep of Integrated Rules - 🔄
 - T16: AI Consciousness Dialog Series - 🔄
 - T14: Project-Specific Rule Adaptations - 🔄
@@ -26,15 +27,29 @@
 - T11: Document GitHub Project Integration - 🔄
 - T9: Implement Rules v6.2 Changes - 🔄
 - T8: Add KIRS Principle - 🔄
-- T3: Implement DB Migration - 🔄
+- T3: Implement DB Migration - ⏸️
 
 ## Active Tasks
+
+### T20a: Adaptive LLM-Based Format Parser
+**Status:** 🔄 **IN PROGRESS** (Design Phase) **Priority:** HIGH
+**Started:** 2025-11-12 **Last:** 2025-11-12 17:25:21 IST
+**Context**: Adaptive parser system using LLM format analysis to handle multi-project format variations. Single universal schema for all projects. Format detection + parser selection + normalization pipeline.
+**Files**: `implementation-details/adaptive-parser-plan.md`, `tasks/T20a.md`, `implementation-details/database-parser-plan.md`
+**Progress**:
+1. ✅ Format variation analysis across 4 projects (documented 8 variations)
+2. ✅ LLM-driven design vs universal regex comparison
+3. ✅ Three-phase architecture (Analysis → Parser Selection → Normalization)
+4. ✅ Universal schema design (edit_entries, file_modifications, tasks, task_files)
+5. ✅ System architecture documentation complete
+6. ✅ T20a task file created with design phase completion
+7. 🔄 Ready for Phase 1 implementation (LLM prompt design)
 
 ### T20: Memory Bank Database Parser
 **Status:** 🔄 **IN PROGRESS** (Phase 3) **Priority:** MEDIUM
 **Started:** 2025-11-12 **Last:** 2025-11-12 16:13:21 IST
-**Context**: Fresh parser implementation for memory bank markdown files. Phase 1-2 complete. Phase 3 integrating both parsers into unified memory_bank.db database with prefixed tables.
-**Files**: `edit-history-parser/parse-edits.js`, `edit-history-parser/parse-tasks.js`, `edit-history-parser/query.js`, `implementation-details/database-parser-plan.md`, `tasks/T20.md`
+**Context**: Fresh parser implementation for memory bank markdown files. Phase 1-2 complete. Phase 3 integrating both parsers into unified memory_bank.db database. T20a extending with adaptive format handling.
+**Files**: `memory-bank/database/parse-edits.js`, `memory-bank/database/parse-tasks.js`, `memory-bank/database/query.js`, `implementation-details/database-parser-plan.md`, `tasks/T20.md`
 **Progress**:
 1. ✅ Database schema design (edit_entries, file_modifications tables)
 2. ✅ Parser implementation with markdown parsing logic
