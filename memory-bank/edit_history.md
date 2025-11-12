@@ -1,6 +1,44 @@
 # Edit History
 *Created: 2025-04-10*
-*Last Updated: 2025-11-11 19:43:25 IST*
+*Last Updated: 2025-11-12 16:13:21 IST*
+
+### 2025-11-12
+
+#### 16:13:21 IST - T20: Unified Database Integration and Parser Rename
+- Renamed `edit-history-parser/parse-sqlite.js` to `parse-edits.js` - Clearer naming for edit history parser
+- Updated `edit-history-parser/parse-edits.js` - Changed database from edit_history.db to memory_bank.db, renamed file_modifications to edit_modifications
+- Updated `edit-history-parser/parse-tasks.js` - Changed database to memory_bank.db, renamed tasks to task_items, added table clearing
+- Updated `edit-history-parser/query.js` - Updated all table references, added task statistics, unified database path
+- Updated `memory-bank/tasks/T20.md` - Added Phase 3 progress details, updated file references
+- Updated `implementation-details/database-parser-plan.md` - Documented unified database integration, updated schema and usage workflow
+
+#### 13:03:00 IST - T20: Tasks Parser Implementation
+- Updated `edit-history-parser/parse-tasks.js` - Completed implementation with task table parsing, dependency handling, and status/priority conversion
+- Created `edit-history-parser/query-tasks.js` - Task query interface
+- Updated `memory-bank/tasks.md` - Marked T20 as completed
+- Updated `memory-bank/tasks/T20.md` - Added Phase 2 completion details
+- Updated `implementation-details/database-parser-plan.md` - Recorded implementation status
+- Updated `session_cache.md` - Tracked completion
+- Updated `sessions/2025-11-12-afternoon.md` - Added implementation details
+
+#### 12:02:00 IST - T20: Memory Bank Database Parser - Phase 1 Implementation
+- Created `edit-history-parser/schema.prisma` - Prisma schema definition for reference (two-table relational model)
+- Created `edit-history-parser/package.json` - Node.js project configuration with better-sqlite3 dependency
+- Created `edit-history-parser/parse-sqlite.js` - Main parser script with markdown parsing logic, date/entry/modification extraction, transaction-based inserts
+- Created `edit-history-parser/query.js` - Interactive query tool with stats, all, task, files, and date command modes
+- Created `edit-history-parser/README.md` - Comprehensive documentation with setup, usage, examples, and implementation details
+- Created `edit-history-parser/package-sqlite.json` - Alternative package configuration for SQLite-only approach
+- Created `implementation-details/database-parser-plan.md` - Implementation plan documenting parser structure, database schema, and future expansion plans
+- Created `tasks/T20.md` - Task tracking file with completion criteria, progress tracking, and technical context
+- Updated `tasks.md` - Added T20 to active tasks registry with Phase 1 status
+- Created `sessions/2025-11-12-afternoon.md` - Session documentation with focus task, progress made, files modified, and key decisions
+- Updated `session_cache.md` - Added T20 to task registry and active tasks, updated current session, prepended session history entry
+
+#### 13:00:00 IST - T20: Tasks Parser Implementation
+- Updated `edit-history-parser/parse-tasks.js` - Added dependency handling
+- Updated `memory-bank/tasks.md` - Marked T20 as completed
+- Updated `memory-bank/tasks/T20.md` - Added Phase 2 details
+- Updated `implementation-details/database-parser-plan.md` - Recorded completion status
 
 ### 2025-11-11
 
@@ -25,7 +63,7 @@
 - Updated `tasks/T13.md` - Updated timestamp to 18:24:10 IST, status to 85% complete, added selective initialization details
 - Updated `tasks.md` - Updated T13 entry with selective init status
 - Updated `session_cache.md` - Updated timestamp to 18:24:10 IST, T3 status to 95%, added T13 with 85% status and selective init details
-- Updated `sessions/2025-11-11-evening.md` - Added Session Part 4 (timezone fix), Session Part 5 (selective init), updated duration and focus
+- Updated `sessions/2025-11-11-evening.md` - Added session Part 4 (timezone fix), Session Part 5 (selective init), updated duration and focus
 
 #### 18:18:00 IST - T3: Fixed Timezone Handling and Added Migration Scripts
 - Updated `mb-cli/src/commands/init.js` - Changed getISTTimestamp() to getCurrentTimestamp() with user timezone detection; added MIGRATION_SCRIPT_FILES array; added migration script copying to init output
@@ -345,85 +383,7 @@
 
 ### April 17, 2025
 
-#### 12:20 - Memory Bank System Synchronization
-- Modified `memory-bank/activeContext.md` - Updated task statuses, current focus, and timestamp to reflect latest progress
-- Modified `memory-bank/progress.md` - Fixed duplicate T4 entry and updated timestamp
-- Modified `memory-bank/tasks.md` - Updated T4 task details to match current implementation status and updated timestamp
-- Modified `memory-bank/session_cache.md` - Updated overview section and timestamp to reflect current status
-- Modified `memory-bank/edit_history.md` - Added entry for synchronization changes
-
-### April 16, 2025
-
-#### 11:45 - T4: Continued Modular Rules System Development and Memory Bank Updates
-- Modified `.roomodes` - Updated project configuration
-- Modified `memory-bank/session_cache.md` - Updated session tracking for multi-task support
-- Modified `memory-bank/tasks.md` - Updated task registry with new task details
-- Modified `optimized-rules/core/command-reference.md` - Refined command syntax reference
-- Modified `optimized-rules/core/core-rules.md` - Enhanced core rules module
-- Added `optimized-rules/core/manifest-instructions.md` - Added instructions for module manifest
-- Modified `optimized-rules/core/manifest.json` - Updated module registry and dependencies
-- Modified `optimized-rules/core/quickstart.md` - Improved quickstart guide
-- Added `optimized-rules/modules/documentation-rules.md` - Added documentation rules module
-- Added `optimized-rules/modules/error-handling-rules.md` - Added error handling rules module
-- Added `optimized-rules/modules/implementation-rules.md` - Added implementation rules module
-- Added `optimized-rules/modules/memory-management-rules.md` - Added memory management rules module
-- Added `optimized-rules/modules/session-management-rules.md` - Added session management rules module
-- Added `optimized-rules/modules/task-management-rules.md` - Added task management rules module
-- Added `optimized-rules/modules/tool-usage-rules.md` - Added tool usage rules module
-
-### April 16, 2025
-
-#### 00:15 - T4: Started Implementing Optimized Rules Structure
-- Created `/Users/deepak/code/memory-bank/optimized-rules/` - New directory for modular rules system development
-- Created `/Users/deepak/code/memory-bank/optimized-rules/core/core-rules.md` - Essential minimal instructions (~20% size of original)
-- Created `/Users/deepak/code/memory-bank/optimized-rules/core/manifest.json` - Module registry with dependencies
-- Created `/Users/deepak/code/memory-bank/optimized-rules/core/quickstart.md` - Minimal startup instructions
-- Created `/Users/deepak/code/memory-bank/optimized-rules/core/command-reference.md` - Condensed command syntax reference
-- Created `/Users/deepak/code/memory-bank/optimized-rules/loader.md` - Dynamic module loading instructions
-- Created `/Users/deepak/code/memory-bank/optimized-rules/README.md` - Overview of modular structure
-- Created `/Users/deepak/code/memory-bank/optimized-rules/transition/` - Tools for transitioning to modular system
-- Created folder structure for modules, docs, examples, and context-store
-- Updated `/Users/deepak/code/memory-bank/memory-bank/session_cache.md` - Fixed path inconsistencies
-
-### April 15, 2025
-
-#### 22:14 - T4: Initiated Integrated Rules Optimization and Refactor
-- Created `/Users/deepak/code/memory-bank/memory-bank/implementation-details/optimize-rules/refactor-rules-planning.md` - Added comprehensive plan to modularize existing integrated rules to reduce token usage in LLM calls
-- Updated `/Users/deepak/code/memory-bank/memory-bank/tasks.md` - Created new task T4: Optimize Integrated Rules for Token Efficiency
-- Updated `/Users/deepak/code/memory-bank/memory-bank/activeContext.md`
-- Updated `/Users/deepak/code/memory-bank/memory-bank/edit_history.md`
-- Updated `/Users/deepak/code/memory-bank/memory-bank/progress.md`
-- Updated `/Users/deepak/code/memory-bank/memory-bank/session_cache.md`
-- Created `/Users/deepak/code/memory-bank/memory-bank/implementation-details` - New folder for optimization details
-- Moved `/Users/deepak/code/memory-bank/database-planning` to `/Users/deepak/code/memory-bank/memory-bank/implementation-details`
-
-
-#### 13:30 - T3: Fixed Database Migration Issues
-- Modified `/Users/deepak/code/memory-bank/memory-bank/database/schema.prisma` - Removed `@db.Text` annotations from all fields to fix SQLite compatibility issues
-- Modified `/Users/deepak/code/memory-bank/memory-bank/database/migration-scripts/convert.js` - Enhanced date parsing and validation to fix changelog entry creation issues
-- Created `/Users/deepak/code/memory-bank/memory-bank/database/migration-scripts/migration_guide.md` - Added comprehensive guide for markdown to database migration
-- Updated `/Users/deepak/code/memory-bank/memory-bank/errorLog.md` - Added entries for SQLite validation errors and invalid date issues
-- Updated `/Users/deepak/code/memory-bank/memory-bank/edit_history.md` - Added recent file modifications
-
-#### 19:45 - T3: Implemented Database Migration Scripts
-- Completed `memory-bank/database/migration-scripts/convert.js` - Created comprehensive script to migrate markdown files to database
-- Created `memory-bank/database/migration-scripts/seed.js` - Added script for database testing with sample data
-- Fixed implementation to properly handle multiple projects, archived files, and example projects
-
-#### 15:10 - T3: Updated Database Schema Design
-- Created `memory-bank/database/schema.prisma` - Created comprehensive Prisma schema with all models needed for database migration
-- Created `memory-bank/database/.env` - Added database configuration file
-- Created `memory-bank/database/package.json` - Set up Node.js package with required dependencies
-- Updated design to support multiple projects and eliminate file rotation needs
-
-#### 13:40 - T2: Update activeContext.md with Database Migration Planning Results
-- Updated `memory-bank/activeContext.md` - Added completed task T2, added planned task T3 for implementation, updated Current Decisions to include Prisma selection, updated Next Actions.
-
-#### 13:35 - T2: Complete Database Migration Planning
-- Created `memory-bank/database-planning/recommended_migration_plan.md` - Added detailed document recommending Prisma ORM with relational database as the migration strategy.
-- Created `memory-bank/database-planning/database_planning.md` - Added summary document outlining the database discussion, challenges, and proposed solutions.
-
-#### 12:24 - T2: Update Session Cache for Completed Task
+#### 12:20 - T2, T3: Update Session Cache for Completed Task
 - Updated `memory-bank/session_cache.md` - Added T2 completion status and updated last modified date. Added completed tasks section.
 
 #### 12:21 - T2: Update Task Registry
@@ -432,7 +392,7 @@
 #### 12:19 - T2: Add SQL vs MongoDB Comparison to Migration Doc
 - Updated `memory-bank/database-planning/database_migration.md` - Added a new section comparing SQL and MongoDB data models, including examples and migration challenges.
 
-### April 14, 2025
+### April 16, 2025
 
 #### 16:30 - T1: Moving Templates to Project Root
 - Moved `/Users/deepak/code/memory-bank/memory-bank/templates/` directory to `/Users/deepak/code/memory-bank/templates/`

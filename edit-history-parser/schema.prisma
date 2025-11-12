@@ -1,0 +1,35 @@
+// Prisma schema for Memory Bank Edit History
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./edit_history.db"
+}
+
+model EditEntry {
+  id              Int                 @id @default(autoincrement())
+  date            String              // YYYY-MM-DD format
+  time            String              // HH:MM:SS format
+  timezone        String              // e.g., "IST", "UTC"
+  timestamp       DateTime            // Parsed DateTime
+  taskId          String?             // e.g., "T3", "T13" (optional - some entries don't have task IDs)
+  taskDescription String              // Brief task description
+  modifications   FileModification[]
+
+  @@index([date])
+  @@index([taskId])
+}
+
+model FileModification {
+  id          Int        @id @default(autoincrement())
+  action      String     // "Created", "Modified", "Updated"
+  filePath    String     // Path to the modified file
+  description String     // Description of changes
+  editEntry   EditEntry  @relation(fields: [editEntryId], references: [id], onDelete: Cascade)
+  editEntryId Int
+
+  @@index([filePath])
+  @@index([editEntryId])
+}

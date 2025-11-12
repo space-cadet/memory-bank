@@ -1,0 +1,183 @@
+#!/usr/bin/env node
+
+import Database from 'better-sqlite3';
+import { readFileSync } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Initialize tasks schema
+function initSchema(db) {
+  db.exec(`
+    PRAGMA foreign_keys = OFF;
+    
+    CREATE TABLE IF NOT EXISTS task_items (
+      id TEXT PRIMARY KEY,
+      title TEXT NOT NULL,
+      status TEXT NOT NULL CHECK(status IN ('pending','in_progress','completed','paused')),
+      priority TEXT NOT NULL CHECK(priority IN ('low','medium','high')),
+      started TEXT NOT NULL,
+      details TEXT NOT NULL
+    );
+    
+    CREATE TABLE IF NOT EXISTS task_dependencies (
+      task_id TEXT NOT NULL,
+      depends_on TEXT NOT NULL,
+      FOREIGN KEY(task_id) REFERENCES task_items(id) ON DELETE CASCADE,
+      FOREIGN KEY(depends_on) REFERENCES task_items(id) ON DELETE CASCADE,
+      PRIMARY KEY(task_id, depends_on)
+    );
+    
+    PRAGMA foreign_keys = ON;
+  `);
+}
+
+// Parse tasks table line
+function parseTaskLine(line) {
+  const match = line.match(/^\|\s+(T\d+)\s+\|\s+(.+?)\s+\|\s+(🔄|✅|⏸️)\s+\|\s+(LOW|MEDIUM|HIGH)\s+\|\s+(\d{4}-\d{2}-\d{2})\s+\|\s+([^|]*?)\s+\|\s+(.+)\s+\|$/);
+  if (!match) return null;
+  
+  // Handle empty dependencies
+  const deps = match[6].trim() === '-' ? [] : 
+    match[6].trim().split(/\s*,\s*/).filter(Boolean);
+  
+  return {
+    id: match[1],
+    title: match[2],
+    status: match[3] === '🔄' ? 'in_progress' : 
+           match[3] === '✅' ? 'completed' : 'paused',
+    priority: match[4].toLowerCase(),
+    started: match[5],
+    dependencies: deps,
+    details: match[7].trim()
+  };
+}
+
+// Parse entire tasks.md content
+function parseTasks(content) {
+  return content.split('\n')
+    .map(parseTaskLine)
+    .filter(Boolean);
+}
+
+// Insert tasks into database
+function populateDatabase(db, tasks) {
+  const insertTask = db.prepare(`
+    INSERT OR IGNORE INTO task_items (id, title, status, priority, started, details)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `);
+  
+  const insertDependency = db.prepare(`
+    INSERT OR IGNORE INTO task_dependencies (task_id, depends_on)
+    VALUES (?, ?)
+  `);
+  
+  // Disable foreign keys temporarily
+  db.pragma('foreign_keys = OFF');
+  
+  // Insert all tasks first
+  db.transaction(() => {
+    tasks.forEach(task => {
+      insertTask.run(
+        task.id,
+        task.title,
+        task.status,
+        task.priority,
+        task.started,
+        task.details
+      );
+    });
+  })();
+  
+  // Then insert dependencies
+  db.transaction(() => {
+    tasks.forEach(task => {
+      task.dependencies.forEach(depId => {
+        insertDependency.run(task.id, depId);
+      });
+    });
+  })();
+  
+  // Re-enable foreign keys
+  db.pragma('foreign_keys = ON');
+}
+
+export function parseTasksFile(content) {
+  return parseTasks(content);
+}
+
+// Add before main()
+function runTests() {
+  const testCases = [
+    {
+      name: "Should parse task line",
+      input: "| T20 | Test Task | 🔄 | HIGH | 2025-11-12 | T1,T2 | Details |",
+      expected: {
+        id: "T20",
+        title: "Test Task",
+        status: "in_progress",
+        priority: "high",
+        started: "2025-11-12",
+        dependencies: ["T1","T2"],
+        details: "Details"
+      }
+    },
+    {
+      name: "Should handle empty dependencies",
+      input: "| T1 | Another Task | ✅ | LOW | 2025-11-10 | - | More details |",
+      expected: {
+        dependencies: []
+      }
+    }
+  ];
+
+  let passed = 0;
+  testCases.forEach(test => {
+    const result = parseTaskLine(test.input);
+    const valid = Object.entries(test.expected).every(([key, val]) => 
+      JSON.stringify(result[key]) === JSON.stringify(val)
+    );
+    
+    if (valid) passed++;
+    else console.error(`✗ ${test.name}`);
+  });
+
+  console.log(`Tests: ${passed}/${testCases.length} passed`);
+  return passed === testCases.length;
+}
+
+// Update main()
+function main() {
+  if (process.argv.includes('--test')) {
+    process.exit(runTests() ? 0 : 1);
+  }
+
+  try {
+    const dbPath = join(__dirname, 'memory_bank.db');
+    const db = new Database(dbPath);
+    
+    // Clear existing task tables
+    console.log('Clearing existing task data...');
+    db.exec('DROP TABLE IF EXISTS task_dependencies');
+    db.exec('DROP TABLE IF EXISTS task_items');
+    
+    initSchema(db);
+
+    const content = readFileSync(
+      join(__dirname, '..', 'memory-bank', 'tasks.md'), 
+      'utf-8'
+    );
+    populateDatabase(db, parseTasks(content));
+    
+    console.log('✓ Tasks database updated');
+    console.log('Database file: memory_bank.db\n');
+    db.close();
+  } catch (error) {
+    console.error('Error:', error);
+    process.exit(1);
+  }
+}
+
+main();

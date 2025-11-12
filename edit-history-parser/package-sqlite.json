@@ -1,0 +1,17 @@
+{
+  "name": "edit-history-parser",
+  "version": "1.0.0",
+  "description": "Parser for Memory Bank edit history to SQLite database",
+  "main": "parse-sqlite.js",
+  "type": "module",
+  "scripts": {
+    "parse": "node parse-sqlite.js",
+    "query": "node query.js"
+  },
+  "keywords": ["memory-bank", "parser", "sqlite"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^11.0.0"
+  }
+}
