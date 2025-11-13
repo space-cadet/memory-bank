@@ -2,15 +2,11 @@
 
 *Last Updated: 2025-11-13 00:15:30 IST*
 
-## Version Changelog (v6.9 → v6.10)
-1. **Added**:
-   - Tiered Knowledge Structure (Section 2.2)
-   - Progressive loading guidance for token efficiency
-   - File loading priority matrix
-2. **Improved**:
-   - Better organization of operational principles
-3. **Maintained**:
-   - All v6.9 improvements and sections
+YOU WILL KEEP IT REALLY SIMPLE, STUPID (KIRSS). IF YOU THINK A SOLUTION IS SIMPLE ENOUGH, MAKE IT EVEN SIMPLER.
+YOU WILL NEVER UPDATE ANY FILES, INCLUDING MEMORY BANK FILES, WITHOUT EXPLICIT USER APPROVAL
+YOU WILL NEVER ADD NEW FEATURES WITHOUT APPROVAL
+YOU WILL NEVER GENERATE ANY CODE WITHOUT APPROVAL
+YOU WILL GO SLOW AND STEADY. WHEN YOU THINK YOU'RE GOING SLOW, GO EVEN SLOWER.
 
 ## Table of Contents
 ### 1. Critical Compliance Requirements

@@ -1,12 +1,12 @@
 # Session Cache
 *Created: 2025-11-10 18:27:15 IST*
-*Last Updated: 2025-11-13 17:29:35 IST*
+*Last Updated: 2025-11-13 17:48:20 IST*
 
 ## Current Session
 **Started**: 2025-11-13 17:29:35 IST
-**Focus Task**: T17 🔄
+**Focus Task**: T21 🔄
 **Session File**: `sessions/2025-11-13-evening.md`
-**Status**: 🔄 In Progress: Rules documentation v6.8 → v6.10 progression, memory bank procedures
+**Status**: 🔄 In Progress: Database-native memory bank update workflow design, paradigm shift to DB-authoritative
 
 ## Overview
 - Active: 11 | Paused: 0 | Completed: 7
@@ -14,7 +14,8 @@
 - Current Period: evening
 
 ## Task Registry
-- T20a: Adaptive LLM-Based Format Parser - 🔄 (NEW)
+- T21: Database-Native Memory Bank Update Workflow - 🔄 (NEW)
+- T20a: Adaptive LLM-Based Format Parser - 🔄
 - T20: Memory Bank Database Parser - 🔄
 - T19: Memory Bank Viewer Web Interface - 🔄
 - T18: Integrated Rules Redesign - ✅
@@ -29,6 +30,18 @@
 - T3: Implement DB Migration - ⏸️
 
 ## Active Tasks
+
+### T21: Database-Native Memory Bank Update Workflow
+**Status:** 🔄 **IN PROGRESS** (Design Phase) **Priority:** HIGH
+**Started:** 2025-11-13 **Last:** 2025-11-13 17:48:20 IST
+**Context**: Database-first paradigm shift. DB becomes authoritative source, text files become generated output. Replaces manual Section 6.5 workflow with atomic database transactions.
+**Files**: `implementation-details/database-update-workflow-plan.md`, `tasks/T21.md`, `tasks/T20.md`, `tasks/T13.md`
+**Progress**:
+1. ✅ Analyzed text-based Section 6.5 workflow
+2. ✅ Designed 4-phase database-native workflow
+3. ✅ Created expanded schema (8 tables)
+4. ✅ Comprehensive implementation plan (Phases A-E)
+5. 🔄 Ready for schema expansion phase
 
 ### T20a: Adaptive LLM-Based Format Parser
 **Status:** 🔄 **IN PROGRESS** (Design Phase) **Priority:** HIGH
@@ -129,8 +142,9 @@
 2. Error log parser design
 
 ## Session History (Last 10)
-1. `sessions/2025-11-13-evening.md` - T17: Rules documentation v6.8 to v6.10, Tiered Knowledge Structure, Memory Bank Update Workflow
-2. `sessions/2025-11-12-evening.md` - T20: Format handling improvements, T13 integration with T20 parsers
+1. `sessions/2025-11-13-evening.md` - T21: Database-native memory bank update workflow, paradigm shift to DB-authoritative, schema design
+2. `sessions/2025-11-13-evening.md` - T17: Rules documentation v6.8 to v6.10, Tiered Knowledge Structure, Memory Bank Update Workflow (earlier)
+3. `sessions/2025-11-12-evening.md` - T20: Format handling improvements, T13 integration with T20 parsers
 3. `sessions/2025-11-12-afternoon.md` - T20: Memory Bank Database Parser implementation (Phase 1 complete)
 4. `sessions/2025-11-11-night.md` - T3, T13: Init Script Fixes & Schema Corrections
 5. `sessions/2025-11-11-evening.md` - T3 Database Migration Verification & Documentation

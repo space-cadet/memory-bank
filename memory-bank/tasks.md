@@ -1,9 +1,10 @@
 # Task Registry
-*Last Updated: 2025-11-13 17:29:35 IST*
+*Last Updated: 2025-11-13 17:48:20 IST*
 
 ## Active Tasks
 | ID | Title | Status | Priority | Started | Dependencies | Details |
 |----|-------|--------|----------|---------|--------------|---------|
+| T21 | Database-Native Memory Bank Update Workflow | 🔄 | HIGH | 2025-11-13 | T20, T20a, T13 | [Details](tasks/T21.md) - Design phase complete: Database-first approach, atomic transactions, text regeneration |
 | T20a | Adaptive LLM-Based Format Parser | 🔄 | HIGH | 2025-11-12 | T20 | [Details](tasks/T20a.md) - Design phase: Format analysis complete, LLM-driven detection system |
 | T20 | Memory Bank Database Parser | 🔄 | MEDIUM | 2025-11-12 | - | [Details](tasks/T20.md) - Phase 3 continued: Format handling improvements, timezone optionality |
 | T19 | Memory Bank Viewer Web Interface | 🔄 | HIGH | 2025-11-10 | - | [Details](tasks/T19.md) - Phase 2 in progress: File content viewer, bug fixes, path resolution (1373 lines) |
@@ -62,6 +63,9 @@ graph TD
     T12[T12: Practical Docs Rewrite]
     T13[T13: Memory Bank CLI]
     T19[T19: Memory Bank Viewer]
+    T20[T20: Database Parser]
+    T20a[T20a: Adaptive Format Parser]
+    T21[T21: DB Update Workflow]
 
     T0 --> T1
     T11 --> T12
@@ -76,4 +80,9 @@ graph TD
     T8 --> T9
     T9 --> T10
     T10 --> T11
+    T3 --> T20
+    T20 --> T20a
+    T20 --> T21
+    T20a --> T21
+    T13 --> T21
 ```

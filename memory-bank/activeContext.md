@@ -1,14 +1,19 @@
 # Active Context
 
-*Last Updated: 2025-11-13 17:29:35 IST*
+*Last Updated: 2025-11-13 17:48:20 IST*
 
 ## Current Tasks
-1. **[T17]**: Maintenance and Upkeep of Integrated Rules (MEDIUM priority)
+1. **[T21]**: Database-Native Memory Bank Update Workflow (HIGH priority)
+   - Status: 🔄 IN PROGRESS (Design Phase Complete)
+   - Current Focus: Database-first paradigm shift, atomic transactions, text regeneration
+   - Next Steps: Phase A (Schema expansion), Phase B (Insert functions), Phase C (Text regeneration)
+
+2. **[T17]**: Maintenance and Upkeep of Integrated Rules (MEDIUM priority)
    - Status: 🔄 IN PROGRESS
    - Current Focus: Rules documentation v6.8 → v6.10, Tiered Knowledge Structure, Memory Bank Update Workflow
    - Next Steps: Priority #1 File Update Trigger Matrix, Priority #2 Session Cache Protocol details
 
-2. **[T20a]**: Adaptive LLM-Based Format Parser (HIGH priority)
+3. **[T20a]**: Adaptive LLM-Based Format Parser (HIGH priority)
    - Status: 🔄 IN PROGRESS (Design Phase complete)
    - Next Steps: Phase 1 implementation - LLM prompt design
 
