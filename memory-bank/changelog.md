@@ -1,5 +1,55 @@
 # Changelog
 
+## November 2025
+
+### [2025-11-13] T21 Database-Native Memory Bank Update Workflow - Phase A Complete
+- Analyzed text-based Section 6.5 workflow for database paradigm conversion
+- Designed database-first alternative with 4-phase approach (DB Ops → Text Regeneration → Validation → Logging)
+- Created expanded 8-table schema with 21 indexes in isolated workspace (t21-workflow-testing/)
+- Implemented Phase A: schema.sql with foreign key constraints and indexes
+- Implemented dual initialization scripts: init-schema.js (better-sqlite3) and init-schema-sqljs.js (sql.js)
+- Created comprehensive documentation: database-update-workflow-plan.md (486 lines)
+- Designed Phases B-E implementation roadmap across T20, T13, testing
+- **Status**: Experimental/exploratory phase. Database paradigm not ready for deployment.
+
+### [2025-11-13] T17 Integrated Rules v6.10 - Major Enhancement
+- Created new v6.10 with Tiered Knowledge Structure (Bootstrap, Critical, Essential, Reference)
+- Added File Loading Priority Matrix with practical scenarios
+- Expanded Section 6.5 with detailed 8-step Memory Bank Update Workflow
+- Added commit message format: `(type)TID: Headline - Details (% complete)`
+- Documented approval checkpoints and validation requirements
+- Implemented progressive loading examples for practical guidance
+
+### [2025-11-12] T20a Adaptive LLM-Based Format Parser - Design Phase Complete
+- Conducted format variation analysis across 4 projects (8 variations documented)
+- Designed LLM-driven format detection system vs universal regex comparison
+- Implemented three-phase architecture: Analysis → Parser Selection → Normalization
+- Created universal schema design supporting multi-project compatibility
+- Documented comprehensive system architecture (adaptive-parser-plan.md)
+- **Status**: Experimental/exploratory phase. Part of broader database system under development.
+
+### [2025-11-12] T20 Memory Bank Database Parser - Phase 3 Continued
+- Integrated unified memory_bank.db with table prefixing (edit_*, task_*)
+- Implemented improved format handling (timezone optionality, flexible column parsing)
+- Enhanced parser logic for better error recovery and status handling
+- Completed tasks parser with dependency processing
+- **Status**: Experimental/exploratory phase. Phase 3 format handling improvements ongoing.
+
+### [2025-11-10] T19 Memory Bank Viewer Web Interface - Phase 1 Complete
+- Completed single-file HTML viewer (1373 lines) with dual file discovery approaches
+- Implemented Phase 1: Core infrastructure and file navigation
+- Created manifest generation system with recursive directory scanning
+- Deployed production-ready viewer for memory bank visualization
+- **Status**: Production release. Phase 2 enhancements in progress.
+
+### [2025-11-11] T3 Database Migration & T13 CLI - Integration and Verification
+- Verified database migration: 364 records successfully migrated, zero data integrity issues
+- Enhanced mb init command with selective initialization (--core, --templates, --database, --full, --skip-existing)
+- Implemented timezone-agnostic initialization with automatic user timezone detection
+- Added database templates and migration scripts to initialization
+- Created non-destructive init system with existing content detection
+- **Status**: T3 at 95% (MCP server postponed), T13 at 85% (task/session commands remain).
+
 ## April 30, 2025
 ### [v6.2] - Documentation Framework and File Operations
 #### Added

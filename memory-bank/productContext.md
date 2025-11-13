@@ -9,72 +9,115 @@ The Memory Bank system addresses the fundamental challenge of context loss betwe
 4. Inconsistent implementation approaches
 5. Loss of important design decisions and rationales
 
-The Memory Bank provides a structured solution to these problems by maintaining comprehensive, accessible documentation that can be efficiently loaded at the start of each session.
+The Memory Bank provides a structured solution by maintaining comprehensive, accessible documentation that can be efficiently loaded at the start of each session.
 
 ## Core User Experience Goals
 
 ### For Implementers (AI Assistants)
-- Quick access to critical context at session start
-- Clear understanding of project state and progress
-- Efficient retrieval of specific technical details
-- Ability to maintain consistency across sessions
-- Structured mechanism for updating project knowledge
+- Quick access to critical context at session start (Tiered Knowledge Structure)
+- Clear understanding of project state and progress (19 active/completed tasks)
+- Efficient retrieval of specific technical details (Web viewer for navigation)
+- Ability to maintain consistency across sessions (documented workflows)
+- Structured mechanism for updating project knowledge (Memory Bank Update Workflow v6.10)
 
 ### For End Users
 - Continuity of experience across multiple sessions
 - Reduced need to re-explain project context
-- Confidence that design decisions will be preserved
+- Confidence that design decisions are preserved and documented
 - Ability to effectively manage complex, long-running projects
-- Transparent insight into project status and progress
+- Transparent insight into project status and progress (visible via viewer and task registry)
 
-## Key System Capabilities
+## Current System Capabilities
 
-### Progressive Loading
-The system optimizes token usage by loading only the necessary documentation based on the current task context:
+### Tiered Knowledge Structure (v6.10)
+Progressive loading optimizes token usage by loading only necessary documentation:
 
-```
-flowchart TD
-    Start[Session Start] --> LoadCritical[Load Critical Tier]
-    LoadCritical --> TaskAssessment{Assess Task Needs}
-    TaskAssessment -->|Basic Context| UseCurrentInfo[Use Current Info]
-    TaskAssessment -->|More Detail Needed| LoadEssential[Load Essential Tier]
-    TaskAssessment -->|Technical Details Needed| LoadReference[Load Reference Tier]
-    UseCurrentInfo --> TaskExecution[Execute Task]
-    LoadEssential --> TaskExecution
-    LoadReference --> TaskExecution
-```
+**Bootstrap Tier** (Minimal Startup):
+- tasks.md (registry of all tasks)
+- activeContext.md (current focus)
+Sufficient for understanding what's happening.
 
-### Session Continuity
-The system maintains context across sessions through a specialized caching mechanism:
+**Critical Tier** (Task-Focused):
+- session_cache.md (current session state)
+- edit_history.md (recent file modifications)
+- errorLog.md (error history)
 
-1. When a session is incomplete, create a session_cache.md file
-2. Record current task state, files consulted, and continuity context
-3. Set status flag to CONTINUING
-4. At start of next session, check for session_cache.md
-5. If found with CONTINUING status, load the cache to restore context
+**Essential Tier** (Context Clarification):
+- projectbrief.md (project overview)
+- .cursorrules (implementation patterns)
 
-### Knowledge Management
-The tiered documentation approach ensures information is organized based on relevance and frequency of access:
+**Reference Tier** (Deep Dives):
+- productContext.md (product direction and capabilities)
+- systemPatterns.md (architecture and design patterns)
+- techContext.md (technical implementation details)
 
-- **Critical Tier**: Current state and focus (accessed every session)
-- **Essential Tier**: Core requirements and guidelines (accessed regularly)
-- **Reference Tier**: Detailed technical information (accessed as needed)
+### Web Viewer Interface
+Single-file HTML viewer (viewer.html, 1373 lines) with:
+- Dual file discovery approaches (recursive directory scan and manifest-based)
+- Memory bank file navigation and browsing
+- Task registry visualization
+- Session history tracking
 
-## Interaction Model
-The Memory Bank uses a command-based interaction model to control information access and updates:
+### Memory Bank Update Workflow v6.10
+Standardized 8-step procedure for updating documentation:
+1. Determine system time and timezone
+2. Update task files
+3. Update implementation documentation
+4. Handle session file (create if new, update if existing)
+5. Update session cache
+6. Update other relevant files
+7. Update edit history (prepend entries)
+8. Generate commit message with conventional commits format
 
-1. Reading commands (`read_mb`) to control what information is loaded
-2. Update commands (`update_mb`) to control what information is updated
-3. Session commands (`continue_session`, `complete_session`, `cache_session`) to manage continuity
+### Database Migration System
+Verified database integration (T3, 95% complete):
+- 364 memory bank records successfully migrated to SQLite
+- Zero data integrity issues (0 orphaned records, 0 circular dependencies)
+- Multi-project support (memory-bank and spin_network_app)
+- Non-destructive initialization with selective component installation
 
-This approach gives end users explicit control over information flow while optimizing token usage.
+### CLI Interface (mb init command, 85% complete)
+- Selective initialization: --core, --templates, --database, --full, --skip-existing
+- Timezone-agnostic setup with automatic user timezone detection
+- Database template inclusion and migration script support
+- Non-destructive by default (skips existing files with guidance prompts)
+
+## Experimental/In Development
+
+### Database-Native Paradigm (T21, T20, T20a)
+**Status**: Phase A complete, not ready for deployment
+
+Planned future paradigm where database becomes authoritative source and text files are generated output:
+- Phase A (Complete): 8-table schema with 21 indexes, dual init scripts
+- Phase B (Planned): Database insert functions
+- Phase C (Planned): Text regeneration functions  
+- Phase D (Planned): CLI workflow commands
+- Phase E (Planned): End-to-end testing
+
+### Adaptive Format Parser (T20a)
+**Status**: Design phase complete, not ready for deployment
+
+Multi-project format compatibility system:
+- Format variation analysis (8 variations across 4 projects)
+- LLM-driven format detection and normalization
+- Universal schema supporting different project conventions
+- Ready for Phase 1 implementation (LLM prompt design)
 
 ## User Benefits
 
-1. **Efficiency**: Minimize token usage through progressive loading
-2. **Continuity**: Maintain perfect context across multiple sessions
-3. **Consistency**: Ensure implementation approaches remain consistent
-4. **Transparency**: Provide clear visibility into project status
-5. **Control**: Enable explicit management of information flow
+1. **Efficiency**: Progressive loading and tiered structure minimize token usage
+2. **Continuity**: Perfect context preservation across sessions with web viewer and task tracking
+3. **Consistency**: Standardized workflows and documented patterns ensure consistent implementation
+4. **Transparency**: Clear visibility into project status through viewer, tasks, and sessions
+5. **Control**: Explicit user control over component initialization and information flow
+6. **Accessibility**: Web viewer provides non-technical access to memory bank documentation
 
-Last Updated: April 8, 2025
+## Future Direction
+
+The system is evolving toward database-native architecture while maintaining text-first operational stability. Planned enhancements include:
+- Full database-native paradigm implementation
+- Adaptive format parsing for multi-project support
+- Complete CLI command suite (task, session, template management)
+- LLM integration for intelligent querying and analysis
+
+*Last Updated: 2025-11-13 18:46:25 IST*

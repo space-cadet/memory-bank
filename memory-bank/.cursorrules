@@ -1,44 +1,98 @@
 # Memory Bank Implementation Guidelines
 
-## File Organization
-- All Memory Bank files should be located in the `/Users/deepak/code/memory-bank/memory-bank/` directory
+## Operational Implementation (Text-First, Production Ready)
+
+### File Organization
+- All Memory Bank files located in `/Users/deepak/code/memory-bank/memory-bank/` directory
 - Use Markdown format for all documentation files
-- Maintain consistent naming conventions for all files
+- Maintain consistent naming conventions across all files
+- Organized by tier: Critical, Essential, Reference (see Tiered Knowledge Structure)
 
-## Content Structure
-- Each file should have a clear purpose and focus
-- Use hierarchical headings (# for title, ## for major sections, ### for subsections)
-- Include a "Last Updated" timestamp at the end of each file
+### Content Structure
+- Each file has clear purpose and focused content
+- Use hierarchical headings (# title, ## sections, ### subsections)
+- Include "Last Updated" timestamp at end of each file in IST timezone
 - Cross-reference related information using relative links
+- Include task ID references for traceability
 
-## Progressive Loading Implementation
-- Critical Tier files should contain only essential current context
-- Essential Tier files should provide foundational information
-- Reference Tier files should contain detailed technical information
-- Avoid duplicating information across tiers
+### Tiered Knowledge Structure (v6.10)
+**Bootstrap** (Session Start): tasks.md, activeContext.md
+**Critical** (Task-Focused): session_cache.md, edit_history.md, errorLog.md
+**Essential** (Context Clarification): projectbrief.md, .cursorrules
+**Reference** (Deep Dives): productContext.md, systemPatterns.md, techContext.md
 
-## Session Continuity Guidelines
-- Use session_cache.md only for in-progress work
-- Include clear status flags (COMPLETE or CONTINUING)
-- List all files consulted during the session
-- Provide sufficient context for continuation
+### Session Continuity Guidelines
+- Use session_cache.md for in-progress work tracking
+- Include clear status flags and timestamps
+- List active tasks and files consulted
+- Provide sufficient context for session continuation
+- Create individual session files in sessions/ directory
 
-## Update Patterns
-- Update activeContext.md and progress.md after each significant change
+### Update Workflow (Memory Bank Update Workflow v6.10)
+1. Determine system time and timezone (IST standard)
+2. Update individual task file (if applicable) with progress and timestamp
+3. Update tasks.md master registry with status changes
+4. Update implementation documentation files
+5. Handle session file (create if new, update if existing, preserve context)
+6. Update session_cache.md with current metadata
+7. Update other relevant files (activeContext.md, errorLog.md, progress.md, changelog.md)
+8. Update edit_history.md (prepend new entries with timestamp and task ID)
+
+### Update Patterns
+- Prepend entries to edit_history.md (newest first)
+- Use block edits for surgical file modifications
+- Include timestamps for all updates (IST timezone)
 - Make differential updates to minimize token usage
-- Include timestamps for all updates
-- Prefer small, focused updates over large rewrites
+- Verify cross-references after major updates
 
-## Command Usage
-- Use explicit read_mb commands when loading specific files
-- Use update_mb commands when writing to specific files
-- Use session commands to manage continuity
-- Document all command patterns in changelog.md
-
-## Documentation Style
+### Documentation Style
 - Use clear, concise language
-- Prefer bullet points for lists of items
-- Use tables for structured information
-- Include examples for complex concepts
+- Prefer structured lists and tables for information
+- Include relative links for cross-references
+- Include task ID references (e.g., T13, T21, META-1)
+- Include timestamps with IST timezone
 
-Last Updated: April 8, 2025
+## Experimental Components (Not Production Ready)
+
+### Database-Native Paradigm (T21, T20, T20a)
+**Status**: Under development, not ready for deployment
+
+Experimental system transitioning from text-first to database-authoritative approach:
+- T21: Database-Native Memory Bank Update Workflow (Phase A complete)
+- T20: Memory Bank Database Parser (Phase 3 in progress)
+- T20a: Adaptive LLM-Based Format Parser (Design phase complete)
+
+See `implementation-details/database-update-workflow-plan.md` for design documentation.
+
+**Important**: Continue using text-first workflow for production. Database paradigm is experimental and not ready for deployment.
+
+### Database Implementation Guidelines (Experimental)
+When working with experimental database components:
+- All database operations use better-sqlite3 for production compatibility
+- Schema changes require isolation in t21-workflow-testing/ workspace
+- Text regeneration must maintain markdown format consistency
+- Atomic transactions required for multi-step operations
+- Validation required after all database modifications
+
+## Tool Usage Guidelines
+
+### File Operations
+- Always use absolute paths for file operations
+- Verify file existence before modifications
+- No relative paths or tilde (~) expansion
+- Use block edits for surgical modifications (25-30 line max)
+- Request user approval before modifying files
+
+### Command Patterns
+- Use explicit commands with clear parameters
+- Include task ID and timestamp in operations
+- Document significant operations in edit_history.md
+- Generate commit messages using conventional commits format
+
+### Approval Requirements
+- No file modifications without explicit user approval
+- No new feature additions without approval
+- No code generation without approval
+- Document all approvals in edit_history.md
+
+*Last Updated: 2025-11-13 18:46:25 IST*

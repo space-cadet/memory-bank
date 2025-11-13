@@ -1,165 +1,180 @@
 # Technical Context: Memory Bank Implementation
 
-## Technology Stack
-The Memory Bank system is implemented as a documentation structure using:
+## Production Technology Stack (Text-First)
 
-- **Markdown**: All documentation files use Markdown format
-- **Directory Structure**: Organized within the `/Users/deepak/code/memory-bank/memory-bank/` directory
-- **File System Operations**: Reading and writing files as needed
-
-## Implementation Details
+### Primary Technologies
+- **Markdown**: All documentation files use Markdown format for human readability
+- **File System**: Directory-based organization in `/Users/deepak/code/memory-bank/`
+- **Text Editor/CLI**: Shell commands and file operations for document management
+- **Git**: Version control with conventional commits format
 
 ### File Format Standards
-All Memory Bank files follow these standards:
+All Memory Bank files follow:
+1. Consistent Markdown formatting
+2. Hierarchical section headers (# title, ## section, ### subsection)
+3. ISO 8601 timestamps with IST timezone (YYYY-MM-DD HH:MM:SS IST)
+4. Relative links for cross-references
+5. Task ID references (T0-T21, META-1, etc.)
 
-1. Use consistent Markdown formatting
-2. Include clear section headers with hierarchical structure
-3. Provide timestamps for all updates
-4. Use relative links for cross-references
-5. Include metadata at the top of each file
+### Web Viewer Technology Stack
+- **HTML5**: Single-file HTML viewer (viewer.html, 1373 lines)
+- **JavaScript**: File discovery, manifest generation, navigation
+- **CSS3**: Styling and responsive layout
+- **File API**: Local file system access
 
-### Progressive Loading Implementation
-The progressive loading system is implemented through:
+**Components**:
+- viewer.html: Main viewer interface with file browsing
+- generate-manifest.js: Recursive directory scanning and metadata generation
+- manifest.json: Generated file catalog and hierarchy
+- server.js: Optional HTTP server for testing
 
-1. **Tiered File Organization**: Files are organized into Critical, Essential, and Reference tiers
-2. **Command Parser**: Interprets `read_mb` commands to determine which files to load
-3. **Context Integration**: Combines information from multiple files into a coherent context
+**Features**:
+- Dual file discovery approaches (direct scan + manifest-based)
+- Task registry visualization
+- Session history display
+- Real-time file content viewing
+- Search and navigation capabilities
 
-```mermaid
-sequenceDiagram
-    User->>System: read_mb command
-    System->>Parser: Parse command
-    Parser->>FileSystem: Request specific files
-    FileSystem->>System: Return file contents
-    System->>Context: Integrate information
-    Context->>User: Present unified context
+## Session Continuity Implementation
+
+### Production Approach (Text-Based)
+1. **Session File Creation**: Individual session file (YYYY-MM-DD-PERIOD.md) created for work periods
+2. **Cache Updates**: session_cache.md maintains current session metadata and task status
+3. **Incremental Updates**: Edit history appended prepend-only to preserve immutability
+4. **Context Restoration**: Load session_cache.md and related session file at next session start
+
+### Session File Structure
+```
+Session [DATE] - [PERIOD]
+├── Focus Task: [Task ID]
+├── Active Tasks: [List with status]
+├── Progress Made: [Completed this session]
+├── Files Modified: [List of changes]
+├── Key Decisions: [Important choices]
+└── Context for Next Session: [Continuity notes]
 ```
 
-### Session Continuity Implementation
-The session continuity system is implemented through:
+## CLI Implementation (mb-cli)
 
-1. **Status Tracking**: Monitoring session state (COMPLETE or CONTINUING)
-2. **Cache Creation**: Generating session_cache.md for in-progress work
-3. **Cache Detection**: Checking for existing cache at session start
-4. **Context Restoration**: Loading cache information to restore context
+### Init Command Status
+- **Implementation**: Complete and operational (T13, 85% overall)
+- **Technology**: Node.js with commander.js framework
+- **Location**: `mb-cli/src/commands/init.js`
 
-```mermaid
-sequenceDiagram
-    participant User
-    participant System
-    participant Cache
-    participant Files
-    
-    User->>System: End session (incomplete)
-    System->>Cache: Create session_cache.md
-    Cache->>Files: Store session state
-    
-    Note over User,Files: Next Session
-    
-    User->>System: Start new session
-    System->>Files: Check for cache
-    Files->>System: Return cache (if exists)
-    System->>User: Restore context
+**Features**:
+- Selective initialization with flags: --core, --templates, --database, --full, --skip-existing
+- Automatic timezone detection (system locale)
+- Non-destructive by default (skips existing files)
+- Interactive prompts for partial memory bank detection
+- Database template inclusion with SQL migration scripts
+
+**Planned Extensions** (Not yet implemented):
+- mb task command: create, list, show, update
+- mb session command: start, complete, cache
+- mb template command: list, use
+
+## Database Implementation (Experimental - Not Production Ready)
+
+### Experimental Database Technologies
+- **SQLite**: better-sqlite3 for Node.js (production-capable but experimental use)
+- **Schema**: 8-table design with foreign keys and 21 indexes
+- **Location**: `memory-bank/database/memory_bank.db`
+
+### Database Components (T20, T20a, T21)
+All experimental and not ready for production deployment.
+
+**T20: Memory Bank Database Parser**
+- parse-edits.js: Parses edit_history.md into database
+- parse-tasks.js: Parses tasks.md into database
+- query.js: Interactive query tool for database analysis
+- **Status**: Phase 3 in progress (format handling improvements)
+
+**Schema Tables**:
+- edit_entries: Timestamp, task ID, description
+- file_modifications: File path, action, description
+- task_items: Task ID, status, priority, dependencies
+- task_dependencies: Task relationship tracking
+- sessions: Session metadata and timing
+- session_cache: Current session state snapshot
+- error_logs: Error tracking and resolution
+- transaction_log: Transaction history
+
+**Query Capabilities**:
+- stats: Database statistics
+- all [limit]: Show all entries
+- task <id>: Entries by task
+- files [search]: File modifications
+- date <YYYY-MM-DD>: Entries by date
+
+**T20a: Adaptive LLM-Based Format Parser** (Design Phase Complete)
+- LLM format analysis system for multi-project support
+- Format detection and parser selection
+- Normalization to universal schema
+- **Status**: Design complete, Phase 1 implementation pending
+
+**T21: Database-Native Memory Bank Update Workflow** (Phase A Complete)
+- Isolated workspace: `t21-workflow-testing/`
+- Phase A: Schema design, dual init scripts
+- Planned phases: B (insert functions), C (regeneration), D (CLI), E (testing)
+- **Status**: Not ready for production
+
+### Technical Constraints (Experimental Database)
+- SQLite schema locked to development patterns
+- Text regeneration formats not finalized
+- LLM integration patterns still being explored
+- No transaction log analysis tools yet
+- Performance testing incomplete
+
+### Migration Path (Future)
+When database paradigm production-ready:
+1. Gradual migration from text-first to database-first
+2. Coexistence period with both workflows
+3. Text files as generated output from database
+4. Database as authoritative source
+
+## Integration with Integrated Rules v6.10
+
+### Memory Bank Update Workflow (Section 6.5)
+Current 8-step text-first procedure:
+1. Determine system time and timezone
+2. Update task files
+3. Update implementation documentation
+4. Handle session file
+5. Update session cache
+6. Update other files
+7. Update edit history (prepend)
+8. Generate commit message
+
+### Tiered Knowledge Structure (Section 2.2)
+Loading guidance for progressive context loading:
+- Bootstrap: Minimal startup context
+- Critical: Task-focused information
+- Essential: Scope and requirements
+- Reference: Technical details
+
+### Commit Message Format
+Conventional commits with task tracking:
 ```
-
-### Differential Update Implementation
-The differential update system is implemented through:
-
-1. **Change Detection**: Comparing current file state with previous version
-2. **Significance Assessment**: Determining if changes warrant an update
-3. **Targeted Updates**: Modifying only specific files as needed
-4. **Timestamp Management**: Updating timestamps for modified files
-
-```mermaid
-sequenceDiagram
-    User->>System: update_mb command
-    System->>Files: Check current state
-    Files->>System: Return file contents
-    System->>Analyzer: Compare with previous
-    Analyzer->>System: Identify significant changes
-    System->>Files: Update only changed files
-    Files->>System: Confirm updates
-    System->>User: Report update status
+(type)TID: Headline - Details (% complete)
+Example: (feat)T21: Database Phase A Complete - Schema & init scripts (75% complete)
 ```
-
-## Technical Constraints
-
-### Storage Constraints
-- All files must be stored within the designated project directory
-- File names must follow the established naming conventions
-- File sizes should be optimized for efficient loading
-
-### Processing Constraints
-- File loading should minimize token usage
-- Commands should be parsed efficiently
-- Cache creation should capture only essential context
-
-### Security Constraints
-- All file operations must be within the designated project directory
-- Shell commands should be avoided for file operations
-- User approval should be required for sensitive operations
 
 ## Technical Dependencies
 
-### File System Access
-The system depends on file system access for:
-- Reading documentation files
-- Writing updates to files
-- Creating and reading cache files
+### Required Technologies
+- Node.js v20+ (specified in .nvmrc files)
+- pnpm package manager
+- SQLite (bundled with better-sqlite3)
+- Markdown support (built-in to system)
 
-### Markdown Processing
-The system depends on Markdown processing for:
-- Parsing documentation content
-- Formatting information hierarchically
-- Creating structured documentation
+### Development Tools
+- git for version control
+- Shell/bash for automation
+- Text editor for markdown editing
 
-### Command Parsing
-The system depends on command parsing for:
-- Interpreting user commands
-- Determining appropriate actions
-- Managing session state
+### Optional Tools
+- SQLite browser for direct database inspection
+- VS Code extensions for markdown/SQL
+- File system tools for backup/restoration
 
-## API Reference
-
-### Reading Commands
-```
-read_mb                    // Read Critical tier only
-read_mb standard           // Read Critical + Essential tiers
-read_mb complete           // Read all Memory Bank files
-read_mb [file1] [file2]    // Read specific files only
-```
-
-### Update Commands
-```
-update_mb                  // Update changed files only
-update_mb complete         // Update all Memory Bank files
-update_mb [file1] [file2]  // Update specific files only
-```
-
-### Session Commands
-```
-continue_session           // Continue from session cache
-complete_session           // Mark session as complete
-cache_session              // Create continuation point
-```
-
-### Modular Task Context Implementation
-The modular task context system is implemented through:
-
-1. **Directory Structure**: Dedicated directories for task_contexts/ and subtasks/
-2. **Context Files**: Individual files for each task and complex subtask
-3. **Index System**: session_cache.md transformed into a lightweight index
-4. **Link Management**: Cross-references between related context files
-5. **Task Hierarchy**: Support for parent-child relationships
-
-```mermaid
-graph TD
-    A[session_cache.md] -->|indexes| B[task_contexts/*.md]
-    B -->|references| C[subtasks/*.md]
-    D[tasks.md] -->|defines| B
-    D -->|defines| C
-    B -->|tracks| E[Task implementation]
-    C -->|tracks| F[Subtask implementation]
-```
-
-Last Updated: April 17, 2025
+*Last Updated: 2025-11-13 18:46:25 IST*
