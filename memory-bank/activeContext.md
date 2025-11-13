@@ -1,22 +1,30 @@
 # Active Context
 
-*Last Updated: 2025-11-11 18:02:49 IST*
+*Last Updated: 2025-11-13 17:29:35 IST*
 
 ## Current Tasks
-1. **[T19]**: Memory Bank Viewer Web Interface (HIGH priority)
-   - Status: 🔄 IN PROGRESS (80% complete)
-   - Next Steps: Phase 3 advanced features, additional refinements
-
-2. **[T3]**: Implement Database Migration (HIGH priority)
-   - Status: 🔄 IN PROGRESS (90% complete)
-   - Prerequisites: Complete planning (T2) ✅, Conversion scripts ✅, Verification ✅
-   - Current Focus: Documentation complete, known issues documented for Phase 2
-
-3. **[T17]**: Maintenance and Upkeep of Integrated Rules (MEDIUM priority)
+1. **[T17]**: Maintenance and Upkeep of Integrated Rules (MEDIUM priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: Ongoing refinement and maintenance
+   - Current Focus: Rules documentation v6.8 → v6.10, Tiered Knowledge Structure, Memory Bank Update Workflow
+   - Next Steps: Priority #1 File Update Trigger Matrix, Priority #2 Session Cache Protocol details
 
-4. **[T16]**: AI Consciousness Dialog Series (HIGH priority)
+2. **[T20a]**: Adaptive LLM-Based Format Parser (HIGH priority)
+   - Status: 🔄 IN PROGRESS (Design Phase complete)
+   - Next Steps: Phase 1 implementation - LLM prompt design
+
+3. **[T20]**: Memory Bank Database Parser (MEDIUM priority)
+   - Status: 🔄 IN PROGRESS (Phase 3)
+   - Next Steps: Format handling edge cases, multi-project testing
+
+4. **[T19]**: Memory Bank Viewer Web Interface (HIGH priority)
+   - Status: 🔄 IN PROGRESS (Phase 2)
+   - Next Steps: File content viewer completion, bug fixes
+
+5. **[T13]**: Implement Memory Bank CLI (HIGH priority)
+   - Status: 🔄 IN PROGRESS (85% complete)
+   - Next Steps: mb task command, mb session command implementation
+
+6. **[T16]**: AI Consciousness Dialog Series (HIGH priority)
    - Status: 🔄 IN PROGRESS
    - Current Focus: Ongoing documentation of consciousness exploration
 
