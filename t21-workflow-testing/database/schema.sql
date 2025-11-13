@@ -58,12 +58,11 @@ CREATE INDEX idx_task_items_status ON task_items(status);
 CREATE INDEX idx_task_items_priority ON task_items(priority);
 
 -- Task dependencies: Track which tasks depend on others
+-- Note: No foreign keys - dependencies may reference tasks outside this dataset
 CREATE TABLE task_dependencies (
   task_id TEXT NOT NULL,
   depends_on TEXT NOT NULL,
-  PRIMARY KEY (task_id, depends_on),
-  FOREIGN KEY (task_id) REFERENCES task_items(id) ON DELETE CASCADE,
-  FOREIGN KEY (depends_on) REFERENCES task_items(id) ON DELETE CASCADE
+  PRIMARY KEY (task_id, depends_on)
 );
 
 -- ============================================================================

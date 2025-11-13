@@ -42,8 +42,10 @@ YOU WILL GO SLOW AND STEADY. WHEN YOU THINK YOU'RE GOING SLOW, GO EVEN SLOWER.
 
 ### 5. Technical Standards
 - [5.1 Executable Paths](#51-executable-paths)
-- [5.3 Command Syntax](#53-command-syntax)
-- [5.4 Path Resolution](#54-path-resolution)
+- [5.2 XML Tool Format Standards](#52-xml-tool-format-standards)
+- [5.3 File Operation Standards](#53-file-operation-standards)
+- [5.4 Command Syntax](#54-command-syntax)
+- [5.5 Path Resolution](#55-path-resolution)
 
 ### 6. Core Workflows
 - [6.1 Task Implementation](#61-task-implementation)
@@ -432,12 +434,39 @@ ${PROJECT_ROOT}/                 # Project root directory
 - PNPM: `/Users/deepak/.nvm/versions/node/v23.11.0/bin/pnpm`
 - Python: `/Users/deepak/miniconda3/bin/python`
 
-### 5.3 Command Syntax
+### 5.2 XML Tool Format Standards
+1. **Structure**:
+   ```xml
+   <tool_name>
+     <parameter1>value1</parameter1>
+     <parameter2>value2</parameter2>
+   </tool_name>
+   ```
+2. **Requirements**:
+   - Case-sensitive exact tool names
+   - Ordered parameters (required first)
+   - 2-space indentation for parameters
+
+### 5.3 File Operation Standards
+1. **Block Edits**:
+   ```xml
+   <edit_block>
+     <file_path>/path/to/file</file_path>
+     <old_string>content to replace</old_string>
+     <new_string>replacement content</new_string>
+   </edit_block>
+   ```
+2. **Requirements**:
+   - Verify file existence first
+   - Use absolute paths only
+   - Limit edits to 25-30 line chunks
+
+### 5.4 Command Syntax
 - Explicit command declarations
 - No assumptions about environment
 - Full paths for all executables
 
-### 5.4 Path Resolution
+### 5.5 Path Resolution
 - Project root: `${PROJECT_ROOT}`
 - Memory bank: `${PROJECT_ROOT}/memory-bank`
 - All paths resolved from these roots

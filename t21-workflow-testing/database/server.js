@@ -148,7 +148,15 @@ app.get('/api/table/:name/record/:id', (req, res) => {
         SELECT * FROM ${fk.table} WHERE ${fk.to} = ?
       `).all(record[fk.from]);
 
-      relationships[`${fk.table} (via ${fk.from})`] = relatedRecords;
+      // Get primary key column of related table for navigation
+      const relatedCols = db.prepare(`PRAGMA table_info(${fk.table})`).all();
+      const relatedPkCol = relatedCols.find(c => c.pk === 1);
+
+      relationships[`${fk.table} (via ${fk.from})`] = {
+        table: fk.table,
+        pkColumn: relatedPkCol ? relatedPkCol.name : 'id',
+        records: relatedRecords
+      };
     }
 
     res.json({

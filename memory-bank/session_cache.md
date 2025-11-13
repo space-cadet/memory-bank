@@ -1,11 +1,11 @@
 # Session Cache
 *Created: 2025-11-10 18:27:15 IST*
-*Last Updated: 2025-11-13 22:36:44 IST*
+*Last Updated: 2025-11-13 22:50:00 IST*
 
 **Started**: 2025-11-13 17:29:35 IST
 **Focus Task**: T21 🔄
-**Session File**: `sessions/2025-11-13-evening.md`
-**Status**: 🔄 In Progress: T21 Phase A testing complete (test suite 540L, data gen 380L, API server 270L, HTML UI 480L, schema validated)
+**Session File**: `sessions/2025-11-13-night.md`
+**Status**: 🔄 In Progress: T21 Phase A testing & explorer complete (test suite 540L, data gen 380L, API server 270L, HTML UI 480L+450L with dark mode & state persistence, schema validated)
 
 ## Overview
 - Active: 11 | Paused: 0 | Completed: 7
@@ -47,7 +47,13 @@
 8. ✅ Built API server for database exploration (server.js, 6 endpoints)
 9. ✅ Created HTML UI for visual database browsing (explorer.html, responsive design)
 10. ✅ Validated schema: all tables, constraints, indexes, queries sub-100ms
-11. 🔄 Ready for Phase B insert functions
+11. ✅ Enhanced explorer with dark mode theming and CSS variables
+12. ✅ Implemented dual view modes (Cards & Tables) for all tables with state persistence
+13. ✅ Added per-table filtering and column sorting
+14. ✅ Enhanced server.js with relationship metadata and primary key detection
+15. ✅ Extended test-schema.js with task_dependencies and session_cache test suites
+16. ✅ Fixed schema.sql: removed foreign key constraints on task_dependencies
+17. 🔄 Ready for Phase B insert functions
 
 ### T20a: Adaptive LLM-Based Format Parser
 **Status:** 🔄 **IN PROGRESS** (Design Phase) **Priority:** HIGH

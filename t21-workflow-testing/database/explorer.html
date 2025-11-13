@@ -11,11 +11,45 @@
       box-sizing: border-box;
     }
 
+    :root {
+      --bg-primary: #ffffff;
+      --bg-secondary: #f5f5f5;
+      --bg-gradient-1: #667eea;
+      --bg-gradient-2: #764ba2;
+      --text-primary: #333333;
+      --text-secondary: #666666;
+      --text-tertiary: #999999;
+      --border-color: #dddddd;
+      --border-light: #eeeeee;
+      --card-bg: #f9f9f9;
+      --card-border: #e0e0e0;
+      --hover-bg: #e8e8e8;
+      --table-alt-row: #fafafa;
+    }
+
+    body.dark-mode {
+      --bg-primary: #1e1e1e;
+      --bg-secondary: #2d2d2d;
+      --bg-gradient-1: #5a67d8;
+      --bg-gradient-2: #6b46c1;
+      --text-primary: #e0e0e0;
+      --text-secondary: #b0b0b0;
+      --text-tertiary: #808080;
+      --border-color: #444444;
+      --border-light: #333333;
+      --card-bg: #2a2a2a;
+      --card-border: #3a3a3a;
+      --hover-bg: #3a3a3a;
+      --table-alt-row: #252525;
+    }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 100%);
+      color: var(--text-primary);
       min-height: 100vh;
       padding: 20px;
+      transition: background 0.3s ease;
     }
 
     .container {
@@ -24,22 +58,54 @@
     }
 
     header {
-      background: white;
+      background: var(--bg-primary);
       border-radius: 12px;
       padding: 20px 30px;
       margin-bottom: 20px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .header-left {
+      flex: 1;
+    }
+
+    .header-right {
+      display: flex;
+      gap: 10px;
     }
 
     h1 {
-      color: #333;
+      color: var(--text-primary);
       margin-bottom: 10px;
       font-size: 28px;
     }
 
     .subtitle {
-      color: #666;
+      color: var(--text-secondary);
       font-size: 14px;
+    }
+
+    .dark-mode-toggle {
+      padding: 10px 15px;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+    }
+
+    .dark-mode-toggle:hover {
+      background: var(--hover-bg);
     }
 
     .search-bar {
@@ -51,14 +117,16 @@
     .search-bar input {
       flex: 1;
       padding: 10px 15px;
-      border: 1px solid #ddd;
+      border: 1px solid var(--border-color);
+      background: var(--bg-primary);
+      color: var(--text-primary);
       border-radius: 6px;
       font-size: 14px;
     }
 
     .search-bar button {
       padding: 10px 20px;
-      background: #667eea;
+      background: var(--bg-gradient-1);
       color: white;
       border: none;
       border-radius: 6px;
@@ -67,7 +135,7 @@
     }
 
     .search-bar button:hover {
-      background: #5568d3;
+      background: var(--bg-gradient-2);
     }
 
     .main {
@@ -77,7 +145,7 @@
     }
 
     .sidebar {
-      background: white;
+      background: var(--bg-primary);
       border-radius: 12px;
       padding: 20px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -87,7 +155,7 @@
     }
 
     .sidebar h2 {
-      color: #333;
+      color: var(--text-primary);
       font-size: 16px;
       margin-bottom: 15px;
       text-transform: uppercase;
@@ -101,22 +169,23 @@
     .table-item {
       padding: 12px 15px;
       margin-bottom: 5px;
-      background: #f5f5f5;
+      background: var(--bg-secondary);
       border-radius: 6px;
       cursor: pointer;
       transition: all 0.2s;
       border-left: 3px solid transparent;
+      color: var(--text-primary);
     }
 
     .table-item:hover {
-      background: #e8e8e8;
-      border-left-color: #667eea;
+      background: var(--hover-bg);
+      border-left-color: var(--bg-gradient-1);
     }
 
     .table-item.active {
-      background: #667eea;
+      background: var(--bg-gradient-1);
       color: white;
-      border-left-color: #764ba2;
+      border-left-color: var(--bg-gradient-2);
     }
 
     .table-name {
@@ -131,14 +200,14 @@
     }
 
     .content {
-      background: white;
+      background: var(--bg-primary);
       border-radius: 12px;
       padding: 30px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
 
     .content h2 {
-      color: #333;
+      color: var(--text-primary);
       margin-bottom: 20px;
       font-size: 22px;
     }
@@ -151,7 +220,7 @@
     }
 
     .stat-card {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 100%);
       color: white;
       padding: 20px;
       border-radius: 8px;
@@ -180,16 +249,16 @@
       align-items: center;
       margin-bottom: 20px;
       padding-bottom: 15px;
-      border-bottom: 2px solid #eee;
+      border-bottom: 2px solid var(--border-light);
     }
 
     .table-header h3 {
-      color: #333;
+      color: var(--text-primary);
       font-size: 18px;
     }
 
     .table-header .meta {
-      color: #999;
+      color: var(--text-tertiary);
       font-size: 13px;
     }
 
@@ -200,8 +269,8 @@
     }
 
     .record-card {
-      background: #f9f9f9;
-      border: 1px solid #e0e0e0;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
       border-radius: 8px;
       padding: 15px;
       transition: all 0.2s;
@@ -210,12 +279,12 @@
 
     .record-card:hover {
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      border-color: #667eea;
+      border-color: var(--bg-gradient-1);
     }
 
     .record-id {
       font-weight: bold;
-      color: #667eea;
+      color: var(--bg-gradient-1);
       font-size: 14px;
       margin-bottom: 10px;
       word-break: break-word;
@@ -232,13 +301,13 @@
     }
 
     .field-name {
-      color: #666;
+      color: var(--text-secondary);
       font-weight: 500;
       min-width: 80px;
     }
 
     .field-value {
-      color: #333;
+      color: var(--text-primary);
       word-break: break-word;
       flex: 1;
     }
@@ -252,27 +321,28 @@
 
     .pagination button {
       padding: 8px 12px;
-      border: 1px solid #ddd;
-      background: white;
+      border: 1px solid var(--border-color);
+      background: var(--bg-primary);
+      color: var(--text-primary);
       border-radius: 4px;
       cursor: pointer;
       font-size: 13px;
     }
 
     .pagination button:hover {
-      background: #f0f0f0;
+      background: var(--hover-bg);
     }
 
     .pagination button.active {
-      background: #667eea;
+      background: var(--bg-gradient-1);
       color: white;
-      border-color: #667eea;
+      border-color: var(--bg-gradient-1);
     }
 
     .loading {
       text-align: center;
       padding: 40px;
-      color: #999;
+      color: var(--text-tertiary);
     }
 
     .error {
@@ -284,10 +354,16 @@
       margin-bottom: 20px;
     }
 
+    body.dark-mode .error {
+      background: rgba(204, 51, 51, 0.2);
+      border-color: rgba(204, 51, 51, 0.4);
+      color: #ff6b6b;
+    }
+
     .empty {
       text-align: center;
       padding: 40px;
-      color: #999;
+      color: var(--text-tertiary);
     }
 
     @media (max-width: 768px) {
@@ -309,38 +385,160 @@
     }
 
     .schema-item {
-      background: #f5f5f5;
+      background: var(--bg-secondary);
       padding: 10px 15px;
       margin-bottom: 8px;
       border-radius: 4px;
       font-size: 13px;
       font-family: 'Courier New', monospace;
+      color: var(--text-primary);
     }
 
     .column-type {
-      color: #667eea;
+      color: var(--bg-gradient-1);
       font-weight: 500;
     }
 
     .pk-badge {
       display: inline-block;
-      background: #667eea;
+      background: var(--bg-gradient-1);
       color: white;
       padding: 2px 6px;
       border-radius: 3px;
       font-size: 11px;
       margin-left: 5px;
     }
+
+    .view-controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid var(--border-light);
+    }
+
+    .view-toggle {
+      display: flex;
+      gap: 5px;
+    }
+
+    .view-btn {
+      padding: 8px 15px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+
+    .view-btn:hover {
+      background: var(--hover-bg);
+    }
+
+    .view-btn.active {
+      background: var(--bg-gradient-1);
+      color: white;
+      border-color: var(--bg-gradient-1);
+    }
+
+    .table-filter {
+      flex: 1;
+      display: flex;
+      gap: 10px;
+    }
+
+    .table-filter input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      border-radius: 4px;
+      font-size: 13px;
+    }
+
+    .table-view {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .table-view thead {
+      background: var(--bg-secondary);
+    }
+
+    .table-view th {
+      padding: 12px;
+      text-align: left;
+      font-weight: 600;
+      color: var(--text-primary);
+      border-bottom: 2px solid var(--border-color);
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .table-view th:hover {
+      background: var(--hover-bg);
+    }
+
+    .table-view th.sortable::after {
+      content: ' ↕';
+      color: var(--text-tertiary);
+      font-size: 12px;
+    }
+
+    .table-view th.sorted-asc::after {
+      content: ' ↑';
+      color: var(--bg-gradient-1);
+    }
+
+    .table-view th.sorted-desc::after {
+      content: ' ↓';
+      color: var(--bg-gradient-1);
+    }
+
+    .table-view td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border-light);
+      color: var(--text-primary);
+      font-size: 13px;
+      max-width: 300px;
+      word-break: break-word;
+    }
+
+    .table-view tr:hover {
+      background: var(--hover-bg);
+      cursor: pointer;
+    }
+
+    .table-view tbody tr:nth-child(even) {
+      background: var(--table-alt-row);
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-tertiary);
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>📊 SQLite Web Explorer</h1>
-      <p class="subtitle">Phase A Database Schema - test_memory_bank.db</p>
-      <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Search across all tables..." />
-        <button onclick="performSearch()">Search</button>
+      <div class="header-left">
+        <h1>📊 SQLite Web Explorer</h1>
+        <p class="subtitle">Phase A Database Schema - test_memory_bank.db</p>
+        <div class="search-bar">
+          <input type="text" id="searchInput" placeholder="Search across all tables..." />
+          <button onclick="performSearch()">Search</button>
+        </div>
+      </div>
+      <div class="header-right">
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle dark mode">🌙</button>
       </div>
     </header>
 
@@ -363,9 +561,122 @@
   <script>
     let currentTable = null;
     let allTables = [];
+    let currentData = [];
+    let currentViewMode = 'card'; // 'card' or 'table'
+    let currentFilter = ''; // Current table filter
+    let sortColumn = null;
+    let sortDirection = 'asc'; // 'asc' or 'desc'
+    let historyStack = [];
+    let isNavigatingHistory = false;
+
+    let searchResults = {};
+    let searchResultsViewMode = 'card';
+    let searchResultsTableSort = {};
+    let searchResultsTableFilter = {};
+
+    // Initialize view mode and dark mode from localStorage
+    function initPreferences() {
+      const savedViewMode = localStorage.getItem('explorerViewMode');
+      if (savedViewMode) {
+        currentViewMode = savedViewMode;
+      }
+
+      const savedDarkMode = localStorage.getItem('explorerDarkMode');
+      if (savedDarkMode === 'true') {
+        document.body.classList.add('dark-mode');
+        updateDarkModeIcon();
+      }
+    }
+
+    // Save view mode to localStorage
+    function saveViewMode() {
+      localStorage.setItem('explorerViewMode', currentViewMode);
+    }
+
+    // Toggle dark mode
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      const isDarkMode = document.body.classList.contains('dark-mode');
+      localStorage.setItem('explorerDarkMode', isDarkMode);
+      updateDarkModeIcon();
+    }
+
+    // Update dark mode icon
+    function updateDarkModeIcon() {
+      const btn = document.querySelector('.dark-mode-toggle');
+      if (btn) {
+        btn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+      }
+    }
+
+    // Build complete state object
+    function buildState(type, data) {
+      const state = {
+        type: type,
+        timestamp: Date.now(),
+        ...data
+      };
+
+      if (type === 'table') {
+        state.viewMode = currentViewMode;
+        state.filter = currentFilter;
+        state.sortColumn = sortColumn;
+        state.sortDirection = sortDirection;
+      } else if (type === 'search') {
+        state.searchResultsViewMode = searchResultsViewMode;
+        state.searchResultsTableSort = JSON.parse(JSON.stringify(searchResultsTableSort));
+        state.searchResultsTableFilter = JSON.parse(JSON.stringify(searchResultsTableFilter));
+      } else if (type === 'record') {
+        // Record detail view
+      }
+
+      return state;
+    }
+
+    // Manage browser history
+    function pushHistory(state) {
+      historyStack.push(state);
+      window.history.pushState(state, '', '#');
+    }
+
+    function restoreState(state) {
+      isNavigatingHistory = true;
+
+      if (state.type === 'table') {
+        currentViewMode = state.viewMode || 'card';
+        currentFilter = state.filter || '';
+        sortColumn = state.sortColumn || null;
+        sortDirection = state.sortDirection || 'asc';
+        saveViewMode();
+        loadTableData(state.table, 0, true);
+      } else if (state.type === 'search') {
+        searchResultsViewMode = state.searchResultsViewMode || 'card';
+        searchResultsTableSort = state.searchResultsTableSort || {};
+        searchResultsTableFilter = state.searchResultsTableFilter || {};
+        performSearchWithQuery(state.query, true);
+      } else if (state.type === 'record') {
+        viewRecordDetails(state.table, state.id, true);
+      }
+
+      isNavigatingHistory = false;
+    }
+
+    function popHistory() {
+      if (historyStack.length > 1) {
+        historyStack.pop();
+        const state = historyStack[historyStack.length - 1];
+        restoreState(state);
+      }
+    }
+
+    // Handle back/forward navigation
+    window.addEventListener('popstate', () => {
+      popHistory();
+    });
 
     // Load tables on page load
     document.addEventListener('DOMContentLoaded', () => {
+      initPreferences();
       loadTables();
       loadStats();
     });
@@ -425,10 +736,13 @@
       document.querySelectorAll('.table-item').forEach(el => el.classList.remove('active'));
       event.target.closest('.table-item').classList.add('active');
 
+      if (!isNavigatingHistory) {
+        pushHistory(buildState('table', { table: tableName }));
+      }
       await loadTableData(tableName);
     }
 
-    async function loadTableData(tableName, offset = 0) {
+    async function loadTableData(tableName, offset = 0, restoring = false) {
       try {
         document.getElementById('mainContent').innerHTML = '<div class="loading">Loading table data...</div>';
 
@@ -441,6 +755,7 @@
         }
 
         const tableInfo = allTables.find(t => t.name === tableName);
+        currentData = result.data;
 
         let html = `
           <h2>${tableName}</h2>
@@ -449,29 +764,23 @@
               <div class="meta">${result.pagination.total} total records • ${tableInfo.columnCount} columns</div>
             </div>
           </div>
+          <div class="view-controls">
+            <div class="view-toggle">
+              <button class="view-btn ${currentViewMode === 'card' ? 'active' : ''}" onclick="switchViewMode('card', '${tableName}')">📇 Cards</button>
+              <button class="view-btn ${currentViewMode === 'table' ? 'active' : ''}" onclick="switchViewMode('table', '${tableName}')">📊 Table</button>
+            </div>
+            <div class="table-filter">
+              <input type="text" id="tableFilter" placeholder="Filter records..." onkeyup="applyTableFilter('${tableName}')" value="${escapeHtml(currentFilter)}" />
+            </div>
+          </div>
         `;
 
         if (result.data.length === 0) {
           html += '<div class="empty">No records found</div>';
+        } else if (currentViewMode === 'card') {
+          html += renderCardView(result.data, tableName);
         } else {
-          html += '<div class="records">';
-          result.data.forEach(record => {
-            const firstValue = Object.values(record)[0];
-            html += `
-              <div class="record-card" onclick="viewRecordDetails('${tableName}', '${firstValue}')">
-                <div class="record-id">ID: ${firstValue}</div>
-                <div class="record-fields">
-                  ${Object.entries(record).slice(0, 4).map(([k, v]) => `
-                    <div class="field">
-                      <span class="field-name">${k}:</span>
-                      <span class="field-value">${escapeHtml(String(v).substring(0, 50))}</span>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-            `;
-          });
-          html += '</div>';
+          html += renderTableView(result.data, tableName);
         }
 
         // Pagination
@@ -486,15 +795,214 @@
         }
 
         document.getElementById('mainContent').innerHTML = html;
+
+        // Restore filter if navigating history
+        if (restoring && currentFilter) {
+          applyTableFilter(tableName, true);
+        }
       } catch (err) {
         document.getElementById('mainContent').innerHTML = `<div class="error">Error: ${err.message}</div>`;
       }
     }
 
-    async function viewRecordDetails(tableName, recordId) {
+    function renderCardView(data, tableName) {
+      let html = '<div class="records">';
+      data.forEach(record => {
+        const firstValue = Object.values(record)[0];
+        html += `
+          <div class="record-card" onclick="viewRecordDetails('${tableName}', '${firstValue}')">
+            <div class="record-id">ID: ${firstValue}</div>
+            <div class="record-fields">
+              ${Object.entries(record).slice(0, 4).map(([k, v]) => `
+                <div class="field">
+                  <span class="field-name">${k}:</span>
+                  <span class="field-value">${escapeHtml(String(v).substring(0, 50))}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      });
+      html += '</div>';
+      return html;
+    }
+
+    function renderTableView(data, tableName) {
+      if (data.length === 0) {
+        return '<div class="no-results">No records to display</div>';
+      }
+
+      const columns = Object.keys(data[0]);
+      let html = '<table class="table-view"><thead><tr>';
+
+      columns.forEach(col => {
+        const isSorted = sortColumn === col;
+        const sortClass = isSorted ? (sortDirection === 'asc' ? 'sorted-asc' : 'sorted-desc') : '';
+        html += `<th class="sortable ${sortClass}" onclick="sortTableColumn('${col}', '${tableName}')">${escapeHtml(col)}</th>`;
+      });
+
+      html += '</tr></thead><tbody>';
+
+      data.forEach(record => {
+        const firstValue = Object.values(record)[0];
+        html += `<tr onclick="viewRecordDetails('${tableName}', '${firstValue}')">`;
+        columns.forEach(col => {
+          const value = record[col];
+          html += `<td>${escapeHtml(String(value).substring(0, 100))}</td>`;
+        });
+        html += '</tr>';
+      });
+
+      html += '</tbody></table>';
+      return html;
+    }
+
+    function switchViewMode(mode, tableName) {
+      currentViewMode = mode;
+      saveViewMode();
+      if (!isNavigatingHistory) {
+        pushHistory(buildState('table', { table: tableName }));
+      }
+      loadTableData(tableName);
+    }
+
+    function sortTableColumn(column, tableName) {
+      if (sortColumn === column) {
+        sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+      } else {
+        sortColumn = column;
+        sortDirection = 'asc';
+      }
+
+      if (!isNavigatingHistory) {
+        pushHistory(buildState('table', { table: tableName }));
+      }
+
+      currentData.sort((a, b) => {
+        let aVal = a[column];
+        let bVal = b[column];
+
+        // Handle null/undefined
+        if (aVal == null) aVal = '';
+        if (bVal == null) bVal = '';
+
+        // Try numeric sort
+        const aNum = parseFloat(aVal);
+        const bNum = parseFloat(bVal);
+        if (!isNaN(aNum) && !isNaN(bNum)) {
+          return sortDirection === 'asc' ? aNum - bNum : bNum - aNum;
+        }
+
+        // String sort
+        aVal = String(aVal).toLowerCase();
+        bVal = String(bVal).toLowerCase();
+        if (sortDirection === 'asc') {
+          return aVal.localeCompare(bVal);
+        } else {
+          return bVal.localeCompare(aVal);
+        }
+      });
+
+      // Re-render table
+      const tableInfo = allTables.find(t => t.name === tableName);
+      let html = `
+        <h2>${tableName}</h2>
+        <div class="table-header">
+          <div>
+            <div class="meta">${currentData.length} total records • ${tableInfo.columnCount} columns</div>
+          </div>
+        </div>
+        <div class="view-controls">
+          <div class="view-toggle">
+            <button class="view-btn ${currentViewMode === 'card' ? 'active' : ''}" onclick="switchViewMode('card', '${tableName}')">📇 Cards</button>
+            <button class="view-btn ${currentViewMode === 'table' ? 'active' : ''}" onclick="switchViewMode('table', '${tableName}')">📊 Table</button>
+          </div>
+          <div class="table-filter">
+            <input type="text" id="tableFilter" placeholder="Filter records..." onkeyup="applyTableFilter('${tableName}')" value="${escapeHtml(currentFilter)}" />
+          </div>
+        </div>
+      `;
+      html += renderTableView(currentData, tableName);
+      document.getElementById('mainContent').innerHTML = html;
+    }
+
+    function applyTableFilter(tableName, isRestoring = false) {
+      const filterText = document.getElementById('tableFilter').value.toLowerCase();
+      const tableInfo = allTables.find(t => t.name === tableName);
+
+      currentFilter = filterText;
+
+      if (!isNavigatingHistory && !isRestoring) {
+        pushHistory(buildState('table', { table: tableName }));
+      }
+
+      if (filterText.length === 0) {
+        // Re-render full view
+        let html = `
+          <h2>${tableName}</h2>
+          <div class="table-header">
+            <div>
+              <div class="meta">${currentData.length} total records • ${tableInfo.columnCount} columns</div>
+            </div>
+          </div>
+          <div class="view-controls">
+            <div class="view-toggle">
+              <button class="view-btn ${currentViewMode === 'card' ? 'active' : ''}" onclick="switchViewMode('card', '${tableName}')">📇 Cards</button>
+              <button class="view-btn ${currentViewMode === 'table' ? 'active' : ''}" onclick="switchViewMode('table', '${tableName}')">📊 Table</button>
+            </div>
+            <div class="table-filter">
+              <input type="text" id="tableFilter" placeholder="Filter records..." onkeyup="applyTableFilter('${tableName}')" value="" />
+            </div>
+          </div>
+        `;
+        html += renderTableView(currentData, tableName);
+        document.getElementById('mainContent').innerHTML = html;
+        return;
+      }
+
+      const filtered = currentData.filter(record => {
+        return Object.values(record).some(value =>
+          String(value).toLowerCase().includes(filterText)
+        );
+      });
+
+      let html = `
+        <h2>${tableName}</h2>
+        <div class="table-header">
+          <div>
+            <div class="meta">${filtered.length} of ${currentData.length} records • ${tableInfo.columnCount} columns</div>
+          </div>
+        </div>
+        <div class="view-controls">
+          <div class="view-toggle">
+            <button class="view-btn ${currentViewMode === 'card' ? 'active' : ''}" onclick="switchViewMode('card', '${tableName}')">📇 Cards</button>
+            <button class="view-btn ${currentViewMode === 'table' ? 'active' : ''}" onclick="switchViewMode('table', '${tableName}')">📊 Table</button>
+          </div>
+          <div class="table-filter">
+            <input type="text" id="tableFilter" placeholder="Filter records..." onkeyup="applyTableFilter('${tableName}')" value="${escapeHtml(filterText)}" />
+          </div>
+        </div>
+      `;
+
+      if (filtered.length === 0) {
+        html += '<div class="no-results">No records match the filter</div>';
+      } else if (currentViewMode === 'card') {
+        html += renderCardView(filtered, tableName);
+      } else {
+        html += renderTableView(filtered, tableName);
+      }
+
+      document.getElementById('mainContent').innerHTML = html;
+    }
+
+    async function viewRecordDetails(tableName, recordId, restoring = false) {
       try {
         const response = await fetch(`/api/table/${tableName}/record/${recordId}`);
         const result = await response.json();
+
+        if (!isNavigatingHistory && !restoring) {
+          pushHistory(buildState('record', { table: tableName, id: recordId }));
+        }
 
         let html = `<h2>Record Details: ${tableName}</h2>`;
         html += '<div class="schema-grid">';
@@ -510,14 +1018,20 @@
         html += '</div>';
 
         if (Object.keys(result.relationships).length > 0) {
-          html += '<h3 style="margin-top: 30px; color: #333;">Related Records</h3>';
-          Object.entries(result.relationships).forEach(([rel, records]) => {
-            html += `<h4 style="color: #666; margin-top: 15px;">${rel} (${records.length})</h4>`;
+          html += `<h3 style="margin-top: 30px; color: var(--text-primary);">Related Records</h3>`;
+          Object.entries(result.relationships).forEach(([rel, relInfo]) => {
+            // Handle both old format (array) and new format (object with metadata)
+            const records = relInfo.records || relInfo;
+            const table = relInfo.table || rel.split(' (')[0];
+            const pkColumn = relInfo.pkColumn || 'id';
+            
+            html += `<h4 style="color: var(--text-secondary); margin-top: 15px;">${rel} (${records.length})</h4>`;
             if (records.length > 0) {
               html += '<div class="records">';
               records.forEach(rec => {
+                const recId = rec[pkColumn];
                 html += `
-                  <div class="record-card">
+                  <div class="record-card" onclick="viewRecordDetails('${table}', '${recId}')" style="cursor: pointer;">
                     <div class="record-fields">
                       ${Object.entries(rec).slice(0, 3).map(([k, v]) => `
                         <div class="field">
@@ -546,36 +1060,34 @@
         alert('Search term too short');
         return;
       }
+      performSearchWithQuery(query);
+    }
+
+    async function performSearchWithQuery(query, restoring = false) {
+      if (query.length < 2) {
+        alert('Search term too short');
+        return;
+      }
 
       try {
         document.getElementById('mainContent').innerHTML = '<div class="loading">Searching...</div>';
         const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
         const result = await response.json();
 
+        searchResults = result.results;
+
+        if (!isNavigatingHistory && !restoring) {
+          pushHistory(buildState('search', { query: query }));
+        }
+
         let html = `<h2>Search Results for "${escapeHtml(query)}"</h2>`;
-        html += `<p style="color: #666; margin-bottom: 20px;">${result.totalMatches} matches found</p>`;
+        html += `<p style="color: var(--text-secondary); margin-bottom: 20px;">${result.totalMatches} matches found</p>`;
 
         if (result.totalMatches === 0) {
           html += '<div class="empty">No results found</div>';
         } else {
           Object.entries(result.results).forEach(([table, records]) => {
-            html += `<h3 style="color: #333; margin-top: 20px;">${table} (${records.length})</h3>`;
-            html += '<div class="records">';
-            records.forEach(rec => {
-              html += `
-                <div class="record-card">
-                  <div class="record-fields">
-                    ${Object.entries(rec).slice(0, 3).map(([k, v]) => `
-                      <div class="field">
-                        <span class="field-name">${k}:</span>
-                        <span class="field-value">${escapeHtml(String(v).substring(0, 40))}</span>
-                      </div>
-                    `).join('')}
-                  </div>
-                </div>
-              `;
-            });
-            html += '</div>';
+            html += renderSearchResultsTable(table, records, query);
           });
         }
 
@@ -583,6 +1095,174 @@
       } catch (err) {
         document.getElementById('mainContent').innerHTML = `<div class="error">Error: ${err.message}</div>`;
       }
+    }
+
+    function renderSearchResultsTable(table, records, query) {
+      if (!searchResultsTableSort[table]) {
+        searchResultsTableSort[table] = { column: null, direction: 'asc' };
+      }
+      if (!searchResultsTableFilter[table]) {
+        searchResultsTableFilter[table] = '';
+      }
+
+      const columns = records.length > 0 ? Object.keys(records[0]) : [];
+      const pkColumn = 'id'; // Assume id is primary key for search results
+
+      let html = `
+        <div style="margin-top: 30px;">
+          <h3 style="color: var(--text-primary);">${table} (${records.length})</h3>
+          <div class="view-controls">
+            <div class="view-toggle">
+              <button class="view-btn ${searchResultsViewMode === 'card' ? 'active' : ''}" onclick="switchSearchViewMode('card', '${table}', '${query}')">📇 Cards</button>
+              <button class="view-btn ${searchResultsViewMode === 'table' ? 'active' : ''}" onclick="switchSearchViewMode('table', '${table}', '${query}')">📊 Table</button>
+            </div>
+            <div class="table-filter">
+              <input type="text" placeholder="Filter results..." onkeyup="filterSearchResults('${table}', '${query}')" value="${escapeHtml(searchResultsTableFilter[table] || '')}" />
+            </div>
+          </div>
+      `;
+
+      if (searchResultsViewMode === 'card') {
+        html += '<div class="records">';
+        records.forEach(rec => {
+          const recId = rec[pkColumn];
+          html += `
+            <div class="record-card" onclick="viewRecordDetails('${table}', '${recId}')">
+              <div class="record-id">ID: ${recId}</div>
+              <div class="record-fields">
+                ${Object.entries(rec).slice(0, 3).map(([k, v]) => `
+                  <div class="field">
+                    <span class="field-name">${k}:</span>
+                    <span class="field-value">${escapeHtml(String(v).substring(0, 40))}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        });
+        html += '</div>';
+      } else {
+        html += '<table class="table-view"><thead><tr>';
+        columns.forEach(col => {
+          const sort = searchResultsTableSort[table];
+          const isSorted = sort.column === col;
+          const sortClass = isSorted ? (sort.direction === 'asc' ? 'sorted-asc' : 'sorted-desc') : '';
+          html += `<th class="sortable ${sortClass}" onclick="sortSearchResults('${table}', '${col}', '${query}')">${escapeHtml(col)}</th>`;
+        });
+        html += '</tr></thead><tbody>';
+
+        records.forEach(rec => {
+          const recId = rec[pkColumn];
+          html += `<tr onclick="viewRecordDetails('${table}', '${recId}')">`;
+          columns.forEach(col => {
+            const value = rec[col];
+            html += `<td>${escapeHtml(String(value).substring(0, 100))}</td>`;
+          });
+          html += '</tr>';
+        });
+
+        html += '</tbody></table>';
+      }
+
+      html += '</div>';
+      return html;
+    }
+
+    function switchSearchViewMode(mode, table, query) {
+      searchResultsViewMode = mode;
+      if (!isNavigatingHistory) {
+        pushHistory(buildState('search', { query: query }));
+      }
+      performSearchWithQuery(query);
+    }
+
+    function sortSearchResults(table, column, query) {
+      const records = searchResults[table];
+      if (!searchResultsTableSort[table]) {
+        searchResultsTableSort[table] = { column: null, direction: 'asc' };
+      }
+      const sort = searchResultsTableSort[table];
+
+      if (sort.column === column) {
+        sort.direction = sort.direction === 'asc' ? 'desc' : 'asc';
+      } else {
+        sort.column = column;
+        sort.direction = 'asc';
+      }
+
+      if (!isNavigatingHistory) {
+        pushHistory(buildState('search', { query: query }));
+      }
+
+      records.sort((a, b) => {
+        let aVal = a[column];
+        let bVal = b[column];
+
+        if (aVal == null) aVal = '';
+        if (bVal == null) bVal = '';
+
+        const aNum = parseFloat(aVal);
+        const bNum = parseFloat(bVal);
+        if (!isNaN(aNum) && !isNaN(bNum)) {
+          return sort.direction === 'asc' ? aNum - bNum : bNum - aNum;
+        }
+
+        aVal = String(aVal).toLowerCase();
+        bVal = String(bVal).toLowerCase();
+        return sort.direction === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+      });
+
+      let html = '<h2>Search Results</h2>';
+      Object.entries(searchResults).forEach(([t, recs]) => {
+        html += renderSearchResultsTable(t, recs, query);
+      });
+      document.getElementById('mainContent').innerHTML = html;
+    }
+
+    function filterSearchResults(table, query) {
+      const filterInputs = document.querySelectorAll(`input[placeholder="Filter results..."]`);
+      let filterText = '';
+      
+      filterInputs.forEach(input => {
+        if (input.value) filterText = input.value;
+      });
+      
+      filterText = filterText.toLowerCase();
+      
+      if (!searchResultsTableFilter[table]) {
+        searchResultsTableFilter[table] = '';
+      }
+      searchResultsTableFilter[table] = filterText;
+
+      if (!isNavigatingHistory && filterText.length > 0) {
+        pushHistory(buildState('search', { query: query }));
+      }
+
+      if (filterText.length === 0) {
+        performSearchWithQuery(query);
+        return;
+      }
+
+      const filtered = searchResults[table].filter(record =>
+        Object.values(record).some(value =>
+          String(value).toLowerCase().includes(filterText)
+        )
+      );
+
+      let html = `<h2>Search Results for "${escapeHtml(query)}"</h2>`;
+      html += `<p style="color: var(--text-secondary); margin-bottom: 20px;">${filtered.length} of ${searchResults[table].length} matches</p>`;
+      html += renderSearchResultsTable(table, filtered, query);
+
+      Object.entries(searchResults).forEach(([t, recs]) => {
+        if (t !== table) {
+          html = '<h2>Search Results for "' + escapeHtml(query) + '"</h2>' +
+            '<p style="color: var(--text-secondary); margin-bottom: 20px;">' + 
+            Object.values(searchResults).reduce((sum, r) => sum + r.length, 0) + ' total matches</p>' +
+            html;
+        }
+      });
+
+      document.getElementById('mainContent').innerHTML = html;
     }
 
     function escapeHtml(text) {

@@ -427,6 +427,69 @@ function testDataInsertion(db) {
     log.error(`Error log insertion error: ${err.message}`);
   }
 
+  log.section('Inserting task dependencies');
+
+  suite.tests++;
+  try {
+    const insertDep = db.prepare(`
+      INSERT INTO task_dependencies (task_id, depends_on)
+      VALUES (?, ?)
+    `);
+
+    const insertMany = db.transaction((deps) => {
+      for (const dep of deps) {
+        insertDep.run(dep.task_id, dep.depends_on);
+      }
+    });
+
+    insertMany(testData.dependencies);
+
+    const count = db.prepare('SELECT COUNT(*) as cnt FROM task_dependencies').get();
+    if (count.cnt === testData.dependencies.length) {
+      suite.passed++;
+      log.test(`Inserted ${testData.dependencies.length} task dependencies successfully`);
+    } else {
+      suite.failed++;
+      log.error(`Expected ${testData.dependencies.length} dependencies, got ${count.cnt}`);
+    }
+  } catch (err) {
+    suite.failed++;
+    log.error(`Task dependency insertion error: ${err.message}`);
+  }
+
+  log.section('Inserting session cache');
+
+  suite.tests++;
+  try {
+    const insertCache = db.prepare(`
+      INSERT INTO session_cache (id, current_session_id, current_focus_task, active_count, paused_count, completed_count, last_updated)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `);
+
+    const cache = testData.sessionCache;
+    insertCache.run(
+      1,
+      cache.current_session_id,
+      cache.current_focus_task,
+      cache.active_count,
+      cache.paused_count,
+      cache.completed_count,
+      cache.last_updated
+    );
+
+    const count = db.prepare('SELECT COUNT(*) as cnt FROM session_cache').get();
+    if (count.cnt === 1) {
+      suite.passed++;
+      log.test('Inserted session cache successfully');
+    } else {
+      suite.failed++;
+      log.error('Session cache insertion failed');
+    }
+  } catch (err) {
+    suite.failed++;
+    log.error(`Session cache insertion error: ${err.message}`);
+  }
+
   testResults.suites.push(suite);
   return db;
 }
