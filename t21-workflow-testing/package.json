@@ -1,0 +1,16 @@
+{
+  "name": "t21-workflow-testing",
+  "version": "1.0.0",
+  "description": "Isolated testing environment for T21 Database-Native Memory Bank Update Workflow",
+  "type": "module",
+  "main": "database/init-schema.js",
+  "scripts": {
+    "init": "node database/init-schema.js",
+    "query": "node database/query.js",
+    "test": "node database/test-workflow.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^9.2.2",
+    "sql.js": "^1.8.0"
+  }
+}
