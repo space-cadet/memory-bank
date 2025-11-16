@@ -1,6 +1,15 @@
 # Edit History
 *Created: 2025-04-10*
-*Last Updated: 2025-11-13 22:50:00 IST*
+*Last Updated: 2025-11-16 21:47:26 IST*
+
+### 2025-11-16
+
+#### 21:47:26 IST - T21: MCP Server Research & Implementation Planning - jparkerweb/mcp-sqlite Selected
+- Created `memory-bank/implementation-details/mcp-based-update-workflow.md` - Comprehensive MCP implementation guide (387 lines) documenting server selection, installation, configuration, end-of-session workflow, security considerations
+- Updated `memory-bank/tasks/T21.md` - Added Phase B MCP Server Research section with evaluation results, updated status and completion criteria
+- Created `memory-bank/sessions/2025-11-16-night.md` - Session documentation for MCP research and implementation planning
+- Updated `memory-bank/session_cache.md` - Updated current session to 2025-11-16-night, modified T21 progress with MCP research completion
+- Updated `memory-bank/tasks.md` - Updated T21 entry with MCP server selection details and time savings
 
 ### 2025-11-13
 

@@ -1,16 +1,16 @@
 # Session Cache
 *Created: 2025-11-10 18:27:15 IST*
-*Last Updated: 2025-11-13 22:50:00 IST*
+*Last Updated: 2025-11-16 21:47:26 IST*
 
-**Started**: 2025-11-13 17:29:35 IST
+**Started**: 2025-11-16 21:00:00 IST
 **Focus Task**: T21 🔄
-**Session File**: `sessions/2025-11-13-night.md`
-**Status**: 🔄 In Progress: T21 Phase A testing & explorer complete (test suite 540L, data gen 380L, API server 270L, HTML UI 480L+450L with dark mode & state persistence, schema validated)
+**Session File**: `sessions/2025-11-16-night.md`
+**Status**: 🔄 In Progress: T21 MCP research complete, jparkerweb/mcp-sqlite selected over custom build, implementation doc created (387L)
 
 ## Overview
-- Active: 11 | Paused: 0 | Completed: 7
-- Last Session: 2025-11-10 evening (T19 viewer)
-- Current Period: evening
+- Active: 11 | Paused: 1 | Completed: 7
+- Last Session: 2025-11-13 night (T21 Phase A)
+- Current Period: night
 
 ## Task Registry
 - META-1: Memory Bank Update and Maintenance - 🔄 (NEW - 2025-11-13)
@@ -32,28 +32,20 @@
 ## Active Tasks
 
 ### T21: Database-Native Memory Bank Update Workflow
-**Status:** 🔄 **IN PROGRESS** (Phase A Testing Complete) **Priority:** HIGH
-**Started:** 2025-11-13 **Last:** 2025-11-13 22:36:44 IST
-**Context**: Database-first paradigm shift. DB becomes authoritative source, text files become generated output. Phase A schema tested, validated, and ready for Phase B implementation.
-**Files**: `t21-workflow-testing/`, `tasks/T21.md`, `implementation-details/database-update-workflow-plan.md`
+**Status:** 🔄 **IN PROGRESS** (Phase B Modified - MCP Server Selected) **Priority:** HIGH
+**Started:** 2025-11-13 **Last:** 2025-11-16 21:47:26 IST
+**Context**: Database-first paradigm shift using existing MCP server. Researched alternatives, selected jparkerweb/mcp-sqlite (v1.0.7) over custom build - saves ~22 hours development. Phase B now uses existing MCP tools instead of custom implementation.
+**Files**: `implementation-details/mcp-based-update-workflow.md`, `tasks/T21.md`, `implementation-details/database-update-workflow-plan.md`
 **Progress**:
 1. ✅ Analyzed text-based Section 6.5 workflow
 2. ✅ Designed database-native workflow (4 phases)
 3. ✅ Created expanded schema (8 tables with 21 indexes)
-4. ✅ Implemented Phase A: schema.sql, dual init scripts (better-sqlite3 + sql.js)
-5. ✅ Created isolated workspace at t21-workflow-testing/
-6. ✅ Implemented synthetic test data generator (generate-test-data.js)
-7. ✅ Created comprehensive Phase A test suite (test-schema.js, 4 test suites)
-8. ✅ Built API server for database exploration (server.js, 6 endpoints)
-9. ✅ Created HTML UI for visual database browsing (explorer.html, responsive design)
-10. ✅ Validated schema: all tables, constraints, indexes, queries sub-100ms
-11. ✅ Enhanced explorer with dark mode theming and CSS variables
-12. ✅ Implemented dual view modes (Cards & Tables) for all tables with state persistence
-13. ✅ Added per-table filtering and column sorting
-14. ✅ Enhanced server.js with relationship metadata and primary key detection
-15. ✅ Extended test-schema.js with task_dependencies and session_cache test suites
-16. ✅ Fixed schema.sql: removed foreign key constraints on task_dependencies
-17. 🔄 Ready for Phase B insert functions
+4. ✅ Implemented Phase A: schema tested and validated
+5. ✅ Researched existing MCP SQLite database servers
+6. ✅ Evaluated jparkerweb/mcp-sqlite, executeautomation/mcp-database-server
+7. ✅ Selected jparkerweb/mcp-sqlite: 8 tools, actively maintained, full CRUD
+8. ✅ Created MCP implementation guide (387 lines)
+9. 🔄 Ready for Phase B implementation using MCP tools
 
 ### T20a: Adaptive LLM-Based Format Parser
 **Status:** 🔄 **IN PROGRESS** (Design Phase) **Priority:** HIGH
@@ -154,13 +146,13 @@
 2. Error log parser design
 
 ## Session History (Last 10)
-1. `sessions/2025-11-13-night.md` - T21: Phase A testing complete - test suite (540L), data gen (380L), API server (270L), HTML UI (480L)
-2. `sessions/2025-11-13-evening.md` - T21: Database-native memory bank update workflow, paradigm shift to DB-authoritative, schema design
-3. `sessions/2025-11-13-evening.md` - T17: Rules documentation v6.8 to v6.10, Tiered Knowledge Structure, Memory Bank Update Workflow (earlier)
-4. `sessions/2025-11-12-evening.md` - T20: Format handling improvements, T13 integration with T20 parsers
-5. `sessions/2025-11-12-afternoon.md` - T20: Memory Bank Database Parser implementation (Phase 1 complete)
-6. `sessions/2025-11-11-night.md` - T3, T13: Init Script Fixes & Schema Corrections
-7. `sessions/2025-11-11-evening.md` - T3 Database Migration Verification & Documentation
-8. `sessions/2025-11-10-evening.md` - T19 Memory Bank Viewer Planning
-9. `sessions/2025-07-15-afternoon.md` - T18 Integrated Rules Redesign
-10. `sessions/2025-07-14-night.md` - T17 Rules Structure
+1. `sessions/2025-11-16-night.md` - T21: MCP server research, jparkerweb/mcp-sqlite selected, implementation guide (387L)
+2. `sessions/2025-11-13-night.md` - T21: Phase A testing complete - test suite (540L), data gen (380L), API server (270L), HTML UI (480L)
+3. `sessions/2025-11-13-evening.md` - T21: Database-native memory bank update workflow, paradigm shift to DB-authoritative, schema design
+4. `sessions/2025-11-13-evening.md` - T17: Rules documentation v6.8 to v6.10, Tiered Knowledge Structure, Memory Bank Update Workflow (earlier)
+5. `sessions/2025-11-12-evening.md` - T20: Format handling improvements, T13 integration with T20 parsers
+6. `sessions/2025-11-12-afternoon.md` - T20: Memory Bank Database Parser implementation (Phase 1 complete)
+7. `sessions/2025-11-11-night.md` - T3, T13: Init Script Fixes & Schema Corrections
+8. `sessions/2025-11-11-evening.md` - T3 Database Migration Verification & Documentation
+9. `sessions/2025-11-10-evening.md` - T19 Memory Bank Viewer Planning
+10. `sessions/2025-07-15-afternoon.md` - T18 Integrated Rules Redesign
