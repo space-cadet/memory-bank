@@ -30,9 +30,10 @@ function initDatabase(db) {
       task_description TEXT NOT NULL
     );
 
-    CREATE TABLE IF NOT EXISTS edit_modifications (
+    CREATE TABLE IF NOT EXISTS file_modifications (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       edit_entry_id INTEGER NOT NULL,
+      date TEXT NOT NULL, -- Denormalized for easier sorting/querying
       action TEXT NOT NULL,
       file_path TEXT NOT NULL,
       description TEXT NOT NULL,
@@ -41,8 +42,8 @@ function initDatabase(db) {
 
     CREATE INDEX IF NOT EXISTS idx_edit_entries_date ON edit_entries(date);
     CREATE INDEX IF NOT EXISTS idx_edit_entries_task_id ON edit_entries(task_id);
-    CREATE INDEX IF NOT EXISTS idx_edit_modifications_file_path ON edit_modifications(file_path);
-    CREATE INDEX IF NOT EXISTS idx_edit_modifications_edit_entry_id ON edit_modifications(edit_entry_id);
+    CREATE INDEX IF NOT EXISTS idx_file_modifications_file_path ON file_modifications(file_path);
+    CREATE INDEX IF NOT EXISTS idx_file_modifications_edit_entry_id ON file_modifications(edit_entry_id);
   `);
 
   // Create view that joins entries with modifications
@@ -58,7 +59,7 @@ function initDatabase(db) {
         f.file_path,
         f.description
     FROM edit_entries e
-    JOIN edit_modifications f ON e.id = f.edit_entry_id
+    JOIN file_modifications f ON e.id = f.edit_entry_id
   `);
 
   console.log('✓ Database schema initialized\n');
@@ -201,8 +202,8 @@ function populateDatabase(db, entries) {
   `);
 
   const insertModification = db.prepare(`
-    INSERT INTO edit_modifications (edit_entry_id, action, file_path, description)
-    VALUES (?, ?, ?, ?)
+    INSERT INTO file_modifications (edit_entry_id, date, action, file_path, description)
+    VALUES (?, ?, ?, ?, ?)
   `);
 
   let successCount = 0;
@@ -229,6 +230,7 @@ function populateDatabase(db, entries) {
         for (const mod of entry.modifications) {
           insertModification.run(
             entryId,
+            entry.date,
             mod.action,
             mod.filePath,
             mod.description
@@ -261,7 +263,7 @@ function displayStats(db) {
   console.log('Database Statistics:\n');
 
   const totalEntries = db.prepare('SELECT COUNT(*) as count FROM edit_entries').get().count;
-  const totalModifications = db.prepare('SELECT COUNT(*) as count FROM edit_modifications').get().count;
+  const totalModifications = db.prepare('SELECT COUNT(*) as count FROM file_modifications').get().count;
   const uniqueTasks = db.prepare('SELECT DISTINCT task_id FROM edit_entries WHERE task_id IS NOT NULL').all();
 
   console.log(`Total Edit Entries: ${totalEntries}`);
@@ -299,7 +301,7 @@ function main() {
 
     // Clear existing tables
     console.log('Clearing existing database data...\n');
-    db.exec('DROP TABLE IF EXISTS edit_modifications');
+    db.exec('DROP TABLE IF EXISTS file_modifications');
     db.exec('DROP TABLE IF EXISTS edit_entries');
 
     // Initialize schema

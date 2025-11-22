@@ -1,8 +1,22 @@
 # Edit History
 *Created: 2025-04-10*
-*Last Updated: 2025-11-22 17:15:00 IST*
+*Last Updated: 2025-11-22 18:08:00 IST*
 
 ### 2025-11-22
+
+#### 18:08:00 IST - T19: Production Workflow & Database Parsers
+- Created `start-viewer.sh` - Launcher script for "Sync-on-Launch" workflow (runs parsers then starts server)
+- Created `memory-bank/database/parse-sessions.js` - New parser for session timeline (`sessions/*.md`)
+- Created `memory-bank/database/parse-session-cache.js` - New parser for active session context (`session_cache.md`)
+- Modified `memory-bank/database/parse-edits.js` - Renamed table to `file_modifications` and added `date` column for sorting
+- Modified `memory-bank/database/parse-tasks.js` - Added `updated` column to `task_items` schema
+- Modified `t21-workflow-testing/database/server.js` - Added `--db` flag support for dynamic database paths
+- Modified `t21-workflow-testing/database/public/js/app.js` - Implemented "Smart Sorting" for Task IDs (T1, T2, T10) and ISO Dates
+- Created `memory-bank/implementation-details/modular-viewer-architecture.md` - Documented new SPA architecture and sync workflow
+- Updated `memory-bank/tasks/T19.md` - Updated status, progress with production workflow completion, and architecture diagrams
+- Updated `memory-bank/tasks.md` - Updated T19 status summary
+- Updated `memory-bank/sessions/2025-11-22-evening.md` - Added section on Production Workflow Implementation details
+- Updated `memory-bank/session_cache.md` - Updated status to reflect T19 Production Workflow milestone
 
 #### 17:15:00 IST - T19: Viewer Refactor & T22: AdminJS POC
 - Modified `t21-workflow-testing/database/server.js` - Refactored to serve modular frontend, added port fallback logic

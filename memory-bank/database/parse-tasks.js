@@ -19,6 +19,7 @@ function initSchema(db) {
       status TEXT NOT NULL CHECK(status IN ('pending','in_progress','completed','paused')),
       priority TEXT NOT NULL CHECK(priority IN ('low','medium','high')),
       started TEXT NOT NULL,
+      updated TEXT,
       details TEXT NOT NULL
     );
     
@@ -74,8 +75,8 @@ function populateDatabase(db, tasks) {
   console.log(`Populating database with ${tasks.length} tasks...\n`);
 
   const insertTask = db.prepare(`
-    INSERT OR IGNORE INTO task_items (id, title, status, priority, started, details)
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT OR IGNORE INTO task_items (id, title, status, priority, started, updated, details)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
   `);
   
   const insertDependency = db.prepare(`
@@ -99,6 +100,7 @@ function populateDatabase(db, tasks) {
           task.status,
           task.priority,
           task.started,
+          task.started, // Default updated to started date
           task.details
         );
         successCount++;

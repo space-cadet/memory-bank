@@ -221,12 +221,33 @@ const App = {
       if (aVal == null) aVal = '';
       if (bVal == null) bVal = '';
 
-      const aNum = parseFloat(aVal);
-      const bNum = parseFloat(bVal);
-      if (!isNaN(aNum) && !isNaN(bNum)) {
+      // 1. Task ID Sort (T1, T2, T10)
+      const taskRegex = /^T(\d+)$/;
+      const aTaskMatch = String(aVal).match(taskRegex);
+      const bTaskMatch = String(bVal).match(taskRegex);
+
+      if (aTaskMatch && bTaskMatch) {
+        const aNum = parseInt(aTaskMatch[1]);
+        const bNum = parseInt(bTaskMatch[1]);
         return direction === 'asc' ? aNum - bNum : bNum - aNum;
       }
 
+      // 2. Numeric Sort
+      const aNum = parseFloat(aVal);
+      const bNum = parseFloat(bVal);
+      // Only sort numerically if BOTH are purely numeric (not just starting with a number)
+      // And ensure we don't treat date strings (2025-11...) as pure numbers (2025) unless they really are just numbers
+      // Actually, parseFloat("2025-11-22") is 2025. We want to avoid that for dates.
+      // Check if it looks like a date first
+      
+      const dateRegex = /^\d{4}-\d{2}-\d{2}/;
+      const isDate = dateRegex.test(String(aVal)) && dateRegex.test(String(bVal));
+
+      if (!isDate && !isNaN(aNum) && !isNaN(bNum) && String(aNum) === String(aVal) && String(bNum) === String(bVal)) {
+        return direction === 'asc' ? aNum - bNum : bNum - aNum;
+      }
+
+      // 3. String Sort (Default, handles Dates too)
       aVal = String(aVal).toLowerCase();
       bVal = String(bVal).toLowerCase();
       if (direction === 'asc') {

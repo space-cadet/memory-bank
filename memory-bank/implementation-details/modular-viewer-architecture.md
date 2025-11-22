@@ -1,0 +1,104 @@
+# Modular Memory Bank Viewer Architecture
+
+*Created: 2025-11-22*
+*Related Task: [T19](../tasks/T19.md)*
+
+## Overview
+
+The **Memory Bank Viewer** has evolved from a static HTML file scanner into a robust, database-driven Single Page Application (SPA). This document outlines the architecture of the "Production Workflow," where the viewer serves as the primary interface for interacting with the Memory Bank's SQLite database (`memory_bank.db`), which is synchronized from the markdown files.
+
+## 1. Core Architecture
+
+### The "Sync-on-Launch" Workflow
+To bridge the text-based Memory Bank with the database-driven viewer, we employ a synchronization strategy that runs on every launch.
+
+```mermaid
+graph TD
+    A[Markdown Files] -->|Parsers| B(memory_bank.db)
+    B -->|Read/Write| C[Viewer Server]
+    C -->|API| D[Web Frontend]
+    
+    subgraph "Launch Sequence (start-viewer.sh)"
+    P1[parse-edits.js]
+    P2[parse-tasks.js]
+    P3[parse-sessions.js]
+    P4[parse-session-cache.js]
+    end
+```
+
+### Components
+
+1.  **Launcher (`start-viewer.sh`)**:
+    *   Orchestrates the sync process.
+    *   Runs all parsers to rebuild the database from fresh markdown content.
+    *   Starts the server pointing to the production database.
+
+2.  **Database Parsers (`memory-bank/database/`)**:
+    *   `parse-edits.js`: Parses `edit_history.md` -> `edit_entries`, `file_modifications`.
+    *   `parse-tasks.js`: Parses `tasks.md` -> `task_items`, `task_dependencies`.
+    *   `parse-sessions.js`: Parses `sessions/*.md` -> `sessions`.
+    *   `parse-session-cache.js`: Parses `session_cache.md` -> `session_cache`.
+
+3.  **Server (`t21-workflow-testing/database/server.js`)**:
+    *   **Stack**: Node.js + Express + better-sqlite3.
+    *   **Role**: Provides a REST API for the database and serves static assets.
+    *   **Key Endpoints**:
+        *   `GET /api/tables`: List all tables with metadata.
+        *   `GET /api/table/:name`: Paginated data for a table.
+        *   `GET /api/table/:name/schema`: Schema info (FKs, Indexes).
+        *   `GET /api/table/:name/record/:id`: Single record with **Related Records** traversal.
+        *   `GET /api/search`: Global full-text search.
+
+4.  **Frontend (`t21-workflow-testing/database/public/`)**:
+    *   **Stack**: Vanilla JavaScript (ES Modules), CSS Variables (Theming).
+    *   **Structure**:
+        *   `app.js`: Main controller, state management, sorting logic.
+        *   `router.js`: Hash-based routing with History API support.
+        *   `api.js`: Data fetching layer.
+        *   `ui.js`: Pure HTML rendering functions (Components).
+
+## 2. Database Schema
+
+The viewer relies on a "Universal Schema" that standardizes the diverse markdown formats into relational tables.
+
+### Core Tables
+| Table | Source | Description |
+| :--- | :--- | :--- |
+| `task_items` | `tasks.md` | Registry of all tasks (Active, Completed, Paused). |
+| `task_dependencies` | `tasks.md` | Graph of task relationships. |
+| `sessions` | `sessions/*.md` | Historical timeline of work sessions. |
+| `session_cache` | `session_cache.md` | Snapshot of the current active session. |
+| `edit_entries` | `edit_history.md` | Chronological log of work units. |
+| `file_modifications` | `edit_history.md` | Granular file changes linked to edit entries. |
+
+### Key Relationships
+*   `file_modifications` → `edit_entries` (via `edit_entry_id`)
+*   `task_dependencies` → `task_items` (via `task_id`, `depends_on`)
+*   *Future*: `edit_entries` → `sessions` (via date/time correlation)
+
+## 3. Frontend Features
+
+### Modular Design
+The frontend is split into distinct modules to separate concerns:
+*   **UI Module**: Handles all DOM manipulation and HTML generation. Uses template literals for zero-build-step components.
+*   **App Module**: Manages application state (current view, filter, sort) and coordinates between API and UI.
+*   **Router Module**: Manages URL state, enabling deep linking and browser back/forward navigation.
+
+### Smart Interactions
+*   **Sorting**: Custom logic in `app.js` handles:
+    *   **Task IDs**: Sorts `T1, T2, T10` correctly (numeric) instead of `T1, T10, T2` (lexical).
+    *   **Dates**: Recognizes ISO date strings and sorts chronologically.
+*   **Dual View Modes**: Toggle between **Table View** (dense data) and **Card View** (rich summaries).
+*   **Related Records**: When viewing a detailed record, the UI automatically fetches and displays related data via Foreign Keys (e.g., viewing a Task shows its Dependencies).
+
+## 4. Future Roadmap
+
+### Phase 3: Write Capabilities
+*   **Goal**: Allow users to Create and Edit records directly in the Viewer.
+*   **Implementation**:
+    *   Add `POST/PUT` endpoints to `server.js`.
+    *   Implement "Reverse Parsers" (or Template Generators) to write changes back to Markdown files.
+    *   Create Form UI in `ui.js`.
+
+### Phase 4: Universal Search
+*   Extend the search functionality to include file contents (using `grep` or a search index) beyond just database fields.

@@ -17,8 +17,23 @@ const __dirname = dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Path to test database
-const dbPath = join(__dirname, 'test_memory_bank.db');
+// Database path configuration
+const args = process.argv.slice(2);
+const dbArgIndex = args.indexOf('--db');
+let dbPath;
+
+if (dbArgIndex !== -1 && args[dbArgIndex + 1]) {
+  // Use provided path (resolve relative to CWD if not absolute, but better to let user provide absolute or relative to CWD)
+  // If the user runs this script from a different directory, relative paths might be tricky if we use join(__dirname).
+  // However, usually CLI args are relative to CWD. 
+  // Let's assume the user passes a path relative to where they run the node command, or an absolute path.
+  // We should probably resolve it against process.cwd() if it's not absolute, or just use it as is if better-sqlite3 handles it.
+  // better-sqlite3 handles paths relative to CWD.
+  dbPath = args[dbArgIndex + 1];
+} else {
+  // Fallback to test database (relative to script location)
+  dbPath = join(__dirname, 'test_memory_bank.db');
+}
 
 let db;
 
