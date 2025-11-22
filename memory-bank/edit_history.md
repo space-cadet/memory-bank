@@ -1,8 +1,16 @@
 # Edit History
 *Created: 2025-04-10*
-*Last Updated: 2025-11-22 18:08:00 IST*
+*Last Updated: 2025-11-22 18:47:00 IST*
 
 ### 2025-11-22
+
+#### 18:50:00 IST - T17: Updated Integrated Rules to v6.11 (Strict Schema)
+- Created `integrated-rules-v6.11.md` - New rules version enforcing strict regex-compatible schema for Viewer compatibility
+- Modified `memory-bank/tasks/T17.md` - Updated progress with v6.11 creation and schema enforcement details
+- Modified `memory-bank/tasks.md` - Updated T17 status and description to reflect v6.11 update
+- Modified `memory-bank/session_cache.md` - Updated T17 status, active tasks list, and session focus
+- Modified `memory-bank/sessions/2025-11-22-evening.md` - Logged T17 work (v6.11 creation, schema enforcement, workflow update)
+- Modified `integrated-rules-v6.11.md` - Finalized rules with relative path enforcement and standardized task statuses
 
 #### 18:08:00 IST - T19: Production Workflow & Database Parsers
 - Created `start-viewer.sh` - Launcher script for "Sync-on-Launch" workflow (runs parsers then starts server)
