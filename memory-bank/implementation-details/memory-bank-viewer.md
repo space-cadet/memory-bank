@@ -1,9 +1,25 @@
 # Memory Bank Viewer - Complete Planning and Architecture
 
 *Created: 2025-11-10 18:27:15 IST*
-*Last Updated: 2025-11-13 22:50:00 IST*
+*Last Updated: 2025-11-22 17:15:00 IST*
 
 ## Session Development Log
+
+### Session 4: T19 Refactor & T22 AdminJS Attempt (2025-11-22 16:15-17:15 IST)
+**Duration**: ~1 hour
+**Status**: 🔄 Phase 2 Complete / AdminJS Cancelled
+
+**Work Completed:**
+1.  **T19 Refactor (Success)**
+    *   Problem: `explorer.html` grew to 1,300 lines, causing navigation bugs.
+    *   Solution: Refactored into modular `public/js/` structure (`app.js`, `router.js`, `api.js`, `ui.js`).
+    *   Fix: Replaced custom history stack with native `window.history.state` logic to fix Forward button.
+    *   Result: Clean, maintainable architecture ready for Phase 3 (Writes).
+
+2.  **T22 AdminJS POC (Cancelled)**
+    *   Attempt: Integrate AdminJS to get "Phase B" (Writes) for free.
+    *   Outcome: Excessive complexity (ESM/CJS, NPM/PNPM, Dependency Hell).
+    *   Decision: Abandoned. Will build writes directly into T19.
 
 ### Session 3: Phase 2 Bug Fixes and File Content Viewer (2025-11-10 19:00-19:15 IST)
 **Duration**: ~15 minutes

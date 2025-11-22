@@ -1,96 +1,54 @@
 # Active Context
 
-*Last Updated: 2025-11-13 17:48:20 IST*
+*Last Updated: 2025-11-22 17:15:00 IST*
 
 ## Current Tasks
-1. **[T21]**: Database-Native Memory Bank Update Workflow (HIGH priority)
-   - Status: 🔄 IN PROGRESS (Design Phase Complete)
-   - Current Focus: Database-first paradigm shift, atomic transactions, text regeneration
-   - Next Steps: Phase A (Schema expansion), Phase B (Insert functions), Phase C (Text regeneration)
+1. **[T19]**: Memory Bank Viewer Web Interface (HIGH priority)
+   - Status: 🔄 IN PROGRESS (Phase 2 Refactor Complete)
+   - Current Focus: Transitioning to "Phase 3" (Write capabilities) to support T21 workflow.
+   - Recent Achievement: Refactored monolithic `explorer.html` into modular `public/js/*` architecture. Fixed navigation bugs.
 
-2. **[T17]**: Maintenance and Upkeep of Integrated Rules (MEDIUM priority)
+2. **[T21]**: Database-Native Memory Bank Update Workflow (HIGH priority)
+   - Status: 🔄 IN PROGRESS (Phase A Complete)
+   - Current Focus: Integration with T19 Viewer for "Phase B" (Insert Functions).
+   - Note: T22 (AdminJS) was attempted to solve this but cancelled. We are now building the write UI directly into T19.
+
+3. **[T22]**: AdminJS Database Management Interface (HIGH priority)
+   - Status: ❌ CANCELLED (2025-11-22)
+   - Reason: Excessive complexity/dependency hell. Shelved in favor of extending T19.
+
+4. **[T17]**: Maintenance and Upkeep of Integrated Rules (MEDIUM priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: Rules documentation v6.8 → v6.10, Tiered Knowledge Structure, Memory Bank Update Workflow
-   - Next Steps: Priority #1 File Update Trigger Matrix, Priority #2 Session Cache Protocol details
-
-3. **[T20a]**: Adaptive LLM-Based Format Parser (HIGH priority)
-   - Status: 🔄 IN PROGRESS (Design Phase complete)
-   - Next Steps: Phase 1 implementation - LLM prompt design
-
-3. **[T20]**: Memory Bank Database Parser (MEDIUM priority)
-   - Status: 🔄 IN PROGRESS (Phase 3)
-   - Next Steps: Format handling edge cases, multi-project testing
-
-4. **[T19]**: Memory Bank Viewer Web Interface (HIGH priority)
-   - Status: 🔄 IN PROGRESS (Phase 2)
-   - Next Steps: File content viewer completion, bug fixes
-
-5. **[T13]**: Implement Memory Bank CLI (HIGH priority)
-   - Status: 🔄 IN PROGRESS (85% complete)
-   - Next Steps: mb task command, mb session command implementation
-
-6. **[T16]**: AI Consciousness Dialog Series (HIGH priority)
-   - Status: 🔄 IN PROGRESS
-   - Current Focus: Ongoing documentation of consciousness exploration
+   - Current Focus: Rules documentation v6.8 → v6.10
 
 ## Completed Tasks (Recent)
-1. **[T18]**: Integrated Rules Redesign
-   - Status: ✅ COMPLETED (2025-07-15)
-   - Output: Comprehensive redesign for clarity and conciseness
+1. **[T19 Phase 2 Refactor]**:
+   - Status: ✅ COMPLETED (2025-11-22)
+   - Output: Modular Viewer architecture in `t21-workflow-testing/database/public/`.
 
-2. **[T15]**: Implement Creative Expression Balance (Rules v6.5)
-   - Status: ✅ COMPLETED (2025-05-26)
-   - Output: Creative expression framework
+## Implementation Focus - This Session (T19 Viewer + T22 POC)
+**T19 Viewer Refactor:**
+- ✅ Split 1,300-line `explorer.html` into `app.js`, `router.js`, `api.js`, `ui.js`
+- ✅ Fixed "History Stack" bug by using native Browser History API
+- ✅ Verified modular architecture works (Read-only mode)
 
-3. **[T2]**: Plan Database Migration Strategy
-   - Status: ✅ COMPLETED (2025-04-15)
-   - Output: Database planning documents
-
-## Implementation Focus - This Session (T3 Database + T13 CLI)
-**T3 Database Migration:**
-- ✅ Verified 364 records successfully migrated across 4 projects
-- ✅ Confirmed zero data integrity issues (0 orphaned records, 0 circular deps)
-- ✅ Created comprehensive database-implementation-plan.md (13,478 bytes)
-- ✅ Enhanced database_planning.md with implementation status and outcomes
-- ✅ Refined database_migration.md with practical patterns and solutions
-- ✅ Documented all 3 known issues for targeted future fixes
-- ✅ Established IST timezone standard for all timestamps
-- ✅ Database system now operational and ready for use
-- ⏸️ MCP server strategically postponed to Phase 2 (pending workflow validation)
-
-**T13 CLI Refactoring:**
-- ✅ Refactored init.js for code quality and maintainability
-- ✅ Extracted timestamp utility function (getISTTimestamp)
-- ✅ Split content generators into focused, reusable functions
-- ✅ Added initial content to core files (tasks.md, projectbrief.md, session_cache.md, .cursorrules)
-- ✅ Improved separation of concerns and readability
-- ✅ Created backup before refactoring
-- ✅ All changes tested and verified
-- ⏹️ Init command 100% complete, Phase 3 ready for core commands
+**T22 AdminJS POC (Attempted):**
+- ❌ Attempted to implement AdminJS for database management
+- ❌ Encountered brittle dependency chain (AdminJS v7/v6, ESM/CJS, NPM/PNPM)
+- ✅ Decision made to ABANDON T22 and fold requirements into T19 Phase 3
 
 ## Next Session Context
-- Database migration at 90% completion - only MCP server remains
-- 3 identified issues are well-understood and low-impact
-- Verification script approach proved effective for large dataset analysis
-- Database ready for integration with Claude workflow (when MCP server built)
-- Consider scheduling Phase 2 planning for MCP server implementation
+- Implement "Phase 3" of T19: Add **Write Capabilities** (Create/Edit forms)
+- This will fulfill the "Phase B" requirements of T21 (Database Workflow)
+- T19 is now the primary UI for both *Viewing* (Read) and *Managing* (Write) the Memory Bank database.
 
 ## Current Decisions
-1. Using task IDs (T1-T19+) for cross-referencing across all Memory Bank files
-2. Maintaining separate sections for active and completed tasks in session_cache.md
-3. Using emoji status indicators (🔄, ✅, ⬜) for clear visual tracking
-4. ✅ Selected Prisma ORM with SQLite for memory bank migration
-5. ✅ Multi-project design supporting memory-bank and spin_network_app
-6. ✅ No file rotation needed with database approach
-7. ✅ Database supports future migration to PostgreSQL
-8. ✅ Enhanced date validation with fallback to current date
-9. ✅ MCP server implementation postponed to Phase 2 (strategic decision)
-10. ✅ Verification script approach adopted for large dataset analysis
-11. ✅ IST timezone (UTC+5:30) established as system standard
-12. ✅ Database now operational with 364 verified records across 4 projects
+1. **Cancelled T22**: AdminJS is too heavy for our needs.
+2. **Extended T19**: The Viewer will evolve into a full "Manager".
+3. **Modular Architecture**: Use Vanilla JS modules (no build step) for T19 to maintain simplicity while improving maintainability.
+4. **Native History**: Use `window.history.state` as the single source of truth for navigation.
 
 ## System Status
-- **Database**: ✅ Operational, Verified, Documented
-- **Memory Bank Viewer (T19)**: 🔄 In Progress (Phase 2)
-- **Integrated Rules**: 🔄 Active maintenance
-- **Overall System**: 🔄 Progressing well across multiple initiatives
+- **Database**: ✅ Operational (Phase A Schema)
+- **Viewer (T19)**: ✅ Modular, Bug-free (Read-only)
+- **Management UI**: 🔄 Pending (Moving to T19 Phase 3)

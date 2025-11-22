@@ -1,6 +1,19 @@
 # Edit History
 *Created: 2025-04-10*
-*Last Updated: 2025-11-13 22:50:00 IST*
+*Last Updated: 2025-11-22 17:15:00 IST*
+
+### 2025-11-22
+
+#### 17:15:00 IST - T19: Viewer Refactor & T22: AdminJS POC
+- Modified `t21-workflow-testing/database/server.js` - Refactored to serve modular frontend, added port fallback logic
+- Created `t21-workflow-testing/database/public/` - Created modular structure (app.js, router.js, api.js, ui.js, css/style.css) to replace monolithic explorer.html
+- Updated `memory-bank/tasks/T19.md` - Updated status to Phase 2 Complete, added architecture documentation for modular viewer
+- Created `memory-bank/tasks/T22.md` - Created and marked as Cancelled (AdminJS POC attempted and abandoned)
+- Created `memory-bank/implementation-details/adminjs-viewer-plan.md` - Documented AdminJS plan and subsequent shelving decision
+- Updated `memory-bank/tasks.md` - Added T22 (Cancelled) to registry, updated relationships
+- Updated `memory-bank/activeContext.md` - Updated with T19 Refactor completion and T22 cancellation details
+- Updated `memory-bank/session_cache.md` - Updated focus to T19/T22, set status to T19 Refactor Complete
+- Created `memory-bank/sessions/2025-11-22-evening.md` - Documented session details: T19 refactor success (fixing history bug) and T22 cancellation reason (dependency complexity)
 
 ### 2025-11-13
 

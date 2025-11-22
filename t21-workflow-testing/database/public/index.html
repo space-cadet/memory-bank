@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SQLite Web Explorer - Phase A Schema</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-left">
+        <h1>💾 Memory Bank DB</h1>
+        <div class="subtitle">Database-Native Workflow Explorer</div>
+        <div class="search-bar">
+          <input type="text" id="searchInput" placeholder="Search across all tables..." />
+          <button onclick="App.performSearch()">Search</button>
+        </div>
+      </div>
+      <div class="header-right">
+        <button class="dark-mode-toggle" onclick="App.toggleDarkMode()">🌙</button>
+      </div>
+    </header>
+
+    <div class="main">
+      <aside class="sidebar">
+        <h2>Tables</h2>
+        <ul class="table-list" id="tableList">
+          <!-- Populated by JS -->
+          <li class="loading">Loading tables...</li>
+        </ul>
+      </aside>
+
+      <main class="content" id="mainContent">
+        <!-- Populated by JS -->
+        <div class="loading">Select a table to view records</div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Application Logic -->
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,2 +1,5 @@
+packages:
+  - 'database'
+
 onlyBuiltDependencies:
   - better-sqlite3

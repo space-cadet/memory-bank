@@ -30,6 +30,9 @@ try {
   process.exit(1);
 }
 
+// Serve static files from public directory
+app.use(express.static(join(__dirname, 'public')));
+
 /**
  * API Routes
  */
@@ -247,15 +250,28 @@ app.get('/api/stats', (req, res) => {
  * Static HTML/CSS UI
  */
 app.get('/', (req, res) => {
-  res.sendFile(join(__dirname, 'explorer.html'));
+  res.sendFile(join(__dirname, 'public', 'index.html'));
 });
 
-// Start server
-app.listen(PORT, () => {
+// Start server with port fallback
+const server = app.listen(PORT, () => {
   console.log(`\n🚀 SQLite Web Explorer started`);
   console.log(`📂 Database: ${dbPath}`);
   console.log(`🌐 Open: http://localhost:${PORT}`);
   console.log(`\nPress Ctrl+C to stop\n`);
+}).on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.log(`⚠️  Port ${PORT} is busy, trying a random available port...`);
+    const fallbackServer = app.listen(0, () => {
+      const address = fallbackServer.address();
+      console.log(`\n🚀 SQLite Web Explorer started`);
+      console.log(`📂 Database: ${dbPath}`);
+      console.log(`🌐 Open: http://localhost:${address.port}`);
+      console.log(`\nPress Ctrl+C to stop\n`);
+    });
+  } else {
+    console.error(err);
+  }
 });
 
 // Graceful shutdown

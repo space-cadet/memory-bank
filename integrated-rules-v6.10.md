@@ -1,6 +1,6 @@
 # Integrated Code Rules and Memory Bank System, v6.10 (Essential Instructions Priority)
 
-*Last Updated: 2025-11-13 00:15:30 IST*
+*Last Updated: 2025-11-14 12:15:30 IST*
 
 YOU WILL KEEP IT REALLY SIMPLE, STUPID (KIRSS). IF YOU THINK A SOLUTION IS SIMPLE ENOUGH, MAKE IT EVEN SIMPLER.
 YOU WILL NEVER UPDATE ANY FILES, INCLUDING MEMORY BANK FILES, WITHOUT EXPLICIT USER APPROVAL
@@ -113,11 +113,14 @@ The memory bank uses four tiers of documentation, organized by relevance and fre
 Load when: Starting a new session or understanding system structure
 - `tasks.md` - Registry of all active and completed tasks
 - `activeContext.md` - Current focus and immediate task state
+- `tasks/T{ID}.md` - Current task details (if ID known)
 - This tier alone is sufficient to understand what's happening
 
 #### Tier 2: Critical (Task-Focused)
 Load when: Working on a specific task
 - `session_cache.md` - Current session state and active task contexts
+- `sessions/YYYY-MM-DD-PERIOD.md` - Relevant session file
+- Implementation docs referenced in task file
 - `edit_history.md` - Recent file modifications (load if needing context about what changed)
 - `errorLog.md` - Error history (load only if debugging issues)
 - Load only the files directly relevant to your current task step
