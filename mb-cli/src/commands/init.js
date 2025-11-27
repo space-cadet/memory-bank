@@ -51,11 +51,28 @@ const DATABASE_FILES = [
   'DATABASE_README.md'
 ];
 
-const DATABASE_SCRIPTS = [
+const PARSER_SCRIPTS = [
   'parse-edits.js',
   'parse-tasks.js',
   'query.js',
   'query-tasks.js'
+];
+
+const VIEWER_FILES = [
+  'server.js',
+  'schema.sql',
+  'init-schema.js',
+  'test-schema.js',
+  'generate-test-data.js'
+];
+
+const VIEWER_PUBLIC_FILES = [
+  'public/index.html',
+  'public/js/app.js',
+  'public/js/router.js',
+  'public/js/api.js',
+  'public/js/ui.js',
+  'public/css/styles.css'
 ];
 
 // Utility: Get current timestamp in user's timezone
@@ -96,7 +113,9 @@ function scanExistingContent(targetDir) {
     coreFilesExist: [],
     templateFilesExist: [],
     databaseFilesExist: [],
-    databaseScriptsExist: []
+    databaseScriptsExist: [],
+    viewerFilesExist: [],
+    viewerPublicFilesExist: []
   };
 
   if (!scan.exists) {
@@ -136,10 +155,26 @@ function scanExistingContent(targetDir) {
   }
 
   // Check database scripts
-  for (const file of DATABASE_SCRIPTS) {
+  for (const file of PARSER_SCRIPTS) {
     const filePath = path.join(mbDir, 'database', file);
     if (fs.existsSync(filePath)) {
       scan.databaseScriptsExist.push(file);
+    }
+  }
+
+  // Check viewer files
+  for (const file of VIEWER_FILES) {
+    const filePath = path.join(mbDir, 'database', file);
+    if (fs.existsSync(filePath)) {
+      scan.viewerFilesExist.push(file);
+    }
+  }
+
+  // Check viewer public files
+  for (const file of VIEWER_PUBLIC_FILES) {
+    const filePath = path.join(mbDir, 'database', file);
+    if (fs.existsSync(filePath)) {
+      scan.viewerPublicFilesExist.push(file);
     }
   }
 
@@ -151,7 +186,8 @@ async function promptForSelectiveInit(scan) {
   const components = [
     { name: 'core', label: 'Core files (tasks.md, session_cache.md, etc.)', exists: scan.coreFilesExist.length },
     { name: 'templates', label: 'Template files', exists: scan.templateFilesExist.length },
-    { name: 'database', label: 'Database setup and parser scripts', exists: scan.databaseFilesExist.length + scan.databaseScriptsExist.length }
+    { name: 'database', label: 'Database setup and parser scripts', exists: scan.databaseFilesExist.length + scan.databaseScriptsExist.length },
+    { name: 'viewer', label: 'Database viewer (server + UI)', exists: scan.viewerFilesExist.length + scan.viewerPublicFilesExist.length }
   ];
 
   console.log('\nExisting Memory Bank detected!\n');
@@ -166,10 +202,12 @@ async function promptForSelectiveInit(scan) {
   }
 
   console.log('\nOptions for selective initialization:');
+  console.log('  --interactive    Interactive setup menu');
   console.log('  --full           Initialize all components (overwrites existing)');
   console.log('  --core           Initialize only core files');
   console.log('  --templates      Initialize only template files');
   console.log('  --database       Initialize only database files');
+  console.log('  --setup-viewer   Initialize only viewer files');
   console.log('  --skip-existing  Initialize only missing files (default)');
   console.log('  --force          Override all existing files\n');
 }
@@ -180,27 +218,106 @@ function determineComponentsToInit(scan, options) {
     core: false,
     templates: false,
     database: false,
+    viewer: false,
     directories: true
   };
 
   if (options.full) {
-    return { ...components, core: true, templates: true, database: true };
+    return { ...components, core: true, templates: true, database: true, viewer: true };
   }
 
-  if (options.core || options.templates || options.database) {
+  if (options.core || options.templates || options.database || options.setupViewer) {
     if (options.core) components.core = true;
     if (options.templates) components.templates = true;
     if (options.database) components.database = true;
+    if (options.setupViewer) components.viewer = true;
     return components;
   }
 
   if (!scan.exists || options.skipExisting) {
-    return { ...components, core: true, templates: true, database: true };
+    return { ...components, core: true, templates: true, database: true, viewer: true };
   }
 
   components.core = scan.coreFilesExist.length < CORE_FILES.length;
   components.templates = scan.templateFilesExist.length < TEMPLATE_FILES.length;
-  components.database = (scan.databaseFilesExist.length + scan.databaseScriptsExist.length) < (DATABASE_FILES.length + DATABASE_SCRIPTS.length);
+  components.database = (scan.databaseFilesExist.length + scan.databaseScriptsExist.length) < (DATABASE_FILES.length + PARSER_SCRIPTS.length);
+  components.viewer = (scan.viewerFilesExist.length + scan.viewerPublicFilesExist.length) < (VIEWER_FILES.length + VIEWER_PUBLIC_FILES.length);
+
+  return components;
+}
+
+// Interactive setup menu
+async function promptForInteractiveSetup(scan, options) {
+  const readline = await import('readline');
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  const question = (prompt) => new Promise((resolve) => {
+    rl.question(prompt, resolve);
+  });
+
+  console.log('\n╔════════════════════════════════════════╗');
+  console.log('║  Memory Bank Interactive Setup         ║');
+  console.log('╚════════════════════════════════════════╝\n');
+
+  console.log('What would you like to do?\n');
+  console.log('1. Initialize memory bank structure (directories + core files)');
+  console.log('2. Set up database (parser scripts + viewer)');
+  console.log('3. Set up just the viewer (if database exists)');
+  console.log('4. Parse memory bank files into database');
+  console.log('5. Start viewer server');
+  console.log('6. Full setup (everything)');
+  console.log('7. Cancel\n');
+
+  const choice = await question('Enter your choice (1-7): ');
+  rl.close();
+
+  const components = {
+    core: false,
+    templates: false,
+    database: false,
+    viewer: false,
+    directories: false,
+    parse: false,
+    startViewer: false
+  };
+
+  switch (choice.trim()) {
+    case '1':
+      components.directories = true;
+      components.core = true;
+      components.templates = true;
+      break;
+    case '2':
+      components.directories = true;
+      components.database = true;
+      components.viewer = true;
+      break;
+    case '3':
+      components.viewer = true;
+      break;
+    case '4':
+      components.parse = true;
+      break;
+    case '5':
+      components.startViewer = true;
+      break;
+    case '6':
+      components.directories = true;
+      components.core = true;
+      components.templates = true;
+      components.database = true;
+      components.viewer = true;
+      break;
+    case '7':
+      console.log('Setup cancelled.');
+      return null;
+    default:
+      console.log('Invalid choice. Please try again.');
+      return await promptForInteractiveSetup(scan, options);
+  }
 
   return components;
 }
@@ -214,7 +331,17 @@ export async function initCommand(options) {
 
   const scan = scanExistingContent(targetDir);
 
-  if (scan.exists && !options.force && !options.core && !options.templates && !options.database && !options.skipExisting && !options.full) {
+  // Handle interactive mode
+  if (options.interactive) {
+    const interactiveComponents = await promptForInteractiveSetup(scan, options);
+    if (!interactiveComponents) {
+      return;
+    }
+    // Merge interactive components with options
+    Object.assign(options, interactiveComponents);
+  }
+
+  if (scan.exists && !options.force && !options.core && !options.templates && !options.database && !options.setupViewer && !options.skipExisting && !options.full && !options.interactive) {
     await promptForSelectiveInit(scan);
     return;
   }
@@ -222,6 +349,61 @@ export async function initCommand(options) {
   const components = determineComponentsToInit(scan, options);
 
   try {
+    // Handle parse-only operation
+    if (options.parse && !options.core && !options.templates && !options.database && !options.viewer) {
+      console.log('Parsing memory bank files into database...\n');
+      
+      const mbDir = path.join(targetDir, 'memory-bank');
+      const editHistoryPath = path.join(mbDir, 'edit_history.md');
+      const tasksPath = path.join(mbDir, 'tasks.md');
+      
+      if (!fs.existsSync(editHistoryPath)) {
+        console.error(`❌ Error: edit_history.md not found at ${editHistoryPath}`);
+        process.exit(1);
+      }
+      if (!fs.existsSync(tasksPath)) {
+        console.error(`❌ Error: tasks.md not found at ${tasksPath}`);
+        process.exit(1);
+      }
+      
+      console.log(`✓ Found edit_history.md`);
+      console.log(`✓ Found tasks.md`);
+      console.log('\nTo parse the files, run:');
+      console.log(`  cd ${path.join(mbDir, 'database')}`);
+      console.log('  pnpm install (if not already installed)');
+      console.log('  node parse-edits.js      # Parse edit history');
+      console.log('  node parse-tasks.js      # Parse tasks\n');
+      return;
+    }
+
+    // Handle startViewer-only operation
+    if (options.startViewer && !options.core && !options.templates && !options.database && !options.viewer) {
+      console.log('Starting viewer server...\n');
+      
+      const dbDir = path.join(targetDir, 'memory-bank', 'database');
+      const serverPath = path.join(dbDir, 'server.js');
+      const dbPath = path.join(dbDir, 'memory_bank.db');
+      
+      if (!fs.existsSync(serverPath)) {
+        console.error(`❌ Error: server.js not found at ${serverPath}`);
+        process.exit(1);
+      }
+      if (!fs.existsSync(dbPath)) {
+        console.error(`❌ Error: memory_bank.db not found at ${dbPath}`);
+        console.error('Please run the parser first:');
+        console.error(`  cd ${dbDir}`);
+        console.error('  node parse-edits.js && node parse-tasks.js\n');
+        process.exit(1);
+      }
+      
+      console.log(`✓ Found server.js`);
+      console.log(`✓ Found memory_bank.db`);
+      console.log('\nTo start the viewer, run:');
+      console.log(`  cd ${dbDir}`);
+      console.log('  node server.js\n');
+      return;
+    }
+
     console.log('The following will be initialized:\n');
 
     let summary = [];
@@ -233,6 +415,7 @@ export async function initCommand(options) {
       summary.push('Database setup with SQLite parser scripts');
       targetDisplay = path.join(targetDir, 'memory-bank', 'database');
     }
+    if (components.viewer) summary.push('Database viewer (server + UI)');
     
     if (summary.length > 0) {
       console.log('Components to initialize: ' + summary.join(', '));
@@ -338,7 +521,7 @@ export async function initCommand(options) {
       }
 
       console.log('\nDatabase parser scripts in memory-bank/database/:');
-      for (const file of DATABASE_SCRIPTS) {
+      for (const file of PARSER_SCRIPTS) {
         const filePath = path.join(mbDir, 'database', file);
         const exists = fs.existsSync(filePath);
         const status = exists ? '✓' : '+';
@@ -346,6 +529,48 @@ export async function initCommand(options) {
         if (!options.dryRun && (!exists || options.force || options.full)) {
           const sourceFile = path.join(__dirname, '..', '..', '..', 'memory-bank', 'database', file);
           if (fs.existsSync(sourceFile)) {
+            const content = fs.readFileSync(sourceFile, 'utf8');
+            await writeFile(filePath, content, { flag: 'w' });
+          } else {
+            console.warn(`  ⚠️  Warning: Source file not found: ${file}`);
+          }
+        }
+      }
+      console.log('');
+    }
+
+    // 5. Create viewer files
+    if (components.viewer) {
+      console.log('Viewer files in memory-bank/database/:');
+      for (const file of VIEWER_FILES) {
+        const filePath = path.join(mbDir, 'database', file);
+        const exists = fs.existsSync(filePath);
+        const status = exists ? '✓' : '+';
+        console.log(`  [${status}] ${file}`);
+        if (!options.dryRun && (!exists || options.force || options.full)) {
+          const sourceFile = path.join(__dirname, '..', '..', '..', 't21-workflow-testing', 'database', file);
+          if (fs.existsSync(sourceFile)) {
+            const content = fs.readFileSync(sourceFile, 'utf8');
+            await writeFile(filePath, content, { flag: 'w' });
+          } else {
+            console.warn(`  ⚠️  Warning: Source file not found: ${file}`);
+          }
+        }
+      }
+
+      console.log('\nViewer UI files in memory-bank/database/:');
+      for (const file of VIEWER_PUBLIC_FILES) {
+        const filePath = path.join(mbDir, 'database', file);
+        const dirPath = path.dirname(filePath);
+        const exists = fs.existsSync(filePath);
+        const status = exists ? '✓' : '+';
+        console.log(`  [${status}] ${file}`);
+        if (!options.dryRun && (!exists || options.force || options.full)) {
+          const sourceFile = path.join(__dirname, '..', '..', '..', 't21-workflow-testing', 'database', file);
+          if (fs.existsSync(sourceFile)) {
+            if (!fs.existsSync(dirPath)) {
+              await mkdir(dirPath, { recursive: true });
+            }
             const content = fs.readFileSync(sourceFile, 'utf8');
             await writeFile(filePath, content, { flag: 'w' });
           } else {
@@ -364,16 +589,20 @@ export async function initCommand(options) {
         console.log('\nLegend: [+] created | [✓] skipped (already exists)');
       }
 
-      if (components.database) {
+      if (components.database || components.viewer) {
         console.log('\n' + '='.repeat(60));
-        console.log('DATABASE SETUP');
+        console.log('DATABASE & VIEWER SETUP');
         console.log('='.repeat(60));
-        console.log('\nTo set up the database parser:');
+        console.log('\nNext steps:');
         console.log(`  cd ${path.join(mbDir, 'database')}`);
-        console.log('  pnpm install');
-        console.log('  node parse-edits.js      # Parse edit history');
-        console.log('  node parse-tasks.js      # Parse tasks');
-        console.log('  node query.js stats      # View database statistics');
+        console.log('\n1. Install dependencies:');
+        console.log('   pnpm install');
+        console.log('\n2. Parse your memory bank files:');
+        console.log('   node parse-edits.js      # Parse edit history');
+        console.log('   node parse-tasks.js      # Parse tasks');
+        console.log('\n3. Start the viewer server:');
+        console.log('   node server.js');
+        console.log('   Open: http://localhost:3000');
       }
     }
   } catch (error) {

@@ -1,6 +1,18 @@
 # Edit History
 *Created: 2025-04-10*
-*Last Updated: 2025-11-22 18:47:00 IST*
+*Last Updated: 2025-11-27 15:43:13 IST*
+
+### 2025-11-27
+
+#### 15:43 - T13, T21: CLI Viewer Integration Complete
+- Modified `mb-cli/src/commands/init.js` - Added viewer constants, interactive menu, file copying logic
+- Modified `mb-cli/src/index.js` - Added --setup-viewer and --interactive flags, updated help text
+- Modified `memory-bank/tasks/T13.md` - Updated status to 87%, added viewer integration session notes
+- Modified `memory-bank/tasks/T21.md` - Added CLI integration milestone, updated timestamps
+- Modified `memory-bank/tasks.md` - Updated T13 and T21 status summaries and timestamps
+- Modified `memory-bank/implementation-details/cli-implementation-details.md` - Added Nov 27 session log
+- Created `memory-bank/sessions/2025-11-27-afternoon.md` - New session file for viewer integration work
+- Modified `memory-bank/session_cache.md` - Updated current session, added T13/T21 to active tasks
 
 ### 2025-11-22
 

@@ -1,16 +1,16 @@
 # Session Cache
 *Created: 2025-11-10 18:27:15 IST*
-*Last Updated: 2025-11-22 18:46:00 IST*
+*Last Updated: 2025-11-27 15:43:13 IST*
 
-**Started**: 2025-11-22 16:15:00 IST
-**Focus Task**: T19 (Viewer), T17 (Rules Maintenance) 🔄
-**Session File**: `sessions/2025-11-22-evening.md` (Implicit)
-**Status**: 🔄 In Progress: T19 Production Workflow. T17 Rules Update (v6.11).
+**Started**: 2025-11-27 15:43:13 IST
+**Focus Task**: T13 (CLI), T21 (Database Workflow) 🔄
+**Session File**: `sessions/2025-11-27-afternoon.md`
+**Status**: 🔄 In Progress: T13 T21 Viewer Integration Complete
 
 ## Overview
 - Active: 11 | Paused: 0 | Completed: 7 | Cancelled: 1
-- Last Session: 2025-11-13 (T21 Phase A)
-- Current Period: evening
+- Last Session: 2025-11-22 (T19 Viewer, T17 Rules)
+- Current Period: afternoon
 
 ## Task Registry
 - META-1: Memory Bank Update and Maintenance - 🔄
@@ -31,6 +31,27 @@
 - T3: Implement DB Migration - ⏸️
 
 ## Active Tasks
+
+### T13: Implement Memory Bank CLI
+**Status:** 🔄 **IN PROGRESS** (87% Complete) **Priority:** HIGH
+**Started:** 2025-05-17 **Last:** 2025-11-27 15:43:13 IST
+**Context**: Integrated T21 database explorer into init command. Users can now set up viewer via CLI.
+**Files**: `mb-cli/src/commands/init.js`, `mb-cli/src/index.js`, `tasks/T13.md`
+**Progress**:
+1. ✅ Added VIEWER_FILES and VIEWER_PUBLIC_FILES constants
+2. ✅ Implemented interactive setup menu with 7 options
+3. ✅ Added --setup-viewer and --interactive flags
+4. ✅ Viewer file copying from t21-workflow-testing/database/
+
+### T21: Database-Native Memory Bank Update Workflow
+**Status:** 🔄 **IN PROGRESS** (Phase A Complete, CLI Integration Added) **Priority:** HIGH
+**Started:** 2025-11-13 **Last:** 2025-11-27 15:43:13 IST
+**Context**: Phase A testing complete. Explorer now integrated into T13 CLI for easy deployment.
+**Files**: `t21-workflow-testing/database/`, `tasks/T21.md`
+**Progress**:
+1. ✅ Phase A: Schema expansion, test suite, API server, HTML explorer
+2. ✅ CLI Integration: Explorer accessible via mb init --interactive
+3. ⬜ Phase B: Insert functions for database writes
 
 ### T17: Maintenance and Upkeep of Integrated Rules
 **Status:** 🔄 **IN PROGRESS** (v6.11 Released) **Priority:** MEDIUM
@@ -159,9 +180,11 @@
 2. Error log parser design
 
 ## Session History (Last 10)
-1. `sessions/2025-11-13-night.md` - T21: Phase A testing complete - test suite (540L), data gen (380L), API server (270L), HTML UI (480L)
-2. `sessions/2025-11-13-evening.md` - T21: Database-native memory bank update workflow, paradigm shift to DB-authoritative, schema design
-3. `sessions/2025-11-13-evening.md` - T17: Rules documentation v6.8 to v6.10, Tiered Knowledge Structure, Memory Bank Update Workflow (earlier)
+1. `sessions/2025-11-27-afternoon.md` - T13, T21: CLI viewer integration complete
+2. `sessions/2025-11-22-evening.md` - T19: Viewer refactor, T17: Rules v6.11
+3. `sessions/2025-11-13-night.md` - T21: Phase A testing complete - test suite (540L), data gen (380L), API server (270L), HTML UI (480L)
+4. `sessions/2025-11-13-evening.md` - T21: Database-native memory bank update workflow, paradigm shift to DB-authoritative, schema design
+5. `sessions/2025-11-13-evening.md` - T17: Rules documentation v6.8 to v6.10, Tiered Knowledge Structure, Memory Bank Update Workflow (earlier)
 4. `sessions/2025-11-12-evening.md` - T20: Format handling improvements, T13 integration with T20 parsers
 5. `sessions/2025-11-12-afternoon.md` - T20: Memory Bank Database Parser implementation (Phase 1 complete)
 6. `sessions/2025-11-11-night.md` - T3, T13: Init Script Fixes & Schema Corrections

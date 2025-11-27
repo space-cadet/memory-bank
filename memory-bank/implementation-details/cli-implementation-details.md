@@ -424,6 +424,53 @@ This document outlines the implementation plan for the Memory Bank CLI (T13), fo
 - Ready for multi-project deployment
 - Phase 3 focus: Fix remaining task parsing edge cases
 
+### November 27, 2025 - T21 Viewer Integration
+**Status**: T13 87% complete, T21 explorer integrated into CLI
+
+**Session Work (15:43:13 IST)**:
+- Integrated T21 database explorer into mb init command
+  * Added VIEWER_FILES constant (server.js, schema.sql, init-schema.js, test-schema.js, generate-test-data.js)
+  * Added VIEWER_PUBLIC_FILES constant (public/index.html, public/js/app.js, router.js, api.js, ui.js, public/css/styles.css)
+  * Updated scanExistingContent() to detect viewer and public files
+  * Enhanced promptForSelectiveInit() to show viewer component status
+  * Updated determineComponentsToInit() with viewer initialization logic
+- Implemented interactive setup menu
+  * Created promptForInteractiveSetup() with 7-option menu
+  * Options: init structure, setup database, setup viewer, parse files, start viewer, full setup, cancel
+  * Menu-driven workflow for user-friendly initialization
+- New command flags
+  * --setup-viewer: Initialize only viewer files
+  * --interactive: Launch interactive setup menu
+- Viewer file operations
+  * Copies viewer files from t21-workflow-testing/database/ directory
+  * Creates public/ subdirectory structure automatically
+  * Handles missing source files gracefully with warnings
+- Enhanced functionality
+  * Added parse-only operation mode (--parse flag without other components)
+  * Added start-viewer-only operation mode (--startViewer flag)
+  * Both modes validate required files and provide setup instructions
+  * Updated post-init messaging with viewer startup guide
+- Full dry-run support
+  * All new functionality respects --dry-run flag
+  * Preview changes without making modifications
+
+**Code Changes**:
+- mb-cli/src/commands/init.js: ~260 lines added
+  * Renamed DATABASE_SCRIPTS to PARSER_SCRIPTS
+  * Added viewer-related constants and scanning logic
+  * Implemented interactive menu system
+  * Added section 5 for viewer file copying
+- mb-cli/src/index.js: ~20 lines modified
+  * Added new flags to commander configuration
+  * Updated help text with viewer examples
+  * Enhanced component descriptions
+
+**Integration Outcome**:
+- Users can now initialize T21 viewer via CLI
+- Seamless integration with existing init workflow
+- Interactive mode simplifies complex initialization choices
+- Ready for testing in new and existing memory banks
+
 ## Notes
 - Each phase should be completed and tested before moving to next
 - Documentation should be updated with each phase
