@@ -54,6 +54,8 @@ const DATABASE_FILES = [
 const PARSER_SCRIPTS = [
   'parse-edits.js',
   'parse-tasks.js',
+  'parse-sessions.js',
+  'parse-session-cache.js',
   'query.js',
   'query-tasks.js'
 ];
@@ -72,7 +74,7 @@ const VIEWER_PUBLIC_FILES = [
   'public/js/router.js',
   'public/js/api.js',
   'public/js/ui.js',
-  'public/css/styles.css'
+  'public/css/style.css'
 ];
 
 // Utility: Get current timestamp in user's timezone
@@ -350,34 +352,118 @@ export async function initCommand(options) {
 
   try {
     // Handle parse-only operation
-    if (options.parse && !options.core && !options.templates && !options.database && !options.viewer) {
+    if (options.parse) {
       console.log('Parsing memory bank files into database...\n');
       
       const mbDir = path.join(targetDir, 'memory-bank');
+      const dbDir = path.join(mbDir, 'database');
       const editHistoryPath = path.join(mbDir, 'edit_history.md');
       const tasksPath = path.join(mbDir, 'tasks.md');
+      const sessionsDir = path.join(mbDir, 'sessions');
+      const sessionCachePath = path.join(mbDir, 'session_cache.md');
       
-      if (!fs.existsSync(editHistoryPath)) {
-        console.error(`❌ Error: edit_history.md not found at ${editHistoryPath}`);
+      // Validate required files exist
+      const missingFiles = [];
+      if (!fs.existsSync(editHistoryPath)) missingFiles.push('edit_history.md');
+      if (!fs.existsSync(tasksPath)) missingFiles.push('tasks.md');
+      if (!fs.existsSync(sessionCachePath)) missingFiles.push('session_cache.md');
+      if (!fs.existsSync(sessionsDir)) missingFiles.push('sessions/ directory');
+      
+      if (missingFiles.length > 0) {
+        console.error(`❌ Error: Missing required files:`);
+        missingFiles.forEach(f => console.error(`   - ${f}`));
+        console.error(`\nExpected location: ${mbDir}\n`);
         process.exit(1);
       }
-      if (!fs.existsSync(tasksPath)) {
-        console.error(`❌ Error: tasks.md not found at ${tasksPath}`);
+      
+      // Validate database directory and parser scripts exist
+      if (!fs.existsSync(dbDir)) {
+        console.error(`❌ Error: Database directory not found at ${dbDir}`);
+        console.error('Please run: mb init --database\n');
+        process.exit(1);
+      }
+      
+      const parserScripts = ['parse-edits.js', 'parse-tasks.js', 'parse-sessions.js', 'parse-session-cache.js'];
+      const missingScripts = parserScripts.filter(script => !fs.existsSync(path.join(dbDir, script)));
+      
+      if (missingScripts.length > 0) {
+        console.error(`❌ Error: Missing parser scripts:`);
+        missingScripts.forEach(s => console.error(`   - ${s}`));
+        console.error(`\nPlease run: mb init --database\n`);
         process.exit(1);
       }
       
       console.log(`✓ Found edit_history.md`);
       console.log(`✓ Found tasks.md`);
-      console.log('\nTo parse the files, run:');
-      console.log(`  cd ${path.join(mbDir, 'database')}`);
-      console.log('  pnpm install (if not already installed)');
-      console.log('  node parse-edits.js      # Parse edit history');
-      console.log('  node parse-tasks.js      # Parse tasks\n');
+      console.log(`✓ Found session_cache.md`);
+      console.log(`✓ Found sessions/ directory`);
+      console.log(`✓ Found parser scripts\n`);
+      
+      // Check if dependencies are installed
+      const nodeModulesPath = path.join(dbDir, 'node_modules');
+      if (!fs.existsSync(nodeModulesPath)) {
+        console.log('Installing dependencies...');
+        const { spawnSync } = await import('child_process');
+        const installResult = spawnSync('pnpm', ['install'], {
+          cwd: dbDir,
+          stdio: 'inherit',
+          shell: true
+        });
+        
+        if (installResult.status !== 0) {
+          console.error('❌ Failed to install dependencies\n');
+          process.exit(1);
+        }
+        console.log('✓ Dependencies installed\n');
+      }
+      
+      // Execute parsers
+      console.log('Running parsers...\n');
+      const { spawnSync } = await import('child_process');
+      
+      const parsers = [
+        { script: 'parse-edits.js', name: 'Edit History' },
+        { script: 'parse-tasks.js', name: 'Tasks' },
+        { script: 'parse-sessions.js', name: 'Sessions' },
+        { script: 'parse-session-cache.js', name: 'Session Cache' }
+      ];
+      
+      let allSuccess = true;
+      for (const parser of parsers) {
+        console.log(`\n${'='.repeat(60)}`);
+        console.log(`Parsing ${parser.name}...`);
+        console.log('='.repeat(60) + '\n');
+        
+        const result = spawnSync('node', [parser.script], {
+          cwd: dbDir,
+          stdio: 'inherit',
+          shell: true
+        });
+        
+        if (result.status !== 0) {
+          console.error(`\n❌ Failed to parse ${parser.name}`);
+          allSuccess = false;
+        }
+      }
+      
+      if (allSuccess) {
+        console.log('\n' + '='.repeat(60));
+        console.log('✓ All parsers completed successfully!');
+        console.log('='.repeat(60));
+        console.log(`\nDatabase location: ${path.join(dbDir, 'memory_bank.db')}`);
+        console.log('\nTo start the viewer:');
+        console.log(`  cd ${dbDir}`);
+        console.log('  node server.js\n');
+      } else {
+        console.error('\n❌ Some parsers failed. Check the output above for details.\n');
+        process.exit(1);
+      }
+      
       return;
     }
 
     // Handle startViewer-only operation
-    if (options.startViewer && !options.core && !options.templates && !options.database && !options.viewer) {
+    if (options.startViewer) {
       console.log('Starting viewer server...\n');
       
       const dbDir = path.join(targetDir, 'memory-bank', 'database');
@@ -407,19 +493,19 @@ export async function initCommand(options) {
     console.log('The following will be initialized:\n');
 
     let summary = [];
-    let targetDisplay = targetDir;
+    let targetPaths = new Set([targetDir]);
     
     if (components.core) summary.push('Core memory bank files');
     if (components.templates) summary.push('Template files');
     if (components.database) {
       summary.push('Database setup with SQLite parser scripts');
-      targetDisplay = path.join(targetDir, 'memory-bank', 'database');
+      targetPaths.add(path.join(targetDir, 'memory-bank', 'database'));
     }
     if (components.viewer) summary.push('Database viewer (server + UI)');
     
     if (summary.length > 0) {
       console.log('Components to initialize: ' + summary.join(', '));
-      console.log(`Target directory: ${targetDisplay}\n`);
+      console.log(`Target ${targetPaths.size > 1 ? 'directories' : 'directory'}: ${Array.from(targetPaths).join(', ')}\n`);
     }
 
     if (!options.force && !process.argv.includes('--skip-confirmation')) {

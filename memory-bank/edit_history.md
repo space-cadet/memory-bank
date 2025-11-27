@@ -1,8 +1,27 @@
 # Edit History
 *Created: 2025-04-10*
-*Last Updated: 2025-11-27 15:43:13 IST*
+*Last Updated: 2025-11-27 16:55:30 IST*
 
 ### 2025-11-27
+
+#### 16:55 - T13, T21: CLI Parser Execution & Modular Refactor
+- Modified `mb-cli/src/commands/init.js` - Fixed parse/startViewer exclusive checks, updated PARSER_SCRIPTS constant, fixed component summary
+- Created `mb-cli/src/lib/validators.js` - Extracted validation functions for scanExistingContent and file checks
+- Created `mb-cli/src/lib/parsers.js` - Extracted parser execution logic with dependency installation
+- Created `mb-cli/src/lib/prompts.js` - Extracted interactive menu and prompt functions
+- Created `mb-cli/src/lib/writers.js` - Extracted template generation functions and timestamp utility
+- Modified `t21-workflow-testing/database/server.js` - Changed default db to memory_bank.db, added --help and --port flags
+- Created `t21-workflow-testing/database/parse-edits.js` - Copied from memory-bank/database for consistency
+- Created `t21-workflow-testing/database/parse-tasks.js` - Copied from memory-bank/database for consistency
+- Created `t21-workflow-testing/database/parse-sessions.js` - Copied from memory-bank/database for consistency
+- Created `t21-workflow-testing/database/parse-session-cache.js` - Copied from memory-bank/database for consistency
+- Created `t21-workflow-testing/database/query.js` - Copied from memory-bank/database for consistency
+- Created `t21-workflow-testing/database/query-tasks.js` - Copied from memory-bank/database for consistency
+- Modified `memory-bank/tasks/T13.md` - Updated status to 90%, added session notes for parser execution and modular refactor
+- Modified `memory-bank/tasks/T21.md` - Added parser script integration and server enhancement notes
+- Modified `memory-bank/tasks.md` - Updated T13 and T21 status and timestamps
+- Created `memory-bank/sessions/2025-11-27-afternoon.md` - Session file for parser fixes and modular refactor work
+- Modified `memory-bank/session_cache.md` - Updated current session with T13 and T21 progress
 
 #### 15:43 - T13, T21: CLI Viewer Integration Complete
 - Modified `mb-cli/src/commands/init.js` - Added viewer constants, interactive menu, file copying logic
@@ -11,7 +30,6 @@
 - Modified `memory-bank/tasks/T21.md` - Added CLI integration milestone, updated timestamps
 - Modified `memory-bank/tasks.md` - Updated T13 and T21 status summaries and timestamps
 - Modified `memory-bank/implementation-details/cli-implementation-details.md` - Added Nov 27 session log
-- Created `memory-bank/sessions/2025-11-27-afternoon.md` - New session file for viewer integration work
 - Modified `memory-bank/session_cache.md` - Updated current session, added T13/T21 to active tasks
 
 ### 2025-11-22

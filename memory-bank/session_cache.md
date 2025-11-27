@@ -1,11 +1,11 @@
 # Session Cache
 *Created: 2025-11-10 18:27:15 IST*
-*Last Updated: 2025-11-27 15:43:13 IST*
+*Last Updated: 2025-11-27 16:55:30 IST*
 
-**Started**: 2025-11-27 15:43:13 IST
-**Focus Task**: T13 (CLI), T21 (Database Workflow) 🔄
+**Started**: 2025-11-27 16:13:00 IST
+**Focus Task**: T13 (CLI), T21 (Parser Scripts) 🔄
 **Session File**: `sessions/2025-11-27-afternoon.md`
-**Status**: 🔄 In Progress: T13 T21 Viewer Integration Complete
+**Status**: 🔄 In Progress: T13 Parser Execution & Modular Refactor, T21 Parser Scripts Added
 
 ## Overview
 - Active: 11 | Paused: 0 | Completed: 7 | Cancelled: 1
@@ -33,25 +33,26 @@
 ## Active Tasks
 
 ### T13: Implement Memory Bank CLI
-**Status:** 🔄 **IN PROGRESS** (87% Complete) **Priority:** HIGH
-**Started:** 2025-05-17 **Last:** 2025-11-27 15:43:13 IST
-**Context**: Integrated T21 database explorer into init command. Users can now set up viewer via CLI.
-**Files**: `mb-cli/src/commands/init.js`, `mb-cli/src/index.js`, `tasks/T13.md`
+**Status:** 🔄 **IN PROGRESS** (90% Complete) **Priority:** HIGH
+**Started:** 2025-05-17 **Last:** 2025-11-27 16:55:30 IST
+**Context**: Parser execution implemented, modular lib structure created. Option 4 now executes parsers instead of showing instructions.
+**Files**: `mb-cli/src/commands/init.js`, `mb-cli/src/lib/`, `tasks/T13.md`
 **Progress**:
-1. ✅ Added VIEWER_FILES and VIEWER_PUBLIC_FILES constants
-2. ✅ Implemented interactive setup menu with 7 options
-3. ✅ Added --setup-viewer and --interactive flags
-4. ✅ Viewer file copying from t21-workflow-testing/database/
+1. ✅ Fixed parse/startViewer operation exclusive checks
+2. ✅ Implemented actual parser execution with dependency installation
+3. ✅ Updated PARSER_SCRIPTS to include all 4 parsers + 2 query scripts
+4. ✅ Created modular lib structure (validators, parsers, prompts, writers)
 
 ### T21: Database-Native Memory Bank Update Workflow
-**Status:** 🔄 **IN PROGRESS** (Phase A Complete, CLI Integration Added) **Priority:** HIGH
-**Started:** 2025-11-13 **Last:** 2025-11-27 15:43:13 IST
-**Context**: Phase A testing complete. Explorer now integrated into T13 CLI for easy deployment.
+**Status:** 🔄 **IN PROGRESS** (Phase A Complete, Parser Scripts Added) **Priority:** HIGH
+**Started:** 2025-11-13 **Last:** 2025-11-27 16:55:30 IST
+**Context**: Copied all parser scripts to T21 folder. Enhanced server.js with --help and --port flags.
 **Files**: `t21-workflow-testing/database/`, `tasks/T21.md`
 **Progress**:
 1. ✅ Phase A: Schema expansion, test suite, API server, HTML explorer
-2. ✅ CLI Integration: Explorer accessible via mb init --interactive
-3. ⬜ Phase B: Insert functions for database writes
+2. ✅ Parser scripts: All 4 parsers + 2 query tools copied to T21
+3. ✅ Server enhancements: Default to memory_bank.db, added --help and --port
+4. ⬜ Phase B: Insert functions for database writes
 
 ### T17: Maintenance and Upkeep of Integrated Rules
 **Status:** 🔄 **IN PROGRESS** (v6.11 Released) **Priority:** MEDIUM
