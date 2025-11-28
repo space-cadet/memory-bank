@@ -5,9 +5,15 @@ const App = {
   allTables: [],
   currentTable: null,
   currentData: [],
-  
+
+  // File browser state
+  fileCategories: {},
+  currentCategory: null,
+  currentFile: null,
+
   // View State
   state: {
+    mode: 'database', // 'database' or 'files'
     viewMode: localStorage.getItem('viewMode') || 'card',
     filter: '',
     sortColumn: null,
@@ -21,9 +27,16 @@ const App = {
     // Initialize dark mode
     this.initTheme();
 
-    // Load tables
-    await this.loadTables();
-    await this.loadStats();
+    // Check URL hash for initial mode
+    const hash = window.location.hash;
+    if (hash.includes('files')) {
+      this.state.mode = 'files';
+      this.switchTab('files');
+    } else {
+      // Load database tables by default
+      await this.loadTables();
+      await this.loadStats();
+    }
   },
 
   initTheme() {
@@ -51,8 +64,8 @@ const App = {
   async loadTables() {
     try {
       this.allTables = await API.getTables();
-      const tableList = document.getElementById('tableList');
-      tableList.innerHTML = UI.renderTableList(this.allTables, this.currentTable);
+      const navList = document.getElementById('navList');
+      navList.innerHTML = UI.renderTableList(this.allTables, this.currentTable);
 
       // Select first table by default if none selected
       if (this.allTables.length > 0 && !this.currentTable) {
@@ -318,6 +331,124 @@ const App = {
       document.getElementById('mainContent').innerHTML = UI.renderSearchResults(query, result.results, result.totalMatches);
     } catch (err) {
       document.getElementById('mainContent').innerHTML = `<div class="error">Error: ${err.message}</div>`;
+    }
+  },
+
+  /**
+   * Tab Switching between Database and Files
+   */
+  async switchTab(mode) {
+    this.state.mode = mode;
+
+    // Update tab button states
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.remove('active');
+      if (btn.dataset.tab === mode) {
+        btn.classList.add('active');
+      }
+    });
+
+    // Update search placeholder
+    const searchInput = document.getElementById('searchInput');
+    if (mode === 'database') {
+      searchInput.placeholder = 'Search across all tables...';
+      document.getElementById('sidebarTitle').textContent = 'Tables';
+      await this.loadTables();
+    } else {
+      searchInput.placeholder = 'Search files...';
+      document.getElementById('sidebarTitle').textContent = 'Categories';
+      await this.loadFileCategories();
+    }
+
+    // Push state for navigation
+    if (!Router.isNavigatingHistory) {
+      Router.push(Router.buildState('tab', { mode: mode }));
+    }
+  },
+
+  /**
+   * File Browser Methods
+   */
+  async loadFileCategories() {
+    try {
+      this.fileCategories = await API.getMemoryBankFiles();
+      const navList = document.getElementById('navList');
+      navList.innerHTML = UI.renderFileCategories(this.fileCategories, this.currentCategory);
+
+      // Select first category by default if none selected
+      if (!this.currentCategory) {
+        const firstCategory = Object.keys(this.fileCategories)[0];
+        if (firstCategory) {
+          this.selectFileCategory(firstCategory);
+        }
+      }
+    } catch (err) {
+      console.error("Failed to load file categories", err);
+      document.getElementById('mainContent').innerHTML = `<div class="error">Error loading files: ${err.message}</div>`;
+    }
+  },
+
+  async selectFileCategory(categoryKey, event) {
+    this.currentCategory = categoryKey;
+    this.currentFile = null;
+
+    // Update sidebar selection
+    document.querySelectorAll('.category-item').forEach(el => el.classList.remove('active'));
+    if (event && event.currentTarget) {
+      event.currentTarget.classList.add('active');
+    } else {
+      // Programmatic selection
+      const items = document.querySelectorAll('.category-item');
+      for (let item of items) {
+        if (item.textContent.includes(this.fileCategories[categoryKey].name)) {
+          item.classList.add('active');
+          break;
+        }
+      }
+    }
+
+    // Push state for navigation
+    if (!Router.isNavigatingHistory && event) {
+      Router.push(Router.buildState('fileCategory', { category: categoryKey }));
+    }
+
+    // Display file list
+    const category = this.fileCategories[categoryKey];
+    const files = category.files || [];
+
+    let html = `
+      <h2>${category.icon} ${category.name}</h2>
+      <div class="file-category-info">
+        <span>${files.length} files</span>
+      </div>
+    `;
+    html += UI.renderFileList(category, files, this.currentFile);
+
+    document.getElementById('mainContent').innerHTML = html;
+  },
+
+  async viewFile(filePath, event) {
+    try {
+      this.currentFile = filePath;
+
+      // Update file list selection
+      document.querySelectorAll('.file-item').forEach(el => el.classList.remove('active'));
+      if (event && event.currentTarget) {
+        event.currentTarget.classList.add('active');
+      }
+
+      // Push state for navigation
+      if (!Router.isNavigatingHistory && event) {
+        Router.push(Router.buildState('file', { category: this.currentCategory, file: filePath }));
+      }
+
+      document.getElementById('mainContent').innerHTML = '<div class="loading">Loading file...</div>';
+
+      const file = await API.getMemoryBankFile(filePath);
+      document.getElementById('mainContent').innerHTML = UI.renderFileViewer(file);
+    } catch (err) {
+      console.error("Failed to load file", err);
+      document.getElementById('mainContent').innerHTML = `<div class="error">Error loading file: ${err.message}</div>`;
     }
   }
 };

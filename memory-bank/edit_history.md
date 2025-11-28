@@ -1,6 +1,21 @@
 # Edit History
 *Created: 2025-04-10*
-*Last Updated: 2025-11-27 16:55:30 IST*
+*Last Updated: 2025-11-28 16:30:41 IST*
+
+### 2025-11-28
+
+#### 16:30 - T21: File Viewer Implementation Complete
+- Modified `t21-workflow-testing/database/server.js` - Added /api/memory-bank/files and /api/memory-bank/file/* endpoints with file categorization and security checks
+- Modified `t21-workflow-testing/database/public/index.html` - Added tab navigation buttons for Database/Files modes, added marked.js CDN import
+- Modified `t21-workflow-testing/database/public/js/app.js` - Implemented switchTab(), loadFileCategories(), selectFileCategory(), viewFile() methods with state management
+- Modified `t21-workflow-testing/database/public/js/router.js` - Extended state types for 'tab', 'fileCategory', 'file' with automatic mode switching
+- Added `t21-workflow-testing/database/public/js/ui.js` - Implemented renderFileCategories(), renderFileList(), renderFileViewer() for file browser UI
+- Modified `t21-workflow-testing/database/public/js/api.js` - Added getMemoryBankFiles() and getMemoryBankFile() API methods
+- Modified `t21-workflow-testing/database/public/css/style.css` - Added 304 lines of styling for tabs, file browser, markdown content, dark/light mode support
+- Modified `memory-bank/tasks/T21.md` - Updated completion criteria, added file viewer implementation progress, updated last active timestamp
+- Modified `memory-bank/implementation-details/modular-viewer-architecture.md` - Documented file viewer API endpoints and UI features, updated last updated timestamp
+- Modified `memory-bank/session_cache.md` - Updated current session focus, updated T21 task context with file viewer details, added new session to history
+- Created `memory-bank/sessions/2025-11-28-afternoon.md` - Session file for file viewer implementation work
 
 ### 2025-11-27
 

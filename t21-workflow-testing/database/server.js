@@ -10,20 +10,22 @@ import express from 'express';
 import Database from 'better-sqlite3';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { readdir, readFile, stat } from 'fs/promises';
+import { existsSync } from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
 
+// Parse command line arguments
+const args = process.argv.slice(2);
+
 // Port configuration
 const portArgIndex = args.indexOf('--port');
-const PORT = portArgIndex !== -1 && args[portArgIndex + 1] 
-  ? parseInt(args[portArgIndex + 1]) 
+const PORT = portArgIndex !== -1 && args[portArgIndex + 1]
+  ? parseInt(args[portArgIndex + 1])
   : (process.env.PORT || 3000);
-
-// Database path configuration
-const args = process.argv.slice(2);
 
 // Check for help flag
 if (args.includes('--help') || args.includes('-h')) {
@@ -277,6 +279,202 @@ app.get('/api/stats', (req, res) => {
       tableCount: tables.length,
       totalRows,
       tableStats: stats
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * Memory Bank File Browser API
+ */
+
+// Memory bank base path (relative to server location)
+const MEMORY_BANK_PATH = join(__dirname, '..', '..', 'memory-bank');
+
+// Get all memory bank files organized by category
+app.get('/api/memory-bank/files', async (req, res) => {
+  try {
+    if (!existsSync(MEMORY_BANK_PATH)) {
+      return res.status(404).json({ error: 'Memory bank directory not found' });
+    }
+
+    const categories = {
+      core: {
+        name: 'Core Files',
+        icon: '📘',
+        files: []
+      },
+      tasks: {
+        name: 'Tasks',
+        icon: '📋',
+        files: []
+      },
+      sessions: {
+        name: 'Sessions',
+        icon: '🗓️',
+        files: []
+      },
+      implementation: {
+        name: 'Implementation Details',
+        icon: '🔧',
+        files: []
+      },
+      database: {
+        name: 'Database',
+        icon: '💾',
+        files: []
+      }
+    };
+
+    // Core markdown files
+    const coreFiles = [
+      'tasks.md',
+      'activeContext.md',
+      'session_cache.md',
+      'edit_history.md',
+      'errorLog.md',
+      'progress.md',
+      'changelog.md',
+      'projectbrief.md',
+      'productContext.md',
+      'techContext.md',
+      'systemPatterns.md'
+    ];
+
+    for (const file of coreFiles) {
+      const filePath = join(MEMORY_BANK_PATH, file);
+      if (existsSync(filePath)) {
+        const stats = await stat(filePath);
+        categories.core.files.push({
+          name: file,
+          path: file,
+          size: stats.size,
+          modified: stats.mtime
+        });
+      }
+    }
+
+    // Task files
+    const tasksDir = join(MEMORY_BANK_PATH, 'tasks');
+    if (existsSync(tasksDir)) {
+      const taskFiles = await readdir(tasksDir);
+      for (const file of taskFiles) {
+        if (file.endsWith('.md')) {
+          const filePath = join(tasksDir, file);
+          const stats = await stat(filePath);
+          categories.tasks.files.push({
+            name: file,
+            path: `tasks/${file}`,
+            size: stats.size,
+            modified: stats.mtime
+          });
+        }
+      }
+      // Sort task files by name
+      categories.tasks.files.sort((a, b) => {
+        // Extract task numbers for proper sorting (T1, T2, T10, etc.)
+        const aMatch = a.name.match(/T(\d+)/);
+        const bMatch = b.name.match(/T(\d+)/);
+        if (aMatch && bMatch) {
+          return parseInt(aMatch[1]) - parseInt(bMatch[1]);
+        }
+        return a.name.localeCompare(b.name);
+      });
+    }
+
+    // Session files
+    const sessionsDir = join(MEMORY_BANK_PATH, 'sessions');
+    if (existsSync(sessionsDir)) {
+      const sessionFiles = await readdir(sessionsDir);
+      for (const file of sessionFiles) {
+        if (file.endsWith('.md')) {
+          const filePath = join(sessionsDir, file);
+          const stats = await stat(filePath);
+          categories.sessions.files.push({
+            name: file,
+            path: `sessions/${file}`,
+            size: stats.size,
+            modified: stats.mtime
+          });
+        }
+      }
+      // Sort session files by date (most recent first)
+      categories.sessions.files.sort((a, b) => b.modified - a.modified);
+    }
+
+    // Implementation details
+    const implDir = join(MEMORY_BANK_PATH, 'implementation-details');
+    if (existsSync(implDir)) {
+      const implFiles = await readdir(implDir);
+      for (const file of implFiles) {
+        if (file.endsWith('.md')) {
+          const filePath = join(implDir, file);
+          const stats = await stat(filePath);
+          categories.implementation.files.push({
+            name: file,
+            path: `implementation-details/${file}`,
+            size: stats.size,
+            modified: stats.mtime
+          });
+        }
+      }
+      categories.implementation.files.sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    // Database files
+    const dbDir = join(MEMORY_BANK_PATH, 'database');
+    if (existsSync(dbDir)) {
+      const dbFiles = await readdir(dbDir);
+      for (const file of dbFiles) {
+        const filePath = join(dbDir, file);
+        const stats = await stat(filePath);
+        categories.database.files.push({
+          name: file,
+          path: `database/${file}`,
+          size: stats.size,
+          modified: stats.mtime,
+          isDir: stats.isDirectory()
+        });
+      }
+      categories.database.files.sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    res.json(categories);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Get content of a specific memory bank file
+app.get('/api/memory-bank/file/*', async (req, res) => {
+  try {
+    const filePath = req.params[0]; // Get everything after /api/memory-bank/file/
+    const fullPath = join(MEMORY_BANK_PATH, filePath);
+
+    // Security check: ensure the path is within memory-bank directory
+    if (!fullPath.startsWith(MEMORY_BANK_PATH)) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    if (!existsSync(fullPath)) {
+      return res.status(404).json({ error: 'File not found' });
+    }
+
+    const stats = await stat(fullPath);
+
+    if (stats.isDirectory()) {
+      return res.status(400).json({ error: 'Path is a directory' });
+    }
+
+    const content = await readFile(fullPath, 'utf-8');
+
+    res.json({
+      path: filePath,
+      name: filePath.split('/').pop(),
+      content: content,
+      size: stats.size,
+      modified: stats.mtime
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
