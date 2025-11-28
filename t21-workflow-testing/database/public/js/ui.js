@@ -192,6 +192,100 @@ const UI = {
       });
     }
     return html;
+  },
+
+  /**
+   * Memory Bank File Browser UI
+   */
+
+  renderFileCategories(categories, currentCategory) {
+    let html = '';
+    Object.entries(categories).forEach(([key, category]) => {
+      const isActive = key === currentCategory ? 'active' : '';
+      const fileCount = category.files ? category.files.length : 0;
+      html += `
+        <li class="category-item ${isActive}" onclick="App.selectFileCategory('${key}', event)">
+          <div class="category-name">${category.icon} ${category.name}</div>
+          <div class="category-meta">${fileCount} files</div>
+        </li>
+      `;
+    });
+    return html;
+  },
+
+  renderFileList(category, files, currentFile) {
+    if (!files || files.length === 0) {
+      return '<div class="no-results">No files in this category</div>';
+    }
+
+    let html = '<div class="file-list">';
+    files.forEach(file => {
+      const isActive = currentFile === file.path ? 'active' : '';
+      const sizeKB = (file.size / 1024).toFixed(1);
+      const modifiedDate = new Date(file.modified).toLocaleDateString();
+
+      html += `
+        <div class="file-item ${isActive}" onclick="App.viewFile('${file.path}', event)">
+          <div class="file-header">
+            <span class="file-name">📄 ${this.escapeHtml(file.name)}</span>
+          </div>
+          <div class="file-meta">
+            <span>${sizeKB} KB</span>
+            <span>•</span>
+            <span>${modifiedDate}</span>
+          </div>
+        </div>
+      `;
+    });
+    html += '</div>';
+    return html;
+  },
+
+  renderFileViewer(file) {
+    let html = `
+      <div class="file-viewer">
+        <div class="file-viewer-header">
+          <h2>📄 ${this.escapeHtml(file.name)}</h2>
+          <div class="file-info">
+            <span>${(file.size / 1024).toFixed(1)} KB</span>
+            <span>•</span>
+            <span>${new Date(file.modified).toLocaleString()}</span>
+            <span>•</span>
+            <span class="file-path">${this.escapeHtml(file.path)}</span>
+          </div>
+        </div>
+        <div class="file-viewer-content">
+    `;
+
+    // Check if file is markdown
+    if (file.name.endsWith('.md')) {
+      // Use marked.js to render markdown
+      try {
+        const rendered = marked.parse(file.content);
+        html += `<div class="markdown-content">${rendered}</div>`;
+      } catch (e) {
+        // Fallback to plain text if markdown parsing fails
+        html += `<pre class="code-content">${this.escapeHtml(file.content)}</pre>`;
+      }
+    } else if (file.name.endsWith('.js') || file.name.endsWith('.sql') || file.name.endsWith('.json')) {
+      // Code files
+      html += `<pre class="code-content">${this.escapeHtml(file.content)}</pre>`;
+    } else {
+      // Plain text
+      html += `<pre class="text-content">${this.escapeHtml(file.content)}</pre>`;
+    }
+
+    html += `
+        </div>
+      </div>
+    `;
+    return html;
+  },
+
+  formatFileSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
   }
 };
 

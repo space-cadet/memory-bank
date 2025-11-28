@@ -40,6 +40,22 @@ const API = {
   async search(query) {
     const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
     return response.json();
+  },
+
+  /**
+   * Fetch memory bank file categories and file list
+   */
+  async getMemoryBankFiles() {
+    const response = await fetch('/api/memory-bank/files');
+    return response.json();
+  },
+
+  /**
+   * Fetch content of a specific memory bank file
+   */
+  async getMemoryBankFile(filePath) {
+    const response = await fetch(`/api/memory-bank/file/${filePath}`);
+    return response.json();
   }
 };
 

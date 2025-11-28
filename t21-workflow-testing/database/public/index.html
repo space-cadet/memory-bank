@@ -3,17 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SQLite Web Explorer - Phase A Schema</title>
+  <title>Memory Bank Viewer - Database & Files</title>
   <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
   <div class="container">
     <header>
       <div class="header-left">
-        <h1>💾 Memory Bank DB</h1>
-        <div class="subtitle">Database-Native Workflow Explorer</div>
+        <h1>💾 Memory Bank Viewer</h1>
+        <div class="subtitle">Browse Database Records & Project Files</div>
+        <div class="tab-navigation">
+          <button class="tab-btn active" data-tab="database" onclick="App.switchTab('database')">
+            📊 Database
+          </button>
+          <button class="tab-btn" data-tab="files" onclick="App.switchTab('files')">
+            📁 Files
+          </button>
+        </div>
         <div class="search-bar">
-          <input type="text" id="searchInput" placeholder="Search across all tables..." />
+          <input type="text" id="searchInput" placeholder="Search..." />
           <button onclick="App.performSearch()">Search</button>
         </div>
       </div>
@@ -23,17 +32,17 @@
     </header>
 
     <div class="main">
-      <aside class="sidebar">
-        <h2>Tables</h2>
-        <ul class="table-list" id="tableList">
+      <aside class="sidebar" id="sidebar">
+        <h2 id="sidebarTitle">Tables</h2>
+        <ul class="nav-list" id="navList">
           <!-- Populated by JS -->
-          <li class="loading">Loading tables...</li>
+          <li class="loading">Loading...</li>
         </ul>
       </aside>
 
       <main class="content" id="mainContent">
         <!-- Populated by JS -->
-        <div class="loading">Select a table to view records</div>
+        <div class="loading">Select an item to view</div>
       </main>
     </div>
   </div>
