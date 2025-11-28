@@ -1,7 +1,8 @@
 # Modular Memory Bank Viewer Architecture
 
 *Created: 2025-11-22*
-*Related Task: [T19](../tasks/T19.md)*
+*Last Updated: 2025-11-28 16:30:41 IST*
+*Related Task: [T21](../tasks/T21.md)*
 
 ## Overview
 
@@ -48,6 +49,8 @@ graph TD
         *   `GET /api/table/:name/schema`: Schema info (FKs, Indexes).
         *   `GET /api/table/:name/record/:id`: Single record with **Related Records** traversal.
         *   `GET /api/search`: Global full-text search.
+        *   `GET /api/memory-bank/files`: List all memory bank files organized by 5 categories (Core, Tasks, Sessions, Implementation, Database). Returns file metadata (name, path, size, modified timestamp).
+        *   `GET /api/memory-bank/file/*`: Fetch specific memory bank file content with security checks. Returns content and metadata as JSON.
 
 4.  **Frontend (`t21-workflow-testing/database/public/`)**:
     *   **Stack**: Vanilla JavaScript (ES Modules), CSS Variables (Theming).
@@ -90,6 +93,9 @@ The frontend is split into distinct modules to separate concerns:
     *   **Dates**: Recognizes ISO date strings and sorts chronologically.
 *   **Dual View Modes**: Toggle between **Table View** (dense data) and **Card View** (rich summaries).
 *   **Related Records**: When viewing a detailed record, the UI automatically fetches and displays related data via Foreign Keys (e.g., viewing a Task shows its Dependencies).
+*   **Tab Navigation**: Switch between **Database Mode** (SQLite records) and **Files Mode** (markdown file browsing).
+*   **File Browser**: Category-based organization with markdown rendering (marked.js) and syntax highlighting for code files.
+*   **History Integration**: Browser back/forward navigation works seamlessly across both database and file modes via History API state management.
 
 ## 4. Future Roadmap
 

@@ -1,11 +1,11 @@
 # Session Cache
 *Created: 2025-11-10 18:27:15 IST*
-*Last Updated: 2025-11-27 16:55:30 IST*
+*Last Updated: 2025-11-28 16:30:41 IST*
 
-**Started**: 2025-11-27 16:13:00 IST
-**Focus Task**: T13 (CLI), T21 (Parser Scripts) 🔄
-**Session File**: `sessions/2025-11-27-afternoon.md`
-**Status**: 🔄 In Progress: T13 Parser Execution & Modular Refactor, T21 Parser Scripts Added
+**Started**: 2025-11-28 14:00:00 IST
+**Focus Task**: T21 (File Viewer Implementation) 🔄
+**Session File**: `sessions/2025-11-28-afternoon.md`
+**Status**: 🔄 In Progress: T21 File Viewer Added to Viewer Interface
 
 ## Overview
 - Active: 11 | Paused: 0 | Completed: 7 | Cancelled: 1
@@ -44,15 +44,16 @@
 4. ✅ Created modular lib structure (validators, parsers, prompts, writers)
 
 ### T21: Database-Native Memory Bank Update Workflow
-**Status:** 🔄 **IN PROGRESS** (Phase A Complete, Parser Scripts Added) **Priority:** HIGH
-**Started:** 2025-11-13 **Last:** 2025-11-27 16:55:30 IST
-**Context**: Copied all parser scripts to T21 folder. Enhanced server.js with --help and --port flags.
-**Files**: `t21-workflow-testing/database/`, `tasks/T21.md`
+**Status:** 🔄 **IN PROGRESS** (Phase A Complete, File Viewer Added) **Priority:** HIGH
+**Started:** 2025-11-13 **Last:** 2025-11-28 16:30:41 IST
+**Context**: File viewer integration complete. Tab-based navigation between database and file modes. File browser with markdown rendering and syntax highlighting. Ready for Phase B insert functions.
+**Files**: `t21-workflow-testing/database/`, `tasks/T21.md`, `implementation-details/modular-viewer-architecture.md`
 **Progress**:
 1. ✅ Phase A: Schema expansion, test suite, API server, HTML explorer
 2. ✅ Parser scripts: All 4 parsers + 2 query tools copied to T21
 3. ✅ Server enhancements: Default to memory_bank.db, added --help and --port
-4. ⬜ Phase B: Insert functions for database writes
+4. ✅ File viewer: Added /api/memory-bank/* endpoints and tab-based UI
+5. ⬜ Phase B: Insert functions for database writes
 
 ### T17: Maintenance and Upkeep of Integrated Rules
 **Status:** 🔄 **IN PROGRESS** (v6.11 Released) **Priority:** MEDIUM
@@ -181,15 +182,13 @@
 2. Error log parser design
 
 ## Session History (Last 10)
-1. `sessions/2025-11-27-afternoon.md` - T13, T21: CLI viewer integration complete
-2. `sessions/2025-11-22-evening.md` - T19: Viewer refactor, T17: Rules v6.11
-3. `sessions/2025-11-13-night.md` - T21: Phase A testing complete - test suite (540L), data gen (380L), API server (270L), HTML UI (480L)
-4. `sessions/2025-11-13-evening.md` - T21: Database-native memory bank update workflow, paradigm shift to DB-authoritative, schema design
-5. `sessions/2025-11-13-evening.md` - T17: Rules documentation v6.8 to v6.10, Tiered Knowledge Structure, Memory Bank Update Workflow (earlier)
-4. `sessions/2025-11-12-evening.md` - T20: Format handling improvements, T13 integration with T20 parsers
-5. `sessions/2025-11-12-afternoon.md` - T20: Memory Bank Database Parser implementation (Phase 1 complete)
-6. `sessions/2025-11-11-night.md` - T3, T13: Init Script Fixes & Schema Corrections
-7. `sessions/2025-11-11-evening.md` - T3 Database Migration Verification & Documentation
-8. `sessions/2025-11-10-evening.md` - T19 Memory Bank Viewer Planning
-9. `sessions/2025-07-15-afternoon.md` - T18 Integrated Rules Redesign
-10. `sessions/2025-07-14-night.md` - T17 Rules Structure
+1. `sessions/2025-11-28-afternoon.md` - T21: File viewer implementation, tab navigation, markdown rendering
+2. `sessions/2025-11-27-afternoon.md` - T13, T21: CLI viewer integration complete
+3. `sessions/2025-11-22-evening.md` - T19: Viewer refactor, T17: Rules v6.11
+4. `sessions/2025-11-13-night.md` - T21: Phase A testing complete - test suite (540L), data gen (380L), API server (270L), HTML UI (480L)
+5. `sessions/2025-11-13-evening.md` - T21: Database-native memory bank update workflow, paradigm shift to DB-authoritative, schema design
+6. `sessions/2025-11-13-evening.md` - T17: Rules documentation v6.8 to v6.10, Tiered Knowledge Structure, Memory Bank Update Workflow (earlier)
+7. `sessions/2025-11-12-evening.md` - T20: Format handling improvements, T13 integration with T20 parsers
+8. `sessions/2025-11-12-afternoon.md` - T20: Memory Bank Database Parser implementation (Phase 1 complete)
+9. `sessions/2025-11-11-night.md` - T3, T13: Init Script Fixes & Schema Corrections
+10. `sessions/2025-11-11-evening.md` - T3 Database Migration Verification & Documentation
