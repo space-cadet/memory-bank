@@ -1,18 +1,19 @@
 # Session Cache
 *Created: 2025-11-10 18:27:15 IST*
-*Last Updated: 2025-11-28 16:30:41 IST*
+*Last Updated: 2025-12-05 17:18:15 IST*
 
-**Started**: 2025-11-28 14:00:00 IST
-**Focus Task**: T21 (File Viewer Implementation) 🔄
-**Session File**: `sessions/2025-11-28-afternoon.md`
-**Status**: 🔄 In Progress: T21 File Viewer Added to Viewer Interface
+**Started**: 2025-12-05 17:18:15 IST
+**Focus Task**: T23 (Format Specification System) 🔄
+**Session File**: `sessions/2025-12-05-evening.md`
+**Status**: 🔄 In Progress: Format Spec Analysis & T23 Task Created
 
 ## Overview
-- Active: 11 | Paused: 0 | Completed: 7 | Cancelled: 1
-- Last Session: 2025-11-22 (T19 Viewer, T17 Rules)
-- Current Period: afternoon
+- Active: 12 | Paused: 0 | Completed: 7 | Cancelled: 1
+- Last Session: 2025-11-28 (T21 Viewer, T17 Rules)
+- Current Period: evening
 
 ## Task Registry
+- T23: Format Specification System - 🔄
 - META-1: Memory Bank Update and Maintenance - 🔄
 - T22: AdminJS Database Management Interface - ❌
 - T21: Database-Native Memory Bank Update Workflow - 🔄
@@ -32,7 +33,19 @@
 
 ## Active Tasks
 
-### T13: Implement Memory Bank CLI
+### T23: Format Specification System
+**Status:** 🔄 **IN PROGRESS** (Phase 1: Markdown structure) **Priority:** HIGH
+**Started:** 2025-12-05 **Last:** 2025-12-05 17:18:15 IST
+**Context**: Dual-spec system (markdown + JSON) to ensure parser/rules alignment and prevent silent data loss. Phase 1 markdown spec started with edit_history section complete.
+**Files**: `memory-bank/format-specification-v1.0.md`, `memory-bank/format-specification-v1.0.json`, `tasks/T23.md`, `implementation-details/format-specification-system.md`
+**Progress**:
+1. ✅ Analyzed parser/rules deviations (10 identified)
+2. ✅ Started markdown specification (edit_history complete)
+3. ✅ Created T23 task file and implementation details
+4. 🔄 Complete markdown sections 3-7 (tasks, sessions, session_cache, validation, parsers)
+5. ⬜ Create JSON schema
+6. ⬜ Build parser validation layer
+7. ⬜ Create test suite
 **Status:** 🔄 **IN PROGRESS** (90% Complete) **Priority:** HIGH
 **Started:** 2025-05-17 **Last:** 2025-11-27 16:55:30 IST
 **Context**: Parser execution implemented, modular lib structure created. Option 4 now executes parsers instead of showing instructions.
@@ -182,13 +195,13 @@
 2. Error log parser design
 
 ## Session History (Last 10)
-1. `sessions/2025-11-28-afternoon.md` - T21: File viewer implementation, tab navigation, markdown rendering
-2. `sessions/2025-11-27-afternoon.md` - T13, T21: CLI viewer integration complete
-3. `sessions/2025-11-22-evening.md` - T19: Viewer refactor, T17: Rules v6.11
-4. `sessions/2025-11-13-night.md` - T21: Phase A testing complete - test suite (540L), data gen (380L), API server (270L), HTML UI (480L)
-5. `sessions/2025-11-13-evening.md` - T21: Database-native memory bank update workflow, paradigm shift to DB-authoritative, schema design
-6. `sessions/2025-11-13-evening.md` - T17: Rules documentation v6.8 to v6.10, Tiered Knowledge Structure, Memory Bank Update Workflow (earlier)
-7. `sessions/2025-11-12-evening.md` - T20: Format handling improvements, T13 integration with T20 parsers
-8. `sessions/2025-11-12-afternoon.md` - T20: Memory Bank Database Parser implementation (Phase 1 complete)
-9. `sessions/2025-11-11-night.md` - T3, T13: Init Script Fixes & Schema Corrections
-10. `sessions/2025-11-11-evening.md` - T3 Database Migration Verification & Documentation
+1. `sessions/2025-12-05-evening.md` - T23: Format Spec System analysis, dual-spec architecture
+2. `sessions/2025-11-28-afternoon.md` - T21: File viewer implementation, tab navigation, markdown rendering
+3. `sessions/2025-11-27-afternoon.md` - T13, T21: CLI viewer integration complete
+4. `sessions/2025-11-22-evening.md` - T19: Viewer refactor, T17: Rules v6.11
+5. `sessions/2025-11-13-night.md` - T21: Phase A testing complete - test suite (540L), data gen (380L), API server (270L), HTML UI (480L)
+6. `sessions/2025-11-13-evening.md` - T21: Database-native memory bank update workflow, paradigm shift to DB-authoritative, schema design
+7. `sessions/2025-11-13-evening.md` - T17: Rules documentation v6.8 to v6.10, Tiered Knowledge Structure, Memory Bank Update Workflow (earlier)
+8. `sessions/2025-11-12-evening.md` - T20: Format handling improvements, T13 integration with T20 parsers
+9. `sessions/2025-11-12-afternoon.md` - T20: Memory Bank Database Parser implementation (Phase 1 complete)
+10. `sessions/2025-11-11-night.md` - T3, T13: Init Script Fixes & Schema Corrections

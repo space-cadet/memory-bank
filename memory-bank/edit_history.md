@@ -1,6 +1,17 @@
 # Edit History
 *Created: 2025-04-10*
-*Last Updated: 2025-11-28 16:30:41 IST*
+*Last Updated: 2025-12-05 17:18:15 IST*
+
+### 2025-12-05
+
+#### 17:18:15 IST - T23: Format Specification System Initiated
+- Created `memory-bank/tasks/T23.md` - New task for dual-spec system (markdown + JSON)
+- Created `memory-bank/implementation-details/format-specification-system.md` - System design and phased approach
+- Created `memory-bank/format-specification-v1.0.md` - Human-readable markdown specification (edit_history section complete)
+- Modified `memory-bank/tasks.md` - Added T23 to active tasks, updated timestamps
+- Modified `memory-bank/session_cache.md` - Updated focus task to T23, added session history entry
+- Created `memory-bank/sessions/2025-12-05-evening.md` - Session file for format spec analysis work
+- Modified `memory-bank/tasks/META-1.md` - Updated status and last active timestamp
 
 ### 2025-11-28
 
