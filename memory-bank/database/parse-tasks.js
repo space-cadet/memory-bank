@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import Database from 'better-sqlite3';
-import { readFileSync } from 'fs';
+import { readFileSync, readdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -22,6 +22,16 @@ function initSchema(db) {
       updated TEXT,
       details TEXT NOT NULL
     );
+
+    CREATE TABLE IF NOT EXISTS task_subtasks (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      task_id TEXT NOT NULL,
+      section TEXT,
+      position INTEGER NOT NULL,
+      text TEXT NOT NULL,
+      checked INTEGER NOT NULL CHECK(checked IN (0, 1)),
+      FOREIGN KEY(task_id) REFERENCES task_items(id) ON DELETE CASCADE
+    );
     
     CREATE TABLE IF NOT EXISTS task_dependencies (
       task_id TEXT NOT NULL,
@@ -35,31 +45,77 @@ function initSchema(db) {
   `);
 }
 
+function normalizeStatus(statusCell) {
+  const emojiMatch = String(statusCell || '').match(/[🔄✅⏸️❌⬜]/);
+  const emoji = emojiMatch ? emojiMatch[0] : null;
+  const text = String(statusCell || '').toLowerCase();
+
+  if (emoji === '✅') return 'completed';
+  if (emoji === '🔄') return 'in_progress';
+  if (emoji === '⏸️') return 'paused';
+  if (emoji === '⬜') return 'pending';
+  if (emoji === '❌') return 'paused';
+
+  if (text.includes('not started')) return 'pending';
+  if (text.includes('in progress')) return 'in_progress';
+  if (text.includes('complete')) return 'completed';
+
+  return 'in_progress';
+}
+
+function normalizePriority(priorityCell) {
+  const val = String(priorityCell || '').trim().toLowerCase();
+  if (val === 'low' || val === 'medium' || val === 'high') return val;
+  return 'medium';
+}
+
+function normalizeDate(dateCell) {
+  const match = String(dateCell || '').match(/\d{4}-\d{2}-\d{2}/);
+  return match ? match[0] : null;
+}
+
+function isLikelyTasksRow(cells) {
+  if (!cells || cells.length < 3) return false;
+  const id = String(cells[0] || '').trim();
+  return /^(T\d+[a-z]?|META-\d+[a-z]?)$/i.test(id);
+}
+
 // Parse tasks table line
 function parseTaskLine(line) {
-  // Regex matches task rows with flexible column count (6-8 columns)
-  // Handles rows with or without extra details column
-  const match = line.match(/^\|\s+(T\d+)\s+\|\s+(.+?)\s+\|\s+(🔄|✅|⏸️|\(.*?\))\s+\|\s+(LOW|MEDIUM|HIGH)\s+\|\s+(\d{4}-\d{2}-\d{2})\s+\|\s+([^|]*?)(?:\s+\|\s+(.+?))?\s*\|$/);
-  if (!match) return null;
-  
-  // Extract status, handling cases like "🔄 (70%)" or "🔄"
-  let statusStr = match[3].trim();
-  const statusMatch = statusStr.match(/(🔄|✅|⏸️)/);
-  const status = statusMatch ? statusMatch[1] : '🔄';
-  
-  // Handle empty dependencies
-  const deps = match[6].trim() === '-' || !match[6] ? [] : 
-    match[6].trim().split(/\s*,\s*/).filter(Boolean);
-  
+  if (!line.startsWith('|')) return null;
+  if (line.includes('|----')) return null;
+
+  const cells = line
+    .split('|')
+    .slice(1, -1)
+    .map(c => c.trim());
+
+  if (!isLikelyTasksRow(cells)) return null;
+
+  const id = String(cells[0]).trim();
+  const title = String(cells[1] || '').trim();
+  const status = normalizeStatus(cells[2]);
+  const priority = normalizePriority(cells[3]);
+  const started = normalizeDate(cells[4]);
+
+  if (!started) return null;
+
+  const col6 = String(cells[5] || '').trim();
+  const col7 = String(cells[6] || '').trim();
+
+  const deps = col6 === '-' || col6 === '' ? [] : col6.split(/\s*,\s*/).filter(Boolean);
+
+  const isFilePath = /\.md\]?$/i.test(col6) || /^\[tasks\//i.test(col6);
+  const details = isFilePath ? col6 : col7;
+
   return {
-    id: match[1],
-    title: match[2].trim(),
-    status: status === '🔄' ? 'in_progress' : 
-           status === '✅' ? 'completed' : 'paused',
-    priority: match[4].toLowerCase(),
-    started: match[5],
-    dependencies: deps,
-    details: (match[7] || '').trim()
+    id,
+    title,
+    status,
+    priority,
+    started,
+    dependencies: isFilePath ? [] : deps,
+    details: (details || '').trim()
   };
 }
 
@@ -82,6 +138,11 @@ function populateDatabase(db, tasks) {
   const insertDependency = db.prepare(`
     INSERT OR IGNORE INTO task_dependencies (task_id, depends_on)
     VALUES (?, ?)
+  `);
+
+  const insertSubtask = db.prepare(`
+    INSERT INTO task_subtasks (task_id, section, position, text, checked)
+    VALUES (?, ?, ?, ?, ?)
   `);
   
   // Disable foreign keys temporarily
@@ -124,6 +185,18 @@ function populateDatabase(db, tasks) {
       });
     });
   })();
+
+  // Then insert subtasks (from task files)
+  const subtasks = parseTaskSubtasks();
+  db.transaction(() => {
+    subtasks.forEach(st => {
+      try {
+        insertSubtask.run(st.taskId, st.section, st.position, st.text, st.checked);
+      } catch (error) {
+        // Ignore subtasks referencing tasks that aren't in task_items
+      }
+    });
+  })();
   
   // Re-enable foreign keys
   db.pragma('foreign_keys = ON');
@@ -132,6 +205,48 @@ function populateDatabase(db, tasks) {
   if (errorCount > 0) {
     console.log(`✗ Failed to insert ${errorCount} tasks`);
   }
+}
+
+function parseTaskSubtasks() {
+  const tasksDir = join(__dirname, '..', 'tasks');
+  let files = [];
+
+  try {
+    files = readdirSync(tasksDir).filter(f => f.endsWith('.md'));
+  } catch (e) {
+    return [];
+  }
+
+  const results = [];
+  for (const file of files) {
+    const taskId = file.replace(/\.md$/i, '');
+    const filePath = join(tasksDir, file);
+    const content = readFileSync(filePath, 'utf-8');
+    let section = null;
+    let position = 0;
+
+    for (const line of content.split('\n')) {
+      const headingMatch = line.match(/^#{1,6}\s+(.+)\s*$/);
+      if (headingMatch) {
+        section = headingMatch[1].trim();
+        continue;
+      }
+
+      const checkMatch = line.match(/^\s*-\s*\[( |x|X)\]\s+(.+)\s*$/);
+      if (checkMatch) {
+        position += 1;
+        results.push({
+          taskId,
+          section,
+          position,
+          text: checkMatch[2].trim(),
+          checked: checkMatch[1].toLowerCase() === 'x' ? 1 : 0
+        });
+      }
+    }
+  }
+
+  return results;
 }
 
 export function parseTasksFile(content) {
@@ -199,6 +314,7 @@ function main() {
     const db = new Database(dbPath);
     
     db.exec('DROP TABLE IF EXISTS task_dependencies');
+    db.exec('DROP TABLE IF EXISTS task_subtasks');
     db.exec('DROP TABLE IF EXISTS task_items');
     
     initSchema(db);

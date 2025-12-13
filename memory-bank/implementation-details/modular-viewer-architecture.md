@@ -1,7 +1,7 @@
 # Modular Memory Bank Viewer Architecture
 
 *Created: 2025-11-22*
-*Last Updated: 2025-11-28 16:30:41 IST*
+*Last Updated: 2025-12-13 16:44:37 IST*
 *Related Task: [T21](../tasks/T21.md)*
 
 ## Overview
@@ -40,7 +40,7 @@ graph TD
     *   `parse-sessions.js`: Parses `sessions/*.md` -> `sessions`.
     *   `parse-session-cache.js`: Parses `session_cache.md` -> `session_cache`.
 
-3.  **Server (`t21-workflow-testing/database/server.js`)**:
+3.  **Server (`memory-bank/database/server.js`)**:
     *   **Stack**: Node.js + Express + better-sqlite3.
     *   **Role**: Provides a REST API for the database and serves static assets.
     *   **Key Endpoints**:
@@ -52,7 +52,7 @@ graph TD
         *   `GET /api/memory-bank/files`: List all memory bank files organized by 5 categories (Core, Tasks, Sessions, Implementation, Database). Returns file metadata (name, path, size, modified timestamp).
         *   `GET /api/memory-bank/file/*`: Fetch specific memory bank file content with security checks. Returns content and metadata as JSON.
 
-4.  **Frontend (`t21-workflow-testing/database/public/`)**:
+4.  **Frontend (`memory-bank/database/public/`)**:
     *   **Stack**: Vanilla JavaScript (ES Modules), CSS Variables (Theming).
     *   **Structure**:
         *   `app.js`: Main controller, state management, sorting logic.

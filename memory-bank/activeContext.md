@@ -1,12 +1,12 @@
 # Active Context
 
-*Last Updated: 2025-11-22 18:08:00 IST*
+*Last Updated: 2025-12-13 16:44:37 IST*
 
 ## Current Tasks
 1. **[T19]**: Memory Bank Viewer Web Interface (HIGH priority)
    - Status: 🔄 IN PROGRESS (Phase 2 Refactor Complete)
    - Current Focus: Transitioning to "Phase 3" (Write capabilities) to support T21 workflow.
-   - Recent Achievement: Refactored monolithic `explorer.html` into modular `public/js/*` architecture. Fixed navigation bugs.
+   - Recent Achievement: Canonical viewer + frontend now live in `memory-bank/database/` with server-side pagination/filter/sort.
 
 2. **[T21]**: Database-Native Memory Bank Update Workflow (HIGH priority)
    - Status: 🔄 IN PROGRESS (Phase A Complete)

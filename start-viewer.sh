@@ -18,4 +18,4 @@ node memory-bank/database/parse-session-cache.js
 echo "🚀 Starting Viewer..."
 DB_PATH="./memory-bank/database/memory_bank.db"
 echo "   - Database: $DB_PATH"
-node t21-workflow-testing/database/server.js --db "$DB_PATH"
+node memory-bank/database/server.js --db "$DB_PATH"

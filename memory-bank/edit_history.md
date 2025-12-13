@@ -1,6 +1,27 @@
 # Edit History
 *Created: 2025-04-10*
-*Last Updated: 2025-12-05 17:18:15 IST*
+*Last Updated: 2025-12-13 16:51:48 IST*
+
+### 2025-12-13
+
+#### 16:44:37 IST - T19, T21, T13, T20: Viewer Canonicalization, Parser Enhancements, and UX Upgrades
+- Modified `mb-cli/src/commands/init.js` - Updated viewer/parser copy source to `memory-bank/database`, added `run-all.sh` to PARSER_SCRIPTS
+- Created `memory-bank/database/server.js` - Canonical viewer server (Express + better-sqlite3) with pagination/filter/sort and file browser endpoints
+- Created `memory-bank/database/schema.sql` - Mirrored schema for canonical database folder
+- Created `memory-bank/database/init-schema.js` - Mirrored schema init script for canonical database folder
+- Created `memory-bank/database/test-schema.js` - Mirrored schema test script for canonical database folder
+- Created `memory-bank/database/generate-test-data.js` - Mirrored synthetic test data generator for canonical database folder
+- Created `memory-bank/database/public/` - Canonical viewer frontend assets (index.html, css, js modules)
+- Modified `memory-bank/database/parse-tasks.js` - Added support for tasks table variants and parsed task subtasks into `task_subtasks`
+- Created `memory-bank/database/run-all.sh` - One-command script to install deps, approve builds, and run all parsers
+- Modified `memory-bank/database/server.js` - Fixed Express 5 wildcard crash using RegExp route for `/api/memory-bank/file/*`
+- Modified `memory-bank/database/server.js` - Added global filter (`q`) and validated server-side sorting (`sortBy`, `sortDir`) for `/api/table/:name` with correct totals
+- Modified `memory-bank/database/public/js/api.js` - Implemented server-driven pagination/filter/sort (table-wide) with page dropdown and page-size controls
+- Modified `memory-bank/database/public/js/app.js` - Implemented server-driven pagination/filter/sort (table-wide) with page dropdown and page-size controls
+- Modified `memory-bank/database/public/js/ui.js` - Implemented server-driven pagination/filter/sort (table-wide) with page dropdown and page-size controls
+- Modified `memory-bank/database/public/css/style.css` - Updated styling for new pagination controls
+- Modified `start-viewer.sh` - Updated launcher to start canonical server from `memory-bank/database/server.js`
+- Created `memory-bank/sessions/2025-12-13-afternoon.md` - Session file documenting canonicalization, pagination/filter/sort, and Express 5 compatibility fixes
 
 ### 2025-12-05
 

@@ -56,6 +56,7 @@ const PARSER_SCRIPTS = [
   'parse-tasks.js',
   'parse-sessions.js',
   'parse-session-cache.js',
+  'run-all.sh',
   'query.js',
   'query-tasks.js'
 ];
@@ -634,7 +635,7 @@ export async function initCommand(options) {
         const status = exists ? '✓' : '+';
         console.log(`  [${status}] ${file}`);
         if (!options.dryRun && (!exists || options.force || options.full)) {
-          const sourceFile = path.join(__dirname, '..', '..', '..', 't21-workflow-testing', 'database', file);
+          const sourceFile = path.join(__dirname, '..', '..', '..', 'memory-bank', 'database', file);
           if (fs.existsSync(sourceFile)) {
             const content = fs.readFileSync(sourceFile, 'utf8');
             await writeFile(filePath, content, { flag: 'w' });
@@ -652,7 +653,7 @@ export async function initCommand(options) {
         const status = exists ? '✓' : '+';
         console.log(`  [${status}] ${file}`);
         if (!options.dryRun && (!exists || options.force || options.full)) {
-          const sourceFile = path.join(__dirname, '..', '..', '..', 't21-workflow-testing', 'database', file);
+          const sourceFile = path.join(__dirname, '..', '..', '..', 'memory-bank', 'database', file);
           if (fs.existsSync(sourceFile)) {
             if (!fs.existsSync(dirPath)) {
               await mkdir(dirPath, { recursive: true });

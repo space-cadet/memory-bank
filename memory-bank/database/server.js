@@ -8,7 +8,7 @@
 
 import express from 'express';
 import Database from 'better-sqlite3';
-import { join, dirname } from 'path';
+import { join, dirname, resolve, sep } from 'path';
 import { fileURLToPath } from 'url';
 import { readdir, readFile, stat } from 'fs/promises';
 import { existsSync } from 'fs';
@@ -112,7 +112,7 @@ app.get('/api/tables', (req, res) => {
 app.get('/api/table/:name', (req, res) => {
   try {
     const { name } = req.params;
-    const { limit = 50, offset = 0 } = req.query;
+    const { limit = 50, offset = 0, q = '', sortBy = '', sortDir = 'asc' } = req.query;
 
     // Validate table name (prevent SQL injection)
     const tables = db.prepare(`
@@ -123,28 +123,54 @@ app.get('/api/table/:name', (req, res) => {
       return res.status(404).json({ error: 'Table not found' });
     }
 
-    // Provide sensible default ordering for certain tables.
-    // Without ORDER BY, SQLite returns insertion order, which makes newer rows appear "missing"
-    // when only the first page is viewed.
+    const limitNum = Math.max(1, Math.min(1000, parseInt(limit)));
+    const offsetNum = Math.max(0, parseInt(offset));
+
+    // Column list for validation and for building WHERE.
+    const tableInfo = db.prepare(`PRAGMA table_info(${name})`).all();
+    const columnNames = tableInfo.map(c => c.name);
+
+    // Global filter: OR across columns using LIKE over CAST(col AS TEXT)
+    const filterText = String(q || '').trim();
+    let whereClause = '';
+    const whereParams = [];
+    if (filterText) {
+      const like = `%${filterText}%`;
+      const parts = columnNames.map(col => `CAST(${col} AS TEXT) LIKE ?`);
+      whereClause = ` WHERE (${parts.join(' OR ')})`;
+      whereParams.push(...columnNames.map(() => like));
+    }
+
+    // Server-side sorting.
+    // Validate sortBy against actual column names to avoid injection.
+    const normalizedSortDir = String(sortDir).toLowerCase() === 'desc' ? 'DESC' : 'ASC';
     let orderBy = '';
-    if (name === 'sessions') {
+    if (sortBy && columnNames.includes(sortBy)) {
+      orderBy = ` ORDER BY ${sortBy} ${normalizedSortDir}`;
+    } else if (name === 'sessions') {
+      // Default ordering for sessions only when no explicit sort is requested.
       orderBy = ' ORDER BY date DESC, id DESC';
     }
 
-    const limitNum = parseInt(limit);
-    const offsetNum = parseInt(offset);
+    const data = db
+      .prepare(`SELECT * FROM ${name}${whereClause}${orderBy} LIMIT ? OFFSET ?`)
+      .all(...whereParams, limitNum, offsetNum);
 
-    const data = db.prepare(`SELECT * FROM ${name}${orderBy} LIMIT ? OFFSET ?`).all(limitNum, offsetNum);
-    const total = db.prepare(`SELECT COUNT(*) as cnt FROM ${name}`).get();
+    const totalFiltered = db
+      .prepare(`SELECT COUNT(*) as cnt FROM ${name}${whereClause}`)
+      .get(...whereParams);
+
+    const totalAll = db.prepare(`SELECT COUNT(*) as cnt FROM ${name}`).get();
 
     res.json({
       table: name,
       data,
       pagination: {
-        total: total.cnt,
+        total: totalFiltered.cnt,
+        totalAll: totalAll.cnt,
         limit: limitNum,
         offset: offsetNum,
-        pages: Math.ceil(total.cnt / limitNum)
+        pages: Math.ceil(totalFiltered.cnt / limitNum)
       }
     });
   } catch (err) {
@@ -302,6 +328,7 @@ app.get('/api/stats', (req, res) => {
 
 // Memory bank base path (relative to server location)
 const MEMORY_BANK_PATH = join(__dirname, '..', '..', 'memory-bank');
+const MEMORY_BANK_ROOT = resolve(MEMORY_BANK_PATH);
 
 // Get all memory bank files organized by category
 app.get('/api/memory-bank/files', async (req, res) => {
@@ -458,13 +485,15 @@ app.get('/api/memory-bank/files', async (req, res) => {
 });
 
 // Get content of a specific memory bank file
-app.get('/api/memory-bank/file/*', async (req, res) => {
+// NOTE: Express 5 uses path-to-regexp v8 which is stricter about wildcard patterns.
+// Using a RegExp route here avoids route pattern parsing errors.
+app.get(/^\/api\/memory-bank\/file\/(.+)$/, async (req, res) => {
   try {
-    const filePath = req.params[0]; // Get everything after /api/memory-bank/file/
-    const fullPath = join(MEMORY_BANK_PATH, filePath);
+    const filePath = req.params[0];
+    const fullPath = resolve(MEMORY_BANK_ROOT, filePath);
 
     // Security check: ensure the path is within memory-bank directory
-    if (!fullPath.startsWith(MEMORY_BANK_PATH)) {
+    if (fullPath !== MEMORY_BANK_ROOT && !fullPath.startsWith(MEMORY_BANK_ROOT + sep)) {
       return res.status(403).json({ error: 'Access denied' });
     }
 
