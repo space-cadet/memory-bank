@@ -1,6 +1,6 @@
 # Active Context
 
-*Last Updated: 2025-12-13 16:44:37 IST*
+*Last Updated: 2025-12-15 10:40:55 IST*
 
 ## Current Tasks
 1. **[T19]**: Memory Bank Viewer Web Interface (HIGH priority)
@@ -10,7 +10,7 @@
 
 2. **[T21]**: Database-Native Memory Bank Update Workflow (HIGH priority)
    - Status: 🔄 IN PROGRESS (Phase A Complete)
-   - Current Focus: Integration with T19 Viewer for "Phase B" (Insert Functions).
+   - Current Focus: Edit history DB-first slice (schema alignment, write endpoints, export endpoint); next is safe write-to-disk export.
    - Note: T22 (AdminJS) was attempted to solve this but cancelled. We are now building the write UI directly into T19.
 
 3. **[T22]**: AdminJS Database Management Interface (HIGH priority)

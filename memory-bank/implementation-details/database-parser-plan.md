@@ -1,6 +1,6 @@
 # Memory Bank Database Parser Implementation Plan
 *Created: 2025-11-12 12:02:00 IST*
-*Last Updated: 2025-11-12 17:25:21 IST*
+*Last Updated: 2025-12-15 10:40:55 IST*
 
 ## Overview
 
@@ -27,9 +27,9 @@ The Memory Bank Database Parser is a fresh implementation that parses memory ban
 1. **parse-edits.js** - Edit history parser script (renamed from parse-sqlite.js)
    - Reads `memory-bank/edit_history.md`
    - Parses date headers (### YYYY-MM-DD format)
-   - Parses entry headers (#### HH:MM:SS TZ - TaskID: Description)
+   - Parses entry headers (#### HH:MM:SS [TZ] - TaskID: Description)
    - Extracts file modifications (- Action `path` - description)
-   - Populates memory_bank.db with edit_entries and edit_modifications tables
+   - Populates memory_bank.db with edit_entries and file_modifications tables
    - Uses transactions for performance
    - Comprehensive error handling
 
@@ -51,15 +51,15 @@ The Memory Bank Database Parser is a fresh implementation that parses memory ban
 - `id` INTEGER PRIMARY KEY AUTOINCREMENT
 - `date` TEXT NOT NULL (YYYY-MM-DD)
 - `time` TEXT NOT NULL (HH:MM:SS)
-- `timezone` TEXT NOT NULL (IST, UTC, etc.)
+- `timezone` TEXT (IST, UTC, etc.)
 - `timestamp` TEXT NOT NULL (ISO 8601)
 - `task_id` TEXT (e.g., "T3", "T13", "T3, T13")
 - `task_description` TEXT NOT NULL
 
-**edit_modifications table:**
+**file_modifications table:**
 - `id` INTEGER PRIMARY KEY AUTOINCREMENT
 - `edit_entry_id` INTEGER NOT NULL (foreign key)
-- `action` TEXT NOT NULL (Created, Modified, Updated)
+- `action` TEXT NOT NULL (Created, Modified, Updated, Deleted)
 - `file_path` TEXT NOT NULL
 - `description` TEXT NOT NULL
 

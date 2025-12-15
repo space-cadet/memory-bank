@@ -18,6 +18,8 @@ const __dirname = dirname(__filename);
 
 const app = express();
 
+app.use(express.json());
+
 // Parse command line arguments
 const args = process.argv.slice(2);
 
@@ -62,7 +64,7 @@ if (dbArgIndex !== -1 && args[dbArgIndex + 1]) {
 let db;
 
 try {
-  db = new Database(dbPath, { readonly: true });
+  db = new Database(dbPath);
   console.log(`✅ Connected to database: ${dbPath}`);
 } catch (err) {
   console.error(`❌ Failed to open database: ${err.message}`);
@@ -317,6 +319,185 @@ app.get('/api/stats', (req, res) => {
       totalRows,
       tableStats: stats
     });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+function isValidDate(value) {
+  return /^\d{4}-\d{2}-\d{2}$/.test(String(value || ''));
+}
+
+function normalizeTime(value) {
+  const raw = String(value || '').trim();
+  const match = raw.match(/^\d{1,2}:\d{2}(?::\d{2})?$/);
+  if (!match) return null;
+  if (raw.split(':').length === 2) return `${raw}:00`;
+  return raw;
+}
+
+function computeTimestampIso(dateStr, timeStr) {
+  const isoString = `${dateStr}T${timeStr}`;
+  const date = new Date(isoString);
+  if (Number.isNaN(date.getTime())) return null;
+  return date.toISOString();
+}
+
+function isValidEditAction(value) {
+  return ['Created', 'Modified', 'Updated', 'Deleted'].includes(String(value || '').trim());
+}
+
+app.post('/api/edit-entries', (req, res) => {
+  try {
+    const { date, time, timezone = null, task_id = null, task_description } = req.body || {};
+
+    if (!isValidDate(date)) {
+      return res.status(400).json({ error: 'Invalid date (expected YYYY-MM-DD)' });
+    }
+
+    const normalizedTime = normalizeTime(time);
+    if (!normalizedTime) {
+      return res.status(400).json({ error: 'Invalid time (expected HH:MM or HH:MM:SS)' });
+    }
+
+    const desc = String(task_description || '').trim();
+    if (!desc) {
+      return res.status(400).json({ error: 'task_description is required' });
+    }
+
+    const timestamp = computeTimestampIso(date, normalizedTime);
+    if (!timestamp) {
+      return res.status(400).json({ error: 'Invalid date/time combination' });
+    }
+
+    const insert = db.prepare(`
+      INSERT INTO edit_entries (date, time, timezone, timestamp, task_id, task_description)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `);
+
+    const result = insert.run(
+      date,
+      normalizedTime,
+      timezone === '' ? null : timezone,
+      timestamp,
+      task_id === '' ? null : task_id,
+      desc
+    );
+
+    res.json({
+      id: result.lastInsertRowid,
+      date,
+      time: normalizedTime,
+      timezone: timezone === '' ? null : timezone,
+      timestamp,
+      task_id: task_id === '' ? null : task_id,
+      task_description: desc
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/edit-entries/:id/modifications', (req, res) => {
+  try {
+    const { id } = req.params;
+    const entry = db.prepare('SELECT id FROM edit_entries WHERE id = ?').get(id);
+    if (!entry) {
+      return res.status(404).json({ error: 'Edit entry not found' });
+    }
+
+    const { action, file_path, description } = req.body || {};
+
+    if (!isValidEditAction(action)) {
+      return res.status(400).json({ error: 'Invalid action (Created|Modified|Updated|Deleted)' });
+    }
+
+    const path = String(file_path || '').trim();
+    if (!path) {
+      return res.status(400).json({ error: 'file_path is required' });
+    }
+
+    const desc = String(description || '').trim();
+    if (!desc) {
+      return res.status(400).json({ error: 'description is required' });
+    }
+
+    const insert = db.prepare(`
+      INSERT INTO file_modifications (edit_entry_id, action, file_path, description)
+      VALUES (?, ?, ?, ?)
+    `);
+
+    const result = insert.run(entry.id, action, path, desc);
+
+    res.json({
+      id: result.lastInsertRowid,
+      edit_entry_id: entry.id,
+      action,
+      file_path: path,
+      description: desc
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/api/edit-entries/:id', (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const del = db.prepare('DELETE FROM edit_entries WHERE id = ?');
+    const result = del.run(id);
+
+    if (result.changes === 0) {
+      return res.status(404).json({ error: 'Edit entry not found' });
+    }
+
+    res.json({ deleted: true, id: Number(id) });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/export/edit-history', (req, res) => {
+  try {
+    const entries = db.prepare(`
+      SELECT id, date, time, timezone, task_id, task_description
+      FROM edit_entries
+      ORDER BY date DESC, time DESC
+    `).all();
+
+    if (entries.length === 0) {
+      return res.json({ markdown: '# Edit History\n\n*No entries*\n' });
+    }
+
+    let markdown = '# Edit History\n';
+    markdown += `*Last Updated: ${new Date().toISOString().split('T')[0]}*\n\n`;
+
+    let currentDate = null;
+
+    for (const entry of entries) {
+      if (entry.date !== currentDate) {
+        currentDate = entry.date;
+        markdown += `\n### ${currentDate}\n\n`;
+      }
+
+      const tzPart = entry.timezone ? ` ${entry.timezone}` : '';
+      const taskPart = entry.task_id ? `${entry.task_id}: ` : '';
+      markdown += `#### ${entry.time}${tzPart} - ${taskPart}${entry.task_description}\n`;
+
+      const mods = db.prepare(`
+        SELECT action, file_path, description
+        FROM file_modifications
+        WHERE edit_entry_id = ?
+        ORDER BY id ASC
+      `).all(entry.id);
+
+      for (const mod of mods) {
+        markdown += `- ${mod.action} \`${mod.file_path}\` - ${mod.description}\n`;
+      }
+    }
+
+    res.json({ markdown });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

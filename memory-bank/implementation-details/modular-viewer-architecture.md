@@ -1,7 +1,7 @@
 # Modular Memory Bank Viewer Architecture
 
 *Created: 2025-11-22*
-*Last Updated: 2025-12-13 16:44:37 IST*
+*Last Updated: 2025-12-15 10:40:55 IST*
 *Related Task: [T21](../tasks/T21.md)*
 
 ## Overview
@@ -49,6 +49,10 @@ graph TD
         *   `GET /api/table/:name/schema`: Schema info (FKs, Indexes).
         *   `GET /api/table/:name/record/:id`: Single record with **Related Records** traversal.
         *   `GET /api/search`: Global full-text search.
+        *   `POST /api/edit-entries`: Create edit_history entry (DB-first write).
+        *   `POST /api/edit-entries/:id/modifications`: Add file modification to an edit entry.
+        *   `DELETE /api/edit-entries/:id`: Delete edit entry (cascades to file_modifications).
+        *   `GET /api/export/edit-history`: Export edit_history markdown from DB.
         *   `GET /api/memory-bank/files`: List all memory bank files organized by 5 categories (Core, Tasks, Sessions, Implementation, Database). Returns file metadata (name, path, size, modified timestamp).
         *   `GET /api/memory-bank/file/*`: Fetch specific memory bank file content with security checks. Returns content and metadata as JSON.
 

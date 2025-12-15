@@ -1,6 +1,22 @@
 # Edit History
 *Created: 2025-04-10*
-*Last Updated: 2025-12-13 16:51:48 IST*
+*Last Updated: 2025-12-15 10:40:55 IST*
+
+### 2025-12-15
+
+#### 10:36:52 IST - T21: Edit History DB-First Writes and Export Endpoint
+- Modified `memory-bank/database/schema.sql` - Allowed edit_entries.timezone to be nullable for relaxed parsing
+- Modified `memory-bank/database/parse-edits.js` - Aligned schema with schema.sql, added Deleted support, made timezone optional (NULL when missing)
+- Modified `memory-bank/database/server.js` - Enabled DB writes and added edit history write endpoints plus export endpoint
+- Created `memory-bank/sessions/2025-12-15-morning.md` - Session file documenting edit history DB-first work
+- Created `memory-bank/implementation-details/database-planning/edit-history-db-first-notes.md` - Notes and decisions for edit history DB-first slice
+- Modified `memory-bank/session_cache.md` - Updated current session focus to T21 and added 2025-12-15 session entry
+- Modified `memory-bank/tasks/T21.md` - Updated last updated and last active timestamps
+- Modified `memory-bank/tasks.md` - Updated T21 registry line to reflect edit_history DB-first writes and export endpoint
+- Modified `memory-bank/activeContext.md` - Updated current focus for T21 to reflect edit_history DB-first slice and next step
+- Modified `memory-bank/implementation-details/database-parser-plan.md` - Updated schema notes (timezone nullable, file_modifications table, Deleted support)
+- Modified `memory-bank/implementation-details/modular-viewer-architecture.md` - Documented new edit_history write and export endpoints
+- Modified `memory-bank/implementation-details/database-update-workflow-plan.md` - Updated workflow notes for nullable timezone and Deleted action support
 
 ### 2025-12-13
 

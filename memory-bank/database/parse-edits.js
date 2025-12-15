@@ -24,26 +24,29 @@ function initDatabase(db) {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       date TEXT NOT NULL,
       time TEXT NOT NULL,
-      timezone TEXT NOT NULL,
+      timezone TEXT,
       timestamp TEXT NOT NULL,
       task_id TEXT,
-      task_description TEXT NOT NULL
+      task_description TEXT NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 
     CREATE TABLE IF NOT EXISTS file_modifications (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       edit_entry_id INTEGER NOT NULL,
-      date TEXT NOT NULL, -- Denormalized for easier sorting/querying
       action TEXT NOT NULL,
       file_path TEXT NOT NULL,
       description TEXT NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (edit_entry_id) REFERENCES edit_entries(id) ON DELETE CASCADE
     );
 
     CREATE INDEX IF NOT EXISTS idx_edit_entries_date ON edit_entries(date);
     CREATE INDEX IF NOT EXISTS idx_edit_entries_task_id ON edit_entries(task_id);
+    CREATE INDEX IF NOT EXISTS idx_edit_entries_timestamp ON edit_entries(timestamp);
     CREATE INDEX IF NOT EXISTS idx_file_modifications_file_path ON file_modifications(file_path);
     CREATE INDEX IF NOT EXISTS idx_file_modifications_edit_entry_id ON file_modifications(edit_entry_id);
+    CREATE INDEX IF NOT EXISTS idx_file_modifications_action ON file_modifications(action);
   `);
 
   // Create view that joins entries with modifications
@@ -101,10 +104,9 @@ function parseEditEntry(lines, index) {
   }
 
   let [, time, timezone, remainder] = headerMatch;
-  
-  // If timezone not provided, default to UTC
+
   if (!timezone) {
-    timezone = 'UTC';
+    timezone = null;
   }
 
   // Normalize time format (add :00 if missing seconds)
@@ -130,8 +132,8 @@ function parseEditEntry(lines, index) {
   while (i < lines.length && lines[i].startsWith('-')) {
     const modLine = lines[i].trim();
 
-    // Parse: - Created/Modified/Updated `path` - description
-    const modMatch = modLine.match(/^-\s+(Created|Modified|Updated)\s+`([^`]+)`\s+-\s+(.+)/);
+    // Parse: - Created/Modified/Updated/Deleted `path` - description
+    const modMatch = modLine.match(/^-\s+(Created|Modified|Updated|Deleted)\s+`([^`]+)`\s+-\s+(.+)/);
 
     if (modMatch) {
       const [, action, filePath, description] = modMatch;
@@ -202,8 +204,8 @@ function populateDatabase(db, entries) {
   `);
 
   const insertModification = db.prepare(`
-    INSERT INTO file_modifications (edit_entry_id, date, action, file_path, description)
-    VALUES (?, ?, ?, ?, ?)
+    INSERT INTO file_modifications (edit_entry_id, action, file_path, description)
+    VALUES (?, ?, ?, ?)
   `);
 
   let successCount = 0;
@@ -230,7 +232,6 @@ function populateDatabase(db, entries) {
         for (const mod of entry.modifications) {
           insertModification.run(
             entryId,
-            entry.date,
             mod.action,
             mod.filePath,
             mod.description
@@ -357,8 +358,18 @@ function runTests() {
       expectedEntries: 2
     },
     {
+      name: "Should accept entries missing timezone",
+      input: "### 2025-11-12\n#### 12:00:00 - Test",
+      expectedEntries: 1
+    },
+    {
       name: "Should extract file modifications",
       input: "### 2025-11-12\n#### 12:00:00 IST - T20: Test\n- Modified `test.js` - testing",
+      expectedMods: 1
+    },
+    {
+      name: "Should parse Deleted modifications",
+      input: "### 2025-11-12\n#### 12:00:00 IST - T20: Test\n- Deleted `test.js` - removed",
       expectedMods: 1
     }
   ];

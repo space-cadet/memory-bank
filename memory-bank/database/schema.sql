@@ -12,7 +12,7 @@ CREATE TABLE edit_entries (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   date TEXT NOT NULL,                    -- YYYY-MM-DD
   time TEXT NOT NULL,                    -- HH:MM:SS
-  timezone TEXT NOT NULL,                -- IST, UTC, etc.
+  timezone TEXT,                         -- IST, UTC, etc.
   timestamp TEXT NOT NULL,               -- ISO 8601 format
   task_id TEXT,                          -- T1, T2, T3, etc. (comma-separated if multiple)
   task_description TEXT NOT NULL,        -- Brief description of work

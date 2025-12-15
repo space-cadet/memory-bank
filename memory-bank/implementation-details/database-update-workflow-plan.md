@@ -1,7 +1,7 @@
 # Database-Native Memory Bank Update Workflow
 
 *Created: 2025-11-13 17:46:43 IST*
-*Last Updated: 2025-11-13 22:50:00 IST*
+*Last Updated: 2025-12-15 10:40:55 IST*
 
 ## Executive Summary
 
@@ -77,7 +77,7 @@ INSERT INTO edit_entries (
 ) VALUES (
   '2025-11-13',           -- YYYY-MM-DD from system time
   '17:46:43',             -- HH:MM:SS from system time
-  'IST',                  -- timezone from system
+  'IST',                  -- timezone from user/settings (nullable)
   '2025-11-13T17:46:43.000Z',  -- ISO 8601
   'T17, T20a',            -- Task IDs (comma-separated if multiple)
   'Rules documentation v6.8 → v6.10, Tiered Knowledge Structure'
@@ -93,6 +93,8 @@ INSERT INTO file_modifications (
   description
 ) VALUES (?, 'Updated', 'memory-bank/.cursorrules', 'Added tiered knowledge structure')
 ```
+
+Supported action values: Created, Modified, Updated, Deleted
 
 For each file changed during session.
 
