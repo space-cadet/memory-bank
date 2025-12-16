@@ -1,0 +1,29 @@
+{
+  "name": "memory-bank-database",
+  "version": "1.0.0",
+  "description": "Database tools for Memory Bank - parsers, queries, and web server",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js --port 3001",
+    "parse:edits": "node parse-edits.js",
+    "parse:tasks": "node parse-tasks.js",
+    "parse:sessions": "node parse-sessions.js",
+    "parse:session-cache": "node parse-session-cache.js",
+    "query": "node query.js",
+    "query:tasks": "node query-tasks.js"
+  },
+  "keywords": [
+    "memory-bank",
+    "parser",
+    "database",
+    "sqlite"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.0.0",
+    "sql.js": "^1.10.3"
+  }
+}

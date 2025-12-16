@@ -1,13 +1,12 @@
 # Active Context
 
-*Last Updated: 2025-12-16 16:36:00 IST*
+*Last Updated: 2025-12-16 22:19:00 IST*
 
 ## Current Tasks
 1. **[T24]**: Migrate from better-sqlite3 to sql.js (HIGH priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: Replace better-sqlite3 (native addon) with sql.js (WASM) across server package and CLI templates to eliminate native compilation requirements
-   - Previous Achievement: Setup wizard is now the default entry point for new projects (no CLI required for initial setup)
-   - Current Blocker Resolved: Migrating to sql.js to enable zero-friction cross-platform installation
+   - Current Focus: Make mb-cli the single source of truth for the standalone database package (`mb-cli/src/server-package/`) and keep templates as generated output while completing sql.js migration correctness and clean install behavior
+   - Recent Achievement: Canonicalized server package + added template sync workflow; fixed sql.js adapter persistence correctness and better-sqlite3 semantics (lastInsertRowid)
 
 2. **[T19]**: Memory Bank Viewer Web Interface (HIGH priority)
    - Status: 🔄 IN PROGRESS (Phase 3 Setup Wizard Complete)
@@ -36,29 +35,25 @@
    - Status: ✅ COMPLETED (2025-11-22)
    - Output: Modular Viewer architecture in `t21-workflow-testing/database/public/`.
 
-## Implementation Focus - Current Session (T19/T21 Setup Wizard)
-**T19 Phase 3 Setup Wizard (Just Completed):**
-- ✅ Designed 4-step setup wizard UI/UX
-- ✅ Created 5 new /api/setup/* endpoints for initialization
-- ✅ Built setup.js component with complete wizard logic
-- ✅ Added comprehensive CSS styling for setup wizard
-- ✅ Integrated auto-detection of existing memory bank
-- ✅ Support for folder selection and validation
-- ✅ Template file creation from mb-cli source
-- ✅ Database schema initialization (Phase A)
-- ✅ Optional edit_history.md import
-- ✅ Progress tracking and visual feedback
-- ✅ Error handling and recovery
-- ✅ Seamless transition to viewer after setup
-- ✅ Updated mb-cli to include setup.js in distributions
+## Implementation Focus - Current Session (T24 sql.js + mb-cli canonical server-package)
+**T24 sql.js migration correctness (night session):**
+- ✅ Added dirty-write persistence gating (avoid writing DB on close when no writes occurred)
+- ✅ Improved better-sqlite3 compatibility in adapter (return lastInsertRowid on run)
+- ✅ Fixed server transaction usage to await async transaction runner
+- ✅ Fixed raw sql.js API misuse by using adapter prepare/all/get in server endpoints
+- ✅ Added default DB bootstrap behavior on first start for default db path
 
-**Key Achievement**: Web interface now serves as complete entry point - users can initialize memory bank entirely through browser without touching CLI.
+**mb-cli canonical source + template generation:**
+- ✅ Created `mb-cli/src/server-package/` as canonical database package source
+- ✅ Added `mb-cli/src/sync-database-template.js` to regenerate `mb-cli/templates/memory-bank/database/`
+- ✅ Added `pnpm-workspace.yaml` to prevent monorepo pnpm install hijack when running inside memory-bank/database
 
 ## Next Steps
-- Test complete setup flow end-to-end (fresh project simulation)
-- Add edit_history import progress streaming (optional enhancement)
-- Implement database backup before re-initialization (safety feature)
-- Plan write capabilities for managing edit_entries (Phase 3 Part 2)
+- Run clean install tests in:
+  - fresh repo (pnpm install && pnpm start inside memory-bank/database)
+  - pnpm monorepo (ensure local workspace marker scopes install)
+- Verify no unwanted default DB creation when switching DBs in the editor
+- Confirm parsers/query scripts behave correctly with sql.js adapter (persistence + async flow)
 
 ## Current Decisions
 1. **Setup Wizard as Default**: All new projects see wizard first

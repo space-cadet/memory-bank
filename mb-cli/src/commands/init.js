@@ -51,7 +51,6 @@ const TEMPLATE_FILES = [
 
 const DATABASE_FILES = [
   'package.json',
-  'pnpm-lock.yaml',
   'pnpm-workspace.yaml',
   'README.md'
 ];
@@ -288,7 +287,7 @@ async function promptForInteractiveSetup(scan, options) {
     core: false,
     templates: false,
     database: false,
-    viewer: false,
+    setupViewer: false,
     directories: false,
     parse: false,
     startViewer: false
@@ -303,10 +302,10 @@ async function promptForInteractiveSetup(scan, options) {
     case '2':
       components.directories = true;
       components.database = true;
-      components.viewer = true;
+      components.setupViewer = true;
       break;
     case '3':
-      components.viewer = true;
+      components.setupViewer = true;
       break;
     case '4':
       components.parse = true;
@@ -319,7 +318,7 @@ async function promptForInteractiveSetup(scan, options) {
       components.core = true;
       components.templates = true;
       components.database = true;
-      components.viewer = true;
+      components.setupViewer = true;
       break;
     case '7':
       console.log('Setup cancelled.');
