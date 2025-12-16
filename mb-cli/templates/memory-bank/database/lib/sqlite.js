@@ -157,7 +157,7 @@ export async function execRun(sql, params = []) {
  */
 export async function exec(sql) {
   const db = getDb();
-  db.run(sql);
+  db.exec(sql);
 }
 
 /**
@@ -183,12 +183,12 @@ export async function withTransaction(fn) {
   const db = getDb();
 
   try {
-    db.run('BEGIN');
+    db.exec('BEGIN');
     const result = await fn();
-    db.run('COMMIT');
+    db.exec('COMMIT');
     return result;
   } catch (error) {
-    db.run('ROLLBACK');
+    db.exec('ROLLBACK');
     throw error;
   }
 }
