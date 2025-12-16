@@ -1,11 +1,11 @@
 # Session Cache
 *Created: 2025-11-10 18:27:15 IST*
-*Last Updated: 2025-12-16 13:22:00 IST*
+*Last Updated: 2025-12-16 14:25:03 IST*
 
 **Started**: 2025-12-16 13:22:00 IST
 **Focus Task**: T19 (Memory Bank Viewer Web Interface) 🔄
 **Session File**: `sessions/2025-12-16-afternoon.md`
-**Status**: 🔄 In Progress: Viewer/Editor DB management + edit_history import
+**Status**: 🔄 In Progress: Viewer/Editor DB management + edit_history import + CLI template canonicalization
 
 ## Overview
 - Active: 12 | Paused: 0 | Completed: 7 | Cancelled: 1
@@ -13,7 +13,7 @@
 - Current Period: afternoon
 
 ## Session History (Last 10)
-1. `sessions/2025-12-16-afternoon.md` - T19, T21: Viewer/Editor DB management, edit_history import, logging, sandbox fixes
+1. `sessions/2025-12-16-afternoon.md` - T19, T21, T13: Viewer/Editor DB management, edit_history import, logging, sandbox fixes, CLI template canonicalization
 2. `sessions/2025-12-15-morning.md` - T21: Edit History DB-first (schema alignment, write endpoints, export endpoint)
 3. `sessions/2025-12-13-afternoon.md` - T19, T21, T13: Canonical viewer/parsers consolidation, pagination/filter/sort, Express 5 route fix
 4. `sessions/2025-12-05-evening.md` - T23: Format Spec System analysis, dual-spec architecture
@@ -97,7 +97,7 @@
 **Status:** 🔄 **IN PROGRESS** (Phase 2 Complete) **Priority:** HIGH
 **Started:** 2025-11-10 **Last:** 2025-11-22 17:15:00 IST
 **Context**: Refactored monolithic viewer into modular architecture. Fixed navigation history bugs. Now serves as the foundation for T21 writes.
-**Files**: `t21-workflow-testing/database/public/`, `tasks/T19.md`
+**Files**: `memory-bank/database/`, `tasks/T19.md`
 **Progress**:
 1. ✅ Refactored `explorer.html` to `public/js/{app,router,api,ui}.js`
 2. ✅ Fixed History Navigation bug (Forward button now works)
@@ -114,7 +114,7 @@
 **Status:** 🔄 **IN PROGRESS** (Phase A Testing Complete) **Priority:** HIGH
 **Started:** 2025-11-13 **Last:** 2025-11-13 22:36:44 IST
 **Context**: Database-first paradigm shift. Phase B (Writes) will now be implemented via T19 Phase 3.
-**Files**: `t21-workflow-testing/`, `tasks/T21.md`
+**Files**: `tasks/T21.md`
 
 ### T20a: Adaptive LLM-Based Format Parser
 **Status:** 🔄 **IN PROGRESS** (Design Phase) **Priority:** HIGH

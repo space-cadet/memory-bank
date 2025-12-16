@@ -131,6 +131,10 @@ h1 {
   gap: 20px;
 }
 
+body.editor-mode .main {
+  grid-template-columns: 1fr;
+}
+
 .sidebar {
   background: var(--bg-primary);
   border-radius: 12px;

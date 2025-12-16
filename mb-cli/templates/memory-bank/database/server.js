@@ -74,7 +74,7 @@ if (dbArgIndex !== -1 && args[dbArgIndex + 1]) {
 
 const MEMORY_BANK_PATH = join(__dirname, '..', '..', 'memory-bank');
 const MEMORY_BANK_ROOT = resolve(MEMORY_BANK_PATH);
-const PROJECT_ROOT = resolve(__dirname, '..', '..', '..');
+const PROJECT_ROOT = resolve(__dirname, '..', '..');
 
 let db;
 
@@ -83,7 +83,8 @@ function resolveUnderProject(candidatePath) {
   if (!raw) return null;
   const fullPath = resolve(PROJECT_ROOT, raw);
 
-  if (fullPath !== PROJECT_ROOT && !fullPath.startsWith(PROJECT_ROOT + sep)) {
+  // Restrict all filesystem access to the memory-bank directory.
+  if (fullPath !== MEMORY_BANK_ROOT && !fullPath.startsWith(MEMORY_BANK_ROOT + sep)) {
     return null;
   }
 

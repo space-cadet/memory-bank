@@ -168,8 +168,8 @@ function generateFileModifications() {
     { edit_entry_index: 0, action: 'Updated', file_path: 'README.md', description: 'Complete rewrite with project structure and current status' },
 
     // Entry 2 (T21, 2025-11-13 18:31:12)
-    { edit_entry_index: 1, action: 'Created', file_path: 't21-workflow-testing/database/schema.sql', description: '8-table database schema with 21 indexes' },
-    { edit_entry_index: 1, action: 'Created', file_path: 't21-workflow-testing/database/init-schema.js', description: 'better-sqlite3 initialization script' },
+    { edit_entry_index: 1, action: 'Created', file_path: 'memory-bank/database/schema.sql', description: 'Database schema with table definitions and indexes' },
+    { edit_entry_index: 1, action: 'Created', file_path: 'memory-bank/database/init-schema.js', description: 'better-sqlite3 initialization script' },
     { edit_entry_index: 1, action: 'Updated', file_path: 'memory-bank/tasks/T21.md', description: 'Updated timestamps and Phase A completion status' },
 
     // Entry 3 (T21, 2025-11-13 17:48:20)

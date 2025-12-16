@@ -1,6 +1,6 @@
 # Memory Bank CLI Implementation Plan
 *Created: May 18, 2025*
-*Last Updated: 2025-11-12 16:59:56 IST*
+*Last Updated: 2025-12-16 14:25:03 IST*
 
 ## Table of Contents
 1. [Overview](#overview)
@@ -22,6 +22,9 @@
 - `cli-architecture.md`: Detailed CLI architecture and component design
 - `cli-command-specification.md`: Command syntax, outputs, and error scenarios
 - Additional files to be created during implementation
+
+## Template Source of Truth
+Default templates are maintained inside `mb-cli/templates/` and are copied into a target project by `mb init`.
 
 ## Overview
 This document outlines the implementation plan for the Memory Bank CLI (T13), following the KIRSS (Keep It Really Simple, Stupid) principle. The plan is structured to deliver value incrementally, starting with the most essential features.

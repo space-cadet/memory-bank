@@ -1,6 +1,6 @@
 # Active Context
 
-*Last Updated: 2025-12-16 13:22:00 IST*
+*Last Updated: 2025-12-16 14:25:03 IST*
 
 ## Current Tasks
 1. **[T19]**: Memory Bank Viewer Web Interface (HIGH priority)
@@ -8,16 +8,20 @@
    - Current Focus: Phase 3 (Write capabilities) started with Viewer/Editor DB management and edit_history import tooling.
    - Recent Achievement: Viewer/Editor tabs, DB selection/create/open, and edit_history import (preview/run, append/replace) integrated into canonical viewer.
 
-2. **[T21]**: Database-Native Memory Bank Update Workflow (HIGH priority)
+2. **[T13]**: Implement Memory Bank CLI (HIGH priority)
+   - Status: 🔄 IN PROGRESS
+   - Current Focus: Canonicalize mb-cli templates and keep generated memory-bank/database and memory-bank/templates as output only.
+
+3. **[T21]**: Database-Native Memory Bank Update Workflow (HIGH priority)
    - Status: 🔄 IN PROGRESS (Phase A Complete)
    - Current Focus: DB-first workflow slice expanded with DB selection/import tooling in the canonical viewer; next is safe write-to-disk export with backups and roundtrip validation.
    - Note: T22 (AdminJS) was attempted to solve this but cancelled. We are now building the write UI directly into T19.
 
-3. **[T22]**: AdminJS Database Management Interface (HIGH priority)
+4. **[T22]**: AdminJS Database Management Interface (HIGH priority)
    - Status: ❌ CANCELLED (2025-11-22)
    - Reason: Excessive complexity/dependency hell. Shelved in favor of extending T19.
 
-4. **[T17]**: Maintenance and Upkeep of Integrated Rules (MEDIUM priority)
+5. **[T17]**: Maintenance and Upkeep of Integrated Rules (MEDIUM priority)
    - Status: 🔄 IN PROGRESS
    - Current Focus: Rules documentation v6.8 → v6.10
 

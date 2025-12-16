@@ -1,8 +1,19 @@
 # Edit History
 *Created: 2025-04-10*
-*Last Updated: 2025-12-16 13:17:00 IST*
+*Last Updated: 2025-12-16 14:25:03 IST*
 
 ### 2025-12-16
+
+#### 14:25:03 IST - T13: CLI Template Canonicalization and Cleanup
+- Modified `mb-cli/src/commands/init.js` - Fixed targetDir auto-detection to prevent nested memory-bank folders, moved database toolchain source to `mb-cli/templates`, added database README template copy, and updated init to copy full template contents into `memory-bank/templates`
+- Modified `mb-cli/templates/memory-bank/database/generate-test-data.js` - Removed references to t21-workflow-testing paths
+- Created `mb-cli/templates/memory-bank/database/README.md` - Added database folder README for pnpm + run-all.sh + node server.js workflow
+- Moved `memory-bank/database/` template code to `mb-cli/templates/memory-bank/database/`
+- Moved `memory-bank/templates/` template files to `mb-cli/templates/memory-bank/templates/`
+- Archived `start-viewer.sh` to `archive/to_delete_2025-12-16/start-viewer.sh`
+- Archived `t21-workflow-testing/` to `archive/to_delete_2025-12-16/t21-workflow-testing`
+- Archived `viewer/` to `archive/viewer/viewer`
+- Archived repo-root `templates/` to `archive/templates/templates`
 
 #### 13:17:00 IST - T19: Viewer/Editor DB Management, Import, and Logging
 - Modified `memory-bank/database/server.js` - Added DB management endpoints (list/open/create/current), edit_history import (preview/run with append/replace), request logging, and enforced filesystem access restricted to memory-bank/

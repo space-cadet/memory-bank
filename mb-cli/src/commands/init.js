@@ -6,6 +6,9 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const DB_TEMPLATE_ROOT = path.join(__dirname, '..', '..', 'templates', 'memory-bank', 'database');
+const MB_TEMPLATE_ROOT = path.join(__dirname, '..', '..', 'templates', 'memory-bank');
+
 // Directory and file configurations
 const DIRS = [
   'memory-bank',
@@ -48,7 +51,8 @@ const TEMPLATE_FILES = [
 const DATABASE_FILES = [
   'package.json',
   'pnpm-lock.yaml',
-  'DATABASE_README.md'
+  'pnpm-workspace.yaml',
+  'README.md'
 ];
 
 const PARSER_SCRIPTS = [
@@ -326,11 +330,29 @@ async function promptForInteractiveSetup(scan, options) {
 }
 
 export async function initCommand(options) {
-  const targetDir = process.cwd();
+  const cwd = process.cwd();
+  let targetDir = cwd;
+
+  // Prevent nested memory-bank directories when running `mb init` from inside
+  // an existing memory-bank/ or memory-bank/database/ directory.
+  const cwdBase = path.basename(cwd);
+  const cwdParent = path.dirname(cwd);
+  const cwdParentBase = path.basename(cwdParent);
+
+  if (cwdBase === 'database' && cwdParentBase === 'memory-bank') {
+    targetDir = path.dirname(cwdParent);
+  } else if (cwdBase === 'memory-bank') {
+    targetDir = path.dirname(cwd);
+  }
+
   const mbDir = path.join(targetDir, 'memory-bank');
   
   console.log(`Memory Bank Initialization ${options.dryRun ? '(DRY RUN)' : ''}`);
-  console.log(`Target directory: ${targetDir}\n`);
+  if (targetDir !== cwd) {
+    console.log(`Target directory: ${targetDir} (auto-detected from cwd: ${cwd})\n`);
+  } else {
+    console.log(`Target directory: ${targetDir}\n`);
+  }
 
   const scan = scanExistingContent(targetDir);
 
@@ -582,7 +604,13 @@ export async function initCommand(options) {
         const status = exists ? '✓' : '+';
         console.log(`  [${status}] ${file}`);
         if (!options.dryRun && (!exists || options.force || options.full)) {
-          await writeEmptyFile(filePath);
+          const sourceFile = path.join(MB_TEMPLATE_ROOT, 'templates', file);
+          if (fs.existsSync(sourceFile)) {
+            const content = fs.readFileSync(sourceFile, 'utf8');
+            await writeFile(filePath, content, { flag: 'w' });
+          } else {
+            console.warn(`  ⚠️  Warning: Source file not found: ${file}`);
+          }
         }
       }
       console.log('');
@@ -597,12 +625,12 @@ export async function initCommand(options) {
         const status = exists ? '✓' : '+';
         console.log(`  [${status}] ${file}`);
         if (!options.dryRun && (!exists || options.force || options.full)) {
-          if (file === 'DATABASE_README.md') {
-            await writeDatabaseReadmeFile(filePath);
-          } else if (file === 'package.json') {
-            await writeFile(filePath, generatePackageJson(), { flag: 'w' });
-          } else if (file === 'pnpm-lock.yaml') {
-            await writeFile(filePath, generatePnpmLock(), { flag: 'w' });
+          const sourceFile = path.join(DB_TEMPLATE_ROOT, file);
+          if (fs.existsSync(sourceFile)) {
+            const content = fs.readFileSync(sourceFile, 'utf8');
+            await writeFile(filePath, content, { flag: 'w' });
+          } else {
+            console.warn(`  ⚠️  Warning: Source file not found: ${file}`);
           }
         }
       }
@@ -614,7 +642,7 @@ export async function initCommand(options) {
         const status = exists ? '✓' : '+';
         console.log(`  [${status}] ${file}`);
         if (!options.dryRun && (!exists || options.force || options.full)) {
-          const sourceFile = path.join(__dirname, '..', '..', '..', 'memory-bank', 'database', file);
+          const sourceFile = path.join(DB_TEMPLATE_ROOT, file);
           if (fs.existsSync(sourceFile)) {
             const content = fs.readFileSync(sourceFile, 'utf8');
             await writeFile(filePath, content, { flag: 'w' });
@@ -635,7 +663,7 @@ export async function initCommand(options) {
         const status = exists ? '✓' : '+';
         console.log(`  [${status}] ${file}`);
         if (!options.dryRun && (!exists || options.force || options.full)) {
-          const sourceFile = path.join(__dirname, '..', '..', '..', 'memory-bank', 'database', file);
+          const sourceFile = path.join(DB_TEMPLATE_ROOT, file);
           if (fs.existsSync(sourceFile)) {
             const content = fs.readFileSync(sourceFile, 'utf8');
             await writeFile(filePath, content, { flag: 'w' });
@@ -653,7 +681,7 @@ export async function initCommand(options) {
         const status = exists ? '✓' : '+';
         console.log(`  [${status}] ${file}`);
         if (!options.dryRun && (!exists || options.force || options.full)) {
-          const sourceFile = path.join(__dirname, '..', '..', '..', 'memory-bank', 'database', file);
+          const sourceFile = path.join(DB_TEMPLATE_ROOT, file);
           if (fs.existsSync(sourceFile)) {
             if (!fs.existsSync(dirPath)) {
               await mkdir(dirPath, { recursive: true });
