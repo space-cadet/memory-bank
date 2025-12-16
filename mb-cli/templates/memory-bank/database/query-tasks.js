@@ -1,23 +1,23 @@
 #!/usr/bin/env node
 
-import Database from 'better-sqlite3';
+import * as sqlite from './lib/sqlite.js';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const db = new Database(join(__dirname, 'memory_bank.db'));
+await sqlite.openDb(join(__dirname, 'memory_bank.db'));
 
 console.log('Tasks in database:');
-const tasks = db.prepare('SELECT * FROM tasks ORDER BY started DESC').all();
+const tasks = sqlite.prepare('SELECT * FROM tasks ORDER BY started DESC').all();
 
 tasks.forEach(task => {
   console.log(`
 ${task.id}: ${task.title}`);
   console.log(`Status: ${task.status} | Priority: ${task.priority}`);
   
-  const deps = db.prepare(
+  const deps = sqlite.prepare(
     'SELECT depends_on FROM task_dependencies WHERE task_id = ?'
   ).all(task.id);
   
@@ -26,4 +26,4 @@ ${task.id}: ${task.title}`);
   }
 });
 
-db.close();
+await sqlite.closeDb();

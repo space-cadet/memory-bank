@@ -7,7 +7,7 @@
  */
 
 import express from 'express';
-import Database from 'better-sqlite3';
+import * as sqlite from './lib/sqlite.js';
 import { join, dirname, resolve, sep } from 'path';
 import { fileURLToPath } from 'url';
 import { readdir, readFile, writeFile, stat, mkdir } from 'fs/promises';
@@ -76,6 +76,7 @@ const MEMORY_BANK_PATH = join(__dirname, '..', '..', 'memory-bank');
 const MEMORY_BANK_ROOT = resolve(MEMORY_BANK_PATH);
 const PROJECT_ROOT = resolve(__dirname, '..', '..');
 
+// Global db accessor - use sqlite.getDb() to access current database
 let db;
 
 function resolveUnderProject(candidatePath) {
@@ -91,61 +92,59 @@ function resolveUnderProject(candidatePath) {
   return fullPath;
 }
 
-function ensureDatabaseReady(database) {
+async function ensureDatabaseReady() {
   try {
-    database.pragma('foreign_keys = ON');
+    await sqlite.pragma('foreign_keys = ON');
   } catch (_) {
     // ignore
   }
 }
 
-function openDatabase(nextDbPath) {
+async function openDatabase(nextDbPath) {
   const nextFullPath = resolveUnderProject(nextDbPath);
   if (!nextFullPath) {
     throw new Error('Access denied');
   }
 
-  if (db) {
-    try {
-      db.close();
-    } catch (_) {
-      // ignore
-    }
-  }
+  // Close existing database if open
+  await sqlite.closeDb();
 
-  db = new Database(nextFullPath);
-  ensureDatabaseReady(db);
+  // Open new database
+  await sqlite.openDb(nextFullPath);
+  db = sqlite.getDb();
+  await ensureDatabaseReady();
   dbPath = nextFullPath;
   return dbPath;
 }
 
- async function ensureParentDirExists(filePath) {
-   const parentDir = dirname(filePath);
-   if (!existsSync(parentDir)) {
-     await mkdir(parentDir, { recursive: true });
-   }
- }
+async function ensureParentDirExists(filePath) {
+  const parentDir = dirname(filePath);
+  if (!existsSync(parentDir)) {
+    await mkdir(parentDir, { recursive: true });
+  }
+}
 
+// Initialize database asynchronously
+await sqlite.initSqlJsModule();
 try {
-  openDatabase(dbPath);
+  await openDatabase(dbPath);
   console.log(`✅ Connected to database: ${dbPath}`);
 } catch (err) {
   console.error(`❌ Failed to open database: ${err.message}`);
   process.exit(1);
 }
 
-async function initPhaseASchema(database) {
+async function initPhaseASchema() {
   const schemaPath = join(__dirname, 'schema.sql');
   const schemaSql = await readFile(schemaPath, 'utf-8');
-  database.exec(schemaSql);
+  await sqlite.exec(schemaSql);
+  await sqlite.saveDb();
 }
 
-async function ensureEditHistorySchema(database) {
-  const row = database
-    .prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='edit_entries'")
-    .get();
+async function ensureEditHistorySchema() {
+  const row = sqlite.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='edit_entries'").get();
   if (!row) {
-    await initPhaseASchema(database);
+    await initPhaseASchema();
   }
 }
 
@@ -250,16 +249,16 @@ app.use(express.static(join(__dirname, 'public')));
 // Get all tables with metadata
 app.get('/api/tables', (req, res) => {
   try {
-    const tables = db.prepare(`
-      SELECT name FROM sqlite_master 
+    const tables = sqlite.prepare(`
+      SELECT name FROM sqlite_master
       WHERE type='table' AND name NOT LIKE 'sqlite_%'
       ORDER BY name
     `).all();
 
     const tablesWithInfo = tables.map(t => {
-      const info = db.prepare(`PRAGMA table_info(${t.name})`).all();
-      const count = db.prepare(`SELECT COUNT(*) as cnt FROM ${t.name}`).get();
-      
+      const info = sqlite.prepare(`PRAGMA table_info(${t.name})`).all();
+      const count = sqlite.prepare(`SELECT COUNT(*) as cnt FROM ${t.name}`).get();
+
       return {
         name: t.name,
         columnCount: info.length,
@@ -323,13 +322,13 @@ app.get('/api/db/list', async (req, res) => {
   }
 });
 
-app.post('/api/db/open', (req, res) => {
+app.post('/api/db/open', async (req, res) => {
   try {
     const { dbPath: nextDbPath } = req.body || {};
     if (!nextDbPath) {
       return res.status(400).json({ error: 'dbPath is required' });
     }
-    const opened = openDatabase(nextDbPath);
+    const opened = await openDatabase(nextDbPath);
     res.json({ dbPath: opened });
   } catch (err) {
     console.error('ERROR /api/db/open:', err && err.stack ? err.stack : err);
@@ -353,10 +352,10 @@ app.post('/api/db/create', async (req, res) => {
      console.log(`DB CREATE requested="${String(nextDbPath)}" resolved="${resolvedDbPath}" schema="${String(schema)}"`);
      await ensureParentDirExists(resolvedDbPath);
 
-     const opened = openDatabase(nextDbPath);
+     const opened = await openDatabase(nextDbPath);
 
     if (schema === 'phase_a') {
-      await initPhaseASchema(db);
+      await initPhaseASchema();
     } else {
       return res.status(400).json({ error: 'Unsupported schema' });
     }
@@ -437,8 +436,8 @@ app.post('/api/import/edit-history/run', async (req, res) => {
       return res.status(404).json({ error: 'Source file not found' });
     }
 
-    openDatabase(targetDbPath);
-    await ensureEditHistorySchema(db);
+    await openDatabase(targetDbPath);
+    await ensureEditHistorySchema();
 
     const raw = await readFile(sourcePath, 'utf-8');
     let entries = parseEditHistoryMarkdown(raw);
@@ -451,16 +450,16 @@ app.post('/api/import/edit-history/run', async (req, res) => {
     }
 
     if (mode === 'replace') {
-      db.prepare('DELETE FROM edit_entries').run();
+      sqlite.prepare('DELETE FROM edit_entries').run();
     } else if (mode !== 'append') {
       return res.status(400).json({ error: 'Invalid mode (append|replace)' });
     }
 
-    const insertEntry = db.prepare(`
+    const insertEntry = sqlite.prepare(`
       INSERT INTO edit_entries (date, time, timezone, timestamp, task_id, task_description)
       VALUES (?, ?, ?, ?, ?, ?)
     `);
-    const insertMod = db.prepare(`
+    const insertMod = sqlite.prepare(`
       INSERT INTO file_modifications (edit_entry_id, action, file_path, description)
       VALUES (?, ?, ?, ?)
     `);
@@ -468,7 +467,7 @@ app.post('/api/import/edit-history/run', async (req, res) => {
     let entriesInserted = 0;
     let modificationsInserted = 0;
 
-    const run = db.transaction((items) => {
+    const run = sqlite.transaction((items) => {
       for (const entry of items) {
         const normalizedTime = normalizeTime(entry.time);
         if (!normalizedTime) {
@@ -505,6 +504,9 @@ app.post('/api/import/edit-history/run', async (req, res) => {
 
     run(entries);
 
+    // Save database after transaction
+    await sqlite.saveDb();
+
     res.json({
       dbPath,
       source: sourcePath,
@@ -527,7 +529,7 @@ app.get('/api/table/:name', (req, res) => {
     const { limit = 50, offset = 0, q = '', sortBy = '', sortDir = 'asc' } = req.query;
 
     // Validate table name (prevent SQL injection)
-    const tables = db.prepare(`
+    const tables = sqlite.prepare(`
       SELECT name FROM sqlite_master WHERE type='table' AND name = ?
     `).all(name);
 
@@ -539,7 +541,7 @@ app.get('/api/table/:name', (req, res) => {
     const offsetNum = Math.max(0, parseInt(offset));
 
     // Column list for validation and for building WHERE.
-    const tableInfo = db.prepare(`PRAGMA table_info(${name})`).all();
+    const tableInfo = sqlite.prepare(`PRAGMA table_info(${name})`).all();
     const columnNames = tableInfo.map(c => c.name);
 
     // Global filter: OR across columns using LIKE over CAST(col AS TEXT)
@@ -572,7 +574,7 @@ app.get('/api/table/:name', (req, res) => {
       .prepare(`SELECT COUNT(*) as cnt FROM ${name}${whereClause}`)
       .get(...whereParams);
 
-    const totalAll = db.prepare(`SELECT COUNT(*) as cnt FROM ${name}`).get();
+    const totalAll = sqlite.prepare(`SELECT COUNT(*) as cnt FROM ${name}`).get();
 
     res.json({
       table: name,
@@ -595,9 +597,9 @@ app.get('/api/table/:name/schema', (req, res) => {
   try {
     const { name } = req.params;
 
-    const columns = db.prepare(`PRAGMA table_info(${name})`).all();
-    const fks = db.prepare(`PRAGMA foreign_key_list(${name})`).all();
-    const indexes = db.prepare(`PRAGMA index_list(${name})`).all();
+    const columns = sqlite.prepare(`PRAGMA table_info(${name})`).all();
+    const fks = sqlite.prepare(`PRAGMA foreign_key_list(${name})`).all();
+    const indexes = sqlite.prepare(`PRAGMA index_list(${name})`).all();
 
     res.json({
       table: name,
@@ -616,7 +618,7 @@ app.get('/api/table/:name/record/:id', (req, res) => {
     const { name, id } = req.params;
 
     // Get primary key column
-    const cols = db.prepare(`PRAGMA table_info(${name})`).all();
+    const cols = sqlite.prepare(`PRAGMA table_info(${name})`).all();
     const pkCol = cols.find(c => c.pk === 1);
 
     if (!pkCol) {
@@ -624,23 +626,23 @@ app.get('/api/table/:name/record/:id', (req, res) => {
     }
 
     // Get the record
-    const record = db.prepare(`SELECT * FROM ${name} WHERE ${pkCol.name} = ?`).get(id);
+    const record = sqlite.prepare(`SELECT * FROM ${name} WHERE ${pkCol.name} = ?`).get(id);
 
     if (!record) {
       return res.status(404).json({ error: 'Record not found' });
     }
 
     // Get foreign key relationships
-    const fks = db.prepare(`PRAGMA foreign_key_list(${name})`).all();
+    const fks = sqlite.prepare(`PRAGMA foreign_key_list(${name})`).all();
     const relationships = {};
 
     for (const fk of fks) {
-      const relatedRecords = db.prepare(`
+      const relatedRecords = sqlite.prepare(`
         SELECT * FROM ${fk.table} WHERE ${fk.to} = ?
       `).all(record[fk.from]);
 
       // Get primary key column of related table for navigation
-      const relatedCols = db.prepare(`PRAGMA table_info(${fk.table})`).all();
+      const relatedCols = sqlite.prepare(`PRAGMA table_info(${fk.table})`).all();
       const relatedPkCol = relatedCols.find(c => c.pk === 1);
 
       relationships[`${fk.table} (via ${fk.from})`] = {
@@ -672,17 +674,17 @@ app.get('/api/search', (req, res) => {
     const searchTerm = `%${q}%`;
     const results = {};
 
-    const tables = db.prepare(`
+    const tables = sqlite.prepare(`
       SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'
     `).all();
 
     for (const table of tables) {
-      const columns = db.prepare(`PRAGMA table_info(${table.name})`).all();
+      const columns = sqlite.prepare(`PRAGMA table_info(${table.name})`).all();
       
       for (const col of columns) {
         if (col.type.includes('TEXT') || col.type.includes('BLOB')) {
           try {
-            const matches = db.prepare(`
+            const matches = sqlite.prepare(`
               SELECT * FROM ${table.name} WHERE CAST(${col.name} AS TEXT) LIKE ?
             `).all(searchTerm);
 
@@ -710,7 +712,7 @@ app.get('/api/search', (req, res) => {
 // Get database statistics
 app.get('/api/stats', (req, res) => {
   try {
-    const tables = db.prepare(`
+    const tables = sqlite.prepare(`
       SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'
     `).all();
 
@@ -718,7 +720,7 @@ app.get('/api/stats', (req, res) => {
     const stats = {};
 
     for (const table of tables) {
-      const count = db.prepare(`SELECT COUNT(*) as cnt FROM ${table.name}`).get();
+      const count = sqlite.prepare(`SELECT COUNT(*) as cnt FROM ${table.name}`).get();
       stats[table.name] = count.cnt;
       totalRows += count.cnt;
     }
@@ -734,7 +736,7 @@ app.get('/api/stats', (req, res) => {
   }
 });
 
-app.post('/api/edit-entries', (req, res) => {
+app.post('/api/edit-entries', async (req, res) => {
   try {
     const { date, time, timezone = null, task_id = null, task_description } = req.body || {};
 
@@ -757,7 +759,7 @@ app.post('/api/edit-entries', (req, res) => {
       return res.status(400).json({ error: 'Invalid date/time combination' });
     }
 
-    const insert = db.prepare(`
+    const insert = sqlite.prepare(`
       INSERT INTO edit_entries (date, time, timezone, timestamp, task_id, task_description)
       VALUES (?, ?, ?, ?, ?, ?)
     `);
@@ -770,6 +772,9 @@ app.post('/api/edit-entries', (req, res) => {
       task_id === '' ? null : task_id,
       desc
     );
+
+    // Save database after insert
+    await sqlite.saveDb();
 
     res.json({
       id: result.lastInsertRowid,
@@ -785,10 +790,10 @@ app.post('/api/edit-entries', (req, res) => {
   }
 });
 
-app.post('/api/edit-entries/:id/modifications', (req, res) => {
+app.post('/api/edit-entries/:id/modifications', async (req, res) => {
   try {
     const { id } = req.params;
-    const entry = db.prepare('SELECT id FROM edit_entries WHERE id = ?').get(id);
+    const entry = sqlite.prepare('SELECT id FROM edit_entries WHERE id = ?').get(id);
     if (!entry) {
       return res.status(404).json({ error: 'Edit entry not found' });
     }
@@ -809,12 +814,15 @@ app.post('/api/edit-entries/:id/modifications', (req, res) => {
       return res.status(400).json({ error: 'description is required' });
     }
 
-    const insert = db.prepare(`
+    const insert = sqlite.prepare(`
       INSERT INTO file_modifications (edit_entry_id, action, file_path, description)
       VALUES (?, ?, ?, ?)
     `);
 
     const result = insert.run(entry.id, action, path, desc);
+
+    // Save database after insert
+    await sqlite.saveDb();
 
     res.json({
       id: result.lastInsertRowid,
@@ -828,16 +836,19 @@ app.post('/api/edit-entries/:id/modifications', (req, res) => {
   }
 });
 
-app.delete('/api/edit-entries/:id', (req, res) => {
+app.delete('/api/edit-entries/:id', async (req, res) => {
   try {
     const { id } = req.params;
 
-    const del = db.prepare('DELETE FROM edit_entries WHERE id = ?');
+    const del = sqlite.prepare('DELETE FROM edit_entries WHERE id = ?');
     const result = del.run(id);
 
     if (result.changes === 0) {
       return res.status(404).json({ error: 'Edit entry not found' });
     }
+
+    // Save database after delete
+    await sqlite.saveDb();
 
     res.json({ deleted: true, id: Number(id) });
   } catch (err) {
@@ -847,7 +858,7 @@ app.delete('/api/edit-entries/:id', (req, res) => {
 
 app.get('/api/export/edit-history', (req, res) => {
   try {
-    const entries = db.prepare(`
+    const entries = sqlite.prepare(`
       SELECT id, date, time, timezone, task_id, task_description
       FROM edit_entries
       ORDER BY date DESC, time DESC
@@ -872,7 +883,7 @@ app.get('/api/export/edit-history', (req, res) => {
       const taskPart = entry.task_id ? `${entry.task_id}: ` : '';
       markdown += `#### ${entry.time}${tzPart} - ${taskPart}${entry.task_description}\n`;
 
-      const mods = db.prepare(`
+      const mods = sqlite.prepare(`
         SELECT action, file_path, description
         FROM file_modifications
         WHERE edit_entry_id = ?
@@ -1095,10 +1106,14 @@ app.post('/api/setup/initialize', async (req, res) => {
         try {
           const dbFilePath = join(dbDir, 'memory_bank.db');
           if (!existsSync(dbFilePath)) {
-            const tempDb = new Database(dbFilePath);
+            // Use sql.js to create and initialize database
+            await sqlite.openDb(dbFilePath);
             const schemaSql = await readFile(SCHEMA_PATH, 'utf-8');
-            tempDb.exec(schemaSql);
-            tempDb.close();
+            await sqlite.exec(schemaSql);
+            await sqlite.saveDb();
+            await sqlite.closeDb();
+            // Re-open the main database
+            await openDatabase(dbPath);
             results.filesCreated.push('database/memory_bank.db');
           }
         } catch (dbErr) {
@@ -1391,8 +1406,8 @@ const server = app.listen(PORT, () => {
 });
 
 // Graceful shutdown
-process.on('SIGINT', () => {
+process.on('SIGINT', async () => {
   console.log('\n✅ Shutting down...');
-  db.close();
+  await sqlite.closeDb();
   process.exit(0);
 });

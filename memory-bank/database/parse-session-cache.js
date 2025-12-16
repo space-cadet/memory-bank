@@ -5,7 +5,7 @@
  * Parses session_cache.md and populates the session_cache table
  */
 
-import Database from 'better-sqlite3';
+import * as sqlite from './lib/sqlite.js';
 import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -17,7 +17,7 @@ const __dirname = dirname(__filename);
  * Initialize session_cache schema
  */
 function initSchema(db) {
-  db.exec(`
+  await sqlite.exec(`
     CREATE TABLE IF NOT EXISTS session_cache (
       session_id TEXT PRIMARY KEY,  -- Derived from implicit session file or 'current'
       status TEXT,                  -- Current status line
@@ -84,7 +84,7 @@ function parseSessionCache(content) {
 /**
  * Main Execution
  */
-function main() {
+async function main() {
   try {
     console.log('Session Cache Parser for Memory Bank\n');
     console.log('=====================================\n');
@@ -96,11 +96,11 @@ function main() {
 
     // Initialize database
     const dbPath = join(__dirname, 'memory_bank.db');
-    const db = new Database(dbPath);
+    await sqlite.openDb(dbPath);
     
     // Clear existing table
     console.log('Clearing existing session_cache data...\n');
-    db.exec('DROP TABLE IF EXISTS session_cache');
+    await sqlite.exec('DROP TABLE IF EXISTS session_cache');
     initSchema(db);
 
     // Parse content
@@ -108,7 +108,7 @@ function main() {
     const data = parseSessionCache(content);
 
     // Insert into DB
-    const insert = db.prepare(`
+    const insert = sqlite.prepare(`
       INSERT INTO session_cache (
         session_id, status, focus_task, 
         active_tasks_count, paused_tasks_count, completed_tasks_count, cancelled_tasks_count,
@@ -131,7 +131,7 @@ function main() {
     console.log(`  Status: ${data.status.substring(0, 50)}...`);
     console.log(`  Active Tasks: ${data.active_tasks_count}`);
     
-    db.close();
+    await sqlite.closeDb();
 
   } catch (error) {
     console.error('Error:', error);

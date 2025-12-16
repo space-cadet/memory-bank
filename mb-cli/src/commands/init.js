@@ -16,6 +16,7 @@ const DIRS = [
   'memory-bank/sessions',
   'memory-bank/templates',
   'memory-bank/database',
+  'memory-bank/database/lib',
   'memory-bank/implementation-details',
   'memory-bank/archive'
 ];
@@ -70,7 +71,8 @@ const VIEWER_FILES = [
   'schema.sql',
   'init-schema.js',
   'test-schema.js',
-  'generate-test-data.js'
+  'generate-test-data.js',
+  'lib/sqlite.js'
 ];
 
 const VIEWER_PUBLIC_FILES = [

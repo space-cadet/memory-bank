@@ -6,7 +6,7 @@
  * Can be viewed using any SQLite viewer or via the included query script
  */
 
-import Database from 'better-sqlite3';
+import * as sqlite from './lib/sqlite.js';
 import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -17,9 +17,9 @@ const __dirname = dirname(__filename);
 /**
  * Initialize the database schema
  */
-function initDatabase(db) {
+async function initDatabase() {
   // Create tables
-  db.exec(`
+  await sqlite.exec(`
     CREATE TABLE IF NOT EXISTS edit_entries (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       date TEXT NOT NULL,
@@ -50,7 +50,7 @@ function initDatabase(db) {
   `);
 
   // Create view that joins entries with modifications
-  db.exec(`
+  await sqlite.exec(`
     CREATE VIEW IF NOT EXISTS edit_entry_modifications AS
     SELECT 
         e.id AS entry_id,
@@ -198,12 +198,12 @@ function populateDatabase(db, entries) {
   console.log(`Populating database with ${entries.length} entries...\n`);
 
   // Prepare statements
-  const insertEntry = db.prepare(`
+  const insertEntry = sqlite.prepare(`
     INSERT INTO edit_entries (date, time, timezone, timestamp, task_id, task_description)
     VALUES (?, ?, ?, ?, ?, ?)
   `);
 
-  const insertModification = db.prepare(`
+  const insertModification = sqlite.prepare(`
     INSERT INTO file_modifications (edit_entry_id, action, file_path, description)
     VALUES (?, ?, ?, ?)
   `);
@@ -212,7 +212,7 @@ function populateDatabase(db, entries) {
   let errorCount = 0;
 
   // Use transaction for better performance
-  const insertAll = db.transaction((entries) => {
+  const insertAll = sqlite.transaction((entries) => {
     for (const entry of entries) {
       try {
         const timestamp = parseDateTime(entry.date, entry.time, entry.timezone);
@@ -263,9 +263,9 @@ function displayStats(db) {
   console.log('\n=====================================');
   console.log('Database Statistics:\n');
 
-  const totalEntries = db.prepare('SELECT COUNT(*) as count FROM edit_entries').get().count;
-  const totalModifications = db.prepare('SELECT COUNT(*) as count FROM file_modifications').get().count;
-  const uniqueTasks = db.prepare('SELECT DISTINCT task_id FROM edit_entries WHERE task_id IS NOT NULL').all();
+  const totalEntries = sqlite.prepare('SELECT COUNT(*) as count FROM edit_entries').get().count;
+  const totalModifications = sqlite.prepare('SELECT COUNT(*) as count FROM file_modifications').get().count;
+  const uniqueTasks = sqlite.prepare('SELECT DISTINCT task_id FROM edit_entries WHERE task_id IS NOT NULL').all();
 
   console.log(`Total Edit Entries: ${totalEntries}`);
   console.log(`Total File Modifications: ${totalModifications}`);
@@ -285,7 +285,7 @@ function displayStats(db) {
 /**
  * Main function
  */
-function main() {
+async function main() {
   try {
     console.log('Edit History Parser for Memory Bank\n');
     console.log('=====================================\n');
@@ -298,12 +298,12 @@ function main() {
 
     // Initialize database
     const dbPath = join(__dirname, 'memory_bank.db');
-    const db = new Database(dbPath);
+    await sqlite.openDb(dbPath);
 
     // Clear existing tables
     console.log('Clearing existing database data...\n');
-    db.exec('DROP TABLE IF EXISTS file_modifications');
-    db.exec('DROP TABLE IF EXISTS edit_entries');
+    await sqlite.exec('DROP TABLE IF EXISTS file_modifications');
+    await sqlite.exec('DROP TABLE IF EXISTS edit_entries');
 
     // Initialize schema
     initDatabase(db);
@@ -335,7 +335,7 @@ function main() {
     }
 
     // Close database
-    db.close();
+    await sqlite.closeDb();
 
   } catch (error) {
     console.error('Error:', error);

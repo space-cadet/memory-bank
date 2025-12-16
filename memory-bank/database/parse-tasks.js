@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import Database from 'better-sqlite3';
+import * as sqlite from './lib/sqlite.js';
 import { readFileSync, readdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -10,7 +10,7 @@ const __dirname = dirname(__filename);
 
 // Initialize tasks schema
 function initSchema(db) {
-  db.exec(`
+  await sqlite.exec(`
     PRAGMA foreign_keys = OFF;
     
     CREATE TABLE IF NOT EXISTS task_items (
@@ -130,17 +130,17 @@ function parseTasks(content) {
 function populateDatabase(db, tasks) {
   console.log(`Populating database with ${tasks.length} tasks...\n`);
 
-  const insertTask = db.prepare(`
+  const insertTask = sqlite.prepare(`
     INSERT OR IGNORE INTO task_items (id, title, status, priority, started, updated, details)
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `);
   
-  const insertDependency = db.prepare(`
+  const insertDependency = sqlite.prepare(`
     INSERT OR IGNORE INTO task_dependencies (task_id, depends_on)
     VALUES (?, ?)
   `);
 
-  const insertSubtask = db.prepare(`
+  const insertSubtask = sqlite.prepare(`
     INSERT INTO task_subtasks (task_id, section, position, text, checked)
     VALUES (?, ?, ?, ?, ?)
   `);
@@ -152,7 +152,7 @@ function populateDatabase(db, tasks) {
   let errorCount = 0;
   
   // Insert all tasks first
-  db.transaction(() => {
+  sqlite.transaction(() => {
     tasks.forEach(task => {
       try {
         insertTask.run(
@@ -174,7 +174,7 @@ function populateDatabase(db, tasks) {
   })();
   
   // Then insert dependencies
-  db.transaction(() => {
+  sqlite.transaction(() => {
     tasks.forEach(task => {
       task.dependencies.forEach(depId => {
         try {
@@ -188,7 +188,7 @@ function populateDatabase(db, tasks) {
 
   // Then insert subtasks (from task files)
   const subtasks = parseTaskSubtasks();
-  db.transaction(() => {
+  sqlite.transaction(() => {
     subtasks.forEach(st => {
       try {
         insertSubtask.run(st.taskId, st.section, st.position, st.text, st.checked);
@@ -294,7 +294,7 @@ function runTests() {
 }
 
 // Update main()
-function main() {
+async function main() {
   if (process.argv.includes('--test')) {
     process.exit(runTests() ? 0 : 1);
   }
@@ -311,11 +311,11 @@ function main() {
     // Clear existing task tables
     console.log('Clearing existing task data...\n');
     const dbPath = join(__dirname, 'memory_bank.db');
-    const db = new Database(dbPath);
+    await sqlite.openDb(dbPath);
     
-    db.exec('DROP TABLE IF EXISTS task_dependencies');
-    db.exec('DROP TABLE IF EXISTS task_subtasks');
-    db.exec('DROP TABLE IF EXISTS task_items');
+    await sqlite.exec('DROP TABLE IF EXISTS task_dependencies');
+    await sqlite.exec('DROP TABLE IF EXISTS task_subtasks');
+    await sqlite.exec('DROP TABLE IF EXISTS task_items');
     
     initSchema(db);
     console.log('✓ Database schema initialized\n');
@@ -326,7 +326,7 @@ function main() {
 
     if (tasks.length === 0) {
       console.log('No tasks found to process.');
-      db.close();
+      await sqlite.closeDb();
       return;
     }
 
@@ -335,8 +335,8 @@ function main() {
     console.log('\n=====================================');
     console.log('Database Statistics:\n');
     
-    const totalTasks = db.prepare('SELECT COUNT(*) as count FROM task_items').get().count;
-    const totalDeps = db.prepare('SELECT COUNT(*) as count FROM task_dependencies').get().count;
+    const totalTasks = sqlite.prepare('SELECT COUNT(*) as count FROM task_items').get().count;
+    const totalDeps = sqlite.prepare('SELECT COUNT(*) as count FROM task_dependencies').get().count;
     
     console.log(`Total Tasks: ${totalTasks}`);
     console.log(`Total Dependencies: ${totalDeps}`);
@@ -344,7 +344,7 @@ function main() {
     console.log('\n✓ Tasks database updated successfully!');
     console.log('Database file: memory_bank.db\n');
     
-    db.close();
+    await sqlite.closeDb();
   } catch (error) {
     console.error('Error:', error);
     process.exit(1);

@@ -3,10 +3,11 @@
 *Last Updated: 2025-12-16 16:36:00 IST*
 
 ## Current Tasks
-1. **[T24]**: Enhanced Web Interface + Standalone npm Server Package (HIGH priority)
+1. **[T24]**: Migrate from better-sqlite3 to sql.js (HIGH priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: Track and stabilize the setup wizard default entry point + standalone npm server packaging work from claude/enhance-web-interface-jlbDZ.
-   - Recent Achievement: Setup wizard is now the default entry point for new projects (no CLI required for initial setup).
+   - Current Focus: Replace better-sqlite3 (native addon) with sql.js (WASM) across server package and CLI templates to eliminate native compilation requirements
+   - Previous Achievement: Setup wizard is now the default entry point for new projects (no CLI required for initial setup)
+   - Current Blocker Resolved: Migrating to sql.js to enable zero-friction cross-platform installation
 
 2. **[T19]**: Memory Bank Viewer Web Interface (HIGH priority)
    - Status: 🔄 IN PROGRESS (Phase 3 Setup Wizard Complete)
