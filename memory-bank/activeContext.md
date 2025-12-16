@@ -1,27 +1,32 @@
 # Active Context
 
-*Last Updated: 2025-12-16 19:30:00 IST*
+*Last Updated: 2025-12-16 16:36:00 IST*
 
 ## Current Tasks
-1. **[T19]**: Memory Bank Viewer Web Interface (HIGH priority)
+1. **[T24]**: Enhanced Web Interface + Standalone npm Server Package (HIGH priority)
+   - Status: 🔄 IN PROGRESS
+   - Current Focus: Track and stabilize the setup wizard default entry point + standalone npm server packaging work from claude/enhance-web-interface-jlbDZ.
+   - Recent Achievement: Setup wizard is now the default entry point for new projects (no CLI required for initial setup).
+
+2. **[T19]**: Memory Bank Viewer Web Interface (HIGH priority)
    - Status: 🔄 IN PROGRESS (Phase 3 Setup Wizard Complete)
    - Current Focus: Phase 3 includes setup wizard, write capabilities, and DB management
    - Recent Achievement: Comprehensive 4-step setup wizard integrated as default entry point for new projects. Web interface now handles complete initialization without CLI.
 
-2. **[T13]**: Implement Memory Bank CLI (HIGH priority)
+3. **[T13]**: Implement Memory Bank CLI (HIGH priority)
    - Status: 🔄 IN PROGRESS
    - Current Focus: Canonicalize mb-cli templates and keep generated memory-bank/database and memory-bank/templates as output only.
 
-3. **[T21]**: Database-Native Memory Bank Update Workflow (HIGH priority)
+4. **[T21]**: Database-Native Memory Bank Update Workflow (HIGH priority)
    - Status: 🔄 IN PROGRESS (Phase A Complete)
    - Current Focus: DB-first workflow slice expanded with DB selection/import tooling in the canonical viewer; next is safe write-to-disk export with backups and roundtrip validation.
    - Note: T22 (AdminJS) was attempted to solve this but cancelled. We are now building the write UI directly into T19.
 
-4. **[T22]**: AdminJS Database Management Interface (HIGH priority)
+5. **[T22]**: AdminJS Database Management Interface (HIGH priority)
    - Status: ❌ CANCELLED (2025-11-22)
    - Reason: Excessive complexity/dependency hell. Shelved in favor of extending T19.
 
-5. **[T17]**: Maintenance and Upkeep of Integrated Rules (MEDIUM priority)
+6. **[T17]**: Maintenance and Upkeep of Integrated Rules (MEDIUM priority)
    - Status: 🔄 IN PROGRESS
    - Current Focus: Rules documentation v6.8 → v6.10
 

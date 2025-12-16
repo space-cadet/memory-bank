@@ -1,8 +1,23 @@
 # Edit History
 *Created: 2025-04-10*
-*Last Updated: 2025-12-16 14:25:03 IST*
+*Last Updated: 2025-12-16 16:36:00 IST*
 
 ### 2025-12-16
+
+#### 16:36:00 IST - T24: Enhanced Web Interface + Standalone npm Server Package
+- Created `memory-bank/tasks/T24.md` - New task tracking enhanced web interface (setup wizard) and standalone npm server packaging
+- Modified `memory-bank/tasks.md` - Added T24 to active task registry
+- Modified `memory-bank/database/server.js` - Added setup wizard APIs, memory bank initialization flow, and npm-package oriented server behavior
+- Modified `memory-bank/database/public/js/setup.js` - Added 4-step setup wizard UI logic as default entry point
+- Modified `memory-bank/database/public/index.html` - Loaded setup wizard script before app initialization
+- Modified `memory-bank/database/public/js/api.js` - Added setup wizard API client methods
+- Modified `memory-bank/database/public/js/app.js` - Routed initialization via SetupWizard and added post-setup transition into viewer
+- Modified `memory-bank/database/public/css/style.css` - Added setup wizard styles
+- Modified `memory-bank/database/package.json` - Added standalone npm package metadata and bin entry for running the server
+- Modified `memory-bank/database/README.md` - Documented running the server as a standalone package
+- Modified `mb-cli/src/commands/init.js` - Ensured CLI-generated viewer includes setup wizard assets
+- Created `mb-cli/templates/memory-bank/database/public/js/setup.js` - Added setup wizard to CLI template output
+- Created `memory-bank/implementation-details/web-interface-setup-wizard.md` - Documented setup wizard architecture and endpoints
 
 #### 14:25:03 IST - T13: CLI Template Canonicalization and Cleanup
 - Modified `mb-cli/src/commands/init.js` - Fixed targetDir auto-detection to prevent nested memory-bank folders, moved database toolchain source to `mb-cli/templates`, added database README template copy, and updated init to copy full template contents into `memory-bank/templates`
