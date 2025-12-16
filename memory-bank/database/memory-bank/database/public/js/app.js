@@ -112,8 +112,6 @@ const App = {
     const sidebar = document.getElementById('sidebar');
     const searchInput = document.getElementById('searchInput');
 
-    document.body.classList.toggle('editor-mode', mode === 'editor');
-
     if (mode === 'viewer') {
       if (dbPickerBar) dbPickerBar.style.display = '';
       if (sidebar) sidebar.style.display = '';

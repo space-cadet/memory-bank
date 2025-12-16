@@ -1,7 +1,7 @@
 # Modular Memory Bank Viewer Architecture
 
 *Created: 2025-11-22*
-*Last Updated: 2025-12-15 10:40:55 IST*
+*Last Updated: 2025-12-16 13:17:00 IST*
 *Related Task: [T21](../tasks/T21.md)*
 
 ## Overview
@@ -40,24 +40,34 @@ graph TD
     *   `parse-sessions.js`: Parses `sessions/*.md` -> `sessions`.
     *   `parse-session-cache.js`: Parses `session_cache.md` -> `session_cache`.
 
-3.  **Server (`memory-bank/database/server.js`)**:
+ 3.  **Server (`memory-bank/database/server.js`)**:
     *   **Stack**: Node.js + Express + better-sqlite3.
     *   **Role**: Provides a REST API for the database and serves static assets.
+    *   **Security**: All filesystem access is restricted to the `memory-bank/` directory.
     *   **Key Endpoints**:
         *   `GET /api/tables`: List all tables with metadata.
         *   `GET /api/table/:name`: Paginated data for a table.
         *   `GET /api/table/:name/schema`: Schema info (FKs, Indexes).
         *   `GET /api/table/:name/record/:id`: Single record with **Related Records** traversal.
         *   `GET /api/search`: Global full-text search.
+        *   `GET /api/db/current`: Get current open database path.
+        *   `GET /api/db/list`: List .db files under a provided directory (must be under `memory-bank/`).
+        *   `POST /api/db/open`: Open a selected database file.
+        *   `POST /api/db/create`: Create/open a database file and initialize Phase A schema.
         *   `POST /api/edit-entries`: Create edit_history entry (DB-first write).
         *   `POST /api/edit-entries/:id/modifications`: Add file modification to an edit entry.
         *   `DELETE /api/edit-entries/:id`: Delete edit entry (cascades to file_modifications).
         *   `GET /api/export/edit-history`: Export edit_history markdown from DB.
+        *   `GET /api/import/edit-history/preview`: Preview parsed edit_history entries from a markdown source file.
+        *   `POST /api/import/edit-history/run`: Import edit_history entries into a selected DB (append/replace).
         *   `GET /api/memory-bank/files`: List all memory bank files organized by 5 categories (Core, Tasks, Sessions, Implementation, Database). Returns file metadata (name, path, size, modified timestamp).
         *   `GET /api/memory-bank/file/*`: Fetch specific memory bank file content with security checks. Returns content and metadata as JSON.
 
 4.  **Frontend (`memory-bank/database/public/`)**:
     *   **Stack**: Vanilla JavaScript (ES Modules), CSS Variables (Theming).
+    *   **Modes**:
+        *   **Viewer**: Browse database tables and memory-bank files.
+        *   **Editor**: Create/select databases and run edit_history import workflows.
     *   **Structure**:
         *   `app.js`: Main controller, state management, sorting logic.
         *   `router.js`: Hash-based routing with History API support.

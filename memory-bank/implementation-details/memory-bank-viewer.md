@@ -1,9 +1,34 @@
 # Memory Bank Viewer - Complete Planning and Architecture
 
 *Created: 2025-11-10 18:27:15 IST*
-*Last Updated: 2025-11-22 17:15:00 IST*
+*Last Updated: 2025-12-16 13:17:00 IST*
 
 ## Session Development Log
+
+### Session 5: Viewer/Editor DB Management + edit_history Import (2025-12-16)
+**Status**: 🔄 Phase 3 In Progress
+
+**Work Completed:**
+1. **Viewer/Editor Modes**
+   - Added top-level Viewer and Editor tabs
+   - Added database picker (dir + select + open) so the Viewer can switch which SQLite DB it is browsing
+
+2. **Database Management API + UI**
+   - Added endpoints and UI actions to list/open/create DB files
+   - Added request logging and explicit server error logs for operational visibility
+   - Restricted filesystem access to memory-bank/ only
+
+3. **edit_history Import Workflow**
+   - Added preview + run import from memory-bank/edit_history.md into a selected DB
+   - Supports append and replace modes
+
+**Files Modified:**
+- memory-bank/database/server.js
+- memory-bank/database/public/index.html
+- memory-bank/database/public/js/api.js
+- memory-bank/database/public/js/app.js
+- memory-bank/database/public/js/ui.js
+- memory-bank/database/public/css/style.css
 
 ### Session 4: T19 Refactor & T22 AdminJS Attempt (2025-11-22 16:15-17:15 IST)
 **Duration**: ~1 hour

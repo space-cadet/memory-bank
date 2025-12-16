@@ -1,6 +1,24 @@
 # Edit History
 *Created: 2025-04-10*
-*Last Updated: 2025-12-15 10:40:55 IST*
+*Last Updated: 2025-12-16 13:17:00 IST*
+
+### 2025-12-16
+
+#### 13:17:00 IST - T19: Viewer/Editor DB Management, Import, and Logging
+- Modified `memory-bank/database/server.js` - Added DB management endpoints (list/open/create/current), edit_history import (preview/run with append/replace), request logging, and enforced filesystem access restricted to memory-bank/
+- Modified `memory-bank/database/public/index.html` - Added Viewer/Editor tabs, DB picker (dir + select + refresh/open), and stabilized mode tab targeting
+- Modified `memory-bank/database/public/js/api.js` - Added client helpers for DB management and edit_history import endpoints
+- Modified `memory-bank/database/public/js/app.js` - Implemented Viewer/Editor mode switching, DB selection workflow, editor UI actions (create DB, preview/run import), improved error handling, and fixed editor layout mode toggling
+- Modified `memory-bank/database/public/js/ui.js` - Added editor home renderer and import preview/run renderers
+- Modified `memory-bank/database/public/css/style.css` - Fixed editor layout by collapsing grid to single column in editor mode
+- Created `memory-bank/sessions/2025-12-16-afternoon.md` - Session file documenting edit history DB-first work
+- Updated `memory-bank/activeContext.md` - Updated current focus for T19 to reflect edit_history DB-first slice and next step
+- Updated `memory-bank/tasks/T19.md` - Updated last updated and last active timestamps
+- Updated `memory-bank/tasks.md` - Updated T19 registry line to reflect edit_history DB-first slice and next step
+- Updated `memory-bank/session_cache.md` - Updated current session focus to T19 and added 2025-12-16 session entry
+- Updated `memory-bank/implementation-details/modular-viewer-architecture.md` - Documented new DB management endpoints and edit_history import endpoints
+- Updated `memory-bank/tasks/T21.md` - Updated last updated and last active timestamps
+- Updated `memory-bank/implementation-details/memory-bank-viewer.md` - Updated last updated and last active timestamps
 
 ### 2025-12-15
 
