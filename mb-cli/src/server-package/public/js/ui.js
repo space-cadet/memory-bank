@@ -27,6 +27,106 @@ const UI = {
     `;
   },
 
+  renderTasksImportPreview(result) {
+    if (!result || result.error) {
+      return `<div class="error">${this.escapeHtml((result && result.error) || 'Preview failed')}</div>`;
+    }
+
+    const rows = (result.tasks || []).map(t => {
+      return `<div class="field" style="margin-top: 6px;">
+        <span class="field-name">${this.escapeHtml(t.id)} (${this.escapeHtml(t.status)}/${this.escapeHtml(t.priority)})</span>
+        <span class="field-value">${this.escapeHtml(t.title)} (${this.escapeHtml(String(t.dependency_count || 0))} deps)</span>
+      </div>`;
+    }).join('');
+
+    return `
+      <div class="meta">Source: ${this.escapeHtml(result.source)} | Total: ${this.escapeHtml(String(result.totalTasks || 0))}</div>
+      ${rows || '<div class="empty">No tasks</div>'}
+    `;
+  },
+
+  renderTasksImportRunResult(result) {
+    if (!result || result.error) {
+      return `<div class="error">${this.escapeHtml((result && result.error) || 'Import failed')}</div>`;
+    }
+
+    return `
+      <div class="meta">Imported tasks from ${this.escapeHtml(result.source)} into ${this.escapeHtml(result.dbPath)}</div>
+      <div class="schema-grid" style="margin-top: 10px;">
+        <div class="schema-item"><strong>mode:</strong> <code>${this.escapeHtml(result.mode)}</code></div>
+        <div class="schema-item"><strong>tasksParsed:</strong> <code>${this.escapeHtml(String(result.tasksParsed))}</code></div>
+        <div class="schema-item"><strong>tasksInserted:</strong> <code>${this.escapeHtml(String(result.tasksInserted))}</code></div>
+        <div class="schema-item"><strong>depsInserted:</strong> <code>${this.escapeHtml(String(result.depsInserted))}</code></div>
+      </div>
+    `;
+  },
+
+  renderSessionsImportPreview(result) {
+    if (!result || result.error) {
+      return `<div class="error">${this.escapeHtml((result && result.error) || 'Preview failed')}</div>`;
+    }
+
+    const rows = (result.sessions || []).map(s => {
+      return `<div class="field" style="margin-top: 6px;">
+        <span class="field-name">${this.escapeHtml(s.session_date)} ${this.escapeHtml(s.session_period)}</span>
+        <span class="field-value">${this.escapeHtml(String(s.focus_task || ''))}</span>
+      </div>`;
+    }).join('');
+
+    return `
+      <div class="meta">Dir: ${this.escapeHtml(result.dir)} | Files: ${this.escapeHtml(String(result.totalFiles || 0))}</div>
+      ${rows || '<div class="empty">No sessions</div>'}
+    `;
+  },
+
+  renderSessionsImportRunResult(result) {
+    if (!result || result.error) {
+      return `<div class="error">${this.escapeHtml((result && result.error) || 'Import failed')}</div>`;
+    }
+
+    return `
+      <div class="meta">Imported sessions from ${this.escapeHtml(result.dir)} into ${this.escapeHtml(result.dbPath)}</div>
+      <div class="schema-grid" style="margin-top: 10px;">
+        <div class="schema-item"><strong>mode:</strong> <code>${this.escapeHtml(result.mode)}</code></div>
+        <div class="schema-item"><strong>filesFound:</strong> <code>${this.escapeHtml(String(result.filesFound))}</code></div>
+        <div class="schema-item"><strong>sessionsInserted:</strong> <code>${this.escapeHtml(String(result.sessionsInserted))}</code></div>
+      </div>
+    `;
+  },
+
+  renderSessionCacheImportPreview(result) {
+    if (!result || result.error) {
+      return `<div class="error">${this.escapeHtml((result && result.error) || 'Preview failed')}</div>`;
+    }
+
+    return `
+      <div class="meta">Source: ${this.escapeHtml(result.source)}</div>
+      <div class="schema-grid" style="margin-top: 10px;">
+        <div class="schema-item"><strong>current_focus_task:</strong> <code>${this.escapeHtml(String(result.current_focus_task || ''))}</code></div>
+        <div class="schema-item"><strong>active_count:</strong> <code>${this.escapeHtml(String(result.active_count))}</code></div>
+        <div class="schema-item"><strong>paused_count:</strong> <code>${this.escapeHtml(String(result.paused_count))}</code></div>
+        <div class="schema-item"><strong>completed_count:</strong> <code>${this.escapeHtml(String(result.completed_count))}</code></div>
+      </div>
+    `;
+  },
+
+  renderSessionCacheImportRunResult(result) {
+    if (!result || result.error) {
+      return `<div class="error">${this.escapeHtml((result && result.error) || 'Import failed')}</div>`;
+    }
+
+    return `
+      <div class="meta">Imported session_cache from ${this.escapeHtml(result.source)} into ${this.escapeHtml(result.dbPath)}</div>
+      <div class="schema-grid" style="margin-top: 10px;">
+        <div class="schema-item"><strong>mode:</strong> <code>${this.escapeHtml(result.mode)}</code></div>
+        <div class="schema-item"><strong>current_focus_task:</strong> <code>${this.escapeHtml(String(result.current_focus_task || ''))}</code></div>
+        <div class="schema-item"><strong>active_count:</strong> <code>${this.escapeHtml(String(result.active_count))}</code></div>
+        <div class="schema-item"><strong>paused_count:</strong> <code>${this.escapeHtml(String(result.paused_count))}</code></div>
+        <div class="schema-item"><strong>completed_count:</strong> <code>${this.escapeHtml(String(result.completed_count))}</code></div>
+      </div>
+    `;
+  },
+
   renderTableList(tables, currentTable) {
     return tables.map(table => `
       <li class="table-item ${table.name === currentTable ? 'active' : ''}" onclick="App.selectTable('${table.name}', event)">
@@ -148,6 +248,96 @@ const UI = {
 
         <div id="importPreview" style="margin-top: 12px;"></div>
         <div id="importRunResult" style="margin-top: 12px;"></div>
+      </div>
+
+      <div class="record-card" style="cursor: default; margin-top: 16px;">
+        <h3 style="margin-top: 0;">Import tasks</h3>
+
+        <div class="field" style="margin-top: 10px;">
+          <span class="field-name">Target DB (optional):</span>
+          <input id="importTasksTargetDbPath" type="text" style="width: 100%; margin-top: 6px;" placeholder="(uses current DB if empty)" />
+        </div>
+
+        <div class="field" style="margin-top: 10px;">
+          <span class="field-name">Source file (under memory-bank/):</span>
+          <input id="importTasksSourcePath" type="text" style="width: 100%; margin-top: 6px;" value="tasks.md" />
+        </div>
+
+        <div style="margin-top: 10px;">
+          <label class="field-name">Mode</label>
+          <select id="importTasksMode" style="width: 100%; margin-top: 6px;">
+            <option value="append">append</option>
+            <option value="replace">replace</option>
+          </select>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+          <button onclick="App.editorPreviewImportTasks()">Preview</button>
+          <button onclick="App.editorRunImportTasks()">Run Import</button>
+        </div>
+
+        <div id="importTasksPreview" style="margin-top: 12px;"></div>
+        <div id="importTasksRunResult" style="margin-top: 12px;"></div>
+      </div>
+
+      <div class="record-card" style="cursor: default; margin-top: 16px;">
+        <h3 style="margin-top: 0;">Import sessions</h3>
+
+        <div class="field" style="margin-top: 10px;">
+          <span class="field-name">Target DB (optional):</span>
+          <input id="importSessionsTargetDbPath" type="text" style="width: 100%; margin-top: 6px;" placeholder="(uses current DB if empty)" />
+        </div>
+
+        <div class="field" style="margin-top: 10px;">
+          <span class="field-name">Sessions folder (under memory-bank/):</span>
+          <input id="importSessionsDir" type="text" style="width: 100%; margin-top: 6px;" value="sessions" />
+        </div>
+
+        <div style="margin-top: 10px;">
+          <label class="field-name">Mode</label>
+          <select id="importSessionsMode" style="width: 100%; margin-top: 6px;">
+            <option value="append">append</option>
+            <option value="replace">replace</option>
+          </select>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+          <button onclick="App.editorPreviewImportSessions()">Preview</button>
+          <button onclick="App.editorRunImportSessions()">Run Import</button>
+        </div>
+
+        <div id="importSessionsPreview" style="margin-top: 12px;"></div>
+        <div id="importSessionsRunResult" style="margin-top: 12px;"></div>
+      </div>
+
+      <div class="record-card" style="cursor: default; margin-top: 16px;">
+        <h3 style="margin-top: 0;">Import session_cache</h3>
+
+        <div class="field" style="margin-top: 10px;">
+          <span class="field-name">Target DB (optional):</span>
+          <input id="importSessionCacheTargetDbPath" type="text" style="width: 100%; margin-top: 6px;" placeholder="(uses current DB if empty)" />
+        </div>
+
+        <div class="field" style="margin-top: 10px;">
+          <span class="field-name">Source file (under memory-bank/):</span>
+          <input id="importSessionCacheSourcePath" type="text" style="width: 100%; margin-top: 6px;" value="session_cache.md" />
+        </div>
+
+        <div style="margin-top: 10px;">
+          <label class="field-name">Mode</label>
+          <select id="importSessionCacheMode" style="width: 100%; margin-top: 6px;">
+            <option value="replace">replace</option>
+            <option value="append">append</option>
+          </select>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+          <button onclick="App.editorPreviewImportSessionCache()">Preview</button>
+          <button onclick="App.editorRunImportSessionCache()">Run Import</button>
+        </div>
+
+        <div id="importSessionCachePreview" style="margin-top: 12px;"></div>
+        <div id="importSessionCacheRunResult" style="margin-top: 12px;"></div>
       </div>
     `;
   },

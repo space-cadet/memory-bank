@@ -1,11 +1,11 @@
 # Session Cache
 *Created: 2025-11-10 18:27:15 IST*
-*Last Updated: 2025-12-16 22:19:00 IST*
+*Last Updated: 2025-12-16 23:06:40 IST*
 
 **Started**: 2025-12-16 13:22:00 IST
 **Focus Task**: T24 (Migrate from better-sqlite3 to sql.js) 🔄
 **Session File**: `sessions/2025-12-16-night.md`
-**Status**: 🔄 In Progress: mb-cli canonical server-package + sql.js migration correctness + template sync
+**Status**: 🔄 In Progress: mb-cli canonical server-package + sql.js migration correctness + browser import flows + template sync
 
 ## Overview
 - Active: 12 | Paused: 0 | Completed: 7 | Cancelled: 1
@@ -25,7 +25,8 @@
 10. `sessions/2025-11-13-evening.md` - T21: Database-native memory bank update workflow, paradigm shift to DB-authoritative, schema design
 
 ## Task Registry
-- T24: Enhanced Web Interface + Standalone npm Server Package - 🔄
+- T25: Standalone Node Package (Browser-First) - 🔄
+- T24: Migrate from better-sqlite3 to sql.js - 🔄
 - T23: Format Specification System - 🔄
 - META-1: Memory Bank Update and Maintenance - 🔄
 - T22: AdminJS Database Management Interface - ❌

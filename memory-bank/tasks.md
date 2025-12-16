@@ -1,13 +1,14 @@
 # Task Registry
-*Last Updated: 2025-12-16 22:19:00 IST*
+*Last Updated: 2025-12-16 23:06:40 IST*
 
 ## Active Tasks
 | ID | Title | Status | Priority | Started | Dependencies | Details |
 |----|-------|--------|----------|---------|--------------|---------|
-| T24 | Migrate from better-sqlite3 to sql.js | 🔄 | HIGH | 2025-12-16 | T19, T21, T13 | [Details](tasks/T24.md) - Replace native addon with WASM SQLite for zero-friction installation |
+| T25 | Standalone Node Package (Browser-First) | 🔄 | HIGH | 2025-12-16 | T19, T21, T13, T24 | [Details](tasks/T25.md) - Browser-first import (markdown -> DB) + export (DB -> markdown) with safe backups |
+| T24 | Migrate from better-sqlite3 to sql.js | 🔄 | HIGH | 2025-12-16 | T19, T21, T13 | [Details](tasks/T24.md) - Replace native addon with WASM SQLite for predictable installation |
 | T23 | Format Specification System | 🔄 | HIGH | 2025-12-05 | T17, T21 | [Details](tasks/T23.md) - Dual markdown+JSON spec for parser/rules alignment |
 | META-1 | Memory Bank Update and Maintenance | 🔄 | HIGH | 2025-11-13 | T21, T20a, T20 | [Details](tasks/META-1.md) - Updated update workflow (v6.11); T23 format spec initiated |
-| T21 | Database-Native Memory Bank Update Workflow | 🔄 | HIGH | 2025-11-13 | T20, T20a, T13 | [Details](tasks/T21.md) - Phase A complete; edit_history DB-first writes/export (2025-12-15); DB selection + import integrated (2025-12-16) |
+| T21 | Database-Native Memory Bank Update Workflow | 🔄 | HIGH | 2025-11-13 | T20, T20a, T13 | [Details](tasks/T21.md) - Phase A complete; DB selection + edit_history import integrated; browser imports added for tasks/sessions/session_cache (2025-12-16) |
 | T22 | AdminJS Database Management Interface | ❌ | HIGH | 2025-11-22 | T21 | [Details](tasks/T22.md) - Attempted POC; abandoned due to excessive complexity and dependency issues |
 | T20a | Adaptive LLM-Based Format Parser | 🔄 | HIGH | 2025-11-12 | T20 | [Details](tasks/T20a.md) - Design phase: Format analysis complete, LLM-driven detection system |
 | T20 | Memory Bank Database Parser | 🔄 | MEDIUM | 2025-11-12 | - | [Details](tasks/T20.md) - Phase 3 continued: Format handling improvements, timezone optionality |

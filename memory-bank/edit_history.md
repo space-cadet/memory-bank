@@ -1,8 +1,31 @@
 # Edit History
 *Created: 2025-04-10*
-*Last Updated: 2025-12-16 22:19:00 IST*
+*Last Updated: 2025-12-16 23:06:40 IST*
 
 ### 2025-12-16
+
+#### 23:06:40 IST - T21: Browser Import Flows (tasks/sessions/session_cache)
+- Modified `mb-cli/src/server-package/server.js` - Added browser import endpoints for tasks/sessions/session_cache and synced parsing to Phase A schema
+- Modified `mb-cli/src/server-package/public/js/api.js` - Added API client methods for tasks/sessions/session_cache imports
+- Modified `mb-cli/src/server-package/public/js/app.js` - Added Editor actions for tasks/sessions/session_cache import preview/run
+- Modified `mb-cli/src/server-package/public/js/ui.js` - Added Editor UI panels and renderers for tasks/sessions/session_cache imports
+- Updated `mb-cli/templates/memory-bank/database/` - Regenerated database package template from canonical server-package
+- Updated `memory-bank/tasks.md` - Updated timestamp and refined T21 registry line to reflect additional browser import flows
+- Updated `memory-bank/activeContext.md` - Updated current status and next steps for browser import flows and init requirements
+- Updated `memory-bank/session_cache.md` - Updated status and task registry entries to reflect T24/T25 split and browser import flows
+- Updated `memory-bank/sessions/2025-12-16-night.md` - Added notes for import flows and viewer init requirement; updated timestamp
+- Updated `memory-bank/tasks/T21.md` - Marked browser imports as completed and updated timestamps
+- Updated `memory-bank/tasks/T25.md` - Updated timestamps and marked browser ingestion as implemented
+- Updated `memory-bank/tasks/T24.md` - Updated timestamps and aligned paths to canonical mb-cli server-package/template locations
+- Updated `memory-bank/implementation-details/modular-viewer-architecture.md` - Added import endpoint list and updated timestamp
+- Updated `memory-bank/implementation-details/memory-bank-viewer.md` - Recorded additional browser import flows and updated timestamp
+
+#### 22:39:00 IST - T25: Standalone Node Package (Browser-First)
+- Created `memory-bank/tasks/T25.md` - New task for standalone node package deliverable and browser-first import/export goals
+- Updated `memory-bank/tasks.md` - Added T25 to active tasks and updated Last Updated timestamp
+- Updated `memory-bank/tasks/T24.md` - Narrowed scope to sql.js migration only
+- Updated `memory-bank/tasks/T21.md` - Added browser database update workflow scope (imports + DB -> markdown regeneration)
+- Updated `memory-bank/sessions/2025-12-16-night.md` - Logged task-scope split (T24/T25) and added T21 browser update scope
 
 #### 22:19:00 IST - T24: Migrate from better-sqlite3 to sql.js
 - Created `memory-bank/sessions/2025-12-16-night.md` - Night session log: mb-cli canonical server-package, sql.js correctness fixes, template sync, mb init fixes

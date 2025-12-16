@@ -231,6 +231,100 @@ function isValidDate(value) {
   return /^\d{4}-\d{2}-\d{2}$/.test(String(value || ''));
 }
 
+function normalizeTaskStatus(statusCell) {
+  const emojiMatch = String(statusCell || '').match(/[🔄✅⏸️❌⬜]/);
+  const emoji = emojiMatch ? emojiMatch[0] : null;
+  const text = String(statusCell || '').toLowerCase();
+
+  if (emoji === '✅') return 'completed';
+  if (emoji === '🔄') return 'in_progress';
+  if (emoji === '⏸️') return 'paused';
+  if (emoji === '⬜') return 'pending';
+  if (emoji === '❌') return 'paused';
+
+  if (text.includes('not started')) return 'pending';
+  if (text.includes('in progress')) return 'in_progress';
+  if (text.includes('complete')) return 'completed';
+
+  return 'in_progress';
+}
+
+function normalizeTaskPriority(priorityCell) {
+  const val = String(priorityCell || '').trim().toLowerCase();
+  if (val === 'low' || val === 'medium' || val === 'high') return val;
+  return 'medium';
+}
+
+function parseTaskRow(line) {
+  if (!line.startsWith('|')) return null;
+  if (line.includes('|----')) return null;
+
+  const cells = line
+    .split('|')
+    .slice(1, -1)
+    .map(c => c.trim());
+
+  if (!cells || cells.length < 7) return null;
+  const id = String(cells[0] || '').trim();
+  if (!/^(T\d+[a-z]?|META-\d+[a-z]?)$/i.test(id)) return null;
+
+  const title = String(cells[1] || '').trim();
+  const status = normalizeTaskStatus(cells[2]);
+  const priority = normalizeTaskPriority(cells[3]);
+  const started = (String(cells[4] || '').match(/\d{4}-\d{2}-\d{2}/) || [null])[0];
+  if (!started) return null;
+
+  const depsCell = String(cells[5] || '').trim();
+  const detailsCell = String(cells[6] || '').trim();
+  const deps = depsCell === '-' || depsCell === '' ? [] : depsCell.split(/\s*,\s*/).filter(Boolean);
+
+  return {
+    id,
+    title,
+    status,
+    priority,
+    started,
+    details: detailsCell,
+    dependencies: deps
+  };
+}
+
+function parseTasksMarkdown(content) {
+  return String(content || '')
+    .split('\n')
+    .map(parseTaskRow)
+    .filter(Boolean);
+}
+
+function parseSessionFilename(filename) {
+  const match = String(filename || '').match(/^(\d{4}-\d{2}-\d{2})-([^.]+)\.md$/);
+  if (!match) return null;
+  return { session_date: match[1], session_period: match[2] };
+}
+
+function parseSessionFrontmatter(md) {
+  const created = String(md || '').match(/\*Created:\s*([^*]+)\*/);
+  const lastUpdated = String(md || '').match(/\*Last Updated:\s*([^*]+)\*/);
+  return {
+    created: created ? created[1].trim() : null,
+    lastUpdated: lastUpdated ? lastUpdated[1].trim() : null
+  };
+}
+
+function parseFocusTask(md) {
+  const m = String(md || '').match(/\n##\s*Focus Task\s*\n([^\n]+)\n/);
+  return m ? m[1].trim() : null;
+}
+
+function parseSessionCacheCounts(md) {
+  const m = String(md || '').match(/Active:\s*(\d+)\s*\|\s*Paused:\s*(\d+)\s*\|\s*Completed:\s*(\d+)(?:\s*\|\s*Cancelled:\s*(\d+))?/);
+  return {
+    active: m ? parseInt(m[1] || '0') : 0,
+    paused: m ? parseInt(m[2] || '0') : 0,
+    completed: m ? parseInt(m[3] || '0') : 0
+  };
+}
+
 function normalizeTime(value) {
   const raw = String(value || '').trim();
   const match = raw.match(/^\d{1,2}:\d{2}(?::\d{2})?$/);
@@ -343,6 +437,272 @@ app.post('/api/db/open', async (req, res) => {
     res.json({ dbPath: opened });
   } catch (err) {
     console.error('ERROR /api/db/open:', err && err.stack ? err.stack : err);
+    const status = err.message === 'Access denied' ? 403 : 500;
+    res.status(status).json({ error: err.message });
+  }
+});
+
+app.get('/api/import/tasks/preview', async (req, res) => {
+  try {
+    const { source = 'tasks.md', limit = 50 } = req.query;
+    const sourcePath = resolveUnderProject(join('memory-bank', String(source)));
+    if (!sourcePath) return res.status(403).json({ error: 'Access denied' });
+    if (!existsSync(sourcePath)) return res.status(404).json({ error: 'Source file not found' });
+
+    const raw = await readFile(sourcePath, 'utf-8');
+    const tasks = parseTasksMarkdown(raw);
+    const n = Math.max(1, Math.min(200, parseInt(limit)));
+    res.json({
+      source: sourcePath,
+      totalTasks: tasks.length,
+      tasks: tasks.slice(0, n).map(t => ({
+        id: t.id,
+        title: t.title,
+        status: t.status,
+        priority: t.priority,
+        started: t.started,
+        dependency_count: (t.dependencies || []).length
+      }))
+    });
+  } catch (err) {
+    console.error('ERROR /api/import/tasks/preview:', err && err.stack ? err.stack : err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/import/tasks/run', async (req, res) => {
+  try {
+    const { dbPath: targetDbPath, source = 'tasks.md', mode = 'append' } = req.body || {};
+    if (!targetDbPath) return res.status(400).json({ error: 'dbPath is required' });
+
+    const sourcePath = resolveUnderProject(join('memory-bank', String(source)));
+    if (!sourcePath) return res.status(403).json({ error: 'Access denied' });
+    if (!existsSync(sourcePath)) return res.status(404).json({ error: 'Source file not found' });
+
+    await openDatabase(targetDbPath);
+    await initPhaseASchema();
+
+    const raw = await readFile(sourcePath, 'utf-8');
+    const tasks = parseTasksMarkdown(raw);
+
+    if (mode === 'replace') {
+      sqlite.prepare('DELETE FROM task_dependencies').run();
+      sqlite.prepare('DELETE FROM task_items').run();
+    } else if (mode !== 'append') {
+      return res.status(400).json({ error: 'Invalid mode (append|replace)' });
+    }
+
+    const insertTask = sqlite.prepare(`
+      INSERT OR IGNORE INTO task_items (id, title, status, priority, started, details, last_updated)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `);
+    const insertDep = sqlite.prepare(`
+      INSERT OR IGNORE INTO task_dependencies (task_id, depends_on)
+      VALUES (?, ?)
+    `);
+
+    let tasksInserted = 0;
+    let depsInserted = 0;
+
+    const run = sqlite.transaction((items) => {
+      for (const t of items) {
+        insertTask.run(
+          t.id,
+          t.title,
+          t.status,
+          t.priority,
+          t.started,
+          t.details || '',
+          null
+        );
+        tasksInserted += 1;
+        for (const dep of t.dependencies || []) {
+          insertDep.run(t.id, dep);
+          depsInserted += 1;
+        }
+      }
+    });
+
+    await run(tasks);
+    await sqlite.saveDb();
+
+    res.json({
+      dbPath,
+      source: sourcePath,
+      mode,
+      tasksParsed: tasks.length,
+      tasksInserted,
+      depsInserted
+    });
+  } catch (err) {
+    console.error('ERROR /api/import/tasks/run:', err && err.stack ? err.stack : err);
+    const status = err.message === 'Access denied' ? 403 : 500;
+    res.status(status).json({ error: err.message });
+  }
+});
+
+app.get('/api/import/sessions/preview', async (req, res) => {
+  try {
+    const { dir = 'sessions', limit = 20 } = req.query;
+    const sessionsDirPath = resolveUnderProject(join('memory-bank', String(dir)));
+    if (!sessionsDirPath) return res.status(403).json({ error: 'Access denied' });
+    if (!existsSync(sessionsDirPath)) return res.status(404).json({ error: 'Directory not found' });
+
+    const files = (await readdir(sessionsDirPath)).filter(f => f.endsWith('.md'));
+    const n = Math.max(1, Math.min(100, parseInt(limit)));
+
+    const sample = [];
+    for (const f of files.slice(0, n)) {
+      const name = parseSessionFilename(f);
+      if (!name) continue;
+      const fp = join(sessionsDirPath, f);
+      const raw = await readFile(fp, 'utf-8');
+      const meta = parseSessionFrontmatter(raw);
+      sample.push({
+        file: f,
+        session_date: name.session_date,
+        session_period: name.session_period,
+        focus_task: parseFocusTask(raw) || null,
+        start_time: meta.created,
+        end_time: meta.lastUpdated
+      });
+    }
+
+    res.json({
+      dir: sessionsDirPath,
+      totalFiles: files.length,
+      sessions: sample
+    });
+  } catch (err) {
+    console.error('ERROR /api/import/sessions/preview:', err && err.stack ? err.stack : err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/import/sessions/run', async (req, res) => {
+  try {
+    const { dbPath: targetDbPath, dir = 'sessions', mode = 'append' } = req.body || {};
+    if (!targetDbPath) return res.status(400).json({ error: 'dbPath is required' });
+
+    const sessionsDirPath = resolveUnderProject(join('memory-bank', String(dir)));
+    if (!sessionsDirPath) return res.status(403).json({ error: 'Access denied' });
+    if (!existsSync(sessionsDirPath)) return res.status(404).json({ error: 'Directory not found' });
+
+    await openDatabase(targetDbPath);
+    await initPhaseASchema();
+
+    if (mode === 'replace') {
+      sqlite.prepare('DELETE FROM sessions').run();
+    } else if (mode !== 'append') {
+      return res.status(400).json({ error: 'Invalid mode (append|replace)' });
+    }
+
+    const files = (await readdir(sessionsDirPath)).filter(f => f.endsWith('.md'));
+    const insert = sqlite.prepare(`
+      INSERT INTO sessions (
+        session_date, session_period, focus_task, start_time, end_time, status, notes
+      ) VALUES (?, ?, ?, ?, ?, ?, ?)
+    `);
+    const taskExists = sqlite.prepare('SELECT 1 as ok FROM task_items WHERE id = ?').get;
+
+    let sessionsInserted = 0;
+    for (const f of files) {
+      const parsed = parseSessionFilename(f);
+      if (!parsed) continue;
+      const fp = join(sessionsDirPath, f);
+      const raw = await readFile(fp, 'utf-8');
+      const meta = parseSessionFrontmatter(raw);
+      const focusRaw = parseFocusTask(raw) || null;
+      const focus = focusRaw && taskExists(focusRaw) ? focusRaw : null;
+      const startTime = meta.created || null;
+      const endTime = meta.lastUpdated || null;
+      const status = endTime ? 'completed' : 'in_progress';
+      insert.run(parsed.session_date, parsed.session_period, focus, startTime, endTime, status, raw);
+      sessionsInserted += 1;
+    }
+
+    await sqlite.saveDb();
+
+    res.json({
+      dbPath,
+      dir: sessionsDirPath,
+      mode,
+      filesFound: files.length,
+      sessionsInserted
+    });
+  } catch (err) {
+    console.error('ERROR /api/import/sessions/run:', err && err.stack ? err.stack : err);
+    const status = err.message === 'Access denied' ? 403 : 500;
+    res.status(status).json({ error: err.message });
+  }
+});
+
+app.get('/api/import/session-cache/preview', async (req, res) => {
+  try {
+    const { source = 'session_cache.md' } = req.query;
+    const sourcePath = resolveUnderProject(join('memory-bank', String(source)));
+    if (!sourcePath) return res.status(403).json({ error: 'Access denied' });
+    if (!existsSync(sourcePath)) return res.status(404).json({ error: 'Source file not found' });
+
+    const raw = await readFile(sourcePath, 'utf-8');
+    const counts = parseSessionCacheCounts(raw);
+    const focusMatch = String(raw).match(/\*\*Focus Task\*\*:\s*(.+?)(\n|$)/);
+    const focus = focusMatch ? focusMatch[1].trim() : null;
+
+    res.json({
+      source: sourcePath,
+      current_focus_task: focus,
+      active_count: counts.active,
+      paused_count: counts.paused,
+      completed_count: counts.completed
+    });
+  } catch (err) {
+    console.error('ERROR /api/import/session-cache/preview:', err && err.stack ? err.stack : err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/import/session-cache/run', async (req, res) => {
+  try {
+    const { dbPath: targetDbPath, source = 'session_cache.md', mode = 'replace' } = req.body || {};
+    if (!targetDbPath) return res.status(400).json({ error: 'dbPath is required' });
+
+    const sourcePath = resolveUnderProject(join('memory-bank', String(source)));
+    if (!sourcePath) return res.status(403).json({ error: 'Access denied' });
+    if (!existsSync(sourcePath)) return res.status(404).json({ error: 'Source file not found' });
+
+    await openDatabase(targetDbPath);
+    await initPhaseASchema();
+
+    if (mode === 'replace') {
+      sqlite.prepare('DELETE FROM session_cache').run();
+    } else if (mode !== 'append') {
+      return res.status(400).json({ error: 'Invalid mode (append|replace)' });
+    }
+
+    const raw = await readFile(sourcePath, 'utf-8');
+    const counts = parseSessionCacheCounts(raw);
+    const focusMatch = String(raw).match(/\*\*Focus Task\*\*:\s*(.+?)(\n|$)/);
+    const focus = focusMatch ? focusMatch[1].trim() : null;
+
+    const insert = sqlite.prepare(`
+      INSERT INTO session_cache (id, current_session_id, current_focus_task, active_count, paused_count, completed_count, last_updated)
+      VALUES (1, NULL, ?, ?, ?, ?, NULL)
+    `);
+    insert.run(focus, counts.active, counts.paused, counts.completed);
+    await sqlite.saveDb();
+
+    res.json({
+      dbPath,
+      source: sourcePath,
+      mode,
+      current_focus_task: focus,
+      active_count: counts.active,
+      paused_count: counts.paused,
+      completed_count: counts.completed
+    });
+  } catch (err) {
+    console.error('ERROR /api/import/session-cache/run:', err && err.stack ? err.stack : err);
     const status = err.message === 'Access denied' ? 403 : 500;
     res.status(status).json({ error: err.message });
   }

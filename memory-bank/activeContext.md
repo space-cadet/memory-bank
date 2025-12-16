@@ -1,11 +1,11 @@
 # Active Context
 
-*Last Updated: 2025-12-16 22:19:00 IST*
+*Last Updated: 2025-12-16 23:06:40 IST*
 
 ## Current Tasks
 1. **[T24]**: Migrate from better-sqlite3 to sql.js (HIGH priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: Make mb-cli the single source of truth for the standalone database package (`mb-cli/src/server-package/`) and keep templates as generated output while completing sql.js migration correctness and clean install behavior
+   - Current Focus: Complete sql.js migration correctness and clean install behavior across the canonical standalone database package (`mb-cli/src/server-package/`) and generated templates
    - Recent Achievement: Canonicalized server package + added template sync workflow; fixed sql.js adapter persistence correctness and better-sqlite3 semantics (lastInsertRowid)
 
 2. **[T19]**: Memory Bank Viewer Web Interface (HIGH priority)
@@ -22,11 +22,15 @@
    - Current Focus: DB-first workflow slice expanded with DB selection/import tooling in the canonical viewer; next is safe write-to-disk export with backups and roundtrip validation.
    - Note: T22 (AdminJS) was attempted to solve this but cancelled. We are now building the write UI directly into T19.
 
-5. **[T22]**: AdminJS Database Management Interface (HIGH priority)
+5. **[T25]**: Standalone Node Package (Browser-First) (HIGH priority)
+   - Status: 🔄 IN PROGRESS
+   - Current Focus: Browser-first imports (tasks/sessions/session_cache) wired into the canonical server package and synced into templates; export/writeback still pending
+
+6. **[T22]**: AdminJS Database Management Interface (HIGH priority)
    - Status: ❌ CANCELLED (2025-11-22)
    - Reason: Excessive complexity/dependency hell. Shelved in favor of extending T19.
 
-6. **[T17]**: Maintenance and Upkeep of Integrated Rules (MEDIUM priority)
+7. **[T17]**: Maintenance and Upkeep of Integrated Rules (MEDIUM priority)
    - Status: 🔄 IN PROGRESS
    - Current Focus: Rules documentation v6.8 → v6.10
 
@@ -52,6 +56,7 @@
 - Run clean install tests in:
   - fresh repo (pnpm install && pnpm start inside memory-bank/database)
   - pnpm monorepo (ensure local workspace marker scopes install)
+- Confirm mb init requires viewer files (use --setup-viewer or full init) when expecting memory-bank/database/server.js
 - Verify no unwanted default DB creation when switching DBs in the editor
 - Confirm parsers/query scripts behave correctly with sql.js adapter (persistence + async flow)
 
@@ -66,7 +71,7 @@
 ## System Status
 - **Database**: ✅ Operational (Phase A Schema)
 - **Viewer (T19)**: ✅ Modular, Bug-free (Read-only mode)
-- **Editor (T19)**: ✅ DB management, edit_history import
+- **Editor (T19)**: ✅ DB management, edit_history import, tasks/sessions/session_cache import
 - **Setup Wizard (T19)**: ✅ Complete 4-step initialization flow
 - **Template Creation**: ✅ All core files auto-generated
 - **Management UI**: 🔄 Write capabilities pending (Phase 3 Part 2)

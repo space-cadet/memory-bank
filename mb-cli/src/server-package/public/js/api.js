@@ -115,6 +115,57 @@ const API = {
     });
     return response.json();
   }
+  ,
+
+  async previewImportTasks(options = {}) {
+    const params = new URLSearchParams();
+    if (options.source) params.set('source', String(options.source));
+    if (options.limit != null) params.set('limit', String(options.limit));
+    const response = await fetch(`/api/import/tasks/preview?${params.toString()}`);
+    return response.json();
+  },
+
+  async runImportTasks(body) {
+    const response = await fetch('/api/import/tasks/run', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body || {})
+    });
+    return response.json();
+  },
+
+  async previewImportSessions(options = {}) {
+    const params = new URLSearchParams();
+    if (options.dir) params.set('dir', String(options.dir));
+    if (options.limit != null) params.set('limit', String(options.limit));
+    const response = await fetch(`/api/import/sessions/preview?${params.toString()}`);
+    return response.json();
+  },
+
+  async runImportSessions(body) {
+    const response = await fetch('/api/import/sessions/run', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body || {})
+    });
+    return response.json();
+  },
+
+  async previewImportSessionCache(options = {}) {
+    const params = new URLSearchParams();
+    if (options.source) params.set('source', String(options.source));
+    const response = await fetch(`/api/import/session-cache/preview?${params.toString()}`);
+    return response.json();
+  },
+
+  async runImportSessionCache(body) {
+    const response = await fetch('/api/import/session-cache/run', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body || {})
+    });
+    return response.json();
+  }
 };
 
 // Export for module usage (if using modules) or global scope

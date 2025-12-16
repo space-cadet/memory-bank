@@ -1,7 +1,7 @@
 # Memory Bank Viewer - Complete Planning and Architecture
 
 *Created: 2025-11-10 18:27:15 IST*
-*Last Updated: 2025-12-16 13:17:00 IST*
+*Last Updated: 2025-12-16 23:06:40 IST*
 
 ## Session Development Log
 
@@ -21,6 +21,10 @@
 3. **edit_history Import Workflow**
    - Added preview + run import from memory-bank/edit_history.md into a selected DB
    - Supports append and replace modes
+
+4. **Additional Browser Import Flows**
+   - Added preview + run imports for tasks.md, sessions/*.md, and session_cache.md
+   - Implemented in canonical `mb-cli/src/server-package/` and synced into `mb-cli/templates/memory-bank/database/`
 
 **Files Modified:**
 - memory-bank/database/server.js

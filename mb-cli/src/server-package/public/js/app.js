@@ -194,6 +194,84 @@ const App = {
     this.selectDbInDropdown(this.currentDbPath);
   },
 
+  async editorPreviewImportTasks() {
+    const source = (document.getElementById('importTasksSourcePath') || {}).value || 'tasks.md';
+    const result = await API.previewImportTasks({ source, limit: 50 });
+    const container = document.getElementById('importTasksPreview');
+    if (container) {
+      container.innerHTML = UI.renderTasksImportPreview(result);
+    }
+  },
+
+  async editorRunImportTasks() {
+    const dbPath = (document.getElementById('importTasksTargetDbPath') || {}).value || this.currentDbPath;
+    const source = (document.getElementById('importTasksSourcePath') || {}).value || 'tasks.md';
+    const mode = (document.getElementById('importTasksMode') || {}).value || 'append';
+    if (!dbPath) return;
+
+    const result = await API.runImportTasks({ dbPath, source, mode });
+    const container = document.getElementById('importTasksRunResult');
+    if (container) {
+      container.innerHTML = UI.renderTasksImportRunResult(result);
+    }
+
+    this.currentDbPath = result && result.dbPath ? result.dbPath : this.currentDbPath;
+    await this.refreshDbList();
+    this.selectDbInDropdown(this.currentDbPath);
+  },
+
+  async editorPreviewImportSessions() {
+    const dir = (document.getElementById('importSessionsDir') || {}).value || 'sessions';
+    const result = await API.previewImportSessions({ dir, limit: 20 });
+    const container = document.getElementById('importSessionsPreview');
+    if (container) {
+      container.innerHTML = UI.renderSessionsImportPreview(result);
+    }
+  },
+
+  async editorRunImportSessions() {
+    const dbPath = (document.getElementById('importSessionsTargetDbPath') || {}).value || this.currentDbPath;
+    const dir = (document.getElementById('importSessionsDir') || {}).value || 'sessions';
+    const mode = (document.getElementById('importSessionsMode') || {}).value || 'append';
+    if (!dbPath) return;
+
+    const result = await API.runImportSessions({ dbPath, dir, mode });
+    const container = document.getElementById('importSessionsRunResult');
+    if (container) {
+      container.innerHTML = UI.renderSessionsImportRunResult(result);
+    }
+
+    this.currentDbPath = result && result.dbPath ? result.dbPath : this.currentDbPath;
+    await this.refreshDbList();
+    this.selectDbInDropdown(this.currentDbPath);
+  },
+
+  async editorPreviewImportSessionCache() {
+    const source = (document.getElementById('importSessionCacheSourcePath') || {}).value || 'session_cache.md';
+    const result = await API.previewImportSessionCache({ source });
+    const container = document.getElementById('importSessionCachePreview');
+    if (container) {
+      container.innerHTML = UI.renderSessionCacheImportPreview(result);
+    }
+  },
+
+  async editorRunImportSessionCache() {
+    const dbPath = (document.getElementById('importSessionCacheTargetDbPath') || {}).value || this.currentDbPath;
+    const source = (document.getElementById('importSessionCacheSourcePath') || {}).value || 'session_cache.md';
+    const mode = (document.getElementById('importSessionCacheMode') || {}).value || 'replace';
+    if (!dbPath) return;
+
+    const result = await API.runImportSessionCache({ dbPath, source, mode });
+    const container = document.getElementById('importSessionCacheRunResult');
+    if (container) {
+      container.innerHTML = UI.renderSessionCacheImportRunResult(result);
+    }
+
+    this.currentDbPath = result && result.dbPath ? result.dbPath : this.currentDbPath;
+    await this.refreshDbList();
+    this.selectDbInDropdown(this.currentDbPath);
+  },
+
   initTheme() {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
