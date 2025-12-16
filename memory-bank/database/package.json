@@ -24,11 +24,12 @@
     "node": ">=16.0.0"
   },
   "dependencies": {
-    "better-sqlite3": "^9.0.0",
-    "express": "^5.0.0"
+    "express": "^5.0.0",
+    "sql.js": "^1.13.0"
   },
   "files": [
     "server.js",
+    "lib/",
     "public/",
     "templates/",
     "schema.sql"

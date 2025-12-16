@@ -5,7 +5,7 @@
  * Parses all markdown files in memory-bank/sessions/ and populates the sessions table
  */
 
-import Database from 'better-sqlite3';
+import * as sqlite from './lib/sqlite.js';
 import { readFileSync, readdirSync, statSync } from 'fs';
 import { join, dirname, basename } from 'path';
 import { fileURLToPath } from 'url';
@@ -17,7 +17,7 @@ const __dirname = dirname(__filename);
  * Initialize sessions schema
  */
 function initSchema(db) {
-  db.exec(`
+  await sqlite.exec(`
     CREATE TABLE IF NOT EXISTS sessions (
       id TEXT PRIMARY KEY,         -- Filename (e.g., 2025-11-22-evening.md)
       date TEXT NOT NULL,          -- YYYY-MM-DD
@@ -104,7 +104,7 @@ function parseSessionFile(filePath, filename) {
 /**
  * Main Execution
  */
-function main() {
+async function main() {
   try {
     console.log('Session Parser for Memory Bank\n');
     console.log('=====================================\n');
@@ -114,10 +114,10 @@ function main() {
 
     // Initialize database
     const dbPath = join(__dirname, 'memory_bank.db');
-    const db = new Database(dbPath);
+    await sqlite.openDb(dbPath);
     
     // Recreate table to ensure clean slate
-    db.exec('DROP TABLE IF EXISTS sessions');
+    await sqlite.exec('DROP TABLE IF EXISTS sessions');
     initSchema(db);
 
     // Get all .md files
@@ -126,12 +126,12 @@ function main() {
 
     if (files.length === 0) {
       console.log('No session files found.');
-      db.close();
+      await sqlite.closeDb();
       return;
     }
 
     // Prepare insert statement
-    const insertSession = db.prepare(`
+    const insertSession = sqlite.prepare(`
       INSERT INTO sessions (
         id, date, period, status, focus, 
         active_count, paused_count, completed_count, cancelled_count, 
@@ -143,7 +143,7 @@ function main() {
     let successCount = 0;
     let errorCount = 0;
 
-    const insertAll = db.transaction((sessionFiles) => {
+    const insertAll = sqlite.transaction((sessionFiles) => {
       for (const file of sessionFiles) {
         try {
           const filePath = join(sessionsDir, file);
@@ -180,14 +180,14 @@ function main() {
 
     // Display Stats
     console.log('\n=====================================');
-    const totalSessions = db.prepare('SELECT COUNT(*) as count FROM sessions').get().count;
-    const dateRange = db.prepare('SELECT MIN(date) as start, MAX(date) as end FROM sessions').get();
+    const totalSessions = sqlite.prepare('SELECT COUNT(*) as count FROM sessions').get().count;
+    const dateRange = sqlite.prepare('SELECT MIN(date) as start, MAX(date) as end FROM sessions').get();
     
     console.log(`Total Sessions: ${totalSessions}`);
     console.log(`Date Range: ${dateRange.start} to ${dateRange.end}`);
     console.log('\n✓ Session database updated successfully!');
 
-    db.close();
+    await sqlite.closeDb();
 
   } catch (error) {
     console.error('Fatal Error:', error);

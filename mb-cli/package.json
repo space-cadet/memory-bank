@@ -9,6 +9,7 @@
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
+    "sync:database-template": "node src/sync-database-template.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

@@ -16,6 +16,7 @@ const DIRS = [
   'memory-bank/sessions',
   'memory-bank/templates',
   'memory-bank/database',
+  'memory-bank/database/lib',
   'memory-bank/implementation-details',
   'memory-bank/archive'
 ];
@@ -50,7 +51,6 @@ const TEMPLATE_FILES = [
 
 const DATABASE_FILES = [
   'package.json',
-  'pnpm-lock.yaml',
   'pnpm-workspace.yaml',
   'README.md'
 ];
@@ -70,7 +70,8 @@ const VIEWER_FILES = [
   'schema.sql',
   'init-schema.js',
   'test-schema.js',
-  'generate-test-data.js'
+  'generate-test-data.js',
+  'lib/sqlite.js'
 ];
 
 const VIEWER_PUBLIC_FILES = [
@@ -286,7 +287,7 @@ async function promptForInteractiveSetup(scan, options) {
     core: false,
     templates: false,
     database: false,
-    viewer: false,
+    setupViewer: false,
     directories: false,
     parse: false,
     startViewer: false
@@ -301,10 +302,10 @@ async function promptForInteractiveSetup(scan, options) {
     case '2':
       components.directories = true;
       components.database = true;
-      components.viewer = true;
+      components.setupViewer = true;
       break;
     case '3':
-      components.viewer = true;
+      components.setupViewer = true;
       break;
     case '4':
       components.parse = true;
@@ -317,7 +318,7 @@ async function promptForInteractiveSetup(scan, options) {
       components.core = true;
       components.templates = true;
       components.database = true;
-      components.viewer = true;
+      components.setupViewer = true;
       break;
     case '7':
       console.log('Setup cancelled.');

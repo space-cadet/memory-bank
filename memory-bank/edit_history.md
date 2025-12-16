@@ -1,8 +1,21 @@
 # Edit History
 *Created: 2025-04-10*
-*Last Updated: 2025-12-16 16:36:00 IST*
+*Last Updated: 2025-12-16 22:19:00 IST*
 
 ### 2025-12-16
+
+#### 22:19:00 IST - T24: Migrate from better-sqlite3 to sql.js
+- Created `memory-bank/sessions/2025-12-16-night.md` - Night session log: mb-cli canonical server-package, sql.js correctness fixes, template sync, mb init fixes
+- Updated `memory-bank/session_cache.md` - Updated focus session pointer to night session and refreshed session history
+- Updated `memory-bank/tasks/T24.md` - Updated timestamps and added progress notes for canonical server-package + sql.js correctness work
+- Updated `memory-bank/tasks.md` - Refreshed task registry last updated timestamp
+- Modified `mb-cli/src/server-package/lib/sqlite.js` - Added dirty-write persistence gating and better-sqlite3-compatible lastInsertRowid semantics
+- Modified `mb-cli/src/server-package/server.js` - Fixed sql.js compatibility and default DB bootstrap behavior
+- Modified `mb-cli/src/server-package/init-schema.js` - Fixed async initialization/await usage for sql.js module + DB open
+- Created `mb-cli/src/server-package/pnpm-workspace.yaml` - Added standalone workspace marker to prevent monorepo pnpm install hijack
+- Created `mb-cli/src/sync-database-template.js` - Added canonical -> template sync script (wipe + copy)
+- Modified `mb-cli/package.json` - Added sync script for regenerating database templates
+- Modified `mb-cli/src/commands/init.js` - Fixed interactive setupViewer flag and updated database files allowlist for generated database package
 
 #### 16:36:00 IST - T24: Enhanced Web Interface + Standalone npm Server Package
 - Created `memory-bank/tasks/T24.md` - New task tracking enhanced web interface (setup wizard) and standalone npm server packaging

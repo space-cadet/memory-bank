@@ -5,7 +5,7 @@
  * Provides interactive queries and views for the SQLite database
  */
 
-import Database from 'better-sqlite3';
+import * as sqlite from './lib/sqlite.js';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -16,7 +16,7 @@ const __dirname = dirname(__filename);
  * Display all entries
  */
 function showAllEntries(db, limit = 20) {
-  const entries = db.prepare(`
+  const entries = sqlite.prepare(`
     SELECT id, date, time, timezone, task_id, task_description
     FROM edit_entries
     ORDER BY date DESC, time DESC
@@ -39,7 +39,7 @@ function showAllEntries(db, limit = 20) {
  * Show entries by task ID
  */
 function showEntriesByTask(db, taskId) {
-  const entries = db.prepare(`
+  const entries = sqlite.prepare(`
     SELECT id, date, time, timezone, task_description
     FROM edit_entries
     WHERE task_id LIKE ?
@@ -55,7 +55,7 @@ function showEntriesByTask(db, taskId) {
     console.log(`Description: ${entry.task_description}`);
 
     // Show modifications for this entry
-    const mods = db.prepare(`
+    const mods = sqlite.prepare(`
       SELECT action, file_path, description
       FROM edit_modifications
       WHERE edit_entry_id = ?
@@ -95,7 +95,7 @@ function showFileModifications(db, searchTerm = null, limit = 30) {
   query += ` ORDER BY ee.date DESC, ee.time DESC LIMIT ?`;
   params.push(limit);
 
-  const mods = db.prepare(query).all(...params);
+  const mods = sqlite.prepare(query).all(...params);
 
   const title = searchTerm
     ? `📁 File Modifications matching "${searchTerm}"`
@@ -123,12 +123,12 @@ function showStatistics(db) {
   console.log('─'.repeat(100));
 
   // Total counts
-  const totalEntries = db.prepare('SELECT COUNT(*) as count FROM edit_entries').get().count;
-  const totalMods = db.prepare('SELECT COUNT(*) as count FROM edit_modifications').get().count;
+  const totalEntries = sqlite.prepare('SELECT COUNT(*) as count FROM edit_entries').get().count;
+  const totalMods = sqlite.prepare('SELECT COUNT(*) as count FROM edit_modifications').get().count;
   
   let totalTasks = 0;
   try {
-    totalTasks = db.prepare('SELECT COUNT(*) as count FROM task_items').get().count;
+    totalTasks = sqlite.prepare('SELECT COUNT(*) as count FROM task_items').get().count;
   } catch (e) {
     // task_items table may not exist yet
   }
@@ -141,7 +141,7 @@ function showStatistics(db) {
   console.log('');
 
   // Entries by task
-  const taskCounts = db.prepare(`
+  const taskCounts = sqlite.prepare(`
     SELECT task_id, COUNT(*) as count
     FROM edit_entries
     WHERE task_id IS NOT NULL
@@ -156,7 +156,7 @@ function showStatistics(db) {
   console.log('');
 
   // Action types
-  const actionCounts = db.prepare(`
+  const actionCounts = sqlite.prepare(`
     SELECT action, COUNT(*) as count
     FROM edit_modifications
     GROUP BY action
@@ -170,7 +170,7 @@ function showStatistics(db) {
   console.log('');
 
   // Most modified files
-  const topFiles = db.prepare(`
+  const topFiles = sqlite.prepare(`
     SELECT file_path, COUNT(*) as count
     FROM edit_modifications
     GROUP BY file_path
@@ -206,7 +206,7 @@ function showEntriesByDate(db, startDate, endDate = null) {
 
   query += ` ORDER BY date DESC, time DESC`;
 
-  const entries = db.prepare(query).all(...params);
+  const entries = sqlite.prepare(query).all(...params);
 
   const title = endDate
     ? `📅 Entries from ${startDate} to ${endDate}`
@@ -249,14 +249,14 @@ function showMenu() {
 /**
  * Main function
  */
-function main() {
+async function main() {
   const args = process.argv.slice(2);
   const command = args[0];
 
   const dbPath = join(__dirname, 'memory_bank.db');
 
   try {
-    const db = new Database(dbPath, { readonly: true });
+    await sqlite.openDb(dbPath, { readonly: true });
 
     if (!command || command === 'help') {
       showMenu();
@@ -291,7 +291,7 @@ function main() {
       showMenu();
     }
 
-    db.close();
+    await sqlite.closeDb();
 
   } catch (error) {
     if (error.code === 'SQLITE_CANTOPEN') {

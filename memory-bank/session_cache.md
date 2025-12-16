@@ -1,28 +1,28 @@
 # Session Cache
 *Created: 2025-11-10 18:27:15 IST*
-*Last Updated: 2025-12-16 16:36:00 IST*
+*Last Updated: 2025-12-16 22:19:00 IST*
 
 **Started**: 2025-12-16 13:22:00 IST
-**Focus Task**: T24 (Enhanced Web Interface + Standalone npm Server Package) 🔄
-**Session File**: `sessions/2025-12-16-afternoon.md`
-**Status**: 🔄 In Progress: setup wizard default entry point + standalone npm package packaging
+**Focus Task**: T24 (Migrate from better-sqlite3 to sql.js) 🔄
+**Session File**: `sessions/2025-12-16-night.md`
+**Status**: 🔄 In Progress: mb-cli canonical server-package + sql.js migration correctness + template sync
 
 ## Overview
 - Active: 12 | Paused: 0 | Completed: 7 | Cancelled: 1
 - Last Session: 2025-12-15 (T21 edit_history DB-first)
-- Current Period: afternoon
+- Current Period: night
 
 ## Session History (Last 10)
-1. `sessions/2025-12-16-afternoon.md` - T19, T21, T13: Viewer/Editor DB management, edit_history import, logging, sandbox fixes, CLI template canonicalization
-2. `sessions/2025-12-15-morning.md` - T21: Edit History DB-first (schema alignment, write endpoints, export endpoint)
-3. `sessions/2025-12-13-afternoon.md` - T19, T21, T13: Canonical viewer/parsers consolidation, pagination/filter/sort, Express 5 route fix
-4. `sessions/2025-12-05-evening.md` - T23: Format Spec System analysis, dual-spec architecture
-5. `sessions/2025-11-28-afternoon.md` - T21: File viewer implementation, tab navigation, markdown rendering
-6. `sessions/2025-11-27-afternoon.md` - T13, T21: CLI viewer integration complete
-7. `sessions/2025-11-22-evening.md` - T19: Viewer refactor, T17: Rules v6.11
-8. `sessions/2025-11-13-night.md` - T21: Phase A testing complete - test suite (540L), data gen (380L), API server (270L), HTML UI (480L)
-9. `sessions/2025-11-13-evening.md` - T21: Database-native memory bank update workflow, paradigm shift to DB-authoritative, schema design
-10. `sessions/2025-11-12-evening.md` - T20: Format handling improvements, T13 integration with T20 parsers
+1. `sessions/2025-12-16-night.md` - T24: mb-cli canonical server-package, sql.js migration correctness, template sync, mb init fixes
+2. `sessions/2025-12-16-afternoon.md` - T19, T21, T13: Viewer/Editor DB management, edit_history import, logging, sandbox fixes, CLI template canonicalization
+3. `sessions/2025-12-15-morning.md` - T21: Edit History DB-first (schema alignment, write endpoints, export endpoint)
+4. `sessions/2025-12-13-afternoon.md` - T19, T21, T13: Canonical viewer/parsers consolidation, pagination/filter/sort, Express 5 route fix
+5. `sessions/2025-12-05-evening.md` - T23: Format Spec System analysis, dual-spec architecture
+6. `sessions/2025-11-28-afternoon.md` - T21: File viewer implementation, tab navigation, markdown rendering
+7. `sessions/2025-11-27-afternoon.md` - T13, T21: CLI viewer integration complete
+8. `sessions/2025-11-22-evening.md` - T19: Viewer refactor, T17: Rules v6.11
+9. `sessions/2025-11-13-night.md` - T21: Phase A testing complete - test suite (540L), data gen (380L), API server (270L), HTML UI (480L)
+10. `sessions/2025-11-13-evening.md` - T21: Database-native memory bank update workflow, paradigm shift to DB-authoritative, schema design
 
 ## Task Registry
 - T24: Enhanced Web Interface + Standalone npm Server Package - 🔄

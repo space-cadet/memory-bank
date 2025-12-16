@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memory Bank Viewer - Database & Files</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-left">
+        <h1>💾 Memory Bank Viewer</h1>
+        <div class="subtitle">Browse Database Records & Project Files</div>
+        <div class="tab-navigation" id="appTabNav">
+          <button class="tab-btn active" data-app="viewer" onclick="App.switchAppMode('viewer')">
+            👁️ Viewer
+          </button>
+          <button class="tab-btn" data-app="editor" onclick="App.switchAppMode('editor')">
+            ✍️ Editor
+          </button>
+        </div>
+        <div class="search-bar" id="dbPickerBar" style="margin-top: 10px;">
+          <input type="text" id="dbDirInput" style="min-width: 240px;" placeholder="DB dir (under project)" value="memory-bank/database" />
+          <select id="dbSelect" style="min-width: 320px;"></select>
+          <button onclick="App.refreshDbList()">Refresh DBs</button>
+          <button onclick="App.openSelectedDb()">Open</button>
+        </div>
+        <div class="tab-navigation" id="modeTabNav">
+          <button class="tab-btn active" data-tab="database" onclick="App.switchTab('database')">
+            📊 Database
+          </button>
+          <button class="tab-btn" data-tab="files" onclick="App.switchTab('files')">
+            📁 Files
+          </button>
+        </div>
+        <div class="search-bar">
+          <input type="text" id="searchInput" placeholder="Search..." />
+          <button onclick="App.performSearch()">Search</button>
+        </div>
+      </div>
+      <div class="header-right">
+        <button class="dark-mode-toggle" onclick="App.toggleDarkMode()">🌙</button>
+      </div>
+    </header>
+
+    <div class="main">
+      <aside class="sidebar" id="sidebar">
+        <h2 id="sidebarTitle">Tables</h2>
+        <ul class="nav-list" id="navList">
+          <!-- Populated by JS -->
+          <li class="loading">Loading...</li>
+        </ul>
+      </aside>
+
+      <main class="content" id="mainContent">
+        <!-- Populated by JS -->
+        <div class="loading">Select an item to view</div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Application Logic -->
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
