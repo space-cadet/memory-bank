@@ -576,12 +576,30 @@ const App = {
       console.error("Failed to load file", err);
       document.getElementById('mainContent').innerHTML = `<div class="error">Error loading file: ${err.message}</div>`;
     }
+  },
+
+  /**
+   * Load all memory bank files and categories
+   */
+  async loadMemoryBankFiles() {
+    try {
+      await this.loadFileCategories();
+    } catch (err) {
+      console.error("Failed to load memory bank files:", err);
+      document.getElementById('mainContent').innerHTML = `<div class="error">Error loading files: ${err.message}</div>`;
+    }
   }
 };
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-  App.init();
+  // SetupWizard will handle initialization including App.init() if needed
+  if (typeof SetupWizard !== 'undefined') {
+    SetupWizard.init();
+  } else {
+    // Fallback if setup.js didn't load
+    App.init();
+  }
 });
 
 // Expose App globally

@@ -79,6 +79,7 @@ const VIEWER_PUBLIC_FILES = [
   'public/js/router.js',
   'public/js/api.js',
   'public/js/ui.js',
+  'public/js/setup.js',
   'public/css/style.css'
 ];
 
