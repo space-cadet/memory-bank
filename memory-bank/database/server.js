@@ -10,7 +10,7 @@ import express from 'express';
 import Database from 'better-sqlite3';
 import { join, dirname, resolve, sep } from 'path';
 import { fileURLToPath } from 'url';
-import { readdir, readFile, stat, mkdir } from 'fs/promises';
+import { readdir, readFile, writeFile, stat, mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -1043,8 +1043,9 @@ app.post('/api/setup/initialize', async (req, res) => {
       }
     }
 
-    // Get template files from mb-cli
-    const cliTemplatePath = join(__dirname, '..', '..', '..', 'mb-cli', 'templates', 'memory-bank');
+    // Get template files from embedded templates (package-relative)
+    const TEMPLATES_DIR = join(__dirname, 'templates');
+    const SCHEMA_PATH = join(__dirname, 'schema.sql');
 
     // Create core files from templates
     const coreFiles = [
@@ -1061,10 +1062,8 @@ app.post('/api/setup/initialize', async (req, res) => {
     ];
 
     if (includeTemplates) {
-      const templatesDir = join(cliTemplatePath, 'templates');
-
       for (const file of coreFiles) {
-        const srcPath = join(templatesDir, file);
+        const srcPath = join(TEMPLATES_DIR, file);
         const dstPath = join(mbPath, file);
 
         if (!existsSync(dstPath) && existsSync(srcPath)) {
@@ -1084,11 +1083,10 @@ app.post('/api/setup/initialize', async (req, res) => {
     // Create database schema
     if (includeDatabase) {
       const dbDir = join(mbPath, 'database');
-      const schemaPath = join(cliTemplatePath, 'database', 'schema.sql');
       const targetSchema = join(dbDir, 'schema.sql');
 
-      if (existsSync(schemaPath) && !existsSync(targetSchema)) {
-        const schema = await readFile(schemaPath, 'utf-8');
+      if (existsSync(SCHEMA_PATH) && !existsSync(targetSchema)) {
+        const schema = await readFile(SCHEMA_PATH, 'utf-8');
         await writeFile(targetSchema, schema, 'utf-8');
         results.filesCreated.push('database/schema.sql');
         results.databaseCreated = true;
@@ -1098,43 +1096,13 @@ app.post('/api/setup/initialize', async (req, res) => {
           const dbFilePath = join(dbDir, 'memory_bank.db');
           if (!existsSync(dbFilePath)) {
             const tempDb = new Database(dbFilePath);
-            const schemaSql = await readFile(schemaPath, 'utf-8');
+            const schemaSql = await readFile(SCHEMA_PATH, 'utf-8');
             tempDb.exec(schemaSql);
             tempDb.close();
             results.filesCreated.push('database/memory_bank.db');
           }
         } catch (dbErr) {
           results.errors.push(`Database initialization failed: ${dbErr.message}`);
-        }
-      }
-    }
-
-    // Copy public files (viewer/editor UI)
-    if (includeDatabase) {
-      const publicFiles = [
-        'public/index.html',
-        'public/js/app.js',
-        'public/js/api.js',
-        'public/js/router.js',
-        'public/js/ui.js',
-        'public/css/style.css'
-      ];
-
-      const publicSrcDir = join(cliTemplatePath, 'database');
-      const publicDstDir = join(mbPath, 'database', 'public');
-
-      for (const file of publicFiles) {
-        const srcPath = join(publicSrcDir, file);
-        const dstPath = join(publicDstDir, file);
-        const dstDirPath = dirname(dstPath);
-
-        if (existsSync(srcPath)) {
-          if (!existsSync(dstDirPath)) {
-            await mkdir(dstDirPath, { recursive: true });
-          }
-          const content = await readFile(srcPath, 'utf-8');
-          await writeFile(dstPath, content, 'utf-8');
-          results.filesCreated.push(`database/${file}`);
         }
       }
     }

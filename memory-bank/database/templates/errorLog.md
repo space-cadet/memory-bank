@@ -1,0 +1,51 @@
+# Error Log
+
+## [YYYY-MM-DD HH:MM TZ]: [TASK ID] - [ERROR TITLE/COMPONENT]
+
+**File:** `[FILE PATH]`
+
+**Error Message:**
+```
+[EXACT ERROR MESSAGE TEXT]
+```
+
+**Cause:**
+[BRIEF EXPLANATION OF WHAT CAUSED THE ERROR]
+
+**Fix:**
+[STEPS TAKEN TO RESOLVE THE ERROR]
+
+**Key Code Changes:**
+```[LANGUAGE]
+[CODE SNIPPET OR DIFF SHOWING THE FIX]
+```
+
+**Affected Files:**
+- [LIST OF FILES MODIFIED TO FIX THE ERROR]
+
+**Related Task:** [TASK ID]
+
+## [YYYY-MM-DD HH:MM TZ]: [TASK ID] - [ERROR TITLE/COMPONENT]
+
+**File:** `[FILE PATH]`
+
+**Error Message:**
+```
+[EXACT ERROR MESSAGE TEXT]
+```
+
+**Cause:**
+[BRIEF EXPLANATION OF WHAT CAUSED THE ERROR]
+
+**Fix:**
+[STEPS TAKEN TO RESOLVE THE ERROR]
+
+**Key Code Changes:**
+```[LANGUAGE]
+[CODE SNIPPET OR DIFF SHOWING THE FIX]
+```
+
+**Affected Files:**
+- [LIST OF FILES MODIFIED TO FIX THE ERROR]
+
+**Related Task:** [TASK ID]
