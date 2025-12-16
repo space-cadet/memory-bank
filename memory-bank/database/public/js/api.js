@@ -114,6 +114,42 @@ const API = {
       body: JSON.stringify(body || {})
     });
     return response.json();
+  },
+
+  // Setup Wizard API Methods
+  async getSetupStatus() {
+    const response = await fetch('/api/setup/status');
+    return response.json();
+  },
+
+  async listFolders() {
+    const response = await fetch('/api/setup/folders');
+    return response.json();
+  },
+
+  async scanFolder(folderPath) {
+    const response = await fetch('/api/setup/scan-folder', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ folderPath })
+    });
+    return response.json();
+  },
+
+  async checkExistingData(folderPath) {
+    const params = new URLSearchParams();
+    params.set('folderPath', folderPath);
+    const response = await fetch(`/api/setup/check-existing-data?${params.toString()}`);
+    return response.json();
+  },
+
+  async initializeMemoryBank(options = {}) {
+    const response = await fetch('/api/setup/initialize', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(options)
+    });
+    return response.json();
   }
 };
 

@@ -10,7 +10,7 @@ import express from 'express';
 import Database from 'better-sqlite3';
 import { join, dirname, resolve, sep } from 'path';
 import { fileURLToPath } from 'url';
-import { readdir, readFile, stat, mkdir } from 'fs/promises';
+import { readdir, readFile, writeFile, stat, mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -885,6 +885,283 @@ app.get('/api/export/edit-history', (req, res) => {
     }
 
     res.json({ markdown });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * Project Setup API - for initial memory bank initialization
+ */
+
+// Check setup status - is memory bank initialized?
+app.get('/api/setup/status', async (req, res) => {
+  try {
+    const mbPath = resolve(PROJECT_ROOT, 'memory-bank');
+    const exists = existsSync(mbPath);
+
+    // Check for key indicator files
+    const tasksFile = join(mbPath, 'tasks.md');
+    const activeContextFile = join(mbPath, 'activeContext.md');
+    const isInitialized = exists && existsSync(tasksFile) && existsSync(activeContextFile);
+
+    res.json({
+      memoryBankExists: exists,
+      isInitialized: isInitialized,
+      projectRoot: PROJECT_ROOT,
+      memoryBankPath: mbPath
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// List available folders in project root for memory bank setup
+app.get('/api/setup/folders', async (req, res) => {
+  try {
+    const entries = await readdir(PROJECT_ROOT, { withFileTypes: true });
+    const folders = [];
+
+    for (const entry of entries) {
+      if (entry.isDirectory() && !entry.name.startsWith('.')) {
+        const fullPath = join(PROJECT_ROOT, entry.name);
+        const stats = await stat(fullPath);
+        folders.push({
+          name: entry.name,
+          path: entry.name,
+          modified: stats.mtime,
+          contents: 0  // Will count files if needed
+        });
+      }
+    }
+
+    folders.sort((a, b) => a.name.localeCompare(b.name));
+    res.json({ folders, projectRoot: PROJECT_ROOT });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Check for existing memory bank files in a given folder
+app.post('/api/setup/scan-folder', async (req, res) => {
+  try {
+    const { folderPath } = req.body || {};
+    if (!folderPath) {
+      return res.status(400).json({ error: 'folderPath is required' });
+    }
+
+    const fullPath = resolve(PROJECT_ROOT, folderPath);
+
+    // Security: ensure path is under project root
+    if (fullPath !== PROJECT_ROOT && !fullPath.startsWith(PROJECT_ROOT + sep)) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    if (!existsSync(fullPath)) {
+      return res.status(404).json({ error: 'Folder not found' });
+    }
+
+    // Check for memory bank indicators
+    const mbDir = join(fullPath, 'memory-bank');
+    const mbExists = existsSync(mbDir);
+
+    let existingFiles = [];
+    if (mbExists) {
+      const entries = await readdir(mbDir, { withFileTypes: true });
+      for (const entry of entries) {
+        if (entry.isFile()) {
+          existingFiles.push(entry.name);
+        }
+      }
+    }
+
+    // Check for edit_history.md at project root for importing
+    const editHistoryPath = join(fullPath, 'edit_history.md');
+    const hasEditHistory = existsSync(editHistoryPath);
+
+    res.json({
+      folderPath: fullPath,
+      memoryBankExists: mbExists,
+      existingFiles: existingFiles,
+      hasEditHistory: hasEditHistory
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Initialize memory bank in a given folder
+app.post('/api/setup/initialize', async (req, res) => {
+  try {
+    const {
+      folderPath,
+      includeDatabase = true,
+      includeTemplates = true,
+      importEditHistory = false
+    } = req.body || {};
+
+    if (!folderPath) {
+      return res.status(400).json({ error: 'folderPath is required' });
+    }
+
+    const fullPath = resolve(PROJECT_ROOT, folderPath);
+
+    // Security check
+    if (fullPath !== PROJECT_ROOT && !fullPath.startsWith(PROJECT_ROOT + sep)) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    const mbPath = join(fullPath, 'memory-bank');
+    const dirs = [
+      'memory-bank',
+      'memory-bank/tasks',
+      'memory-bank/sessions',
+      'memory-bank/templates',
+      'memory-bank/implementation-details',
+      'memory-bank/archive'
+    ];
+
+    if (includeDatabase) {
+      dirs.push('memory-bank/database');
+    }
+
+    const results = {
+      dirsCreated: [],
+      filesCreated: [],
+      templatesCreated: [],
+      databaseCreated: false,
+      editHistoryImported: false,
+      errors: []
+    };
+
+    // Create directories
+    for (const dir of dirs) {
+      const dirPath = join(fullPath, dir);
+      if (!existsSync(dirPath)) {
+        await mkdir(dirPath, { recursive: true });
+        results.dirsCreated.push(dir);
+      }
+    }
+
+    // Get template files from embedded templates (package-relative)
+    const TEMPLATES_DIR = join(__dirname, 'templates');
+    const SCHEMA_PATH = join(__dirname, 'schema.sql');
+
+    // Create core files from templates
+    const coreFiles = [
+      'activeContext.md',
+      'changelog.md',
+      'edit_history.md',
+      'errorLog.md',
+      'progress.md',
+      'projectbrief.md',
+      'session_cache.md',
+      'tasks.md',
+      'systemPatterns.md',
+      'techContext.md'
+    ];
+
+    if (includeTemplates) {
+      for (const file of coreFiles) {
+        const srcPath = join(TEMPLATES_DIR, file);
+        const dstPath = join(mbPath, file);
+
+        if (!existsSync(dstPath) && existsSync(srcPath)) {
+          const content = await readFile(srcPath, 'utf-8');
+          // Update timestamp in file if it has one
+          const updatedContent = content.replace(
+            /\*Last Updated: [^\*]+\*/,
+            `*Last Updated: ${new Date().toISOString().split('T')[0]}*`
+          );
+          await writeFile(dstPath, updatedContent, 'utf-8');
+          results.templatesCreated.push(file);
+          results.filesCreated.push(file);
+        }
+      }
+    }
+
+    // Create database schema
+    if (includeDatabase) {
+      const dbDir = join(mbPath, 'database');
+      const targetSchema = join(dbDir, 'schema.sql');
+
+      if (existsSync(SCHEMA_PATH) && !existsSync(targetSchema)) {
+        const schema = await readFile(SCHEMA_PATH, 'utf-8');
+        await writeFile(targetSchema, schema, 'utf-8');
+        results.filesCreated.push('database/schema.sql');
+        results.databaseCreated = true;
+
+        // Initialize the database
+        try {
+          const dbFilePath = join(dbDir, 'memory_bank.db');
+          if (!existsSync(dbFilePath)) {
+            const tempDb = new Database(dbFilePath);
+            const schemaSql = await readFile(SCHEMA_PATH, 'utf-8');
+            tempDb.exec(schemaSql);
+            tempDb.close();
+            results.filesCreated.push('database/memory_bank.db');
+          }
+        } catch (dbErr) {
+          results.errors.push(`Database initialization failed: ${dbErr.message}`);
+        }
+      }
+    }
+
+    res.json({
+      success: true,
+      folderPath: fullPath,
+      initialized: true,
+      results: results
+    });
+  } catch (err) {
+    console.error('ERROR /api/setup/initialize:', err && err.stack ? err.stack : err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Get sample edit_history entries if file exists
+app.get('/api/setup/check-existing-data', async (req, res) => {
+  try {
+    const { folderPath } = req.query;
+    if (!folderPath) {
+      return res.status(400).json({ error: 'folderPath is required' });
+    }
+
+    const fullPath = resolve(PROJECT_ROOT, folderPath);
+
+    // Security check
+    if (fullPath !== PROJECT_ROOT && !fullPath.startsWith(PROJECT_ROOT + sep)) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    const result = {
+      hasEditHistory: false,
+      editHistorySummary: null,
+      hasTasks: false,
+      hasSessions: false
+    };
+
+    // Check for edit_history.md
+    const editHistoryPath = join(fullPath, 'edit_history.md');
+    if (existsSync(editHistoryPath)) {
+      result.hasEditHistory = true;
+      const content = await readFile(editHistoryPath, 'utf-8');
+      const lines = content.split('\n').length;
+      const dates = (content.match(/^###\s+\d{4}-\d{2}-\d{2}$/gm) || []).length;
+      result.editHistorySummary = { lines, dates };
+    }
+
+    // Check for existing memory-bank
+    const mbPath = join(fullPath, 'memory-bank');
+    if (existsSync(mbPath)) {
+      const tasksFile = join(mbPath, 'tasks.md');
+      const sessionsDir = join(mbPath, 'sessions');
+
+      result.hasTasks = existsSync(tasksFile);
+      result.hasSessions = existsSync(sessionsDir);
+    }
+
+    res.json(result);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

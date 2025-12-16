@@ -1,26 +1,44 @@
 {
-  "name": "edit-history-parser",
+  "name": "@memory-bank/server",
   "version": "1.0.0",
-  "description": "Parser for Memory Bank edit history to SQLite database",
-  "main": "parse.js",
+  "description": "Self-contained server for initializing and managing Memory Bank projects with embedded templates and database viewer",
   "type": "module",
+  "main": "server.js",
+  "bin": {
+    "memory-bank-server": "./server.js"
+  },
   "scripts": {
-    "parse": "node parse.js",
-    "studio": "prisma studio",
-    "migrate": "prisma migrate dev --name init",
-    "generate": "prisma generate"
+    "start": "node server.js",
+    "dev": "node server.js --port 3001"
   },
   "keywords": [
     "memory-bank",
-    "parser",
-    "prisma"
+    "project-management",
+    "database-viewer",
+    "knowledge-management",
+    "setup-wizard"
   ],
-  "author": "",
+  "author": "Memory Bank Contributors",
   "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "dependencies": {
-    "@prisma/client": "^5.22.0",
-    "better-sqlite3": "^12.4.1",
-    "express": "5.2.1",
-    "prisma": "^5.22.0"
-  }
+    "better-sqlite3": "^9.0.0",
+    "express": "^5.0.0"
+  },
+  "files": [
+    "server.js",
+    "public/",
+    "templates/",
+    "schema.sql"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/memory-bank"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/memory-bank/issues"
+  },
+  "homepage": "https://github.com/your-org/memory-bank#readme"
 }

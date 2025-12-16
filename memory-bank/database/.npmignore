@@ -1,0 +1,40 @@
+# Development files
+*.test.js
+*.spec.js
+.DS_Store
+.env*
+*.log
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Editor configs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Project-specific files (not needed for distribution)
+../../memory-bank/
+parse.js
+prisma.schema
+Prisma files
+
+# Documentation (keep as separate package)
+../../docs/
+../../README.md (at root level only)
