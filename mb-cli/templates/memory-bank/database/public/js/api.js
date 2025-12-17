@@ -121,6 +121,8 @@ const API = {
     const params = new URLSearchParams();
     if (options.source) params.set('source', String(options.source));
     if (options.limit != null) params.set('limit', String(options.limit));
+    if (options.includeTaskFiles != null) params.set('includeTaskFiles', String(options.includeTaskFiles));
+    if (options.taskFilesDir) params.set('taskFilesDir', String(options.taskFilesDir));
     const response = await fetch(`/api/import/tasks/preview?${params.toString()}`);
     return response.json();
   },

@@ -1,7 +1,7 @@
 # Modular Memory Bank Viewer Architecture
 
 *Created: 2025-11-22*
-*Last Updated: 2025-12-16 23:06:40 IST*
+*Last Updated: 2025-12-17 10:41:19 IST*
 *Related Task: [T21](../tasks/T21.md)*
 
 ## Overview
@@ -60,8 +60,8 @@ graph TD
         *   `GET /api/export/edit-history`: Export edit_history markdown from DB.
         *   `GET /api/import/edit-history/preview`: Preview parsed edit_history entries from a markdown source file.
         *   `POST /api/import/edit-history/run`: Import edit_history entries into a selected DB (append/replace).
-        *   `GET /api/import/tasks/preview`: Preview parsed tasks from tasks.md.
-        *   `POST /api/import/tasks/run`: Import tasks into a selected DB (append/replace).
+        *   `GET /api/import/tasks/preview`: Preview parsed tasks from tasks.md (optionally include task file subtasks).
+        *   `POST /api/import/tasks/run`: Import tasks into a selected DB (append/replace; optionally include task file subtasks).
         *   `GET /api/import/sessions/preview`: Preview parsed sessions from sessions/*.md.
         *   `POST /api/import/sessions/run`: Import sessions into a selected DB (append/replace).
         *   `GET /api/import/session-cache/preview`: Preview parsed session_cache from session_cache.md.

@@ -1,6 +1,6 @@
 # Active Context
 
-*Last Updated: 2025-12-16 23:06:40 IST*
+*Last Updated: 2025-12-17 10:41:19 IST*
 
 ## Current Tasks
 1. **[T24]**: Migrate from better-sqlite3 to sql.js (HIGH priority)
@@ -24,7 +24,7 @@
 
 5. **[T25]**: Standalone Node Package (Browser-First) (HIGH priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: Browser-first imports (tasks/sessions/session_cache) wired into the canonical server package and synced into templates; export/writeback still pending
+   - Current Focus: Browser-first imports hardened (tasks/sessions/session_cache + task file subtasks) and separated Import Data UX; export/writeback still pending
 
 6. **[T22]**: AdminJS Database Management Interface (HIGH priority)
    - Status: ❌ CANCELLED (2025-11-22)

@@ -39,8 +39,12 @@ const UI = {
       </div>`;
     }).join('');
 
+    const sub = (result.subtasksParsed != null)
+      ? ` | Subtasks: ${this.escapeHtml(String(result.subtasksParsed))}`
+      : '';
+
     return `
-      <div class="meta">Source: ${this.escapeHtml(result.source)} | Total: ${this.escapeHtml(String(result.totalTasks || 0))}</div>
+      <div class="meta">Source: ${this.escapeHtml(result.source)} | Total: ${this.escapeHtml(String(result.totalTasks || 0))}${sub}</div>
       ${rows || '<div class="empty">No tasks</div>'}
     `;
   },
@@ -50,6 +54,11 @@ const UI = {
       return `<div class="error">${this.escapeHtml((result && result.error) || 'Import failed')}</div>`;
     }
 
+    const subtaskRows = (result.subtasksParsed != null) ? `
+        <div class="schema-item"><strong>subtasksParsed:</strong> <code>${this.escapeHtml(String(result.subtasksParsed))}</code></div>
+        <div class="schema-item"><strong>subtasksInserted:</strong> <code>${this.escapeHtml(String(result.subtasksInserted))}</code></div>
+    ` : '';
+
     return `
       <div class="meta">Imported tasks from ${this.escapeHtml(result.source)} into ${this.escapeHtml(result.dbPath)}</div>
       <div class="schema-grid" style="margin-top: 10px;">
@@ -57,6 +66,154 @@ const UI = {
         <div class="schema-item"><strong>tasksParsed:</strong> <code>${this.escapeHtml(String(result.tasksParsed))}</code></div>
         <div class="schema-item"><strong>tasksInserted:</strong> <code>${this.escapeHtml(String(result.tasksInserted))}</code></div>
         <div class="schema-item"><strong>depsInserted:</strong> <code>${this.escapeHtml(String(result.depsInserted))}</code></div>
+        ${subtaskRows}
+      </div>
+    `;
+  },
+
+  renderImportHome({ currentDbPath }) {
+    const dbLabel = currentDbPath ? this.escapeHtml(currentDbPath) : '(none)';
+
+    return `
+      <h2>Import Data</h2>
+      <div class="meta" style="margin-bottom: 16px;">Current DB: ${dbLabel}</div>
+
+      <div class="panel-grid">
+        <div class="panel">
+          <div class="panel-header">
+            <h3>edit_history</h3>
+          </div>
+          <div class="panel-body">
+            <div class="field">
+              <span class="field-name">Target DB (optional):</span>
+              <input id="importTargetDbPath" type="text" placeholder="(uses current DB if empty)" />
+            </div>
+            <div class="field">
+              <span class="field-name">Source file (under memory-bank/):</span>
+              <input id="importSourcePath" type="text" value="edit_history.md" />
+            </div>
+            <div class="two-col">
+              <div>
+                <div class="field-name">From date (optional)</div>
+                <input id="importFromDate" type="text" placeholder="YYYY-MM-DD" />
+              </div>
+              <div>
+                <div class="field-name">To date (optional)</div>
+                <input id="importToDate" type="text" placeholder="YYYY-MM-DD" />
+              </div>
+            </div>
+            <div class="field">
+              <span class="field-name">Mode</span>
+              <select id="importMode">
+                <option value="append">append</option>
+                <option value="replace">replace</option>
+              </select>
+            </div>
+            <div class="actions">
+              <button onclick="App.importPreviewImportEditHistory()">Preview</button>
+              <button onclick="App.importRunImportEditHistory()">Run Import</button>
+            </div>
+            <div id="importPreview" class="result"></div>
+            <div id="importRunResult" class="result"></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h3>tasks</h3>
+          </div>
+          <div class="panel-body">
+            <div class="field">
+              <span class="field-name">Target DB (optional):</span>
+              <input id="importTasksTargetDbPath" type="text" placeholder="(uses current DB if empty)" />
+            </div>
+            <div class="field">
+              <span class="field-name">Source file (under memory-bank/):</span>
+              <input id="importTasksSourcePath" type="text" value="tasks.md" />
+            </div>
+            <div class="field">
+              <span class="field-name">Mode</span>
+              <select id="importTasksMode">
+                <option value="append">append</option>
+                <option value="replace">replace</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="field-name" style="min-width: auto;">
+                <input id="importTasksIncludeTaskFiles" type="checkbox" checked />
+                Include task files (parse subtasks)
+              </label>
+            </div>
+            <div class="field">
+              <span class="field-name">Task files dir (under memory-bank/):</span>
+              <input id="importTasksFilesDir" type="text" value="tasks" />
+            </div>
+            <div class="actions">
+              <button onclick="App.importPreviewImportTasks()">Preview</button>
+              <button onclick="App.importRunImportTasks()">Run Import</button>
+            </div>
+            <div id="importTasksPreview" class="result"></div>
+            <div id="importTasksRunResult" class="result"></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h3>sessions</h3>
+          </div>
+          <div class="panel-body">
+            <div class="field">
+              <span class="field-name">Target DB (optional):</span>
+              <input id="importSessionsTargetDbPath" type="text" placeholder="(uses current DB if empty)" />
+            </div>
+            <div class="field">
+              <span class="field-name">Sessions folder (under memory-bank/):</span>
+              <input id="importSessionsDir" type="text" value="sessions" />
+            </div>
+            <div class="field">
+              <span class="field-name">Mode</span>
+              <select id="importSessionsMode">
+                <option value="append">append</option>
+                <option value="replace">replace</option>
+              </select>
+            </div>
+            <div class="actions">
+              <button onclick="App.importPreviewImportSessions()">Preview</button>
+              <button onclick="App.importRunImportSessions()">Run Import</button>
+            </div>
+            <div id="importSessionsPreview" class="result"></div>
+            <div id="importSessionsRunResult" class="result"></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h3>session_cache</h3>
+          </div>
+          <div class="panel-body">
+            <div class="field">
+              <span class="field-name">Target DB (optional):</span>
+              <input id="importSessionCacheTargetDbPath" type="text" placeholder="(uses current DB if empty)" />
+            </div>
+            <div class="field">
+              <span class="field-name">Source file (under memory-bank/):</span>
+              <input id="importSessionCacheSourcePath" type="text" value="session_cache.md" />
+            </div>
+            <div class="field">
+              <span class="field-name">Mode</span>
+              <select id="importSessionCacheMode">
+                <option value="replace">replace</option>
+                <option value="append">append</option>
+              </select>
+            </div>
+            <div class="actions">
+              <button onclick="App.importPreviewImportSessionCache()">Preview</button>
+              <button onclick="App.importRunImportSessionCache()">Run Import</button>
+            </div>
+            <div id="importSessionCachePreview" class="result"></div>
+            <div id="importSessionCacheRunResult" class="result"></div>
+          </div>
+        </div>
       </div>
     `;
   },
@@ -207,137 +364,6 @@ const UI = {
         <div style="margin-top: 10px;">
           <button onclick="App.editorCreateDb()">Create (Phase A schema)</button>
         </div>
-      </div>
-
-      <div class="record-card" style="cursor: default; margin-top: 16px;">
-        <h3 style="margin-top: 0;">Import edit_history</h3>
-
-        <div class="field" style="margin-top: 10px;">
-          <span class="field-name">Target DB (optional):</span>
-          <input id="importTargetDbPath" type="text" style="width: 100%; margin-top: 6px;" placeholder="(uses current DB if empty)" />
-        </div>
-
-        <div class="field" style="margin-top: 10px;">
-          <span class="field-name">Source file (under memory-bank/):</span>
-          <input id="importSourcePath" type="text" style="width: 100%; margin-top: 6px;" value="edit_history.md" />
-        </div>
-
-        <div style="display: flex; gap: 10px; margin-top: 10px;">
-          <div style="flex: 1;">
-            <div class="field-name">From date (optional)</div>
-            <input id="importFromDate" type="text" style="width: 100%; margin-top: 6px;" placeholder="YYYY-MM-DD" />
-          </div>
-          <div style="flex: 1;">
-            <div class="field-name">To date (optional)</div>
-            <input id="importToDate" type="text" style="width: 100%; margin-top: 6px;" placeholder="YYYY-MM-DD" />
-          </div>
-        </div>
-
-        <div style="margin-top: 10px;">
-          <label class="field-name">Mode</label>
-          <select id="importMode" style="width: 100%; margin-top: 6px;">
-            <option value="append">append</option>
-            <option value="replace">replace</option>
-          </select>
-        </div>
-
-        <div style="display: flex; gap: 10px; margin-top: 10px;">
-          <button onclick="App.editorPreviewImportEditHistory()">Preview</button>
-          <button onclick="App.editorRunImportEditHistory()">Run Import</button>
-        </div>
-
-        <div id="importPreview" style="margin-top: 12px;"></div>
-        <div id="importRunResult" style="margin-top: 12px;"></div>
-      </div>
-
-      <div class="record-card" style="cursor: default; margin-top: 16px;">
-        <h3 style="margin-top: 0;">Import tasks</h3>
-
-        <div class="field" style="margin-top: 10px;">
-          <span class="field-name">Target DB (optional):</span>
-          <input id="importTasksTargetDbPath" type="text" style="width: 100%; margin-top: 6px;" placeholder="(uses current DB if empty)" />
-        </div>
-
-        <div class="field" style="margin-top: 10px;">
-          <span class="field-name">Source file (under memory-bank/):</span>
-          <input id="importTasksSourcePath" type="text" style="width: 100%; margin-top: 6px;" value="tasks.md" />
-        </div>
-
-        <div style="margin-top: 10px;">
-          <label class="field-name">Mode</label>
-          <select id="importTasksMode" style="width: 100%; margin-top: 6px;">
-            <option value="append">append</option>
-            <option value="replace">replace</option>
-          </select>
-        </div>
-
-        <div style="display: flex; gap: 10px; margin-top: 10px;">
-          <button onclick="App.editorPreviewImportTasks()">Preview</button>
-          <button onclick="App.editorRunImportTasks()">Run Import</button>
-        </div>
-
-        <div id="importTasksPreview" style="margin-top: 12px;"></div>
-        <div id="importTasksRunResult" style="margin-top: 12px;"></div>
-      </div>
-
-      <div class="record-card" style="cursor: default; margin-top: 16px;">
-        <h3 style="margin-top: 0;">Import sessions</h3>
-
-        <div class="field" style="margin-top: 10px;">
-          <span class="field-name">Target DB (optional):</span>
-          <input id="importSessionsTargetDbPath" type="text" style="width: 100%; margin-top: 6px;" placeholder="(uses current DB if empty)" />
-        </div>
-
-        <div class="field" style="margin-top: 10px;">
-          <span class="field-name">Sessions folder (under memory-bank/):</span>
-          <input id="importSessionsDir" type="text" style="width: 100%; margin-top: 6px;" value="sessions" />
-        </div>
-
-        <div style="margin-top: 10px;">
-          <label class="field-name">Mode</label>
-          <select id="importSessionsMode" style="width: 100%; margin-top: 6px;">
-            <option value="append">append</option>
-            <option value="replace">replace</option>
-          </select>
-        </div>
-
-        <div style="display: flex; gap: 10px; margin-top: 10px;">
-          <button onclick="App.editorPreviewImportSessions()">Preview</button>
-          <button onclick="App.editorRunImportSessions()">Run Import</button>
-        </div>
-
-        <div id="importSessionsPreview" style="margin-top: 12px;"></div>
-        <div id="importSessionsRunResult" style="margin-top: 12px;"></div>
-      </div>
-
-      <div class="record-card" style="cursor: default; margin-top: 16px;">
-        <h3 style="margin-top: 0;">Import session_cache</h3>
-
-        <div class="field" style="margin-top: 10px;">
-          <span class="field-name">Target DB (optional):</span>
-          <input id="importSessionCacheTargetDbPath" type="text" style="width: 100%; margin-top: 6px;" placeholder="(uses current DB if empty)" />
-        </div>
-
-        <div class="field" style="margin-top: 10px;">
-          <span class="field-name">Source file (under memory-bank/):</span>
-          <input id="importSessionCacheSourcePath" type="text" style="width: 100%; margin-top: 6px;" value="session_cache.md" />
-        </div>
-
-        <div style="margin-top: 10px;">
-          <label class="field-name">Mode</label>
-          <select id="importSessionCacheMode" style="width: 100%; margin-top: 6px;">
-            <option value="replace">replace</option>
-            <option value="append">append</option>
-          </select>
-        </div>
-
-        <div style="display: flex; gap: 10px; margin-top: 10px;">
-          <button onclick="App.editorPreviewImportSessionCache()">Preview</button>
-          <button onclick="App.editorRunImportSessionCache()">Run Import</button>
-        </div>
-
-        <div id="importSessionCachePreview" style="margin-top: 12px;"></div>
-        <div id="importSessionCacheRunResult" style="margin-top: 12px;"></div>
       </div>
     `;
   },

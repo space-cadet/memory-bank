@@ -113,12 +113,21 @@ const App = {
     const searchInput = document.getElementById('searchInput');
 
     document.body.classList.toggle('editor-mode', mode === 'editor');
+    document.body.classList.toggle('import-mode', mode === 'import');
 
     if (mode === 'viewer') {
       if (dbPickerBar) dbPickerBar.style.display = '';
       if (sidebar) sidebar.style.display = '';
       if (searchInput) searchInput.disabled = false;
       this.switchTab(this.state.mode || 'database');
+      return;
+    }
+
+    if (mode === 'import') {
+      if (dbPickerBar) dbPickerBar.style.display = '';
+      if (sidebar) sidebar.style.display = 'none';
+      if (searchInput) searchInput.disabled = true;
+      this.renderImportHome();
       return;
     }
 
@@ -135,6 +144,14 @@ const App = {
     main.innerHTML = UI.renderEditorHome({
       currentDbPath: this.currentDbPath,
       defaultDbDir: (document.getElementById('dbDirInput') || {}).value || 'memory-bank/database'
+    });
+  },
+
+  renderImportHome() {
+    const main = document.getElementById('mainContent');
+    if (!main) return;
+    main.innerHTML = UI.renderImportHome({
+      currentDbPath: this.currentDbPath
     });
   },
 
@@ -163,7 +180,7 @@ const App = {
     }
   },
 
-  async editorPreviewImportEditHistory() {
+  async importPreviewImportEditHistory() {
     const source = (document.getElementById('importSourcePath') || {}).value || 'edit_history.md';
     const from = (document.getElementById('importFromDate') || {}).value || '';
     const to = (document.getElementById('importToDate') || {}).value || '';
@@ -175,7 +192,7 @@ const App = {
     }
   },
 
-  async editorRunImportEditHistory() {
+  async importRunImportEditHistory() {
     const dbPath = (document.getElementById('importTargetDbPath') || {}).value || this.currentDbPath;
     const source = (document.getElementById('importSourcePath') || {}).value || 'edit_history.md';
     const from = (document.getElementById('importFromDate') || {}).value || '';
@@ -194,22 +211,26 @@ const App = {
     this.selectDbInDropdown(this.currentDbPath);
   },
 
-  async editorPreviewImportTasks() {
+  async importPreviewImportTasks() {
     const source = (document.getElementById('importTasksSourcePath') || {}).value || 'tasks.md';
-    const result = await API.previewImportTasks({ source, limit: 50 });
+    const includeTaskFiles = !!(document.getElementById('importTasksIncludeTaskFiles') || {}).checked;
+    const taskFilesDir = (document.getElementById('importTasksFilesDir') || {}).value || 'tasks';
+    const result = await API.previewImportTasks({ source, limit: 50, includeTaskFiles, taskFilesDir });
     const container = document.getElementById('importTasksPreview');
     if (container) {
       container.innerHTML = UI.renderTasksImportPreview(result);
     }
   },
 
-  async editorRunImportTasks() {
+  async importRunImportTasks() {
     const dbPath = (document.getElementById('importTasksTargetDbPath') || {}).value || this.currentDbPath;
     const source = (document.getElementById('importTasksSourcePath') || {}).value || 'tasks.md';
     const mode = (document.getElementById('importTasksMode') || {}).value || 'append';
+    const includeTaskFiles = !!(document.getElementById('importTasksIncludeTaskFiles') || {}).checked;
+    const taskFilesDir = (document.getElementById('importTasksFilesDir') || {}).value || 'tasks';
     if (!dbPath) return;
 
-    const result = await API.runImportTasks({ dbPath, source, mode });
+    const result = await API.runImportTasks({ dbPath, source, mode, includeTaskFiles, taskFilesDir });
     const container = document.getElementById('importTasksRunResult');
     if (container) {
       container.innerHTML = UI.renderTasksImportRunResult(result);
@@ -220,7 +241,7 @@ const App = {
     this.selectDbInDropdown(this.currentDbPath);
   },
 
-  async editorPreviewImportSessions() {
+  async importPreviewImportSessions() {
     const dir = (document.getElementById('importSessionsDir') || {}).value || 'sessions';
     const result = await API.previewImportSessions({ dir, limit: 20 });
     const container = document.getElementById('importSessionsPreview');
@@ -229,7 +250,7 @@ const App = {
     }
   },
 
-  async editorRunImportSessions() {
+  async importRunImportSessions() {
     const dbPath = (document.getElementById('importSessionsTargetDbPath') || {}).value || this.currentDbPath;
     const dir = (document.getElementById('importSessionsDir') || {}).value || 'sessions';
     const mode = (document.getElementById('importSessionsMode') || {}).value || 'append';
@@ -246,7 +267,7 @@ const App = {
     this.selectDbInDropdown(this.currentDbPath);
   },
 
-  async editorPreviewImportSessionCache() {
+  async importPreviewImportSessionCache() {
     const source = (document.getElementById('importSessionCacheSourcePath') || {}).value || 'session_cache.md';
     const result = await API.previewImportSessionCache({ source });
     const container = document.getElementById('importSessionCachePreview');
@@ -255,7 +276,7 @@ const App = {
     }
   },
 
-  async editorRunImportSessionCache() {
+  async importRunImportSessionCache() {
     const dbPath = (document.getElementById('importSessionCacheTargetDbPath') || {}).value || this.currentDbPath;
     const source = (document.getElementById('importSessionCacheSourcePath') || {}).value || 'session_cache.md';
     const mode = (document.getElementById('importSessionCacheMode') || {}).value || 'replace';

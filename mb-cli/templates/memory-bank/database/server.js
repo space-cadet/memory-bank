@@ -264,7 +264,7 @@ function parseTaskRow(line) {
     .slice(1, -1)
     .map(c => c.trim());
 
-  if (!cells || cells.length < 7) return null;
+  if (!cells || cells.length < 6) return null;
   const id = String(cells[0] || '').trim();
   if (!/^(T\d+[a-z]?|META-\d+[a-z]?)$/i.test(id)) return null;
 
@@ -274,9 +274,19 @@ function parseTaskRow(line) {
   const started = (String(cells[4] || '').match(/\d{4}-\d{2}-\d{2}/) || [null])[0];
   if (!started) return null;
 
-  const depsCell = String(cells[5] || '').trim();
-  const detailsCell = String(cells[6] || '').trim();
-  const deps = depsCell === '-' || depsCell === '' ? [] : depsCell.split(/\s*,\s*/).filter(Boolean);
+  // Support both formats:
+  // - 7 columns: ID | Title | Status | Priority | Started | Dependencies | Details
+  // - 6 columns: ID | Title | Status | Priority | Started | File
+  let deps = [];
+  let detailsCell = '';
+
+  if (cells.length >= 7) {
+    const depsCell = String(cells[5] || '').trim();
+    detailsCell = String(cells[6] || '').trim();
+    deps = depsCell === '-' || depsCell === '' ? [] : depsCell.split(/\s*,\s*/).filter(Boolean);
+  } else {
+    detailsCell = String(cells[5] || '').trim();
+  }
 
   return {
     id,
@@ -296,6 +306,42 @@ function parseTasksMarkdown(content) {
     .filter(Boolean);
 }
 
+async function parseTaskSubtasksFromDir(tasksDirPath) {
+  if (!tasksDirPath || !existsSync(tasksDirPath)) return [];
+  const files = (await readdir(tasksDirPath)).filter(f => f.endsWith('.md'));
+  const results = [];
+
+  for (const file of files) {
+    const taskId = file.replace(/\.md$/i, '');
+    const fp = join(tasksDirPath, file);
+    const content = await readFile(fp, 'utf-8');
+    let section = null;
+    let position = 0;
+
+    for (const line of String(content || '').split('\n')) {
+      const headingMatch = line.match(/^#{1,6}\s+(.+?)\s*$/);
+      if (headingMatch) {
+        section = headingMatch[1].trim();
+        continue;
+      }
+
+      const checkMatch = line.match(/^\s*-\s*\[( |x|X)\]\s+(.+?)\s*$/);
+      if (checkMatch) {
+        position += 1;
+        results.push({
+          task_id: taskId,
+          section,
+          position,
+          text: checkMatch[2].trim(),
+          checked: checkMatch[1].toLowerCase() === 'x' ? 1 : 0
+        });
+      }
+    }
+  }
+
+  return results;
+}
+
 function parseSessionFilename(filename) {
   const match = String(filename || '').match(/^(\d{4}-\d{2}-\d{2})-([^.]+)\.md$/);
   if (!match) return null;
@@ -303,12 +349,26 @@ function parseSessionFilename(filename) {
 }
 
 function parseSessionFrontmatter(md) {
-  const created = String(md || '').match(/\*Created:\s*([^*]+)\*/);
-  const lastUpdated = String(md || '').match(/\*Last Updated:\s*([^*]+)\*/);
+  const raw = String(md || '');
+  const created = raw.match(/\*Created:\s*([^*]+)\*/);
+  const lastUpdated = raw.match(/\*Last Updated:\s*([^*]+)\*/);
+
+  // Also accept non-italic forms used by some repos
+  const createdPlain = raw.match(/^Created:\s*(.+)$/m);
+  const lastUpdatedPlain = raw.match(/^Last Updated:\s*(.+)$/m);
+
+  const createdValue = (created ? created[1] : (createdPlain ? createdPlain[1] : null));
+  const lastUpdatedValue = (lastUpdated ? lastUpdated[1] : (lastUpdatedPlain ? lastUpdatedPlain[1] : null));
   return {
-    created: created ? created[1].trim() : null,
-    lastUpdated: lastUpdated ? lastUpdated[1].trim() : null
+    created: createdValue ? createdValue.trim() : null,
+    lastUpdated: lastUpdatedValue ? lastUpdatedValue.trim() : null
   };
+}
+
+function defaultSessionStartTime(sessionDate) {
+  const date = String(sessionDate || '').trim();
+  if (!date) return null;
+  return `${date} 00:00:00`;
 }
 
 function parseFocusTask(md) {
@@ -444,17 +504,22 @@ app.post('/api/db/open', async (req, res) => {
 
 app.get('/api/import/tasks/preview', async (req, res) => {
   try {
-    const { source = 'tasks.md', limit = 50 } = req.query;
+    const { source = 'tasks.md', limit = 50, includeTaskFiles = 'true', taskFilesDir = 'tasks' } = req.query;
     const sourcePath = resolveUnderProject(join('memory-bank', String(source)));
     if (!sourcePath) return res.status(403).json({ error: 'Access denied' });
     if (!existsSync(sourcePath)) return res.status(404).json({ error: 'Source file not found' });
 
     const raw = await readFile(sourcePath, 'utf-8');
     const tasks = parseTasksMarkdown(raw);
+
+    const includeFiles = String(includeTaskFiles) !== 'false';
+    const taskFilesDirPath = resolveUnderProject(join('memory-bank', String(taskFilesDir)));
+    const taskSubtasks = includeFiles ? await parseTaskSubtasksFromDir(taskFilesDirPath) : [];
     const n = Math.max(1, Math.min(200, parseInt(limit)));
     res.json({
       source: sourcePath,
       totalTasks: tasks.length,
+      subtasksParsed: taskSubtasks.length,
       tasks: tasks.slice(0, n).map(t => ({
         id: t.id,
         title: t.title,
@@ -472,7 +537,7 @@ app.get('/api/import/tasks/preview', async (req, res) => {
 
 app.post('/api/import/tasks/run', async (req, res) => {
   try {
-    const { dbPath: targetDbPath, source = 'tasks.md', mode = 'append' } = req.body || {};
+    const { dbPath: targetDbPath, source = 'tasks.md', mode = 'append', includeTaskFiles = true, taskFilesDir = 'tasks' } = req.body || {};
     if (!targetDbPath) return res.status(400).json({ error: 'dbPath is required' });
 
     const sourcePath = resolveUnderProject(join('memory-bank', String(source)));
@@ -485,7 +550,11 @@ app.post('/api/import/tasks/run', async (req, res) => {
     const raw = await readFile(sourcePath, 'utf-8');
     const tasks = parseTasksMarkdown(raw);
 
+    const taskFilesDirPath = resolveUnderProject(join('memory-bank', String(taskFilesDir)));
+    const taskSubtasks = includeTaskFiles ? await parseTaskSubtasksFromDir(taskFilesDirPath) : [];
+
     if (mode === 'replace') {
+      sqlite.prepare('DELETE FROM task_subtasks').run();
       sqlite.prepare('DELETE FROM task_dependencies').run();
       sqlite.prepare('DELETE FROM task_items').run();
     } else if (mode !== 'append') {
@@ -501,8 +570,14 @@ app.post('/api/import/tasks/run', async (req, res) => {
       VALUES (?, ?)
     `);
 
+    const insertSubtask = sqlite.prepare(`
+      INSERT INTO task_subtasks (task_id, section, position, text, checked)
+      VALUES (?, ?, ?, ?, ?)
+    `);
+
     let tasksInserted = 0;
     let depsInserted = 0;
+    let subtasksInserted = 0;
 
     const run = sqlite.transaction((items) => {
       for (const t of items) {
@@ -523,7 +598,21 @@ app.post('/api/import/tasks/run', async (req, res) => {
       }
     });
 
+    const runSubtasks = sqlite.transaction((items) => {
+      for (const st of items) {
+        try {
+          insertSubtask.run(st.task_id, st.section || null, st.position, st.text, st.checked);
+          subtasksInserted += 1;
+        } catch (e) {
+          // Ignore subtasks that reference tasks not present in task_items (FK constraint)
+        }
+      }
+    });
+
     await run(tasks);
+    if (taskSubtasks.length > 0) {
+      await runSubtasks(taskSubtasks);
+    }
     await sqlite.saveDb();
 
     res.json({
@@ -532,7 +621,10 @@ app.post('/api/import/tasks/run', async (req, res) => {
       mode,
       tasksParsed: tasks.length,
       tasksInserted,
-      depsInserted
+      depsInserted,
+      taskFilesDir: includeTaskFiles ? (taskFilesDirPath || null) : null,
+      subtasksParsed: taskSubtasks.length,
+      subtasksInserted
     });
   } catch (err) {
     console.error('ERROR /api/import/tasks/run:', err && err.stack ? err.stack : err);
@@ -614,7 +706,7 @@ app.post('/api/import/sessions/run', async (req, res) => {
       const meta = parseSessionFrontmatter(raw);
       const focusRaw = parseFocusTask(raw) || null;
       const focus = focusRaw && taskExists(focusRaw) ? focusRaw : null;
-      const startTime = meta.created || null;
+      const startTime = meta.created || defaultSessionStartTime(parsed.session_date);
       const endTime = meta.lastUpdated || null;
       const status = endTime ? 'completed' : 'in_progress';
       insert.run(parsed.session_date, parsed.session_period, focus, startTime, endTime, status, raw);
@@ -934,7 +1026,7 @@ app.get('/api/table/:name', (req, res) => {
       orderBy = ` ORDER BY ${sortBy} ${normalizedSortDir}`;
     } else if (name === 'sessions') {
       // Default ordering for sessions only when no explicit sort is requested.
-      orderBy = ' ORDER BY date DESC, id DESC';
+      orderBy = ' ORDER BY session_date DESC, id DESC';
     }
 
     const data = sqlite

@@ -1,6 +1,26 @@
 # Edit History
 *Created: 2025-04-10*
-*Last Updated: 2025-12-16 23:06:40 IST*
+*Last Updated: 2025-12-17 10:41:19 IST*
+
+### 2025-12-17
+
+#### 10:41:19 IST - T25: Import Data Tab + Task File Subtasks Import
+- Modified `mb-cli/src/server-package/schema.sql` - Made schema initialization idempotent (IF NOT EXISTS) and added task_subtasks table
+- Modified `mb-cli/src/server-package/server.js` - Fixed tasks/sessions import parsing, added task file subtasks parsing, and fixed sessions table sort (session_date)
+- Modified `mb-cli/src/server-package/public/index.html` - Added Import Data tab
+- Modified `mb-cli/src/server-package/public/js/app.js` - Added import mode and moved import handlers out of Editor
+- Modified `mb-cli/src/server-package/public/js/api.js` - Extended tasks import APIs to support task file subtasks options
+- Modified `mb-cli/src/server-package/public/js/ui.js` - Added Import Data home UI and updated import preview/run renderers
+- Modified `mb-cli/src/server-package/public/css/style.css` - Improved Import Data layout/styling
+- Updated `mb-cli/templates/memory-bank/database/` - Regenerated database package template from canonical server-package
+- Created `memory-bank/sessions/2025-12-17-morning.md` - Morning session log for Import Data refactor and import fixes
+- Updated `memory-bank/session_cache.md` - Pointed to today’s morning session and refreshed status
+- Updated `memory-bank/activeContext.md` - Refreshed current status and next steps for browser import UX
+- Updated `memory-bank/tasks.md` - Refreshed timestamps and import workflow notes
+- Updated `memory-bank/tasks/T21.md` - Updated progress notes for browser import workflow
+- Updated `memory-bank/tasks/T25.md` - Updated progress notes for Import Data UX and ingestion completeness
+- Updated `memory-bank/implementation-details/modular-viewer-architecture.md` - Documented Import Data mode and task_subtasks table
+- Updated `memory-bank/implementation-details/memory-bank-viewer.md` - Recorded Session 6 updates
 
 ### 2025-12-16
 
