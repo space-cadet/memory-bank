@@ -1,12 +1,12 @@
 # Active Context
 
-*Last Updated: 2025-12-17 10:41:19 IST*
+*Last Updated: 2026-01-04 12:04:42 IST*
 
 ## Current Tasks
-1. **[T24]**: Migrate from better-sqlite3 to sql.js (HIGH priority)
+1. **[META-1]**: Memory Bank Update and Maintenance (HIGH priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: Complete sql.js migration correctness and clean install behavior across the canonical standalone database package (`mb-cli/src/server-package/`) and generated templates
-   - Recent Achievement: Canonicalized server package + added template sync workflow; fixed sql.js adapter persistence correctness and better-sqlite3 semantics (lastInsertRowid)
+   - Current Focus: Protocol extraction from integrated rules to standalone files, integrated rules updates
+   - Recent Achievement: Extracted 5 core workflows to `/memory-bank/protocols/`, updated v6.11 with protocol notes, enhanced v6.12 with source tracking
 
 2. **[T19]**: Memory Bank Viewer Web Interface (HIGH priority)
    - Status: 🔄 IN PROGRESS (Phase 3 Setup Wizard Complete)

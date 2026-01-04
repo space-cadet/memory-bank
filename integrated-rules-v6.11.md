@@ -449,6 +449,18 @@ ${PROJECT_ROOT}/                 # Project root directory
 
 ## 6. Core Workflows
 
+**NOTE**: The workflows below have been extracted to dedicated files in `/memory-bank/protocols/` for easier reference and immediate accessibility:
+
+- `task-implementation-workflow.md` - Task creation and implementation workflow
+- `error-handling-workflow.md` - Error handling and documentation workflow
+- `file-update-workflow.md` - Safe file update workflow
+- `session-management-workflow.md` - Session file creation and management workflow
+- `memory-bank-update-workflow.md` - Complete Memory Bank update protocol after work sessions
+
+**These extracted protocol files are the canonical reference for each workflow. The content below is retained as comprehensive reference material.**
+
+---
+
 ### 6.1 Task Implementation
 1. Define task in `tasks.md`
 2. Create individual task file
@@ -483,6 +495,21 @@ ${PROJECT_ROOT}/                 # Project root directory
 
 Follow this workflow to update memory bank files:
 
+0. **Identify Relevant Task and Implementation Documentation Files**
+   - Review the work completed in current session
+   - Identify which task(s) were actively worked on
+   - Check `tasks/` directory to see which task files exist for these tasks
+   - Identify which task files in `memory-bank/tasks/` need to be updated
+   - Review `implementation-details/` directory to identify relevant documentation files
+   - Check which implementation-details files align with the work completed
+   - **If no relevant task file exists:**
+     - Request user approval before creating a new task file
+     - Document which new task file needs to be created and why
+   - **If no relevant implementation-details file exists:**
+     - Request user approval before creating a new implementation documentation file
+     - Document which new file needs to be created and why
+   - Once identified (or permissions obtained to create), proceed to Step 1
+
 1. **Determine Current System Time and Timezone**
    - Check local system time
    - Ensure all timestamps are in IST timezone
@@ -498,7 +525,7 @@ Follow this workflow to update memory bank files:
    - The **Details** column MUST be a link in the format: `[Details](tasks/Txx.md)` or `[Details](archive/Txx.md)`
 
 3. **Update Implementation Documentation**
-   - Update any relevant implementation-details files
+   - Update any relevant implementation-details files identified in Step 0
    - Update technical context if architectural changes occurred
    - Include timestamps in all documentation
 

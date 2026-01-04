@@ -1,13 +1,13 @@
 # META-1: Memory Bank Update and Maintenance
 
 *Created: 2025-11-13 18:35:00 IST*
-*Last Updated: 2025-12-05 17:18:15 IST*
+*Last Updated: 2026-01-04 12:04:42 IST*
 
 ## Task Details
 
 **Description**: Ongoing memory bank maintenance to ensure documentation accurately reflects current project state and implementation details.
 
-**Status**: 🔄 IN PROGRESS (Format specification analysis & alignment - v6.12 & v1.0 spec created)
+**Status**: 🔄 IN PROGRESS (Protocol extraction and integrated rules updates - v6.11/v6.12 enhanced)
 
 **Priority**: HIGH
 
@@ -27,6 +27,10 @@
 - [x] Verify database paradigm properly flagged as experimental (not production-ready)
 - [x] Document adaptive format parser (T20a) integration approach
 - [x] Update README.md with comprehensive project structure and status
+- [x] Extract core workflows from integrated-rules-v6.11.md to standalone protocol files
+- [x] Update integrated-rules-v6.11.md with protocol extraction notes and expanded workflow
+- [x] Enhance integrated-rules-v6.12.md with source tracking and chunk-based edit history
+- [x] Clean up CLI code by removing unused functions (init.js)
 
 ## Context
 
@@ -64,6 +68,21 @@ This meta task closed 7-month documentation gap (April → November 2025) while 
 - Production status clear and documented
 - Task dependencies validated
 - IST timezone standard applied consistently
+
+## Work Completed (2026-01-04 Session)
+
+### Protocol Extraction Phase ✅
+- Extracted 5 core workflows from integrated-rules-v6.11.md to `/memory-bank/protocols/`
+- Created protocol files: task-implementation-workflow.md, error-handling-workflow.md, file-update-workflow.md, session-management-workflow.md, memory-bank-update-workflow.md
+- Updated integrated-rules-v6.11.md with protocol extraction notes and Step 0 workflow expansion
+- Enhanced integrated-rules-v6.12.md with source tracking frontmatter and chunk-based edit history system
+- Cleaned up mb-cli/src/commands/init.js by removing unused generatePackageJson() and generatePnpmLock() functions
+
+### Results
+- **Protocol Files Created**: 5 standalone workflow documents
+- **Accessibility Improved**: Core workflows now easily referenceable
+- **Source Tracking Added**: Branch and commit SHA tracking for better traceability
+- **Code Cleanup**: Removed 45 lines of unused code from CLI
 
 ## Results
 

@@ -728,38 +728,6 @@ export async function initCommand(options) {
   }
 }
 
-function generatePackageJson() {
-  return JSON.stringify({
-    name: "memory-bank-database",
-    version: "1.0.0",
-    description: "SQLite database for memory bank with better-sqlite3",
-    type: "module",
-    scripts: {
-      parse: "node parse-edits.js && node parse-tasks.js",
-      query: "node query.js",
-      "query-tasks": "node query-tasks.js"
-    },
-    dependencies: {
-      "better-sqlite3": "^12.4.1"
-    },
-    packageManager: "pnpm@10.20.0+sha512.cf9998222162dd85864d0a8102e7892e7ba4ceadebbf5a31f9c2fce48dfce317a9c53b9f6464d1ef9042cba2e02ae02a9f7c143a2b438cd93c91840f0192b9dd"
-  }, null, 2);
-}
-
-function generatePnpmLock() {
-  return `lockfileVersion: '9.0'
-
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
-
-dependencies:
-  better-sqlite3:
-    specifier: ^12.4.1
-    version: 12.4.1
-`;
-}
-
 async function writeDatabaseReadmeFile(filePath) {
   const timestamp = getCurrentTimestamp();
   const content = `# Memory Bank Database
