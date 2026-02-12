@@ -8,12 +8,29 @@ const __dirname = path.dirname(__filename);
 
 const DB_TEMPLATE_ROOT = path.join(__dirname, '..', '..', 'templates', 'memory-bank', 'database');
 const MB_TEMPLATE_ROOT = path.join(__dirname, '..', '..', 'templates', 'memory-bank');
+const PROTOCOL_CANDIDATE_ROOTS = [
+  path.join(__dirname, '..', '..', '..', 'memory-bank', 'protocols'),
+  path.join(__dirname, '..', '..', 'templates', 'memory-bank', 'protocols')
+];
+const PROTOCOL_FILES = [
+  'task-implementation-workflow.md',
+  'error-handling-workflow.md',
+  'file-update-workflow.md',
+  'session-management-workflow.md',
+  'memory-bank-update-workflow.md'
+];
+const INTEGRATED_RULES_FILE = 'integrated-rules-v6.12.md';
+const INTEGRATED_RULES_CANDIDATE_PATHS = [
+  path.join(__dirname, '..', '..', '..', INTEGRATED_RULES_FILE),
+  path.join(__dirname, '..', '..', 'templates', INTEGRATED_RULES_FILE)
+];
 
 // Directory and file configurations
 const DIRS = [
   'memory-bank',
   'memory-bank/tasks',
   'memory-bank/sessions',
+  'memory-bank/protocols',
   'memory-bank/templates',
   'memory-bank/database',
   'memory-bank/database/lib',
@@ -39,6 +56,7 @@ const CORE_FILES = [
 const TEMPLATE_FILES = [
   'activeContext.md',
   'changelog.md',
+  'commit_message_template.md',
   'component_index.md',
   'edit_history.md',
   'errorLog.md',
@@ -120,6 +138,7 @@ function scanExistingContent(targetDir) {
     exists: fs.existsSync(mbDir),
     dirsExist: [],
     coreFilesExist: [],
+    protocolFilesExist: [],
     templateFilesExist: [],
     databaseFilesExist: [],
     databaseScriptsExist: [],
@@ -147,11 +166,25 @@ function scanExistingContent(targetDir) {
     }
   }
 
+  // Check integrated rules file in memory-bank root
+  const integratedRulesPath = path.join(mbDir, INTEGRATED_RULES_FILE);
+  if (fs.existsSync(integratedRulesPath)) {
+    scan.coreFilesExist.push(INTEGRATED_RULES_FILE);
+  }
+
   // Check template files
   for (const file of TEMPLATE_FILES) {
     const filePath = path.join(mbDir, 'templates', file);
     if (fs.existsSync(filePath)) {
       scan.templateFilesExist.push(file);
+    }
+  }
+
+  // Check protocol files
+  for (const file of PROTOCOL_FILES) {
+    const filePath = path.join(mbDir, 'protocols', file);
+    if (fs.existsSync(filePath)) {
+      scan.protocolFilesExist.push(file);
     }
   }
 
@@ -247,7 +280,8 @@ function determineComponentsToInit(scan, options) {
     return { ...components, core: true, templates: true, database: true, viewer: true };
   }
 
-  components.core = scan.coreFilesExist.length < CORE_FILES.length;
+  const expectedCoreArtifactCount = CORE_FILES.length + 1 + PROTOCOL_FILES.length;
+  components.core = (scan.coreFilesExist.length + scan.protocolFilesExist.length) < expectedCoreArtifactCount;
   components.templates = scan.templateFilesExist.length < TEMPLATE_FILES.length;
   components.database = (scan.databaseFilesExist.length + scan.databaseScriptsExist.length) < (DATABASE_FILES.length + PARSER_SCRIPTS.length);
   components.viewer = (scan.viewerFilesExist.length + scan.viewerPublicFilesExist.length) < (VIEWER_FILES.length + VIEWER_PUBLIC_FILES.length);
@@ -501,9 +535,9 @@ export async function initCommand(options) {
       }
       if (!fs.existsSync(dbPath)) {
         console.error(`❌ Error: memory_bank.db not found at ${dbPath}`);
-        console.error('Please run the parser first:');
+        console.error('Please run the parsers first:');
         console.error(`  cd ${dbDir}`);
-        console.error('  node parse-edits.js && node parse-tasks.js\n');
+        console.error('  ./run-all.sh\n');
         process.exit(1);
       }
       
@@ -591,6 +625,39 @@ export async function initCommand(options) {
             await writeCursorrulesFile(filePath);
           } else {
             await writeEmptyFile(filePath);
+          }
+        }
+      }
+
+      const integratedRulesTargetPath = path.join(mbDir, INTEGRATED_RULES_FILE);
+      const integratedRulesExists = fs.existsSync(integratedRulesTargetPath);
+      const integratedRulesStatus = integratedRulesExists ? '✓' : '+';
+      console.log(`  [${integratedRulesStatus}] ${INTEGRATED_RULES_FILE}`);
+      if (!options.dryRun && (!integratedRulesExists || options.force || options.full)) {
+        const integratedRulesSource = INTEGRATED_RULES_CANDIDATE_PATHS.find((candidate) => fs.existsSync(candidate));
+        if (integratedRulesSource) {
+          const content = fs.readFileSync(integratedRulesSource, 'utf8');
+          await writeFile(integratedRulesTargetPath, content, { flag: 'w' });
+        } else {
+          console.warn(`  ⚠️  Warning: Source file not found: ${INTEGRATED_RULES_FILE}`);
+        }
+      }
+
+      console.log('\nProtocol files in memory-bank/protocols/:');
+      for (const file of PROTOCOL_FILES) {
+        const filePath = path.join(mbDir, 'protocols', file);
+        const exists = fs.existsSync(filePath);
+        const status = exists ? '✓' : '+';
+        console.log(`  [${status}] ${file}`);
+        if (!options.dryRun && (!exists || options.force || options.full)) {
+          const sourceFile = PROTOCOL_CANDIDATE_ROOTS
+            .map((root) => path.join(root, file))
+            .find((candidate) => fs.existsSync(candidate));
+          if (sourceFile) {
+            const content = fs.readFileSync(sourceFile, 'utf8');
+            await writeFile(filePath, content, { flag: 'w' });
+          } else {
+            console.warn(`  ⚠️  Warning: Source file not found: ${file}`);
           }
         }
       }
@@ -715,8 +782,12 @@ export async function initCommand(options) {
         console.log('\n1. Install dependencies:');
         console.log('   pnpm install');
         console.log('\n2. Parse your memory bank files:');
-        console.log('   node parse-edits.js      # Parse edit history');
-        console.log('   node parse-tasks.js      # Parse tasks');
+        console.log('   ./run-all.sh             # Parse all memory bank files');
+        console.log('   # Or run parser scripts individually');
+        console.log('   # node parse-edits.js');
+        console.log('   # node parse-tasks.js');
+        console.log('   # node parse-sessions.js');
+        console.log('   # node parse-session-cache.js');
         console.log('\n3. Start the viewer server:');
         console.log('   node server.js');
         console.log('   Open: http://localhost:3000');
@@ -736,7 +807,7 @@ async function writeDatabaseReadmeFile(filePath) {
 
 ## Overview
 
-This directory contains the SQLite database for your Memory Bank using better-sqlite3 for direct database access.
+This directory contains the SQLite database for your Memory Bank using sql.js (WASM SQLite).
 
 ## Quick Start
 
@@ -757,9 +828,9 @@ Parse tasks:
 node parse-tasks.js
 \`\`\`
 
-Or parse both at once:
+Or parse all memory bank files at once:
 \`\`\`bash
-pnpm run parse
+./run-all.sh
 \`\`\`
 
 **Supported Formats:**
@@ -848,7 +919,7 @@ The memory_bank.db file is a standard SQLite database and can be opened with:
 ## Next Steps
 
 1. Install dependencies: \`pnpm install\`
-2. Parse your markdown files: \`pnpm run parse\`
+2. Parse your markdown files: \`./run-all.sh\`
 3. Query the database: \`node query.js stats\`
 4. Open memory_bank.db in your favorite SQLite viewer
 `;
@@ -893,7 +964,7 @@ After initializing the memory bank, set up the database:
 \`\`\`bash
 cd memory-bank/database
 pnpm install
-pnpm run parse
+./run-all.sh
 node query.js stats
 \`\`\`
 
@@ -934,7 +1005,7 @@ When using with an AI assistant:
 1. Fill in **projectbrief.md** with your project details
 2. Add your first tasks to **tasks.md**
 3. Define development standards in **.cursorrules**
-4. If using database: \`cd memory-bank/database && pnpm install && pnpm run parse\`
+4. If using database: \`cd memory-bank/database && pnpm install && ./run-all.sh\`
 5. Start working and update context files as you progress
 `;
   await writeFile(filePath, content, { flag: 'w' });

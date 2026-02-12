@@ -1,12 +1,12 @@
 # Active Context
 
-*Last Updated: 2026-01-04 12:04:42 IST*
+*Last Updated: 2026-02-12 17:32:49 IST*
 
 ## Current Tasks
 1. **[META-1]**: Memory Bank Update and Maintenance (HIGH priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: Protocol extraction from integrated rules to standalone files, integrated rules updates
-   - Recent Achievement: Extracted 5 core workflows to `/memory-bank/protocols/`, updated v6.11 with protocol notes, enhanced v6.12 with source tracking
+   - Current Focus: Session maintenance and tracking updates for parser/init changes
+   - Recent Achievement: Recorded parser/runtime fixes, init bootstrap enhancements, synchronized task/session tracking files, and refreshed implementation documentation
 
 2. **[T19]**: Memory Bank Viewer Web Interface (HIGH priority)
    - Status: 🔄 IN PROGRESS (Phase 3 Setup Wizard Complete)
@@ -15,22 +15,26 @@
 
 3. **[T13]**: Implement Memory Bank CLI (HIGH priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: Canonicalize mb-cli templates and keep generated memory-bank/database and memory-bank/templates as output only.
+   - Current Focus: Init bootstrap completeness (integrated rules, protocols, commit template) and up-to-date setup messaging.
 
-4. **[T21]**: Database-Native Memory Bank Update Workflow (HIGH priority)
+4. **[T24]**: Migrate from better-sqlite3 to sql.js (HIGH priority)
+   - Status: 🔄 IN PROGRESS
+   - Current Focus: Parser compatibility fixes and propagation to canonical/template packages.
+
+5. **[T21]**: Database-Native Memory Bank Update Workflow (HIGH priority)
    - Status: 🔄 IN PROGRESS (Phase A Complete)
    - Current Focus: DB-first workflow slice expanded with DB selection/import tooling in the canonical viewer; next is safe write-to-disk export with backups and roundtrip validation.
    - Note: T22 (AdminJS) was attempted to solve this but cancelled. We are now building the write UI directly into T19.
 
-5. **[T25]**: Standalone Node Package (Browser-First) (HIGH priority)
+6. **[T25]**: Standalone Node Package (Browser-First) (HIGH priority)
    - Status: 🔄 IN PROGRESS
    - Current Focus: Browser-first imports hardened (tasks/sessions/session_cache + task file subtasks) and separated Import Data UX; export/writeback still pending
 
-6. **[T22]**: AdminJS Database Management Interface (HIGH priority)
+7. **[T22]**: AdminJS Database Management Interface (HIGH priority)
    - Status: ❌ CANCELLED (2025-11-22)
    - Reason: Excessive complexity/dependency hell. Shelved in favor of extending T19.
 
-7. **[T17]**: Maintenance and Upkeep of Integrated Rules (MEDIUM priority)
+8. **[T17]**: Maintenance and Upkeep of Integrated Rules (MEDIUM priority)
    - Status: 🔄 IN PROGRESS
    - Current Focus: Rules documentation v6.8 → v6.10
 
@@ -39,18 +43,23 @@
    - Status: ✅ COMPLETED (2025-11-22)
    - Output: Modular Viewer architecture in `t21-workflow-testing/database/public/`.
 
-## Implementation Focus - Current Session (T24 sql.js + mb-cli canonical server-package)
-**T24 sql.js migration correctness (night session):**
-- ✅ Added dirty-write persistence gating (avoid writing DB on close when no writes occurred)
-- ✅ Improved better-sqlite3 compatibility in adapter (return lastInsertRowid on run)
-- ✅ Fixed server transaction usage to await async transaction runner
-- ✅ Fixed raw sql.js API misuse by using adapter prepare/all/get in server endpoints
-- ✅ Added default DB bootstrap behavior on first start for default db path
+## Implementation Focus - Current Session (T24 + T13 + META-1)
+**T24 parser/runtime corrections:**
+- ✅ Fixed async/undefined-`db` patterns in `parse-edits.js`, `parse-tasks.js`, `parse-sessions.js`, and `parse-session-cache.js`
+- ✅ Validated parser scripts and syntax checks in `memory-bank/database`
+- ✅ Propagated fixed parser scripts to `mb-cli/src/server-package/` and regenerated `mb-cli/templates/memory-bank/database/`
 
-**mb-cli canonical source + template generation:**
-- ✅ Created `mb-cli/src/server-package/` as canonical database package source
-- ✅ Added `mb-cli/src/sync-database-template.js` to regenerate `mb-cli/templates/memory-bank/database/`
-- ✅ Added `pnpm-workspace.yaml` to prevent monorepo pnpm install hijack when running inside memory-bank/database
+**T13 init coverage updates:**
+- ✅ Updated `mb-cli/src/commands/init.js` setup messaging to use current parser workflow (`./run-all.sh`)
+- ✅ Added copy of `integrated-rules-v6.12.md` during core initialization
+- ✅ Added creation/copy of `memory-bank/protocols/` workflow files during core initialization
+- ✅ Added `commit_message_template.md` to template initialization
+
+**Implementation documentation alignment:**
+- ✅ Updated `memory-bank/implementation-details/modular-viewer-architecture.md` for `sql.js` stack and `run-all.sh` workflow
+- ✅ Updated `memory-bank/implementation-details/database-parser-plan.md` for current dependency and parser run sequence
+- ✅ Updated `memory-bank/implementation-details/cli-implementation-details.md` with latest init bootstrap/session notes
+- ✅ Updated `memory-bank/implementation-details/web-interface-setup-wizard.md` with current context notes
 
 ## Next Steps
 - Run clean install tests in:
@@ -59,6 +68,7 @@
 - Confirm mb init requires viewer files (use --setup-viewer or full init) when expecting memory-bank/database/server.js
 - Verify no unwanted default DB creation when switching DBs in the editor
 - Confirm parsers/query scripts behave correctly with sql.js adapter (persistence + async flow)
+- Execute fresh-project `mb init` end-to-end test to verify integrated rules + protocols + commit template bootstrap
 
 ## Current Decisions
 1. **Setup Wizard as Default**: All new projects see wizard first

@@ -1,6 +1,6 @@
 # Web Interface Setup Wizard - T19/T21 Enhancement
 
-*Last Updated: 2025-12-16*
+*Last Updated: 2026-02-12 16:44:15 IST*
 
 ## Overview
 
@@ -8,13 +8,15 @@ This document describes the comprehensive setup wizard implementation that trans
 
 ## Problem Statement
 
-Previously, users had to:
+Before the setup wizard became default, users had to:
 1. Run `mb init` command from the CLI
 2. Manually select configuration options
 3. Wait for initialization to complete
 4. Navigate to the viewer/editor
 
 The process required command-line proficiency and knowledge of available flags. New projects needed manual CLI execution before accessing the web interface.
+
+Note: `mb init` remains supported and is now aligned with current bootstrap requirements (integrated rules, protocol files, and expanded template coverage).
 
 ## Solution: Web-Based Setup Wizard
 

@@ -1,13 +1,13 @@
 # META-1: Memory Bank Update and Maintenance
 
 *Created: 2025-11-13 18:35:00 IST*
-*Last Updated: 2026-01-04 12:04:42 IST*
+*Last Updated: 2026-02-12 17:32:49 IST*
 
 ## Task Details
 
 **Description**: Ongoing memory bank maintenance to ensure documentation accurately reflects current project state and implementation details.
 
-**Status**: 🔄 IN PROGRESS (Protocol extraction and integrated rules updates - v6.11/v6.12 enhanced)
+**Status**: 🔄 IN PROGRESS (Protocol/template maintenance and init alignment updates)
 
 **Priority**: HIGH
 
@@ -31,6 +31,9 @@
 - [x] Update integrated-rules-v6.11.md with protocol extraction notes and expanded workflow
 - [x] Enhance integrated-rules-v6.12.md with source tracking and chunk-based edit history
 - [x] Clean up CLI code by removing unused functions (init.js)
+- [x] Record parser/runtime fixes and init-template propagation in Memory Bank files
+- [x] Update init coverage for integrated rules, protocol files, and commit message template
+- [x] Refresh implementation-detail docs to match current parser/init architecture
 
 ## Context
 
@@ -83,6 +86,19 @@ This meta task closed 7-month documentation gap (April → November 2025) while 
 - **Accessibility Improved**: Core workflows now easily referenceable
 - **Source Tracking Added**: Branch and commit SHA tracking for better traceability
 - **Code Cleanup**: Removed 45 lines of unused code from CLI
+
+## Work Completed (2026-02-12 Session)
+
+### Maintenance and Alignment Phase ✅
+- Updated parser scripts to remove undefined `db` references and align async transaction/schema calls.
+- Verified parser runtime and syntax checks for the database component.
+- Updated `mb-cli/src/commands/init.js` to align with current workflow and bootstrap assets:
+  - copy `integrated-rules-v6.12.md`
+  - create/copy `memory-bank/protocols/*`
+  - include `templates/commit_message_template.md`
+- Synced parser fixes into canonical `mb-cli/src/server-package/` and regenerated template output.
+- Updated memory bank tracking files for this session (tasks, context, cache, session log, edit history).
+- Updated implementation-detail docs for architecture/workflow correctness (`sql.js`, `run-all.sh`, and init bootstrap coverage).
 
 ## Results
 

@@ -1,6 +1,6 @@
 # Memory Bank Database Parser Implementation Plan
 *Created: 2025-11-12 12:02:00 IST*
-*Last Updated: 2025-12-15 10:40:55 IST*
+*Last Updated: 2026-02-12 16:44:15 IST*
 
 ## Overview
 
@@ -19,7 +19,7 @@ The Memory Bank Database Parser is a fresh implementation that parses memory ban
 ### Location (Updated 2025-11-12)
 `memory-bank/database/` - Integrated with memory bank initialization system
 - Previously: `edit-history-parser/` at project root
-- Migration: Replaced T3 Prisma ORM system with T20 better-sqlite3 approach
+- Migration: Replaced T3 Prisma ORM system with T20 SQLite parser approach
 - Backup: Old T3 database code at `database.old/` (root level)
 
 ### Components
@@ -223,7 +223,7 @@ graph LR
 ## Design Principles
 
 1. **Fresh Start**: Intentionally ignores existing `memory-bank/database` scripts
-2. **Simplicity**: Direct SQLite usage with better-sqlite3
+2. **Simplicity**: Direct SQLite usage via `sql.js` adapter
 3. **Portability**: Single database file, easy to share/backup
 4. **Read-Only Queries**: Prevents accidental data modification
 5. **Idempotent Parsing**: Clear and rebuild on each run
@@ -231,16 +231,18 @@ graph LR
 
 ## Dependencies
 
-- `better-sqlite3` ^12.4.1 - Native SQLite bindings
+- `sql.js` ^1.10.3 - WASM SQLite runtime
 - Node.js with ES modules support
 
 ## Usage Workflow
 
-1. Install dependencies: `npm install`
+1. Install dependencies: `pnpm install`
 2. Parse edit history: `node parse-edits.js`
 3. Parse tasks: `node parse-tasks.js`
-4. Query unified database: `node query.js <command>`
-5. Or use external SQLite tools: DB Browser, sqlite3, VS Code extensions
+4. Parse sessions + session cache: `node parse-sessions.js` and `node parse-session-cache.js`
+5. Optional all-in-one parse: `./run-all.sh`
+6. Query unified database: `node query.js <command>`
+7. Or use external SQLite tools: DB Browser, sqlite3, VS Code extensions
 
 ## File Locations (Updated 2025-11-12)
 
@@ -251,7 +253,7 @@ graph LR
 ├── query.js                 # Unified query tool
 ├── query-tasks.js           # Task query tool
 ├── schema.prisma            # Reference schema
-├── package.json             # Dependencies (better-sqlite3)
+├── package.json             # Dependencies (sql.js, express)
 ├── pnpm-lock.yaml           # Dependency lock
 ├── DATABASE_README.md       # Database setup documentation
 └── memory_bank.db           # Unified database

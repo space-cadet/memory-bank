@@ -1,6 +1,6 @@
 # Memory Bank CLI Implementation Plan
 *Created: May 18, 2025*
-*Last Updated: 2025-12-16 14:25:03 IST*
+*Last Updated: 2026-02-12 16:44:15 IST*
 
 ## Table of Contents
 1. [Overview](#overview)
@@ -25,6 +25,7 @@
 
 ## Template Source of Truth
 Default templates are maintained inside `mb-cli/templates/` and are copied into a target project by `mb init`.
+The init flow now also bootstraps integrated rules (`integrated-rules-v6.12.md`) and protocol docs (`memory-bank/protocols/*.md`) into new memory bank roots.
 
 ## Overview
 This document outlines the implementation plan for the Memory Bank CLI (T13), following the KIRSS (Keep It Really Simple, Stupid) principle. The plan is structured to deliver value incrementally, starting with the most essential features.
@@ -402,7 +403,7 @@ This document outlines the implementation plan for the Memory Bank CLI (T13), fo
 - Migration execution: SUCCESS with schema validation needed (successful data migration, field alignment issues identified)
 
 **Session 4 Work (2025-11-12 16:59:56 IST) - T20 Integration and Format Handling**:
-- Strategic system swap: Replaced T3 Prisma ORM with T20 better-sqlite3 direct access
+- Strategic system swap: Replaced T3 Prisma ORM with T20 SQLite parser architecture (now `sql.js` adapter-based)
   * Backed up T3 system to database.old/ (root level)
   * Moved T20 (edit-history-parser/) to memory-bank/database/
   * Created new init.js compatible with T20 SQLite parsers
@@ -432,6 +433,21 @@ This document outlines the implementation plan for the Memory Bank CLI (T13), fo
 
 **Session Work (15:43:13 IST)**:
 - Integrated T21 database explorer into mb init command
+
+### February 12, 2026 - Init Bootstrap and Parser Alignment
+**Status**: Init workflow expanded and canonical parser sources synchronized.
+
+**Session Work**:
+- Updated init guidance text to match current parser flow (`./run-all.sh`) and sql.js terminology.
+- Added core initialization copy of `integrated-rules-v6.12.md`.
+- Added protocol bootstrap in core init:
+  - `memory-bank/protocols/task-implementation-workflow.md`
+  - `memory-bank/protocols/error-handling-workflow.md`
+  - `memory-bank/protocols/file-update-workflow.md`
+  - `memory-bank/protocols/session-management-workflow.md`
+  - `memory-bank/protocols/memory-bank-update-workflow.md`
+- Added `memory-bank/templates/commit_message_template.md` to template initialization.
+- Fixed parser async/runtime issues and synchronized parser files from canonical `mb-cli/src/server-package/` to `mb-cli/templates/memory-bank/database/`.
   * Added VIEWER_FILES constant (server.js, schema.sql, init-schema.js, test-schema.js, generate-test-data.js)
   * Added VIEWER_PUBLIC_FILES constant (public/index.html, public/js/app.js, router.js, api.js, ui.js, public/css/styles.css)
   * Updated scanExistingContent() to detect viewer and public files

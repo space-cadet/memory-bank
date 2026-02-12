@@ -1,7 +1,7 @@
 # Modular Memory Bank Viewer Architecture
 
 *Created: 2025-11-22*
-*Last Updated: 2025-12-17 10:41:19 IST*
+*Last Updated: 2026-02-12 16:44:15 IST*
 *Related Task: [T21](../tasks/T21.md)*
 
 ## Overview
@@ -19,7 +19,7 @@ graph TD
     B -->|Read/Write| C[Viewer Server]
     C -->|API| D[Web Frontend]
     
-    subgraph "Launch Sequence (start-viewer.sh)"
+    subgraph "Launch Sequence (run-all.sh)"
     P1[parse-edits.js]
     P2[parse-tasks.js]
     P3[parse-sessions.js]
@@ -29,10 +29,10 @@ graph TD
 
 ### Components
 
-1.  **Launcher (`start-viewer.sh`)**:
+1.  **Launcher (`run-all.sh`)**:
     *   Orchestrates the sync process.
     *   Runs all parsers to rebuild the database from fresh markdown content.
-    *   Starts the server pointing to the production database.
+    *   The server is started separately (`node server.js`) after parser completion.
 
 2.  **Database Parsers (`memory-bank/database/`)**:
     *   `parse-edits.js`: Parses `edit_history.md` -> `edit_entries`, `file_modifications`.
@@ -41,7 +41,7 @@ graph TD
     *   `parse-session-cache.js`: Parses `session_cache.md` -> `session_cache`.
 
  3.  **Server (`memory-bank/database/server.js`)**:
-    *   **Stack**: Node.js + Express + better-sqlite3.
+    *   **Stack**: Node.js + Express + `sql.js` (via adapter in `lib/sqlite.js`).
     *   **Role**: Provides a REST API for the database and serves static assets.
     *   **Security**: All filesystem access is restricted to the `memory-bank/` directory.
     *   **Key Endpoints**:

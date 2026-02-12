@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Initialize tasks schema
-function initSchema(db) {
+async function initSchema() {
   await sqlite.exec(`
     PRAGMA foreign_keys = OFF;
     
@@ -127,7 +127,7 @@ function parseTasks(content) {
 }
 
 // Insert tasks into database
-function populateDatabase(db, tasks) {
+async function populateDatabase(tasks) {
   console.log(`Populating database with ${tasks.length} tasks...\n`);
 
   const insertTask = sqlite.prepare(`
@@ -146,13 +146,13 @@ function populateDatabase(db, tasks) {
   `);
   
   // Disable foreign keys temporarily
-  db.pragma('foreign_keys = OFF');
+  await sqlite.pragma('foreign_keys = OFF');
   
   let successCount = 0;
   let errorCount = 0;
   
   // Insert all tasks first
-  sqlite.transaction(() => {
+  await sqlite.transaction(() => {
     tasks.forEach(task => {
       try {
         insertTask.run(
@@ -174,7 +174,7 @@ function populateDatabase(db, tasks) {
   })();
   
   // Then insert dependencies
-  sqlite.transaction(() => {
+  await sqlite.transaction(() => {
     tasks.forEach(task => {
       task.dependencies.forEach(depId => {
         try {
@@ -188,7 +188,7 @@ function populateDatabase(db, tasks) {
 
   // Then insert subtasks (from task files)
   const subtasks = parseTaskSubtasks();
-  sqlite.transaction(() => {
+  await sqlite.transaction(() => {
     subtasks.forEach(st => {
       try {
         insertSubtask.run(st.taskId, st.section, st.position, st.text, st.checked);
@@ -199,7 +199,7 @@ function populateDatabase(db, tasks) {
   })();
   
   // Re-enable foreign keys
-  db.pragma('foreign_keys = ON');
+  await sqlite.pragma('foreign_keys = ON');
   
   console.log(`\n✓ Successfully inserted ${successCount} tasks`);
   if (errorCount > 0) {
@@ -317,7 +317,7 @@ async function main() {
     await sqlite.exec('DROP TABLE IF EXISTS task_subtasks');
     await sqlite.exec('DROP TABLE IF EXISTS task_items');
     
-    initSchema(db);
+    await initSchema();
     console.log('✓ Database schema initialized\n');
 
     console.log('Parsing tasks...\n');
@@ -330,7 +330,7 @@ async function main() {
       return;
     }
 
-    populateDatabase(db, tasks);
+    await populateDatabase(tasks);
     
     console.log('\n=====================================');
     console.log('Database Statistics:\n');

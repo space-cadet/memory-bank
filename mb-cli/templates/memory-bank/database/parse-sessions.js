@@ -16,7 +16,7 @@ const __dirname = dirname(__filename);
 /**
  * Initialize sessions schema
  */
-function initSchema(db) {
+async function initSchema() {
   await sqlite.exec(`
     CREATE TABLE IF NOT EXISTS sessions (
       id TEXT PRIMARY KEY,         -- Filename (e.g., 2025-11-22-evening.md)
@@ -118,7 +118,7 @@ async function main() {
     
     // Recreate table to ensure clean slate
     await sqlite.exec('DROP TABLE IF EXISTS sessions');
-    initSchema(db);
+    await initSchema();
 
     // Get all .md files
     const files = readdirSync(sessionsDir).filter(f => f.endsWith('.md'));
@@ -171,7 +171,7 @@ async function main() {
       }
     });
 
-    insertAll(files);
+    await insertAll(files);
 
     console.log(`✓ Successfully inserted ${successCount} sessions`);
     if (errorCount > 0) {
