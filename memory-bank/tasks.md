@@ -4,7 +4,6 @@
 ## Active Tasks
 | ID | Title | Status | Priority | Started | Dependencies | Details |
 |----|-------|--------|----------|---------|--------------|---------|
-| T26 | Hopf-LQG Paper: Braided Hopf Algebra on Framed Spin Networks | 🔄 | HIGH | 2026-05-11 | — | [Details](tasks/T26.md) — Physics research paper. Draft complete (12 pages). Remaining: diagrams, intuitive explanations, bibliography expansion, arXiv submission. |
 | T25 | Standalone Node Package (Browser-First) | 🔄 | HIGH | 2025-12-16 | T19, T21, T13, T24 | [Details](tasks/T25.md) - Browser-first import (markdown -> DB) + export (DB -> markdown) with safe backups |
 | T24 | Migrate from better-sqlite3 to sql.js | 🔄 | HIGH | 2025-12-16 | T19, T21, T13 | [Details](tasks/T24.md) - Parser async/runtime fixes applied and propagated to canonical/template packages |
 | T23 | Format Specification System | 🔄 | HIGH | 2025-12-05 | T17, T21 | [Details](tasks/T23.md) - Dual markdown+JSON spec for parser/rules alignment |
