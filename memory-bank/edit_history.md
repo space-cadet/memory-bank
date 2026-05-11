@@ -1,6 +1,21 @@
 # Edit History
 *Created: 2025-04-10*
-*Last Updated: 2026-02-12 17:32:49 IST*
+*Last Updated: 2026-05-11 11:26:00 IST*
+
+### 2026-05-11
+
+#### 11:05:00 IST - T21: Implement Database-Native Memory Bank Workflow (Phases B + C)
+- Created `memory-bank/database/lib/inserts.js` - 8 atomic write functions with SQLite transaction wrappers (insertEditEntry, upsertTask, updateTaskStatus, createSession, updateSessionCache, logError, logTransaction)
+- Created `memory-bank/database/lib/regenerate.js` - 3 markdown generators (edit_history, tasks, session_cache) + batch regenerateAll mode
+- Created `memory-bank/database/lib/workflow.js` - Single `recordSessionWork()` call replacing 8-step manual workflow
+- Created `memory-bank/database/test-workflow.js` - 60-check integration test suite (6 test suites)
+- All 60 integration tests passing, 0 failures
+- Performance: Full workflow completes in 2ms (vs ~5 min manual process)
+- Implementation uses sql.js (WASM SQLite) matching T24 migration direction
+- Implementation isolated in sage-workspace repo; to be promoted to canonical after review
+- Modified `memory-bank/tasks/T21.md` - Marked Phases B and C complete, added progress section
+- Modified `memory-bank/activeContext.md` - Updated T21 status to reflect completion
+- Modified `memory-bank/tasks.md` - Updated T21 summary with Phase B/C completion
 
 ### 2026-02-12
 

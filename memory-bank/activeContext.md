@@ -8,23 +8,24 @@
    - Current Focus: Session maintenance and tracking updates for parser/init changes
    - Recent Achievement: Recorded parser/runtime fixes, init bootstrap enhancements, synchronized task/session tracking files, and refreshed implementation documentation
 
-2. **[T19]**: Memory Bank Viewer Web Interface (HIGH priority)
+2. **[T21]**: Database-Native Memory Bank Update Workflow (HIGH priority)
+   - Status: 🔄 IN PROGRESS (Phases A, B, C Complete — Implemented in Sage Workspace)
+   - Current Focus: Insert + Regenerate functions now implemented and passing 60 integration tests in Sage workspace
+   - Recent Achievement: Phase B (inserts) and Phase C (regeneration) completed with 2ms workflow performance. Ready for port to canonical repo.
+   - Note: Implementation lives in sage-workspace repo; to be promoted to canonical after review.
+
+3. **[T19]**: Memory Bank Viewer Web Interface (HIGH priority)
    - Status: 🔄 IN PROGRESS (Phase 3 Setup Wizard Complete)
    - Current Focus: Phase 3 includes setup wizard, write capabilities, and DB management
    - Recent Achievement: Comprehensive 4-step setup wizard integrated as default entry point for new projects. Web interface now handles complete initialization without CLI.
 
-3. **[T13]**: Implement Memory Bank CLI (HIGH priority)
+4. **[T13]**: Implement Memory Bank CLI (HIGH priority)
    - Status: 🔄 IN PROGRESS
    - Current Focus: Init bootstrap completeness (integrated rules, protocols, commit template) and up-to-date setup messaging.
 
-4. **[T24]**: Migrate from better-sqlite3 to sql.js (HIGH priority)
+5. **[T24]**: Migrate from better-sqlite3 to sql.js (HIGH priority)
    - Status: 🔄 IN PROGRESS
    - Current Focus: Parser compatibility fixes and propagation to canonical/template packages.
-
-5. **[T21]**: Database-Native Memory Bank Update Workflow (HIGH priority)
-   - Status: 🔄 IN PROGRESS (Phase A Complete)
-   - Current Focus: DB-first workflow slice expanded with DB selection/import tooling in the canonical viewer; next is safe write-to-disk export with backups and roundtrip validation.
-   - Note: T22 (AdminJS) was attempted to solve this but cancelled. We are now building the write UI directly into T19.
 
 6. **[T25]**: Standalone Node Package (Browser-First) (HIGH priority)
    - Status: 🔄 IN PROGRESS

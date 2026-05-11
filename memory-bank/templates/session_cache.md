@@ -1,86 +1,104 @@
 # Session Cache
 
-*Last Updated: [TIMESTAMP]*
+*Created: YYYY-MM-DD HH:MM:SS TZ*
+*Last Updated: YYYY-MM-DD HH:MM:SS TZ*
+
+## Current Session
+**Started**: YYYY-MM-DD HH:MM:SS TZ
+**Focus Task**: TXX - Task Title
+**Session File**: `sessions/YYYY-MM-DD-period.md`
 
 ## Overview
 - Active Tasks: [COUNT]
 - Paused Tasks: [COUNT]
-- Last Task Focus: [TASK ID]
+- Last Session: `sessions/YYYY-MM-DD-period.md`
+- Current Period: [morning/afternoon/evening/night]
+- Last Task Focus: [TASK ID or short label]
+
+## Session History (Last 5)
+1. `sessions/YYYY-MM-DD-period.md` - [Brief focus description]
+2. `sessions/YYYY-MM-DD-period.md` - [Brief focus description]
+3. `sessions/YYYY-MM-DD-period.md` - [Brief focus description]
+4. `sessions/YYYY-MM-DD-period.md` - [Brief focus description]
+5. `sessions/YYYY-MM-DD-period.md` - [Brief focus description]
 
 ## Task Registry
-- [T1]: [BRIEF DESCRIPTION] - 🔄 IN PROGRESS
-- [T2]: [BRIEF DESCRIPTION] - 🔄 IN PROGRESS
-- [T3]: [BRIEF DESCRIPTION] - ⏸️ PAUSED
+- T1: [Brief description] - ✅ COMPLETE
+- T2: [Brief description] - 🔄 IN PROGRESS
+- T3: [Brief description] - ⏸️ PAUSED
 
 ## Active Tasks
 
-### [TASK ID 1]: [TASK TITLE]
+### TXX: Task Title
 **Status:** 🔄 IN PROGRESS
-**Priority:** [HIGH/MEDIUM/LOW]
-**Started:** [DATE]
-**Last Active:** [TIMESTAMP]
-**Dependencies:** [TASK IDS IF APPLICABLE]
+**Priority:** HIGH
+**Started:** YYYY-MM-DD
+**Last Active:** YYYY-MM-DD HH:MM:SS TZ
+**Dependencies:** T1, T2
 
 #### Context
-[ESSENTIAL CONTEXT NEEDED TO RESUME THIS TASK]
+[Essential context needed to resume this task quickly.]
 
 #### Critical Files
-- `[FILE1]`: [RELEVANCE]
-- `[FILE2]`: [RELEVANCE]
+- `path/to/file1` - Why it matters
+- `path/to/file2` - Why it matters
 
 #### Implementation Progress
-1. ✅ [COMPLETED STEP]
-2. 🔄 [CURRENT STEP]
-3. ⬜ [NEXT STEP]
-4. ⬜ [PLANNED STEP]
+1. ✅ [Completed step]
+2. 🔄 [Current step]
+3. ⬜ [Next step]
+4. ⬜ [Planned step]
 
 #### Working State
-[KEY VARIABLES, DECISIONS, OR IMPLEMENTATION DETAILS]
+[Important implementation state, decisions, blockers, or assumptions.]
 
-### [TASK ID 2]: [TASK TITLE]
+### TYY: Task Title
 **Status:** 🔄 IN PROGRESS
-**Priority:** [HIGH/MEDIUM/LOW]
-**Started:** [DATE]
-**Last Active:** [TIMESTAMP]
-**Dependencies:** [TASK IDS IF APPLICABLE]
+**Priority:** MEDIUM
+**Started:** YYYY-MM-DD
+**Last Active:** YYYY-MM-DD HH:MM:SS TZ
+**Dependencies:** None
 
 #### Context
-[ESSENTIAL CONTEXT NEEDED TO RESUME THIS TASK]
+[Essential context needed to resume this task quickly.]
 
 #### Critical Files
-- `[FILE1]`: [RELEVANCE]
-- `[FILE2]`: [RELEVANCE]
+- `path/to/file1` - Why it matters
+- `path/to/file2` - Why it matters
 
 #### Implementation Progress
-1. ✅ [COMPLETED STEP]
-2. 🔄 [CURRENT STEP]
-3. ⬜ [NEXT STEP]
-4. ⬜ [PLANNED STEP]
+1. ✅ [Completed step]
+2. 🔄 [Current step]
+3. ⬜ [Next step]
 
 #### Working State
-[KEY VARIABLES, DECISIONS, OR IMPLEMENTATION DETAILS]
+[Important implementation state, decisions, blockers, or assumptions.]
 
 ## Paused Tasks
 
-### [TASK ID 3]: [TASK TITLE]
+### TZZ: Task Title
 **Status:** ⏸️ PAUSED
-**Paused On:** [TIMESTAMP]
-**Reason:** [BRIEF EXPLANATION]
+**Priority:** LOW
+**Started:** YYYY-MM-DD
+**Paused On:** YYYY-MM-DD HH:MM:SS TZ
+**Dependencies:** T4
+**Reason:** [Why this is paused]
 
 #### Context
-[ESSENTIAL CONTEXT NEEDED TO RESUME THIS TASK]
+[Essential context needed to resume.]
 
 #### Critical Files
-- `[FILE1]`: [RELEVANCE]
-- `[FILE2]`: [RELEVANCE]
+- `path/to/file1` - Why it matters
+- `path/to/file2` - Why it matters
 
 #### Implementation Progress
-1. ✅ [COMPLETED STEP]
-2. ✅ [COMPLETED STEP]
-3. ⬜ [NEXT STEP WHEN RESUMED]
+1. ✅ [Completed step]
+2. ✅ [Completed step]
+3. ⬜ [Next step when resumed]
 
 #### Working State
-[KEY VARIABLES, DECISIONS, OR IMPLEMENTATION DETAILS]
+[What must be remembered before resuming.]
 
 ## Session Notes
-[GENERAL NOTES RELEVANT ACROSS MULTIPLE TASKS]
+- [Cross-task note]
+- [Shared blocker, convention, or reminder]
