@@ -1,9 +1,16 @@
 # Active Context
 
-*Last Updated: 2026-02-12 17:32:49 IST*
+*Last Updated: 2026-05-11 21:19:00 IST*
 
 ## Current Tasks
-1. **[META-1]**: Memory Bank Update and Maintenance (HIGH priority)
+1. **[T26]**: Hopf-LQG Paper — Braided Hopf Algebra on Framed Spin Networks (HIGH priority)
+   - Status: 🔄 IN PROGRESS — Draft Complete
+   - Current Focus: 12-page LaTeX draft compiled and delivered. Remaining: intuitive explanations, diagrams, illustrations, bibliography expansion.
+   - Literature Review: Markopoulou (no direct Hopf algebra on spin networks), Crane-Frenkel (Hopf categories for 4D TQFT), Kreimer/Tanasa (renormalization on spin foams)
+   - Key Decision: Braided Hopf algebra (not Hopf category) is correct level for spin networks
+   - Files: `hopf-spin-network.tex`, `hopf-spin-network.pdf`, `hopf-lqg.bib`
+
+2. **[META-1]**: Memory Bank Update and Maintenance (HIGH priority)
    - Status: 🔄 IN PROGRESS
    - Current Focus: Session maintenance and tracking updates for parser/init changes
    - Recent Achievement: Recorded parser/runtime fixes, init bootstrap enhancements, synchronized task/session tracking files, and refreshed implementation documentation
@@ -62,7 +69,15 @@
 - ✅ Updated `memory-bank/implementation-details/cli-implementation-details.md` with latest init bootstrap/session notes
 - ✅ Updated `memory-bank/implementation-details/web-interface-setup-wizard.md` with current context notes
 
-## Next Steps
+## Next Steps (Hopf-LQG Paper)
+1. Add intuitive explanations for comultiplication in physical settings
+2. Create diagrams for graph decompositions (non-linear chains: triangles, stars, cycles)
+3. Add illustrations: ribbon graph crossings, framed edges, spin network braiding
+4. Expand bibliography with graph Hopf algebra and recoupling theory references
+5. Check all proofs and add more examples
+6. Submit to arXiv (hep-th or gr-qc)
+
+## Next Steps (Memory Bank CLI)
 - Run clean install tests in:
   - fresh repo (pnpm install && pnpm start inside memory-bank/database)
   - pnpm monorepo (ensure local workspace marker scopes install)
