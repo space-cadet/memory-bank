@@ -1,8 +1,37 @@
 # Edit History
 *Created: 2025-04-10*
-*Last Updated: 2026-05-11 11:26:00 IST*
+*Last Updated: 2026-05-12 11:34:00 IST*
+
+### 2026-05-12
+
+#### 11:34:00 IST - T25/T13: CLI Database Utilities (Partial — Paused for new session)
+- Created `mb-cli/src/commands/db.js` — CLI db command router with query, test, init, workflow subcommands
+- Modified `mb-cli/src/index.js` — Registered `mb db` subcommand group
+- Modified `mb-cli/package.json` — Added `sql.js` dependency
+- Modified `memory-bank/database/package.json` — Added dependencies
+- **Working commands:** `mb db query` (table + JSON output), `mb db test`, `mb db init`
+- **Schema alignment required:** inserts.js, regenerate.js, workflow.js updated for T20 schema (`updated` vs `last_updated`, `date` vs `session_date`, etc.)
+- **Test suite:** 60-check test script needs schema alignment fixes to pass again
+- **Paused:** Workflow command works but hit remaining schema mismatches in session_cache table. Needs session_cache column alignment (session_id, active_tasks_count vs active_count) before full test suite passes.
+
+#### 11:03:00 IST - META-1: Memory Bank Refresh + T21 Completion Sync
+- Modified `memory-bank/activeContext.md` - Updated timestamp, moved T21 to completed, shifted focus to T25/T13 CLI utilities
+- Modified `memory-bank/session_cache.md` - Updated timestamp, added 2026-05-12 session, refreshed task registry (T21 now ✅)
+- Modified `memory-bank/tasks.md` - Updated timestamp, refreshed T25 and T13 descriptions for CLI db command work
+- Created `memory-bank/sessions/2026-05-12-morning.md` - New session file for T25/T13 CLI design work
+- Next: Implement `mb db` subcommands (query, workflow, test)
 
 ### 2026-05-11
+
+#### 11:26:00 IST - T21: Port DB-Native Workflow to Canonical Repo (Phase D Complete)
+- Modified `memory-bank/database/lib/inserts.js` - Ported from sage-workspace (8 atomic write functions)
+- Modified `memory-bank/database/lib/regenerate.js` - Ported from sage-workspace (3 markdown generators)
+- Modified `memory-bank/database/lib/workflow.js` - Ported from sage-workspace (single-command workflow)
+- Created `memory-bank/database/test-workflow.js` - Ported 60-check integration test suite
+- Modified `memory-bank/tasks/T21.md` - Marked Phase D complete, added port details
+- Modified `memory-bank/tasks.md` - Updated T21 summary with canonical repo port
+- All tests passing in canonical repo: 60 assertions, 0 failures
+- Git commit: e87f4fe - "(feat)T21: Port DB-native workflow to canonical repo — Phase D complete"
 
 #### 11:05:00 IST - T21: Implement Database-Native Memory Bank Workflow (Phases B + C)
 - Created `memory-bank/database/lib/inserts.js` - 8 atomic write functions with SQLite transaction wrappers (insertEditEntry, upsertTask, updateTaskStatus, createSession, updateSessionCache, logError, logTransaction)

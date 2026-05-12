@@ -49,8 +49,8 @@ CREATE TABLE task_items (
   status TEXT NOT NULL,                  -- in_progress, completed, paused, blocked
   priority TEXT NOT NULL,                -- HIGH, MEDIUM, LOW
   started TEXT NOT NULL,                 -- YYYY-MM-DD
+  updated TIMESTAMP,                     -- Last update timestamp
   details TEXT,                          -- Description and context
-  last_updated TIMESTAMP,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -71,34 +71,34 @@ CREATE TABLE task_dependencies (
 
 -- Sessions: Individual work sessions
 CREATE TABLE sessions (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  session_date TEXT NOT NULL,            -- YYYY-MM-DD
-  session_period TEXT NOT NULL,          -- morning, afternoon, evening, night
-  focus_task TEXT,                       -- Task ID being focused on
-  start_time TIMESTAMP NOT NULL,
-  end_time TIMESTAMP,
-  status TEXT NOT NULL,                  -- in_progress, completed
-  notes TEXT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (focus_task) REFERENCES task_items(id)
+  id TEXT PRIMARY KEY,                   -- session identifier
+  date TEXT NOT NULL,                    -- YYYY-MM-DD
+  period TEXT,                           -- morning, afternoon, evening, night
+  status TEXT,                           -- active, completed
+  focus TEXT,                            -- Task ID being focused on
+  active_count INTEGER,                  -- Active task count
+  paused_count INTEGER,                  -- Paused task count
+  completed_count INTEGER,               -- Completed task count
+  cancelled_count INTEGER,               -- Cancelled task count
+  content TEXT,                          -- Session notes/content
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_sessions_date ON sessions(session_date);
-CREATE INDEX idx_sessions_period ON sessions(session_period);
-CREATE INDEX idx_sessions_focus_task ON sessions(focus_task);
+CREATE INDEX idx_sessions_date ON sessions(date);
+CREATE INDEX idx_sessions_period ON sessions(period);
+CREATE INDEX idx_sessions_focus ON sessions(focus);
 CREATE INDEX idx_sessions_status ON sessions(status);
 
 -- Session cache: Current session snapshot for quick lookup
 CREATE TABLE session_cache (
-  id INTEGER PRIMARY KEY,
-  current_session_id INTEGER,
-  current_focus_task TEXT,
-  active_count INTEGER DEFAULT 0,        -- Number of in_progress tasks
-  paused_count INTEGER DEFAULT 0,        -- Number of paused tasks
-  completed_count INTEGER DEFAULT 0,     -- Number of completed tasks
-  last_updated TIMESTAMP,
-  FOREIGN KEY (current_session_id) REFERENCES sessions(id),
-  FOREIGN KEY (current_focus_task) REFERENCES task_items(id)
+  session_id TEXT PRIMARY KEY,
+  status TEXT,
+  focus_task TEXT,
+  active_tasks_count INTEGER DEFAULT 0,
+  paused_tasks_count INTEGER DEFAULT 0,
+  completed_tasks_count INTEGER DEFAULT 0,
+  cancelled_tasks_count INTEGER DEFAULT 0,
+  raw_content TEXT
 );
 
 -- ============================================================================

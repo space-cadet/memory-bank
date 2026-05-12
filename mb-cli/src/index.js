@@ -2,6 +2,7 @@
 
 import { Command } from 'commander';
 import { initCommand } from './commands/init.js';
+import { dbCommand } from './commands/db.js';
 
 const program = new Command();
 
@@ -50,5 +51,8 @@ Dry Run:
   - Does not make any actual changes
 `)
   .action(initCommand);
+
+// Register db command
+dbCommand(program);
 
 program.parse();

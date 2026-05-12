@@ -85,7 +85,7 @@ export async function insertEditEntries(entries) {
 export async function upsertTask({ id, title, status, priority, started, details = '' }) {
   const now = new Date().toISOString();
   const { changes } = await sqlite.execRun(
-    `INSERT INTO task_items (id, title, status, priority, started, details, last_updated)
+    `INSERT INTO task_items (id, title, status, priority, started, details, updated)
      VALUES (?, ?, ?, ?, ?, ?, ?)
      ON CONFLICT(id) DO UPDATE SET
        title = excluded.title,
@@ -93,7 +93,7 @@ export async function upsertTask({ id, title, status, priority, started, details
        priority = excluded.priority,
        started = excluded.started,
        details = excluded.details,
-       last_updated = excluded.last_updated`,
+       updated = excluded.updated`,
     [id, title, status, priority, started, details, now]
   );
   return { id, changes };
@@ -113,7 +113,7 @@ export async function updateTaskStatus(taskId, newStatus, detailsUpdate = null) 
   if (detailsUpdate) {
     const { changes } = await sqlite.execRun(
       `UPDATE task_items
-       SET status = ?, last_updated = ?, details = COALESCE(details, '') || '\n\n' || ?
+       SET status = ?, updated = ?, details = COALESCE(details, '') || '\n\n' || ?
        WHERE id = ?`,
       [newStatus, now, detailsUpdate, taskId]
     );
@@ -121,7 +121,7 @@ export async function updateTaskStatus(taskId, newStatus, detailsUpdate = null) 
   } else {
     const { changes } = await sqlite.execRun(
       `UPDATE task_items
-       SET status = ?, last_updated = ?
+       SET status = ?, updated = ?
        WHERE id = ?`,
       [newStatus, now, taskId]
     );
@@ -192,11 +192,11 @@ export async function addTaskSubtasks(taskId, subtasks) {
  * @param {string} [data.notes] - Session notes
  * @returns {Promise<{sessionId:number}>}
  */
-export async function createSession({ session_date, session_period, focus_task = null, start_time, end_time = null, status = 'in_progress', notes = '' }) {
+export async function createSession({ date, period, focus = null, status = 'active', content = '' }) {
   const { lastInsertRowid: sessionId } = await sqlite.execRun(
-    `INSERT INTO sessions (session_date, session_period, focus_task, start_time, end_time, status, notes)
-     VALUES (?, ?, ?, ?, ?, ?, ?)`,
-    [session_date, session_period, focus_task, start_time, end_time, status, notes]
+    `INSERT INTO sessions (date, period, focus, status, content)
+     VALUES (?, ?, ?, ?, ?)`,
+    [date, period, focus, status, content]
   );
   return { sessionId };
 }
@@ -209,21 +209,20 @@ export async function createSession({ session_date, session_period, focus_task =
  * @returns {Promise<{changes:number}>}
  */
 export async function completeSession(sessionId, notes = null) {
-  const now = new Date().toISOString();
   if (notes) {
     const { changes } = await sqlite.execRun(
       `UPDATE sessions
-       SET status = 'completed', end_time = ?, notes = COALESCE(notes, '') || '\n\n' || ?
+       SET status = 'completed', content = COALESCE(content, '') || '\n\n' || ?
        WHERE id = ?`,
-      [now, notes, sessionId]
+      [notes, sessionId]
     );
     return { sessionId, changes };
   } else {
     const { changes } = await sqlite.execRun(
       `UPDATE sessions
-       SET status = 'completed', end_time = ?
+       SET status = 'completed'
        WHERE id = ?`,
-      [now, sessionId]
+      [sessionId]
     );
     return { sessionId, changes };
   }
@@ -243,16 +242,15 @@ export async function completeSession(sessionId, notes = null) {
 export async function updateSessionCache({ current_session_id = null, current_focus_task = null, active_count = 0, paused_count = 0, completed_count = 0 }) {
   const now = new Date().toISOString();
   const { changes } = await sqlite.execRun(
-    `INSERT INTO session_cache (id, current_session_id, current_focus_task, active_count, paused_count, completed_count, last_updated)
-     VALUES (1, ?, ?, ?, ?, ?, ?)
-     ON CONFLICT(id) DO UPDATE SET
-       current_session_id = excluded.current_session_id,
-       current_focus_task = excluded.current_focus_task,
-       active_count = excluded.active_count,
-       paused_count = excluded.paused_count,
-       completed_count = excluded.completed_count,
-       last_updated = excluded.last_updated`,
-    [current_session_id, current_focus_task, active_count, paused_count, completed_count, now]
+    `INSERT INTO session_cache (session_id, status, focus_task, active_tasks_count, paused_tasks_count, completed_tasks_count, raw_content)
+     VALUES ('current', 'active', ?, ?, ?, ?, ?)
+     ON CONFLICT(session_id) DO UPDATE SET
+       focus_task = excluded.focus_task,
+       active_tasks_count = excluded.active_tasks_count,
+       paused_tasks_count = excluded.paused_tasks_count,
+       completed_tasks_count = excluded.completed_tasks_count,
+       raw_content = excluded.raw_content`,
+    [current_focus_task, active_count, paused_count, completed_count, `updated ${now}`]
   );
   return { changes };
 }

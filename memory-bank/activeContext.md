@@ -1,75 +1,73 @@
 # Active Context
 
-*Last Updated: 2026-02-12 17:32:49 IST*
+*Last Updated: 2026-05-12 11:34:00 IST*
 
 ## Current Tasks
-1. **[META-1]**: Memory Bank Update and Maintenance (HIGH priority)
+1. **[T25]**: Standalone Node Package (Browser-First) (HIGH priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: Session maintenance and tracking updates for parser/init changes
-   - Recent Achievement: Recorded parser/runtime fixes, init bootstrap enhancements, synchronized task/session tracking files, and refreshed implementation documentation
+   - Current Focus: CLI utilities for database insert, query, and workflow operations
+   - Recent Achievement: Browser-first imports hardened (tasks/sessions/session_cache + task file subtasks)
+   - Next: Build `mb db` subcommands (query, workflow, test)
 
-2. **[T21]**: Database-Native Memory Bank Update Workflow (HIGH priority)
-   - Status: 🔄 IN PROGRESS (Phases A, B, C Complete — Implemented in Sage Workspace)
-   - Current Focus: Insert + Regenerate functions now implemented and passing 60 integration tests in Sage workspace
-   - Recent Achievement: Phase B (inserts) and Phase C (regeneration) completed with 2ms workflow performance. Ready for port to canonical repo.
-   - Note: Implementation lives in sage-workspace repo; to be promoted to canonical after review.
+2. **[T13]**: Implement Memory Bank CLI (HIGH priority)
+   - Status: 🔄 IN PROGRESS
+   - Current Focus: Expand CLI beyond `init` — add `mb db` subcommand group for database operations
+   - Recent Achievement: Init bootstrap completeness (integrated rules, protocols, commit template)
+   - Next: Implement db query, db workflow, db test commands
 
 3. **[T19]**: Memory Bank Viewer Web Interface (HIGH priority)
    - Status: 🔄 IN PROGRESS (Phase 3 Setup Wizard Complete)
    - Current Focus: Phase 3 includes setup wizard, write capabilities, and DB management
-   - Recent Achievement: Comprehensive 4-step setup wizard integrated as default entry point for new projects. Web interface now handles complete initialization without CLI.
+   - Recent Achievement: Comprehensive 4-step setup wizard integrated as default entry point
 
-4. **[T13]**: Implement Memory Bank CLI (HIGH priority)
+4. **[META-1]**: Memory Bank Update and Maintenance (HIGH priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: Init bootstrap completeness (integrated rules, protocols, commit template) and up-to-date setup messaging.
+   - Current Focus: Memory bank sync after T21 completion, session maintenance
 
 5. **[T24]**: Migrate from better-sqlite3 to sql.js (HIGH priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: Parser compatibility fixes and propagation to canonical/template packages.
+   - Current Focus: Parser compatibility fixes and propagation to canonical/template packages
 
-6. **[T25]**: Standalone Node Package (Browser-First) (HIGH priority)
+6. **[T17]**: Maintenance and Upkeep of Integrated Rules (MEDIUM priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: Browser-first imports hardened (tasks/sessions/session_cache + task file subtasks) and separated Import Data UX; export/writeback still pending
+   - Current Focus: Rules documentation v6.12 alignment
 
 7. **[T22]**: AdminJS Database Management Interface (HIGH priority)
    - Status: ❌ CANCELLED (2025-11-22)
    - Reason: Excessive complexity/dependency hell. Shelved in favor of extending T19.
 
-8. **[T17]**: Maintenance and Upkeep of Integrated Rules (MEDIUM priority)
-   - Status: 🔄 IN PROGRESS
-   - Current Focus: Rules documentation v6.8 → v6.10
-
 ## Completed Tasks (Recent)
-1. **[T19 Phase 2 Refactor]**:
+1. **[T21]**: Database-Native Memory Bank Update Workflow
+   - Status: ✅ COMPLETED (2026-05-12)
+   - Output: Insert + Regenerate functions ported to canonical repo. 60 integration tests passing. Phases A, B, C, D complete.
+   - Files: `memory-bank/database/lib/inserts.js`, `regenerate.js`, `workflow.js`, `test-workflow.js`
+
+2. **[T19 Phase 2 Refactor]**:
    - Status: ✅ COMPLETED (2025-11-22)
-   - Output: Modular Viewer architecture in `t21-workflow-testing/database/public/`.
+   - Output: Modular Viewer architecture
 
-## Implementation Focus - Current Session (T24 + T13 + META-1)
-**T24 parser/runtime corrections:**
-- ✅ Fixed async/undefined-`db` patterns in `parse-edits.js`, `parse-tasks.js`, `parse-sessions.js`, and `parse-session-cache.js`
-- ✅ Validated parser scripts and syntax checks in `memory-bank/database`
-- ✅ Propagated fixed parser scripts to `mb-cli/src/server-package/` and regenerated `mb-cli/templates/memory-bank/database/`
+## Implementation Focus - Current Session (T25 + T13)
+**T21 Completion Sync (2026-05-12):**
+- ✅ Ported inserts.js, regenerate.js, workflow.js from workspace to canonical repo
+- ✅ Ported test-workflow.js with 60 integration tests
+- ✅ All tests passing in canonical repo
+- ✅ Updated T21 task file and task registry
 
-**T13 init coverage updates:**
-- ✅ Updated `mb-cli/src/commands/init.js` setup messaging to use current parser workflow (`./run-all.sh`)
-- ✅ Added copy of `integrated-rules-v6.12.md` during core initialization
-- ✅ Added creation/copy of `memory-bank/protocols/` workflow files during core initialization
-- ✅ Added `commit_message_template.md` to template initialization
-
-**Implementation documentation alignment:**
-- ✅ Updated `memory-bank/implementation-details/modular-viewer-architecture.md` for `sql.js` stack and `run-all.sh` workflow
-- ✅ Updated `memory-bank/implementation-details/database-parser-plan.md` for current dependency and parser run sequence
-- ✅ Updated `memory-bank/implementation-details/cli-implementation-details.md` with latest init bootstrap/session notes
-- ✅ Updated `memory-bank/implementation-details/web-interface-setup-wizard.md` with current context notes
+**T25 CLI Utilities — Partial (Paused for new session):**
+- ✅ `mb db query` — SQL queries with table and JSON output
+- ✅ `mb db test` — Runs integration test suite (needs schema alignment fixes)
+- ✅ `mb db init` — Initialize database schema
+- ✅ `mb db workflow` — Implemented but needs session_cache schema alignment
+- 🔄 Schema alignment: inserts.js, regenerate.js, workflow.js adapted for T20 schema
+- ⬜ Complete schema alignment (session_cache table column names)
+- ⬜ Verify full test suite passes after alignment
+- ⬜ T13 CLI Expansion: Wire database/lib/ modules into CLI commands
 
 ## Next Steps
-- Run clean install tests in:
-  - fresh repo (pnpm install && pnpm start inside memory-bank/database)
-  - pnpm monorepo (ensure local workspace marker scopes install)
-- Confirm mb init requires viewer files (use --setup-viewer or full init) when expecting memory-bank/database/server.js
-- Verify no unwanted default DB creation when switching DBs in the editor
-- Confirm parsers/query scripts behave correctly with sql.js adapter (persistence + async flow)
-- Execute fresh-project `mb init` end-to-end test to verify integrated rules + protocols + commit template bootstrap
+- Complete schema alignment between T20 parser schema and T21 workflow code
+- Verify `mb db test` passes with full 60-check suite
+- Finalize `mb db workflow` argument parsing and error handling
+- Run fresh-project end-to-end test for `mb init` + `mb db` workflow
 
 ## Current Decisions
 1. **Setup Wizard as Default**: All new projects see wizard first
@@ -80,7 +78,9 @@
 6. **Backward Compatible**: mb init CLI still works, produces same results
 
 ## System Status
-- **Database**: ✅ Operational (Phase A Schema)
+- **Database**: ✅ Operational (Phase A Schema + Phase B/C lib modules)
+- **Insert/Regenerate Libs**: ✅ inserts.js, regenerate.js, workflow.js ported and tested (60 tests passing)
+- **CLI (T13)**: 🔄 `mb db` subcommands implemented — needs schema alignment
 - **Viewer (T19)**: ✅ Modular, Bug-free (Read-only mode)
 - **Editor (T19)**: ✅ DB management, edit_history import, tasks/sessions/session_cache import
 - **Setup Wizard (T19)**: ✅ Complete 4-step initialization flow

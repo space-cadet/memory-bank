@@ -1,28 +1,28 @@
 # Session Cache
 *Created: 2025-11-10 18:27:15 IST*
-*Last Updated: 2026-02-12 17:32:49 IST*
+*Last Updated: 2026-05-12 11:03:00 IST*
 
-**Started**: 2026-02-12 16:44:15 IST
-**Focus Task**: META-1, T13, T24 (Memory Bank maintenance + init/parser updates) 🔄
-**Session File**: `sessions/2026-02-12-afternoon.md`
-**Status**: 🔄 In Progress: parser/init updates documented and implementation docs synchronized
+**Started**: 2026-05-12 10:41:15 IST
+**Focus Task**: T25, T13 (CLI utilities for database operations) 🔄
+**Session File**: `sessions/2026-05-12-morning.md`
+**Status**: ⏸️ PAUSED — CLI db commands implemented. Schema alignment remaining. Continue in next session.
 
 ## Overview
-- Active: 12 | Paused: 0 | Completed: 7 | Cancelled: 1
-- Last Session: 2026-02-12 (META-1/T13/T24 parser + init maintenance)
-- Current Period: afternoon
+- Active: 12 | Paused: 0 | Completed: 8 | Cancelled: 1
+- Last Session: 2026-05-12 (T25/T13 CLI db command design + T21 completion sync)
+- Current Period: morning
 
 ## Session History (Last 10)
-1. `sessions/2026-02-12-afternoon.md` - META-1, T13, T24: Parser runtime fixes, init bootstrap expansion, implementation-doc refresh, memory bank sync
-2. `sessions/2026-01-04-afternoon.md` - META-1: Protocol extraction, integrated rules updates, CLI cleanup
-3. `sessions/2025-12-17-morning.md` - T25: Import Data tab, robust browser imports, task file subtasks import
-4. `sessions/2025-12-16-night.md` - T24: mb-cli canonical server-package, sql.js migration correctness, template sync, mb init fixes
-5. `sessions/2025-12-16-afternoon.md` - T19, T21, T13: Viewer/Editor DB management, edit_history import, logging, sandbox fixes, CLI template canonicalization
-6. `sessions/2025-12-15-morning.md` - T21: Edit History DB-first (schema alignment, write endpoints, export endpoint)
-7. `sessions/2025-12-13-afternoon.md` - T19, T21, T13: Canonical viewer/parsers consolidation, pagination/filter/sort, Express 5 route fix
-8. `sessions/2025-12-05-evening.md` - T23: Format Spec System analysis, dual-spec architecture
-9. `sessions/2025-11-28-afternoon.md` - T21: File viewer implementation, tab navigation, markdown rendering
-10. `sessions/2025-11-27-afternoon.md` - T13, T21: CLI viewer integration complete
+1. `sessions/2026-05-12-morning.md` - T25, T13, META-1: Memory bank refresh, T21 completion sync, CLI db command design (query, workflow, test)
+2. `sessions/2026-02-12-afternoon.md` - META-1, T13, T24: Parser runtime fixes, init bootstrap expansion, implementation-doc refresh, memory bank sync
+3. `sessions/2026-01-04-afternoon.md` - META-1: Protocol extraction, integrated rules updates, CLI cleanup
+4. `sessions/2025-12-17-morning.md` - T25: Import Data tab, robust browser imports, task file subtasks import
+5. `sessions/2025-12-16-night.md` - T24: mb-cli canonical server-package, sql.js migration correctness, template sync, mb init fixes
+6. `sessions/2025-12-16-afternoon.md` - T19, T21, T13: Viewer/Editor DB management, edit_history import, logging, sandbox fixes, CLI template canonicalization
+7. `sessions/2025-12-15-morning.md` - T21: Edit History DB-first (schema alignment, write endpoints, export endpoint)
+8. `sessions/2025-12-13-afternoon.md` - T19, T21, T13: Canonical viewer/parsers consolidation, pagination/filter/sort, Express 5 route fix
+9. `sessions/2025-12-05-evening.md` - T23: Format Spec System analysis, dual-spec architecture
+10. `sessions/2025-11-28-afternoon.md` - T21: File viewer implementation, tab navigation, markdown rendering
 
 ## Task Registry
 - T25: Standalone Node Package (Browser-First) - 🔄
@@ -30,7 +30,7 @@
 - T23: Format Specification System - 🔄
 - META-1: Memory Bank Update and Maintenance - 🔄
 - T22: AdminJS Database Management Interface - ❌
-- T21: Database-Native Memory Bank Update Workflow - 🔄
+- T21: Database-Native Memory Bank Update Workflow - ✅
 - T20a: Adaptive LLM-Based Format Parser - 🔄
 - T20: Memory Bank Database Parser - 🔄
 - T19: Memory Bank Viewer Web Interface - 🔄

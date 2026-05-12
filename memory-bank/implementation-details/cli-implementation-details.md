@@ -1,6 +1,6 @@
 # Memory Bank CLI Implementation Plan
 *Created: May 18, 2025*
-*Last Updated: 2026-02-12 16:44:15 IST*
+*Last Updated: 2026-05-12 11:34:00 IST*
 
 ## Table of Contents
 1. [Overview](#overview)
@@ -447,6 +447,46 @@ This document outlines the implementation plan for the Memory Bank CLI (T13), fo
   - `memory-bank/protocols/session-management-workflow.md`
   - `memory-bank/protocols/memory-bank-update-workflow.md`
 - Added `memory-bank/templates/commit_message_template.md` to template initialization.
+
+### May 12, 2026 - T25/T13: Database CLI Utilities (`mb db`)
+**Status**: `mb db` subcommands implemented — query, test, init, workflow. Schema alignment between T20 parser schema and T21 workflow code is in progress.
+
+**Session Work (10:41-11:34 IST)**:
+- Created `mb-cli/src/commands/db.js` — CLI db command router with four subcommands:
+  - `mb db query <sql>` — Execute SQL against memory_bank.db, table or JSON output
+  - `mb db test` — Run integration test suite (`test-workflow.js`)
+  - `mb db init` — Initialize database schema from `schema.sql`
+  - `mb db workflow --task <id> --description <text>` — Record session work and regenerate markdown
+- Modified `mb-cli/src/index.js` to register `mb db` subcommand group via `dbCommand(program)`
+- Modified `mb-cli/package.json` — added `sql.js` dependency for CLI database access
+- Modified `memory-bank/database/package.json` — added dependencies for standalone server package
+- Schema alignment: updated `inserts.js`, `regenerate.js`, `workflow.js` to match T20 parser schema
+  - `last_updated` → `updated` (task_items)
+  - `session_date` → `date`, `session_period` → `period`, `focus_task` → `focus`, `notes` → `content` (sessions)
+  - `session_id` → `current` (session_cache primary key)
+  - `active_count` → `active_tasks_count` (session_cache)
+- Updated `schema.sql` to match aligned schema (sessions, session_cache, task_items tables)
+- Added `error_logs` and `transaction_log` table creation to `schema.sql` (was missing from initial T21 port)
+
+**Working Commands**:
+- `mb db query "SELECT * FROM task_items LIMIT 3"` — ✅ Returns formatted table
+- `mb db query "SELECT ..." --json` — ✅ Returns JSON array
+- `mb db test` — ✅ Runs test suite (needs schema alignment for 60-check pass)
+- `mb db init` — ✅ Creates `memory_bank.db` + applies `schema.sql`
+- `mb db workflow --task T25 --description "..." --files "Created:path,Modified:path"` — ✅ Calls `recordSessionWork()`, regenerates edit_history.md, tasks.md, session_cache.md
+
+**Remaining Work**:
+- Complete session_cache column alignment (`active_tasks_count` vs `active_count` across all queries)
+- Update `test-workflow.js` parameter names to match aligned schema (`date` vs `session_date`, etc.)
+- Verify full 60-check integration test suite passes after alignment
+- Add interactive prompts for `mb db workflow` (optional, flag-based usage works)
+- Add `mb db import` command to run parser scripts from CLI
+
+**Key Decisions**:
+- CLI commands are thin wrappers around existing `database/lib/` modules — no new logic in CLI layer
+- `mb db` uses `sql.js` directly, avoiding web server dependency
+- Path resolution: `DB_LIB_BASE` resolves relative to `mb-cli/src/commands/` for reliable module loading
+- Database discovery: checks `memory_bank.db`, `memory-bank/database/memory_bank.db`, `database/memory_bank.db`
 - Fixed parser async/runtime issues and synchronized parser files from canonical `mb-cli/src/server-package/` to `mb-cli/templates/memory-bank/database/`.
   * Added VIEWER_FILES constant (server.js, schema.sql, init-schema.js, test-schema.js, generate-test-data.js)
   * Added VIEWER_PUBLIC_FILES constant (public/index.html, public/js/app.js, router.js, api.js, ui.js, public/css/styles.css)

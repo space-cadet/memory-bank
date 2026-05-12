@@ -1,10 +1,10 @@
 # Task Registry
-*Last Updated: 2026-02-12 17:32:49 IST*
+*Last Updated: 2026-05-12 11:03:00 IST*
 
 ## Active Tasks
 | ID | Title | Status | Priority | Started | Dependencies | Details |
 |----|-------|--------|----------|---------|--------------|---------|
-| T25 | Standalone Node Package (Browser-First) | 🔄 | HIGH | 2025-12-16 | T19, T21, T13, T24 | [Details](tasks/T25.md) - Browser-first import (markdown -> DB) + export (DB -> markdown) with safe backups |
+| T25 | Standalone Node Package (Browser-First) | 🔄 | HIGH | 2025-12-16 | T19, T21, T13, T24 | [Details](tasks/T25.md) - CLI utilities for db insert/query/workflow. Phase 2 import done. Phase 3 export pending. |
 | T24 | Migrate from better-sqlite3 to sql.js | 🔄 | HIGH | 2025-12-16 | T19, T21, T13 | [Details](tasks/T24.md) - Parser async/runtime fixes applied and propagated to canonical/template packages |
 | T23 | Format Specification System | 🔄 | HIGH | 2025-12-05 | T17, T21 | [Details](tasks/T23.md) - Dual markdown+JSON spec for parser/rules alignment |
 | META-1 | Memory Bank Update and Maintenance | 🔄 | HIGH | 2025-11-13 | T21, T20a, T20 | [Details](tasks/META-1.md) - Session maintenance: parser/init changes documented and implementation docs synchronized |
@@ -17,7 +17,7 @@
 | T17 | Maintenance and Upkeep of Integrated Rules | 🔄 | MEDIUM | 2025-05-28 | T15, T16 | [Details](tasks/T17.md) - v6.11 creation: Strict Schema Enforcement for Viewer compatibility; v6.12 pending (format spec alignment) |
 | T16 | AI Consciousness Dialog Series | 🔄 | HIGH | 2025-05-26 | T15 | [Details](tasks/T16.md) - Ongoing documentation of consciousness exploration |
 | T14 | Project-Specific Rule Adaptations | 🔄 | MEDIUM | 2025-05-23 | - | [Details](tasks/T14.md) - Research adaptation, templates, and documentation completed |
-| T13 | Implement Memory Bank CLI | 🔄 | HIGH | 2025-05-17 | T12 | [Details](tasks/T13.md) - Init/runtime behavior and implementation docs aligned with current bootstrap workflow |
+| T13 | Implement Memory Bank CLI | 🔄 | HIGH | 2025-05-17 | T12 | [Details](tasks/T13.md) - Expanding beyond `init` to `mb db` subcommands (query, workflow, test) |
 | T12 | Rewrite Documentation for Practical Usage | 🔄 | HIGH | 2025-05-17 | T11 | [Details](tasks/T12.md) |
 | T11 | Document GitHub Project Integration | 🔄 | HIGH | 2025-05-17 | - | [Details](tasks/T11.md) |
 | T9 | Implement Rules v6.2 Changes | 🔄 | HIGH | 2025-04-30 | T7, T8 | [Details](tasks/T9.md) |

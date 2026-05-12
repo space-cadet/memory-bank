@@ -19,7 +19,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "commander": "14.0.0"
+    "commander": "14.0.0",
+    "sql.js": "^1.13.0"
   },
   "devDependencies": {
     "eslint": "9.27.0",

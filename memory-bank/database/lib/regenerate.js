@@ -75,7 +75,7 @@ export async function regenerateEditHistory(outputPath) {
  */
 export async function regenerateTasks(outputPath) {
   const allTasks = await sqlite.queryAll(
-    `SELECT id, title, status, priority, started, last_updated, details
+    `SELECT id, title, status, priority, started, updated, details
      FROM task_items
      ORDER BY id`
   );
@@ -117,7 +117,7 @@ export async function regenerateTasks(outputPath) {
     md += '|----|-------|--------|----------|---------|-----------|--------------|---------|\n';
     for (const t of completed) {
       const depList = deps.filter(d => d.task_id === t.id).map(d => d.depends_on).join(', ') || '-';
-      const completedDate = t.last_updated ? t.last_updated.slice(0, 10) : '-';
+      const completedDate = t.updated ? t.updated.slice(0, 10) : '-';
       md += `| ${t.id} | ${t.title} | ✅ | ${t.priority.toUpperCase()} | ${t.started} | ${completedDate} | ${depList} | [Details](tasks/${t.id}.md) |\n`;
     }
     md += '\n';
@@ -178,7 +178,7 @@ export async function regenerateTasks(outputPath) {
  */
 export async function regenerateSessionCache(outputPath) {
   const cache = await sqlite.queryGet(
-    `SELECT * FROM session_cache WHERE id = 1`
+    `SELECT * FROM session_cache WHERE session_id = 'current'`
   );
 
   const currentSession = cache?.current_session_id
@@ -260,7 +260,7 @@ export async function regenerateSessionCache(outputPath) {
       md += `### ${t.id}: ${t.title}\n`;
       md += `**Status:** ✅ **COMPLETED**\n`;
       md += `**Started:** ${t.started}\n`;
-      md += `**Completed:** ${t.last_updated?.slice(0, 10) || '-'}\n\n`;
+      md += `**Completed:** ${t.updated?.slice(0, 10) || '-'}\n\n`;
     }
   }
 
