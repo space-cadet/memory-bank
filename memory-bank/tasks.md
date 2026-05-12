@@ -8,7 +8,7 @@
 | T24 | Migrate from better-sqlite3 to sql.js | 🔄 | HIGH | 2025-12-16 | T19, T21, T13 | [Details](tasks/T24.md) - Parser async/runtime fixes applied and propagated to canonical/template packages |
 | T23 | Format Specification System | 🔄 | HIGH | 2025-12-05 | T17, T21 | [Details](tasks/T23.md) - Dual markdown+JSON spec for parser/rules alignment |
 | META-1 | Memory Bank Update and Maintenance | 🔄 | HIGH | 2025-11-13 | T21, T20a, T20 | [Details](tasks/META-1.md) - Session maintenance: parser/init changes documented and implementation docs synchronized |
-| T21 | Database-Native Memory Bank Update Workflow | 🔄 | HIGH | 2025-11-13 | T20, T20a, T13 | [Details](tasks/T21.md) - Phases A, B, C complete. Insert + regenerate functions implemented and tested in Sage workspace (2026-05-11). 60 integration tests passing. Ready for port to canonical repo. |
+| T21 | Database-Native Memory Bank Update Workflow | ✅ | HIGH | 2025-11-13 | T20, T20a, T13 | [Details](tasks/T21.md) - Phases A, B, C, D complete. Insert + regenerate functions ported to canonical repo. 60 integration tests passing. |
 | T22 | AdminJS Database Management Interface | ❌ | HIGH | 2025-11-22 | T21 | [Details](tasks/T22.md) - Attempted POC; abandoned due to excessive complexity and dependency issues |
 | T20a | Adaptive LLM-Based Format Parser | 🔄 | HIGH | 2025-11-12 | T20 | [Details](tasks/T20a.md) - Design phase: Format analysis complete, LLM-driven detection system |
 | T20 | Memory Bank Database Parser | 🔄 | MEDIUM | 2025-11-12 | - | [Details](tasks/T20.md) - Phase 3 continued: Format handling improvements, timezone optionality |
