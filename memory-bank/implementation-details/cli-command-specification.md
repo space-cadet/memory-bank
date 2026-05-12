@@ -68,22 +68,32 @@ mb status
   - Invalid project name
   - Parent directory not writable
 
-### Task Management
+### Task Management (Implemented 2026-05-12)
+
+All task commands require `--db <path>` or expect `memory_bank.db` in standard locations.
+
 ```bash
 # Create new task
-mb task create <title> [--priority <p>] [--deps <task-ids>]
-# Expected output: New task created with ID
-# Error scenarios: Invalid priority, Invalid dependency IDs
+mb task create "Build quantum simulator" \
+  --priority high --status pending \
+  --description "Implement fermionic operators" \
+  --subtasks "Design schema,Implement API,Write tests" \
+  --depends T1,T2
 
 # List tasks
-mb task list [--status <status>] [--priority <p>]
-# Expected output: Table of tasks matching criteria
-# Error scenarios: Invalid status/priority filters
+mb task list [--status in_progress] [--json]
 
 # Show task details
-mb task show <task-id>
-# Expected output: Detailed task information
-# Error scenarios: Task not found
+mb task show T25 [--json]
+
+# Update task status
+mb task update T25 --status completed --note "Finished Phase 1"
+
+# Update priority/title/description
+mb task update T25 --priority high --title "New title"
+
+# Delete task (archives file to memory-bank/archive/)
+mb task delete T25 --yes
 ```
 
 ### Session Management
@@ -175,38 +185,63 @@ memory-bank/
 
 ### Task Commands
 
-#### `mb task create`
-**Purpose**: Create new task
+#### `mb task create <title>`
+**Purpose**: Create a new task in DB, generate task file, regenerate tasks.md
 **Options**:
-- `<title>`: Task title (required)
-- `--priority <p>`: Set priority (high|medium|low)
-- `--deps <task-ids>`: Comma-separated dependent task IDs
+- `--db <path>`: SQLite database path
+- `--id <id>`: Explicit task ID (auto-generated if omitted: T{N+1} via numeric sort)
+- `--priority <p>`: low | medium | high (default: medium)
+- `--status <s>`: pending | in_progress | paused | completed (default: pending)
+- `--description <text>`: Detailed description
+- `--subtasks <list>`: Comma-separated checklist items
+- `--depends <ids>`: Comma-separated dependency task IDs
 **Behavior**:
-- Generates unique task ID
-- Creates task file from template
-- Updates task registry
-- Links dependencies
+- Inserts into `task_items` table via `inserts.upsertTask()`
+- Inserts subtasks into `task_subtasks` table
+- Inserts dependencies into `task_dependencies` table
+- Generates `memory-bank/tasks/{id}.md` from template
+- Regenerates `memory-bank/tasks.md` from DB state
+**Error Scenarios**:
+- No DB found → "Run `mb db init` first"
+- Invalid priority/status → validation fails before DB write
 
 #### `mb task list`
-**Purpose**: List tasks matching criteria
+**Purpose**: List all tasks in a formatted table
 **Options**:
+- `--db <path>`: SQLite database path
 - `--status <status>`: Filter by status
-- `--priority <p>`: Filter by priority
-**Behavior**:
-- Shows task summary table
-- Applies filters if specified
-- Sorts by priority/status
-- Shows dependency status
+- `--json`: Output JSON instead of table
+**Output**: Table with ID, Title, Status (emoji), Priority, Started
+**Summary line**: `🔄 N  ✅ N  ⏸️ N  ⬜ N`
 
-#### `mb task show`
+#### `mb task show <id>`
 **Purpose**: Show detailed task information
 **Options**:
-- `<task-id>`: Task ID to show (required)
+- `--db <path>`: SQLite database path
+- `--json`: Output JSON instead of formatted text
+**Output**: Title, status (emoji), priority, dates, details, dependencies, subtasks with check count, file existence
+
+#### `mb task update <id>`
+**Purpose**: Update task properties
+**Options**:
+- `--db <path>`: SQLite database path
+- `--status <s>`: Change status (appends `--note` to details)
+- `--priority <p>`: Change priority
+- `--title <text>`: Change title
+- `--description <text>`: Replace details
+- `--note <text>`: Append note when updating status
+**Behavior**: Updates DB, regenerates task file and tasks.md
+
+#### `mb task delete <id>`
+**Purpose**: Delete a task
+**Options**:
+- `--db <path>`: SQLite database path
+- `--yes`: Confirm without prompt
 **Behavior**:
-- Shows full task details
-- Shows related files
-- Shows dependency tree
-- Shows progress status
+- Deletes from `task_items` (cascades subtasks/deps via FK)
+- Archives task file to `memory-bank/archive/{id}.md` via `renameSync`
+- Regenerates `tasks.md`
+**Safety**: Requires `--yes` flag; without it shows preview and exits
 
 ### Session Commands
 
