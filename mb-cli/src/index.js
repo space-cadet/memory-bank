@@ -3,6 +3,7 @@
 import { Command } from 'commander';
 import { initCommand } from './commands/init.js';
 import { dbCommand } from './commands/db.js';
+import { taskCommand } from './commands/task.js';
 
 const program = new Command();
 
@@ -54,5 +55,8 @@ Dry Run:
 
 // Register db command
 dbCommand(program);
+
+// Register task command
+taskCommand(program);
 
 program.parse();
