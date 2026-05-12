@@ -1,10 +1,20 @@
 # Edit History
 
-*Last Updated: 2026-05-12 08:17:23 IST*
+*Last Updated: 2026-05-12 08:30:40 IST*
 
 ---
 
 ## 2026-05-12
+
+#### 14:00:39 IST - T13: Implemented mb task, mb session, and mb update CLI commands. Fixed inserts.createSession() id bug. Updated CLI docs.
+- Created `mb-cli/src/commands/task.js` - Created mb-cli/src/commands/task.js
+- Created `mb-cli/src/commands/session.js` - Created mb-cli/src/commands/session.js
+- Created `mb-cli/src/commands/update.js` - Created mb-cli/src/commands/update.js
+- Modified `mb-cli/src/index.js` - Modified mb-cli/src/index.js
+- Modified `memory-bank/database/lib/inserts.js` - Modified memory-bank/database/lib/inserts.js
+- Modified `memory-bank/database/lib/workflow.js` - Modified memory-bank/database/lib/workflow.js
+- Modified `memory-bank/implementation-details/cli-command-specification.md` - Modified memory-bank/implementation-details/cli-command-specification.md
+- Modified `memory-bank/implementation-details/cli-implementation-details.md` - Modified memory-bank/implementation-details/cli-implementation-details.md
 
 #### 13:47:23 IST - T13: Implemented mb task, mb session, and mb update commands
 - Created `mb-cli/src/commands/task.js` - Created mb-cli/src/commands/task.js

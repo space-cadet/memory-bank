@@ -1,9 +1,9 @@
 # Session Cache
 
-*Created: 2026-05-12 08:17:23 IST*
-*Last Updated: 2026-05-12 08:17:23 IST*
+*Created: 2026-05-12 08:30:40 IST*
+*Last Updated: 2026-05-12 08:30:40 IST*
 
-**Started**: 2026-05-12 08:17:23 IST
+**Started**: 2026-05-12 08:30:40 IST
 **Focus Task**: META-1: Memory Bank Update and Maintenance
 **Session File**: `sessions/latest.md`
 **Status**: 🔄 Active: 18, Paused: 1, Completed: 1
@@ -51,6 +51,8 @@
 **Progress**:
 [Details](tasks/T13.md) - Parser execution & modular refactor (90% complete)
 Implemented mb task, mb session, and mb update commands
+Core commands implemented: mb task, mb session, mb update. mb file pending.
+Implemented mb task, mb session, and mb update CLI commands. Fixed inserts.createSession() id bug. Updated CLI docs.
 
 ### T14: Project-Specific Rule Adaptations
 **Status:** 🔄 **IN PROGRESS**
