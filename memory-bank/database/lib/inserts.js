@@ -192,13 +192,13 @@ export async function addTaskSubtasks(taskId, subtasks) {
  * @param {string} [data.notes] - Session notes
  * @returns {Promise<{sessionId:number}>}
  */
-export async function createSession({ date, period, focus = null, status = 'active', content = '' }) {
-  const { lastInsertRowid: sessionId } = await sqlite.execRun(
-    `INSERT INTO sessions (date, period, focus, status, content)
-     VALUES (?, ?, ?, ?, ?)`,
-    [date, period, focus, status, content]
+export async function createSession({ id, date, period, focus = null, status = 'active', content = '' }) {
+  await sqlite.execRun(
+    `INSERT INTO sessions (id, date, period, focus, status, content)
+     VALUES (?, ?, ?, ?, ?, ?)`,
+    [id, date, period, focus, status, content]
   );
-  return { sessionId };
+  return { sessionId: id };
 }
 
 /**

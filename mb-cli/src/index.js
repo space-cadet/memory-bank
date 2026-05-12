@@ -4,6 +4,7 @@ import { Command } from 'commander';
 import { initCommand } from './commands/init.js';
 import { dbCommand } from './commands/db.js';
 import { taskCommand } from './commands/task.js';
+import { sessionCommand } from './commands/session.js';
 
 const program = new Command();
 
@@ -58,5 +59,8 @@ dbCommand(program);
 
 // Register task command
 taskCommand(program);
+
+// Register session command
+sessionCommand(program);
 
 program.parse();
