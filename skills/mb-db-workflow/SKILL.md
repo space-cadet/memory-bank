@@ -38,13 +38,19 @@ Both layers are essential. The chronological layer without the knowledge layer b
 
 ## Step 0: Discovery — What Work Needs Documentation?
 
-**This step is essential.** The agent must reconstruct what happened since the last memory-bank update. Do not assume you already know all the work that was done.
+**Use this step when you do not already have a complete record of what was done in the current session.** If you have been tracking work as it happened (e.g., via edit chunks, session notes, or task updates), you may skip this step and proceed directly to the workflow functions.
+
+**Use discovery when:**
+- You are resuming after a session restart or context loss
+- You were not the agent that performed the work
+- The user says "update the memory bank" without specifying what changed
+- You suspect work was done that you are not aware of
 
 ### 0.1 Check Last Memory-Bank Update
 
 Read `memory-bank/edit_history.md` or `memory-bank/session_cache.md` to find the last update timestamp. This tells you how far back to look.
 
-### 0.2 Examine Git History
+### 0.2 Examine Git History (if needed)
 
 ```bash
 cd <project-root>
@@ -53,7 +59,7 @@ git log --since="<last-memory-bank-update-date>" --oneline
 
 This shows all commits since the last documentation update. Each commit represents work that may need to be recorded.
 
-### 0.3 Check Uncommitted Changes
+### 0.3 Check Uncommitted Changes (if needed)
 
 ```bash
 git status
@@ -89,7 +95,7 @@ From the above, build a list of work items to document:
 - Any TODO or NOTES files in the project
 - The user's recent messages or instructions
 
-**Anti-pattern:** Skipping discovery and documenting only what you remember. This misses work and creates an incomplete memory bank.
+**Anti-pattern:** Documenting only what you remember without verifying completeness. This misses work and creates an incomplete memory bank.
 
 ## Architecture
 
