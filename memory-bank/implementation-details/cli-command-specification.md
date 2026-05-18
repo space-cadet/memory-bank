@@ -36,6 +36,12 @@ mb status
 - `[project-name]`: Optional. Create new project with this name
 - `--template <n>`: Use specific project template
 - `--force`: Override existing memory-bank directory (careful!)
+- `--database`: Initialize database files and workflow library
+- `--setup-viewer`: Initialize viewer files (server + UI)
+- `--core`: Initialize only core files
+- `--templates`: Initialize only template files
+- `--interactive`: Interactive setup menu
+- `--dry-run`: Preview changes without making them
 
 **Behavior for Existing Project**:
 - Validates current directory is suitable project root
@@ -44,7 +50,8 @@ mb status
   - templates/
   - tasks/
   - sessions/
-  - database/
+  - database/ (with --database)
+    - lib/ (workflow library files)
   - Other required directories and files
 - Initializes configuration files
 - Sets up default templates
@@ -265,6 +272,78 @@ memory-bank/
 - Updates task progress
 - Archives session data
 
+### Database Commands
+
+#### `mb db query <sql>`
+**Purpose**: Execute SQL query against memory_bank.db
+**Options**:
+- `--json, -j`: Output as JSON instead of table
+- `--db <path>`: Path to SQLite database
+**Behavior**:
+- Validates SQL syntax
+- Executes query against database
+- Formats output as table or JSON
+- Handles errors gracefully
+
+#### `mb db test`
+**Purpose**: Run integration test suite
+**Options**:
+- `--db <path>`: Path to SQLite database
+**Behavior**:
+- Discovers test-workflow.js in database directory
+- Runs integration tests
+- Reports pass/fail status
+- Validates DB schema and workflow functions
+
+#### `mb db init`
+**Purpose**: Initialize database schema
+**Options**:
+- `--db <path>`: Path to SQLite database (default: memory_bank.db)
+**Behavior**:
+- Creates database file if missing
+- Loads and executes schema.sql
+- Reports success or errors
+
+#### `mb db workflow`
+**Purpose**: Record session work and regenerate markdown files (DB-native)
+**Options**:
+- `--task <id>`: Task being worked on (e.g., T25)
+- `--description <text>`: Brief description of work done
+- `--files <list>`: Comma-separated file changes (action:path,action:path)
+- `--status <status>`: New task status (in_progress, completed, paused)
+- `--period <period>`: Session period (morning, afternoon, evening, night)
+- `--output <dir>`: Directory to write markdown files
+- `--db <path>`: Path to memory_bank.db
+**Behavior**:
+- Inserts edit entry + file modifications into SQLite
+- Updates task status if changed
+- Creates/updates session record
+- Regenerates edit_history.md, tasks.md, session_cache.md
+- Logs transaction for audit
+
+### Workflow Command (Top-Level)
+
+#### `mb workflow`
+**Purpose**: Alias for `mb db workflow` — record session work and regenerate files
+**Options**: Same as `mb db workflow`
+**Behavior**:
+- Same as `mb db workflow`
+- More discoverable top-level command
+- Full help text with examples
+
+**Example**:
+```bash
+mb workflow --task T1 --description "Implemented feature X"
+mb workflow --task T2 --description "Fixed bug" \
+  --files "Modified:src/index.js,Created:lib/util.js" \
+  --status completed
+```
+
+**Requirements**:
+- Project must have `memory-bank/database/lib/` with workflow.js, sqlite.js, inserts.js, regenerate.js
+- Set up with: `mb init --database`
+- Database initialized with: `mb db init`
+
 ### Template Commands
 
 #### `mb template list`
@@ -294,6 +373,21 @@ Each command follows these error handling principles:
 3. Suggest corrections when possible
 4. Maintain system consistency on failure
 5. Log errors for debugging
+
+## DB-Native Workflow Notes
+The `mb workflow` command (and `mb db workflow`) require:
+1. `mb init --database` to copy workflow library files
+2. `mb db init` to create and initialize the SQLite database
+3. Project's `memory-bank/database/lib/` must contain:
+   - `sqlite.js` — Database operations
+   - `inserts.js` — Write operations
+   - `regenerate.js` — Markdown generation
+   - `workflow.js` — High-level API
+
+The DB library resolution uses this priority:
+1. Project's `memory-bank/database/lib/` (for per-project customization)
+2. CLI's bundled templates (for development/testing)
+3. Legacy mb-core repo structure (backward compatibility)
 
 ## Output Formatting
 All commands follow these output guidelines:

@@ -1,7 +1,7 @@
 # Database-Native Memory Bank Update Workflow
 
 *Created: 2025-11-13 17:46:43 IST*
-*Last Updated: 2025-12-15 10:40:55 IST*
+*Last Updated: 2026-05-18 21:16:33 IST*
 
 ## Executive Summary
 
@@ -469,21 +469,65 @@ Consistency: Automatic (database enforces)
 
 ## Success Criteria
 
-- [ ] Database schema supports all Section 6.5 operations
-- [ ] Insert functions handle all data types correctly
-- [ ] Regeneration produces valid markdown
-- [ ] Text output matches original formatting
-- [ ] Workflow completes in < 1 second
-- [ ] No data loss during migration
-- [ ] CLI integration seamless
-- [ ] End-to-end testing passes
+- [x] Database schema supports all Section 6.5 operations
+- [x] Insert functions handle all data types correctly
+- [x] Regeneration produces valid markdown
+- [x] Text output matches original formatting
+- [x] Workflow completes in < 1 second (actual: ~38ms)
+- [x] No data loss during migration
+- [x] CLI integration seamless
+- [x] End-to-end testing passes
+
+## CLI Integration (Completed 2026-05-18)
+
+The DB-native workflow is now fully integrated into the mb-cli:
+
+### Setup Flow
+```bash
+# 1. Initialize memory bank with database support
+mb init --database
+
+# 2. Initialize the database schema
+mb db init
+
+# 3. Record work using DB-native workflow
+mb workflow --task T1 --description "What I did" \
+  --files "Modified:src/index.js,Created:lib/util.js"
+```
+
+### What Gets Copied
+`mb init --database` now copies the workflow library to the project:
+- `memory-bank/database/lib/sqlite.js` — DB operations
+- `memory-bank/database/lib/inserts.js` — Write operations
+- `memory-bank/database/lib/regenerate.js` — Markdown generation
+- `memory-bank/database/lib/workflow.js` — High-level API
+
+### DB Library Resolution
+The CLI resolves DB libraries in this priority:
+1. **Project's `memory-bank/database/lib/`** — for per-project customization
+2. **CLI's bundled templates** — for development/testing
+3. **Legacy mb-core repo structure** — backward compatibility
+
+### Commands Available
+- `mb db query <sql>` — Execute SQL queries
+- `mb db test` — Run integration tests
+- `mb db init` — Initialize database schema
+- `mb db workflow` — Record work (with all options)
+- `mb workflow` — Top-level alias for `mb db workflow`
+
+### Test Results (mac-process-monitor project)
+- Full workflow execution: **38ms**
+- Files regenerated: `edit_history.md`, `tasks.md`, `session_cache.md`
+- DB entry created with 6 file modifications
+- Transaction logged: `tx-1779119193774`
 
 ## Related Tasks
 
-- **T20**: Database parser implementation (Phase 3)
-- **T20a**: Adaptive LLM format parser (Design phase)
-- **T13**: CLI integration (Phase 4)
-- **T17**: Rules maintenance (incorporate new workflow)
+- **T20**: Database parser implementation (Phase 3) ✅
+- **T20a**: Adaptive LLM format parser (Design phase) ✅
+- **T13**: CLI integration (Phase 4) ✅
+- **T17**: Rules maintenance (incorporate new workflow) 🔄
+- **T25**: Standalone Node Package (Browser-First) ✅ COMPLETED
 
 ## Next Steps
 

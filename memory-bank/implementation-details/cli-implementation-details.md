@@ -388,6 +388,57 @@ This document outlines the implementation plan for the Memory Bank CLI (T13), fo
   - mb session commands (start, complete, cache)
   - mb file commands (for edit history and error log management)
 
+### May 18, 2026 - DB-Native Workflow Integration (T25 Completion)
+**Status**: Phase 3 complete — `mb db` subcommands and DB-native workflow fully implemented
+
+**Session Work (20:43-21:16 IST)**:
+- Added workflow lib files to CLI templates (`templates/memory-bank/database/lib/`)
+  - `inserts.js` — DB insert operations
+  - `regenerate.js` — Markdown regeneration from DB
+  - `workflow.js` — High-level API (`recordSessionWork`, `completeSessionWork`, `quickLog`)
+- Updated `init.js` to copy workflow lib files during `--database` init
+  - Added `WORKFLOW_LIB_FILES` array
+  - Integrated into scan and copy logic
+- Updated `db.js` with project-relative DB lib resolution
+  - `resolveDbLibBase()`: priority = project > CLI templates > legacy
+  - Enables per-project customization of workflow behavior
+- Added top-level `mb workflow` command as alias for `mb db workflow`
+  - Exported `workflowCommandStandalone` for direct use
+  - Full help text with examples
+- Tested end-to-end on `mac-process-monitor` project:
+  - `mb init --database` → copies all files
+  - `mb db init` → creates `memory_bank.db` with schema
+  - `mb workflow --task T2 --description "Test"` → 38ms, all markdown regenerated
+
+**Key Design Decisions**:
+- Workflow lib files are bundled with CLI and copied to each project
+  - Projects can customize by editing their local copy
+  - CLI updates don't break existing projects
+- DB lib resolution uses project-relative paths first
+  - Enables per-project overrides without forking CLI
+  - Backward compatible with legacy mb-core repo structure
+
+**Files Changed**:
+- `mb-cli/src/commands/db.js` — `resolveDbLibBase()`, `workflowCommandStandalone` export
+- `mb-cli/src/commands/init.js` — `WORKFLOW_LIB_FILES`, copy logic
+- `mb-cli/src/index.js` — Top-level `mb workflow` command
+- `mb-cli/templates/memory-bank/database/lib/inserts.js` — New
+- `mb-cli/templates/memory-bank/database/lib/regenerate.js` — New
+- `mb-cli/templates/memory-bank/database/lib/workflow.js` — New
+
+**Testing Results**:
+- mac-process-monitor project: Full workflow in 38ms
+- Generated files: `edit_history.md`, `tasks.md`, `session_cache.md`
+- DB entry: ID 69, 6 file modifications recorded
+- Transaction logged: `tx-1779119193774`, 52ms duration
+
+**T25 Status**: ✅ COMPLETED
+
+**Next Steps**:
+- Test `mb workflow` in a fresh project (no existing DB)
+- Add shell completion for `mb workflow`
+- Document DB-native workflow in main README
+
 **Session 3 Work (19:43:25 IST) - Real-World Integration Testing**:
 - Tested init command with --database flag in new project (/Users/deepak/code/digitalocean-server/)
 - Verified setupDatabase() function automation works end-to-end without manual intervention
