@@ -83,13 +83,19 @@ const PARSER_SCRIPTS = [
   'query-tasks.js'
 ];
 
+const WORKFLOW_LIB_FILES = [
+  'lib/sqlite.js',
+  'lib/inserts.js',
+  'lib/regenerate.js',
+  'lib/workflow.js'
+];
+
 const VIEWER_FILES = [
   'server.js',
   'schema.sql',
   'init-schema.js',
   'test-schema.js',
-  'generate-test-data.js',
-  'lib/sqlite.js'
+  'generate-test-data.js'
 ];
 
 const VIEWER_PUBLIC_FILES = [
@@ -212,6 +218,14 @@ function scanExistingContent(targetDir) {
     }
   }
 
+  // Check workflow lib files
+  for (const file of WORKFLOW_LIB_FILES) {
+    const filePath = path.join(mbDir, 'database', file);
+    if (fs.existsSync(filePath)) {
+      scan.databaseScriptsExist.push(file);
+    }
+  }
+
   // Check viewer public files
   for (const file of VIEWER_PUBLIC_FILES) {
     const filePath = path.join(mbDir, 'database', file);
@@ -283,7 +297,7 @@ function determineComponentsToInit(scan, options) {
   const expectedCoreArtifactCount = CORE_FILES.length + 1 + PROTOCOL_FILES.length;
   components.core = (scan.coreFilesExist.length + scan.protocolFilesExist.length) < expectedCoreArtifactCount;
   components.templates = scan.templateFilesExist.length < TEMPLATE_FILES.length;
-  components.database = (scan.databaseFilesExist.length + scan.databaseScriptsExist.length) < (DATABASE_FILES.length + PARSER_SCRIPTS.length);
+  components.database = (scan.databaseFilesExist.length + scan.databaseScriptsExist.length) < (DATABASE_FILES.length + PARSER_SCRIPTS.length + WORKFLOW_LIB_FILES.length);
   components.viewer = (scan.viewerFilesExist.length + scan.viewerPublicFilesExist.length) < (VIEWER_FILES.length + VIEWER_PUBLIC_FILES.length);
 
   return components;
@@ -713,6 +727,27 @@ export async function initCommand(options) {
         if (!options.dryRun && (!exists || options.force || options.full)) {
           const sourceFile = path.join(DB_TEMPLATE_ROOT, file);
           if (fs.existsSync(sourceFile)) {
+            const content = fs.readFileSync(sourceFile, 'utf8');
+            await writeFile(filePath, content, { flag: 'w' });
+          } else {
+            console.warn(`  ⚠️  Warning: Source file not found: ${file}`);
+          }
+        }
+      }
+
+      console.log('\nWorkflow library files in memory-bank/database/lib/:')
+      for (const file of WORKFLOW_LIB_FILES) {
+        const filePath = path.join(mbDir, 'database', file);
+        const dirPath = path.dirname(filePath);
+        const exists = fs.existsSync(filePath);
+        const status = exists ? '✓' : '+';
+        console.log(`  [${status}] ${file}`);
+        if (!options.dryRun && (!exists || options.force || options.full)) {
+          const sourceFile = path.join(DB_TEMPLATE_ROOT, file);
+          if (fs.existsSync(sourceFile)) {
+            if (!fs.existsSync(dirPath)) {
+              await mkdir(dirPath, { recursive: true });
+            }
             const content = fs.readFileSync(sourceFile, 'utf8');
             await writeFile(filePath, content, { flag: 'w' });
           } else {

@@ -18,7 +18,6 @@ let SQL = null;
 let currentDb = null;
 let currentDbPath = null;
 let saveQueue = Promise.resolve();
-let dirty = false;
 
 /**
  * Initialize sql.js WASM module
@@ -56,8 +55,6 @@ export async function openDb(dbPath) {
   } else {
     currentDb = new SQL.Database();
   }
-
-  dirty = false;
 
   return currentDb;
 }
@@ -148,8 +145,6 @@ export async function execRun(sql, params = []) {
 
   stmt.free();
 
-  dirty = true;
-
   return { changes, lastInsertRowid };
 }
 
@@ -163,7 +158,6 @@ export async function execRun(sql, params = []) {
 export async function exec(sql) {
   const db = getDb();
   db.exec(sql);
-  dirty = true;
 }
 
 /**
@@ -242,13 +236,9 @@ export function prepare(sql) {
       stmt.step();
 
       const changes = db.getRowsModified();
-      const lastInsertRowid = db.exec('SELECT last_insert_rowid() as id')[0]?.values?.[0]?.[0] ?? null;
-
       stmt.free();
 
-      dirty = true;
-
-      return { changes, lastInsertRowid };
+      return { changes };
     }
   };
 }
@@ -277,10 +267,6 @@ export async function saveDb() {
     return;
   }
 
-  if (!dirty) {
-    return;
-  }
-
   // Queue this save operation
   saveQueue = saveQueue.then(async () => {
     try {
@@ -292,8 +278,6 @@ export async function saveDb() {
       await mkdir(parentDir, { recursive: true });
 
       await writeFile(currentDbPath, buffer);
-
-      dirty = false;
     } catch (error) {
       console.error('Failed to save database:', error);
       throw error;
@@ -310,12 +294,11 @@ export async function saveDb() {
  */
 export async function closeDb() {
   if (currentDb) {
-    // Save before closing only if there were writes
+    // Save before closing
     await saveDb();
     currentDb.close();
     currentDb = null;
     currentDbPath = null;
-    dirty = false;
   }
 }
 

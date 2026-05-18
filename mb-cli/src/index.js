@@ -7,6 +7,8 @@ import { taskCommand } from './commands/task.js';
 import { sessionCommand } from './commands/session.js';
 import { updateCommandExport } from './commands/update.js';
 
+import { workflowCommandStandalone } from './commands/db.js';
+
 const program = new Command();
 
 program
@@ -66,5 +68,33 @@ sessionCommand(program);
 
 // Register update command
 updateCommandExport(program);
+
+// Register workflow command (top-level alias for db workflow)
+program
+  .command('workflow')
+  .description('Record session work and regenerate markdown files (DB-native)')
+  .requiredOption('--task <id>', 'Task being worked on (e.g., T1)')
+  .requiredOption('--description <text>', 'Brief description of work done')
+  .option('--files <list>', 'Comma-separated file changes: action:path,action:path')
+  .option('--status <status>', 'New task status: in_progress, completed, paused')
+  .option('--period <period>', 'Session period: morning, afternoon, evening, night', 'morning')
+  .option('--output <dir>', 'Directory to write markdown files (default: memory-bank/)')
+  .option('--db <path>', 'Path to memory_bank.db')
+  .addHelpText('after', `
+Examples:
+  mb workflow --task T1 --description "Implemented feature X"
+  mb workflow --task T2 --description "Fixed bug" --files "Modified:src/index.js,Created:lib/util.js" --status completed
+  mb workflow --task T3 --description "Refactored code" --period afternoon
+
+This command uses the DB-native workflow:
+  1. Inserts edit entry + file modifications into SQLite
+  2. Updates task status if changed
+  3. Creates/updates session record
+  4. Regenerates edit_history.md, tasks.md, session_cache.md
+
+Requires: memory-bank/database/lib/ with workflow.js, sqlite.js, inserts.js, regenerate.js
+Set up with: mb init --database
+`)
+  .action(workflowCommandStandalone);
 
 program.parse();
