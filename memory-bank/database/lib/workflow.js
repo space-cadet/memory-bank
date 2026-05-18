@@ -108,7 +108,9 @@ export async function recordSessionWork({
         );
       }
     } else {
+      const sessionIdStr = `${dateStr}-${session_period}`;
       const sessionResult = await inserts.createSession({
+        id: sessionIdStr,
         date: dateStr,
         period: session_period,
         focus: task_id,

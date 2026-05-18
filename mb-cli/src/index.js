@@ -5,6 +5,7 @@ import { initCommand } from './commands/init.js';
 import { dbCommand } from './commands/db.js';
 import { taskCommand } from './commands/task.js';
 import { sessionCommand } from './commands/session.js';
+import { updateCommandExport } from './commands/update.js';
 
 const program = new Command();
 
@@ -62,5 +63,8 @@ taskCommand(program);
 
 // Register session command
 sessionCommand(program);
+
+// Register update command
+updateCommandExport(program);
 
 program.parse();
