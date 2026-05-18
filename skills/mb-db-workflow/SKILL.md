@@ -9,6 +9,26 @@ description: Memory Bank database-native update workflow using SQLite + markdown
 
 This skill implements the database-native memory bank update workflow. Instead of manually editing 5+ markdown files, you make atomic DB writes and regenerate all files in one call.
 
+## Documentation Philosophy
+
+The memory bank has two complementary documentation layers:
+
+**Chronological Layer** (tells the story):
+- Edit entries — precise record of every file change
+- Task items — what was done, when, current status
+- Sessions — work completed in each session
+- These answer: "What happened? When? In what order?"
+
+**Knowledge Layer** (stores the understanding):
+- Implementation docs — architecture, design decisions, APIs, patterns
+- Technical context — system architecture, dependencies, constraints
+- Product context — goals, user stories, feature specifications
+- These answer: "How does this work? Why was it built this way? How do I use it?"
+
+Both layers are essential. The chronological layer without the knowledge layer becomes an unreadable pile of session logs. The knowledge layer without the chronological layer loses traceability and becomes stale. They must be maintained together.
+
+**CRITICAL:** The DB workflow automates the chronological layer (edit_history, tasks, sessions, edit chunks). The knowledge layer (implementation docs, tech context, product context) must still be maintained manually. Never skip it.
+
 ## When to Use
 
 - Project has `memory-bank/database/` with SQLite schema
@@ -130,6 +150,34 @@ await quickLog({
 ### session_cache
 - `session_id`, `status`, `focus_task`, `active_tasks_count`, `paused_tasks_count`, `completed_tasks_count`
 
+### Step 6: Update Knowledge-Layer Documentation (CRITICAL)
+
+**This step is not automated by the DB workflow.** You must manually update implementation docs.
+
+The DB workflow handles the chronological layer (edit entries, tasks, sessions, edit chunks). The knowledge layer must be maintained separately:
+
+**When to update:**
+- New feature or capability added → document how it works in implementation-details/
+- API changed → update usage examples and signatures in techContext.md
+- Architecture decision made → document the rationale in systemPatterns.md or implementation-details/
+- Bug fixed with non-obvious root cause → document for future reference
+- Pattern or convention established → document as project standard
+
+**Files to consider:**
+- `implementation-details/` — technical deep-dives, architecture decisions
+- `techContext.md` — system architecture, dependencies, constraints
+- `productContext.md` — goals, user stories, feature specifications
+- `systemPatterns.md` — established patterns and conventions
+- `activeContext.md` — current focus and recent decisions
+
+**Documentation quality check:**
+- Would a new developer understand how to use this feature from the docs alone?
+- Are the examples current and runnable?
+- Is the rationale for design decisions captured?
+- Are there links between related docs?
+
+**Anti-pattern:** "The DB workflow handled the memory bank update, so I'm done." The DB workflow only handles the chronological layer. The knowledge layer is equally important and requires manual attention.
+
 ## Regeneration Functions
 
 ### regenerateAll(paths)
@@ -214,6 +262,8 @@ await inserts.getEditEntriesWithMods(dateFrom, dateTo);
 - NEVER auto-write to MEMORY.md/SOUL.md/USER.md/TOOLS.md/AGENTS.md
 - NEVER skip transaction logging — it's the audit trail
 - NEVER use DB workflow in projects without the schema set up
+- NEVER assume the DB workflow handles all documentation — it only automates the chronological layer. The knowledge layer (implementation docs, tech context, product context) must still be maintained manually
+- NEVER say "I'll document it later" — later never comes. Document while the context is fresh
 
 ## Error Handling
 

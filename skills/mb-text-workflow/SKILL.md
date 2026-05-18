@@ -9,6 +9,24 @@ description: Memory Bank text-based update workflow following integrated-rules v
 
 This skill implements the 8-step manual memory bank update workflow from integrated-rules v6.12. All updates are done by directly editing markdown files — no database involved.
 
+## Documentation Philosophy
+
+The memory bank has two complementary documentation layers:
+
+**Chronological Layer** (tells the story):
+- Task files — what was done, when, current status
+- Session files — work completed in each session
+- Edit history — precise record of every file change
+- These answer: "What happened? When? In what order?"
+
+**Knowledge Layer** (stores the understanding):
+- Implementation docs — architecture, design decisions, APIs, patterns
+- Technical context — system architecture, dependencies, constraints
+- Product context — goals, user stories, feature specifications
+- These answer: "How does this work? Why was it built this way? How do I use it?"
+
+Both layers are essential. The chronological layer without the knowledge layer becomes an unreadable pile of session logs. The knowledge layer without the chronological layer loses traceability and becomes stale. They must be maintained together.
+
 ## When to Use
 
 - Working in projects without the DB-native workflow set up
@@ -22,6 +40,7 @@ Before starting, determine:
 1. Current system time and timezone (format: `YYYY-MM-DD HH:MM:SS TZ`)
 2. Active task ID being worked on
 3. Files modified and their change descriptions
+4. Whether implementation documentation needs updating (ALWAYS check this)
 
 ## The 8-Step Workflow
 
@@ -77,9 +96,33 @@ Update the master task registry table. MUST use exact schema:
 - Status MUST use standard emojis only
 - Keep active tasks at top, completed below
 
-### Step 3: Update Implementation Documentation
+### Step 3: Update Implementation Documentation (CRITICAL)
 
-Update any relevant files in `memory-bank/implementation-details/` if architectural changes occurred.
+**This step is not optional.** Implementation docs are where the project's earned knowledge lives. Every significant change must be reflected here.
+
+Update relevant files in `memory-bank/implementation-details/` and other knowledge-layer files:
+
+**When to update:**
+- New feature or capability added → document how it works
+- API changed → update usage examples and signatures
+- Architecture decision made → document the rationale
+- Bug fixed with non-obvious root cause → document for future reference
+- Pattern or convention established → document as project standard
+
+**Files to consider:**
+- `implementation-details/` — technical deep-dives, architecture decisions
+- `techContext.md` — system architecture, dependencies, constraints
+- `productContext.md` — goals, user stories, feature specifications
+- `systemPatterns.md` — established patterns and conventions
+- `activeContext.md` — current focus and recent decisions
+
+**Documentation quality check:**
+- Would a new developer understand how to use this feature from the docs alone?
+- Are the examples current and runnable?
+- Is the rationale for design decisions captured?
+- Are there links between related docs?
+
+**Anti-pattern:** "I'll document it later." Later never comes. Document while the context is fresh.
 
 ### Step 4: Handle Session File
 
@@ -147,10 +190,11 @@ Template:
 
 ### Step 6: Update Other Memory Bank Files
 
-- `activeContext.md` — if focus task changed
-- `errorLog.md` — if errors encountered
-- `progress.md` — if milestones completed
-- `changelog.md` — if features/bugs addressed
+- `activeContext.md` — if focus task or current context changed
+- `errorLog.md` — if errors were encountered and fixed
+- `progress.md` — if milestones were completed
+- `changelog.md` — if features or bugs were addressed
+- `implementation-details/*.md` — see Step 3 for when to update
 
 ### Step 7: Create Edit Chunk
 
