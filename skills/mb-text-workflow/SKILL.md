@@ -42,7 +42,64 @@ Before starting, determine:
 3. Files modified and their change descriptions
 4. Whether implementation documentation needs updating (ALWAYS check this)
 
+## Step 0: Discovery — What Work Needs Documentation?
+
+**This step is essential.** The agent must reconstruct what happened since the last memory-bank update. Do not assume you already know all the work that was done.
+
+### 0.1 Check Last Memory-Bank Update
+
+Read `memory-bank/edit_history.md` or `memory-bank/session_cache.md` to find the last update timestamp. This tells you how far back to look.
+
+### 0.2 Examine Git History
+
+```bash
+cd <project-root>
+git log --since="<last-memory-bank-update-date>" --oneline
+```
+
+This shows all commits since the last documentation update. Each commit represents work that may need to be recorded.
+
+### 0.3 Check Uncommitted Changes
+
+```bash
+git status
+git diff --stat
+```
+
+Uncommitted changes are work-in-progress that should be documented. Note:
+- Files modified but not yet committed
+- New files created
+- Files deleted
+- Any merge conflicts or stashed work
+
+### 0.4 Review Existing Edit Chunks
+
+Check `memory-bank/edits/` for recent chunks to avoid duplicating work already documented:
+
+```bash
+ls -la memory-bank/edits/
+cat memory-bank/edits/YYYY-MM-DD/HHMMSS-*.md
+```
+
+### 0.5 Build Work Summary
+
+From the above, build a list of work items to document:
+
+| Task ID | Description | Files Changed | Status |
+|---------|-------------|---------------|--------|
+| Txx | What was done | file1, file2 | in_progress / completed |
+
+**If you cannot determine what work was done**, check:
+- Recent session files in `memory-bank/sessions/`
+- Task files in `memory-bank/tasks/` for status changes
+- Any TODO or NOTES files in the project
+- The user's recent messages or instructions
+
+**Anti-pattern:** Skipping discovery and documenting only what you remember. This misses work and creates an incomplete memory bank.
+
 ## The 8-Step Workflow
+
+After completing Step 0 (Discovery), proceed with the 8 documentation steps:
 
 ### Step 1: Update Individual Task File
 
