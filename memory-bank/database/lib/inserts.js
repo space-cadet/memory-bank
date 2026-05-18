@@ -121,7 +121,7 @@ export async function updateTaskStatus(taskId, newStatus, detailsUpdate = null) 
     const { lastInsertRowid } = await sqlite.execRun(
       `INSERT INTO task_items (id, title, status, priority, started, updated, details)
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [taskId, detailsUpdate || taskId, newStatus, 'MEDIUM', now.slice(0, 10), now, detailsUpdate || 'Auto-created task']
+      [taskId, detailsUpdate || taskId, newStatus, 'medium', now.slice(0, 10), now, detailsUpdate || 'Auto-created task']
     );
     return { taskId, newStatus, changes: 1, created: true };
   }
