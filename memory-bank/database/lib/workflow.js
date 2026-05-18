@@ -35,6 +35,9 @@ import { join } from 'path';
  * @param {string} [data.session_notes] - Notes about the session
  * @param {string} [data.session_period] - morning, afternoon, evening, night
  * @param {string} [data.output_dir] - Directory to write markdown files (default: memory-bank/)
+ * @param {string} [data.tasks_dir] - Directory for individual task files (e.g., memory-bank/tasks/)
+ * @param {string} [data.sessions_dir] - Directory for session files (e.g., memory-bank/sessions/)
+ * @param {string} [data.edits_dir] - Directory for edit chunks (e.g., memory-bank/edits/)
  * @returns {Promise<Object>} Operation result with generated files and timing
  */
 export async function recordSessionWork({
@@ -44,7 +47,10 @@ export async function recordSessionWork({
   task_status = null,
   session_notes = '',
   session_period = 'morning',
-  output_dir = null
+  output_dir = null,
+  tasks_dir = null,
+  sessions_dir = null,
+  edits_dir = null
 }) {
   const startTime = performance.now();
   const transactionId = `tx-${Date.now()}`;
@@ -61,6 +67,12 @@ export async function recordSessionWork({
   }));
 
   try {
+    // Open database if not already open
+    const dbPath = sqlite.getDbPath() || ':memory:';
+    if (!sqlite.getDb()) {
+      await sqlite.openDb(dbPath);
+    }
+
     // Step 1: Insert edit entry with modifications (atomic transaction)
     const { entryId, modificationIds } = await inserts.insertEditEntry({
       date: dateStr,
@@ -110,17 +122,20 @@ export async function recordSessionWork({
     const counts = await inserts.getTaskCounts();
     await inserts.updateSessionCache({
       current_focus_task: task_id,
-      active_count: counts.active || 0,
-      paused_count: counts.paused || 0,
-      completed_count: counts.completed || 0
+      active_tasks_count: counts.active || 0,
+      paused_tasks_count: counts.paused || 0,
+      completed_tasks_count: counts.completed || 0
     });
 
     // Step 5: Regenerate markdown files
     const baseDir = output_dir || 'memory-bank';
     const paths = {
-      edit_history: join(baseDir, 'edit_history.md'),
+      editHistory: join(baseDir, 'edit_history.md'),
       tasks: join(baseDir, 'tasks.md'),
-      session_cache: join(baseDir, 'session_cache.md')
+      sessionCache: join(baseDir, 'session_cache.md'),
+      tasksDir: tasks_dir || join(baseDir, 'tasks'),
+      sessionsDir: sessions_dir || join(baseDir, 'sessions'),
+      editsDir: edits_dir || join(baseDir, 'edits')
     };
 
     const regenerated = await regenerate.regenerateAll(paths);
@@ -170,7 +185,12 @@ export async function recordSessionWork({
  * Complete a session and regenerate files
  * Call this when finishing work on a task
  */
-export async function completeSessionWork(sessionId, notes = null) {
+export async function completeSessionWork(sessionId, notes = null, {
+  output_dir = 'memory-bank',
+  tasks_dir = null,
+  sessions_dir = null,
+  edits_dir = null
+} = {}) {
   const startTime = performance.now();
   const transactionId = `tx-${Date.now()}`;
 
@@ -181,16 +201,20 @@ export async function completeSessionWork(sessionId, notes = null) {
     // Update counts
     const counts = await inserts.getTaskCounts();
     await inserts.updateSessionCache({
-      active_count: counts.active || 0,
-      paused_count: counts.paused || 0,
-      completed_count: counts.completed || 0
+      current_focus_task: null,
+      active_tasks_count: counts.active || 0,
+      paused_tasks_count: counts.paused || 0,
+      completed_tasks_count: counts.completed || 0
     });
 
     // Regenerate files
     const regenerated = await regenerate.regenerateAll({
-      edit_history: 'memory-bank/edit_history.md',
-      tasks: 'memory-bank/tasks.md',
-      session_cache: 'memory-bank/session_cache.md'
+      editHistory: join(output_dir, 'edit_history.md'),
+      tasks: join(output_dir, 'tasks.md'),
+      sessionCache: join(output_dir, 'session_cache.md'),
+      tasksDir: tasks_dir || join(output_dir, 'tasks'),
+      sessionsDir: sessions_dir || join(output_dir, 'sessions'),
+      editsDir: edits_dir || join(output_dir, 'edits')
     });
 
     // Log transaction

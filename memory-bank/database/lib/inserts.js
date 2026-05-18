@@ -31,7 +31,7 @@ export async function insertEditEntry({ date, time, timezone = null, task_id = n
     const { lastInsertRowid: entryId } = await sqlite.execRun(
       `INSERT INTO edit_entries (date, time, timezone, timestamp, task_id, task_description)
        VALUES (?, ?, ?, ?, ?, ?)`,
-      [date, time, timezone, timestamp, task_id, task_description]
+      [date, time, timezone ?? null, timestamp, task_id ?? null, task_description]
     );
 
     // Insert file modifications
@@ -109,6 +109,22 @@ export async function upsertTask({ id, title, status, priority, started, details
  */
 export async function updateTaskStatus(taskId, newStatus, detailsUpdate = null) {
   const now = new Date().toISOString();
+
+  // Check if task exists
+  const existing = await sqlite.queryGet(
+    `SELECT id FROM task_items WHERE id = ?`,
+    [taskId]
+  );
+
+  if (!existing) {
+    // Auto-create task if it doesn't exist
+    const { lastInsertRowid } = await sqlite.execRun(
+      `INSERT INTO task_items (id, title, status, priority, started, updated, details)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [taskId, detailsUpdate || taskId, newStatus, 'MEDIUM', now.slice(0, 10), now, detailsUpdate || 'Auto-created task']
+    );
+    return { taskId, newStatus, changes: 1, created: true };
+  }
 
   if (detailsUpdate) {
     const { changes } = await sqlite.execRun(
@@ -192,13 +208,14 @@ export async function addTaskSubtasks(taskId, subtasks) {
  * @param {string} [data.notes] - Session notes
  * @returns {Promise<{sessionId:number}>}
  */
-export async function createSession({ id, date, period, focus = null, status = 'active', content = '' }) {
+export async function createSession({ id = null, date, period, focus = null, status = 'active', content = '' }) {
+  const sessionId = id || `sess-${date}-${period}-${Date.now()}`;
   await sqlite.execRun(
     `INSERT INTO sessions (id, date, period, focus, status, content)
      VALUES (?, ?, ?, ?, ?, ?)`,
-    [id, date, period, focus, status, content]
+    [sessionId, date, period, focus, status, content]
   );
-  return { sessionId: id };
+  return { sessionId };
 }
 
 /**
@@ -239,7 +256,7 @@ export async function completeSession(sessionId, notes = null) {
  * @param {number} [data.completed_count]
  * @returns {Promise<{changes:number}>}
  */
-export async function updateSessionCache({ current_session_id = null, current_focus_task = null, active_count = 0, paused_count = 0, completed_count = 0 }) {
+export async function updateSessionCache({ current_session_id = null, current_focus_task = null, active_tasks_count = 0, paused_tasks_count = 0, completed_tasks_count = 0 }) {
   const now = new Date().toISOString();
   const { changes } = await sqlite.execRun(
     `INSERT INTO session_cache (session_id, status, focus_task, active_tasks_count, paused_tasks_count, completed_tasks_count, raw_content)
@@ -250,7 +267,7 @@ export async function updateSessionCache({ current_session_id = null, current_fo
        paused_tasks_count = excluded.paused_tasks_count,
        completed_tasks_count = excluded.completed_tasks_count,
        raw_content = excluded.raw_content`,
-    [current_focus_task, active_count, paused_count, completed_count, `updated ${now}`]
+    [current_focus_task ?? null, active_tasks_count ?? 0, paused_tasks_count ?? 0, completed_tasks_count ?? 0, `updated ${now}`]
   );
   return { changes };
 }

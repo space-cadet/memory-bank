@@ -4,8 +4,9 @@
  * Matches the exact format expected by parsers and agents
  */
 
-import * as sqlite from './sqlite.js';
+import { join } from 'path';
 import { writeFileSync, mkdirSync, existsSync } from 'fs';
+import * as sqlite from './sqlite.js';
 
 // ============================================================================
 // EDIT HISTORY
@@ -299,6 +300,9 @@ export async function regenerateSessionCache(outputPath) {
  * @param {string} paths.editHistory - Path for edit_history.md
  * @param {string} paths.tasks - Path for tasks.md
  * @param {string} paths.sessionCache - Path for session_cache.md
+ * @param {string} [paths.tasksDir] - Directory for individual task files
+ * @param {string} [paths.sessionsDir] - Directory for session files
+ * @param {string} [paths.editsDir] - Directory for edit chunks
  * @returns {Promise<{editHistory:string,tasks:string,sessionCache:string}>}
  */
 export async function regenerateAll(paths) {
@@ -307,6 +311,21 @@ export async function regenerateAll(paths) {
     regenerateTasks(paths.tasks),
     regenerateSessionCache(paths.sessionCache)
   ]);
+
+  // Generate individual task files
+  if (paths.tasksDir) {
+    await regenerateTaskFiles(paths.tasksDir);
+  }
+
+  // Generate session file
+  if (paths.sessionsDir) {
+    await regenerateSessionFile(paths.sessionsDir);
+  }
+
+  // Generate edit chunk
+  if (paths.editsDir) {
+    await regenerateEditChunk(paths.editsDir);
+  }
 
   return { editHistory, tasks, sessionCache };
 }
@@ -333,4 +352,155 @@ function ensureDir(filePath) {
   if (parentDir && !existsSync(parentDir)) {
     mkdirSync(parentDir, { recursive: true });
   }
+}
+
+// ============================================================================
+// EXTENDED REGENERATION (Task Files, Session Files, Edit Chunks)
+// ============================================================================
+
+/**
+ * Generate individual task files from database
+ * @param {string} tasksDir - Directory to write task files (e.g., memory-bank/tasks/)
+ */
+export async function regenerateTaskFiles(tasksDir) {
+  const tasks = await sqlite.queryAll(
+    `SELECT id, title, status, priority, started, updated, details FROM task_items ORDER BY id`
+  );
+
+  for (const task of tasks) {
+    const filePath = join(tasksDir, `${task.id}.md`);
+
+    let md = `# ${task.id}: ${task.title}\n\n`;
+    md += `*Created: ${task.started || '-'}*\n`;
+    md += `*Last Updated: ${task.updated || '-'}*\n\n`;
+    md += `**Status**: ${statusEmoji(task.status)} **${task.status.toUpperCase()}**\n`;
+    md += `**Priority**: ${task.priority || 'MEDIUM'}\n\n`;
+
+    if (task.details) {
+      md += `## Details\n\n${task.details}\n\n`;
+    }
+
+    // Get subtasks (gracefully handle missing table)
+    let subtasks = [];
+    try {
+      subtasks = await sqlite.queryAll(
+        `SELECT section, text, checked FROM task_subtasks WHERE task_id = ? ORDER BY position`,
+        [task.id]
+      );
+    } catch (err) {
+      if (!err.message.includes('no such table')) throw err;
+      // Table doesn't exist — skip subtasks
+    }
+
+    if (subtasks.length > 0) {
+      md += `## Subtasks\n\n`;
+      for (const st of subtasks) {
+        const checkbox = st.checked ? '[x]' : '[ ]';
+        md += `- ${checkbox} ${st.text}\n`;
+      }
+      md += '\n';
+    }
+
+    // Get dependencies
+    const deps = await sqlite.queryAll(
+      `SELECT depends_on FROM task_dependencies WHERE task_id = ?`,
+      [task.id]
+    );
+
+    if (deps.length > 0) {
+      md += `## Dependencies\n\n`;
+      for (const d of deps) {
+        md += `- ${d.depends_on}\n`;
+      }
+      md += '\n';
+    }
+
+    ensureDir(filePath);
+    writeFileSync(filePath, md, 'utf-8');
+  }
+
+  return tasks.length;
+}
+
+/**
+ * Generate session file from database
+ * @param {string} sessionsDir - Directory to write session files (e.g., memory-bank/sessions/)
+ */
+export async function regenerateSessionFile(sessionsDir) {
+  // Use a simpler query that works with both old and new schemas
+  let session;
+  try {
+    const sessions = await sqlite.queryAll(
+      `SELECT id, date, period, focus, status, content, start_time, end_time FROM sessions ORDER BY id DESC LIMIT 1`
+    );
+    session = sessions[0];
+  } catch (err) {
+    if (!err.message.includes('no such column')) throw err;
+    // Fallback for schemas without start_time/end_time
+    const sessions = await sqlite.queryAll(
+      `SELECT id, date, period, focus, status, content FROM sessions ORDER BY id DESC LIMIT 1`
+    );
+    session = sessions[0];
+  }
+
+  if (!session) return 0;
+
+  const fileName = `${session.date}-${session.period}.md`;
+  const filePath = join(sessionsDir, fileName);
+
+  let md = `# Session: ${session.date} ${session.period.charAt(0).toUpperCase() + session.period.slice(1)}\n\n`;
+  md += `**Started**: ${session.start_time || '-'}\n`;
+  md += `**Focus Task**: ${session.focus || 'None'}\n`;
+  md += `**Status**: ${session.status === 'active' ? '🔄' : '✅'} ${session.status.toUpperCase()}\n\n`;
+
+  if (session.content) {
+    md += `## Work Done\n\n${session.content}\n\n`;
+  }
+
+  ensureDir(filePath);
+  writeFileSync(filePath, md, 'utf-8');
+
+  return 1;
+}
+
+/**
+ * Generate edit chunk file from most recent edit entry
+ * @param {string} editsDir - Directory to write edit chunks (e.g., memory-bank/edits/)
+ */
+export async function regenerateEditChunk(editsDir) {
+  const entry = await sqlite.queryGet(
+    `SELECT id, date, time, timezone, task_id, task_description
+     FROM edit_entries
+     ORDER BY id DESC LIMIT 1`
+  );
+
+  if (!entry) return 0;
+
+  const dateDir = join(editsDir, entry.date);
+  const timeStr = entry.time.replace(/:/g, '');
+  const fileName = `${timeStr}-${entry.task_id || 'general'}-edit-chunk.md`;
+  const filePath = join(dateDir, fileName);
+
+  // Get file modifications
+  const mods = await sqlite.queryAll(
+    `SELECT action, file_path, description FROM file_modifications WHERE edit_entry_id = ? ORDER BY id`,
+    [entry.id]
+  );
+
+  let md = `# Edit Chunk: ${entry.date} ${entry.time} ${entry.timezone || ''}\n\n`;
+  md += `## Task: ${entry.task_id || 'General'}\n\n`;
+  md += `### Work Done\n\n${entry.task_description}\n\n`;
+
+  if (mods.length > 0) {
+    md += `### Files Modified\n\n`;
+    for (const mod of mods) {
+      md += `- ${mod.action} \`${mod.file_path}\` — ${mod.description}\n`;
+    }
+    md += '\n';
+  }
+
+  ensureDir(filePath);
+  writeFileSync(filePath, md, 'utf-8');
+
+  return 1;
 }
