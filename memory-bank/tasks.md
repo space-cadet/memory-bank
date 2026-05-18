@@ -1,7 +1,7 @@
 # Memory Bank - Sage Workspace
 
 *Created: 2026-05-18 09:57:53 IST*
-*Last Updated: 2026-05-18 09:57:53 IST*
+*Last Updated: 2026-05-18 21:16:33 IST*
 
 ## Overview
 
@@ -25,6 +25,7 @@ This is the Memory Bank for the Sage (灵剑) OpenClaw workspace.
 | T21 | Database-Native Memory Bank Update Workflow | 🔄 | HIGH | 2025-11-13 | T13, T20, T20a | [Details](tasks/T21.md) |
 | T22 | AdminJS Database Management Interface | ⏸️ | HIGH | 2025-11-22 | T21 | [Details](tasks/T22.md) |
 | T23 | Format Specification System | 🔄 | HIGH | 2025-12-05 | T17, T21 | [Details](tasks/T23.md) |
+| T25 | Standalone Node Package (Browser-First) | ✅ | HIGH | 2025-12-16 | T21 | [Details](tasks/T25.md) |
 | T3 | Implement DB Migration | 🔄 | HIGH | 2025-11-12 | - | [Details](tasks/T3.md) |
 | T4 | Optimize Rules System | 🔄 | HIGH | 2025-04-15 | T1 | [Details](tasks/T4.md) |
 | T5 | Optimize Rules v4 | 🔄 | MEDIUM | 2025-04-17 | - | [Details](tasks/T5.md) |
@@ -36,6 +37,7 @@ This is the Memory Bank for the Sage (灵剑) OpenClaw workspace.
 | ID | Title | Status | Priority | Started | Completed | Dependencies | Details |
 |----|-------|--------|----------|---------|-----------|--------------|---------|
 | T18 | Integrated Rules Redesign | ✅ | HIGH | 2025-07-14 | 2025-07-14 | T17 | [Details](tasks/T18.md) |
+| T25 | Standalone Node Package (Browser-First) | ✅ | HIGH | 2025-12-16 | 2026-05-18 | T21 | [Details](tasks/T25.md) |
 
 ## Task Relationships
 

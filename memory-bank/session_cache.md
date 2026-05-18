@@ -1,18 +1,18 @@
 # Session Cache
 
 *Created: 2026-05-18 09:57:53 IST*
-*Last Updated: 2026-05-18 09:57:53 IST*
+*Last Updated: 2026-05-18 21:16:33 IST*
 
-**Started**: 2026-05-18 09:57:53 IST
-**Focus Task**: META-1: Memory Bank Update and Maintenance
-**Session File**: `sessions/latest.md`
-**Status**: 🔄 Active: 18, Paused: 1, Completed: 1
+**Started**: 2026-05-18 20:43:00 IST
+**Focus Task**: T25: Standalone Node Package (Browser-First)
+**Session File**: `sessions/2026-05-18-evening.md`
+**Status**: 🔄 Active: 18, Paused: 1, Completed: 2
 
 ## Overview
 
-- Active: 18 | Paused: 1 | Completed: 1
-- Last Session: -
-- Current Period: morning
+- Active: 18 | Paused: 1 | Completed: 2
+- Last Session: 2026-05-12-afternoon
+- Current Period: evening
 
 ## Active Tasks
 
@@ -149,6 +149,18 @@ Implemented mb task, mb session, and mb update CLI commands. Fixed inserts.creat
 **Status:** ✅ **COMPLETED**
 **Started:** 2025-07-14
 **Completed:** 2025-07-14
+
+### T25: Standalone Node Package (Browser-First)
+**Status:** ✅ **COMPLETED**
+**Started:** 2025-12-16
+**Completed:** 2026-05-18
+**Context**: Added DB-native workflow support to mb-cli
+**Files**: `mb-cli/src/commands/db.js`, `mb-cli/src/commands/init.js`, `mb-cli/src/index.js`, `mb-cli/templates/memory-bank/database/lib/*`
+**Progress**:
+1. ✅ Added project-relative DB lib resolution
+2. ✅ Added WORKFLOW_LIB_FILES to init
+3. ✅ Added top-level `mb workflow` command
+4. ✅ Tested on mac-process-monitor project
 
 ## Next Session Focus
 
