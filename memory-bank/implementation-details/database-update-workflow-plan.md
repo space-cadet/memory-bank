@@ -1,11 +1,35 @@
 # Database-Native Memory Bank Update Workflow
 
 *Created: 2025-11-13 17:46:43 IST*
-*Last Updated: 2026-05-18 21:16:33 IST*
+*Last Updated: 2026-05-21 02:51:53 IST*
 
 ## Executive Summary
 
 This document defines a **database-first approach** to the Memory Bank update workflow (Section 6.5 of Integrated Rules v6.10). Instead of manually updating text files, users update the database directly, and text files are regenerated from the authoritative database state.
+
+## Current Design Position (2026-05-21)
+
+The main goal of the DB workflow is rapid recording of changes.
+
+Current design split:
+- `mb workflow` / `recordSessionWork()` is the fast path
+  - minimal required input
+  - append-style logging
+  - auto-create missing task rows when needed
+  - reuse same-period sessions cleanly
+  - keep DB state and regenerated markdown in sync
+- `completeSessionWork()` is the explicit closeout path
+  - complete the session
+  - update the focused task status by default
+  - regenerate summaries after closeout
+
+Phase E hardening completed the core behavior needed for this design:
+- fixed generated-project bootstrap gaps
+- fixed sql.js `:memory:` persistence
+- fixed read-only overwrite risk via dirty-write gating
+- fixed same-period session focus synchronization
+- fixed direct `completeSessionWork()` DB discovery
+- verified repeat `mb db test` passes in the real sibling fixture
 
 **Paradigm Shift**: Text files transition from authoritative source to generated output.
 
@@ -405,6 +429,85 @@ CREATE TABLE error_logs (
 - [ ] Text file validation
 - [ ] Performance testing with large datasets
 
+#### Phase E Testing Strategy
+
+Use a dedicated isolated test project outside the canonical `mb-core` memory bank. The preferred fixture location is a sibling directory such as:
+
+```text
+/Users/deepak/code/memory-bank-test
+```
+
+This keeps DB-native verification separate from the canonical text-first memory bank while still exercising the real project-relative CLI/template path.
+
+#### Phase E Setup Flow
+
+```bash
+# Create isolated test project
+mkdir -p /Users/deepak/code/memory-bank-test
+cd /Users/deepak/code/memory-bank-test
+
+# Initialize memory bank with DB workflow support
+node /Users/deepak/code/mb-core/mb-cli/src/index.js init --database
+node /Users/deepak/code/mb-core/mb-cli/src/index.js db init
+```
+
+#### Phase E Core End-to-End Checks
+
+1. Fresh project bootstrap
+   - `mb init --database` creates `memory-bank/database/lib/` with the copied workflow library
+   - `mb db init` creates a usable `memory_bank.db`
+
+2. First workflow execution
+   - `mb workflow --task ... --description ...` inserts DB records
+   - regenerates `edit_history.md`, `tasks.md`, `session_cache.md`
+   - preserves canonical session markdown naming: `sessions/YYYY-MM-DD-period.md`
+
+3. Repeat workflow execution in same project
+   - second and third `mb workflow` runs append/edit state correctly
+   - transaction log accumulates entries
+   - task state transitions remain consistent
+
+4. Session handling
+   - multiple sessions in the same period generate unique internal session IDs
+   - session IDs follow `YYYY-MM-DD-period-HHMMSS-shorthash`
+   - canonical text workflow remains stable even as DB session IDs become more specific
+
+5. Extended regeneration coverage
+   - individual task files under `memory-bank/tasks/`
+   - session file under `memory-bank/sessions/`
+   - edit chunk under `memory-bank/edits/YYYY-MM-DD/`
+
+6. Data integrity verification
+   - database rows match regenerated markdown state
+   - no duplicate or orphaned file modifications
+   - session cache reflects current focus and task counts
+
+7. Performance sanity check
+   - normal workflow execution should stay comfortably sub-second on a small/medium fixture project
+   - record representative timings for bootstrap and repeat workflow runs
+
+#### Phase E Scenario Matrix
+
+| Scenario | What to verify |
+|----------|----------------|
+| Fresh project | Init, schema creation, first workflow run succeeds |
+| Existing project rerun | Workflow is repeatable without manual cleanup |
+| Same-period repeat sessions | Unique DB session IDs, stable text session filename |
+| Task lifecycle | `in_progress` -> `completed` and regeneration stay aligned |
+| File modification logging | Actions + paths + descriptions round-trip correctly |
+| Extended outputs | Task/session/edit-chunk files regenerate correctly |
+| CLI template path | Generated project uses copied libs, not canonical repo fallback |
+
+#### Phase E Pass Criteria
+
+- `mb db test` passes in canonical `mb-core`
+- isolated sibling test project passes the full bootstrap + workflow sequence
+- DB state and regenerated markdown agree after repeated runs
+- repeated same-period workflow runs keep `sessions`, `session_cache`, and regenerated session files synchronized
+- direct `completeSessionWork()` works without a manual `openDb()` call
+- canonical text workflow structure remains unchanged
+- no schema-alignment errors appear in session/session_cache regeneration
+
 ## Comparison: Text vs Database Workflow
 
 ### Text-Based (Current Section 6.5)
@@ -476,7 +579,7 @@ Consistency: Automatic (database enforces)
 - [x] Workflow completes in < 1 second (actual: ~38ms)
 - [x] No data loss during migration
 - [x] CLI integration seamless
-- [x] End-to-end testing passes
+- [x] End-to-end testing passes in isolated sibling test project
 
 ## CLI Integration (Completed 2026-05-18)
 
@@ -531,9 +634,23 @@ The CLI resolves DB libraries in this priority:
 
 ## Next Steps
 
-1. Review and approve this workflow plan
-2. Expand database schema (Phase A)
-3. Implement database insert functions (Phase B)
-4. Implement text regeneration functions (Phase C)
-5. Build CLI commands (Phase D)
-6. End-to-end testing (Phase E)
+1. Keep the DB workflow optimized for fast work logging through `mb workflow`
+2. Treat `completeSessionWork()` as the explicit closeout step that finalizes session state and summaries
+3. Keep canonical text docs and generated template copies aligned whenever workflow logic changes
+4. Fold any future DB workflow cleanup or UX refinements into separate follow-up tasks instead of reopening the Phase E acceptance gate
+
+## Phase E Result (2026-05-21)
+
+Phase E is now functionally complete for the DB-native workflow path.
+
+The main design position is simple: the DB workflow exists to support rapid recording of changes. The fast path is `mb workflow` / `recordSessionWork()`, which now auto-creates missing task rows, keeps same-period session reuse synchronized, and regenerates the text artifacts after each write. The explicit closeout path is `completeSessionWork()`, which now discovers the DB path for itself, updates the focused task status by default, and regenerates the final session/task/cache views.
+
+The hardening pass completed on 2026-05-21 closed the main reliability gaps exposed by the sibling-fixture test project:
+
+- fixed sql.js `:memory:` handling so test runs stay isolated instead of persisting to a literal `:memory:` file
+- added dirty-write persistence gating so read-only opens do not overwrite newer DB state on close
+- fixed repeated same-period workflow updates so `sessions.focus`, `session_cache`, and regenerated session files stay aligned
+- fixed direct `completeSessionWork()` usage so callers do not need to manually open the DB first
+- verified the generated-project path in the real sibling fixture at `/Users/deepak/code/memory-bank-test`, including running `mb db test` twice in a row successfully
+
+The canonical text workflow remains in place, but the DB-native workflow is now reliable enough for rapid-recording use without the earlier bootstrap and repeat-run failures.

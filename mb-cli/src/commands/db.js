@@ -59,6 +59,23 @@ async function loadDbModules() {
 // FIND DB PATH
 // ============================================================================
 
+function findDbPath(options = {}) {
+  if (options.db) return resolve(options.db);
+
+  const candidates = [
+    'memory_bank.db',
+    'memory-bank/database/memory_bank.db',
+    'database/memory_bank.db',
+  ];
+
+  for (const candidate of candidates) {
+    const fullPath = resolve(candidate);
+    if (existsSync(fullPath)) return fullPath;
+  }
+
+  return null;
+}
+
 // ============================================================================
 // QUERY COMMAND
 // ============================================================================

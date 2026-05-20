@@ -581,6 +581,47 @@ This document outlines the implementation plan for the Memory Bank CLI (T13), fo
 - Interactive mode simplifies complex initialization choices
 - Ready for testing in new and existing memory banks
 
+### May 21, 2026 - T21/T13: Phase E Workflow Hardening
+**Status**: Fresh-project and sibling-fixture DB workflow path hardened for repeat use.
+
+**Session Work**:
+- Hardened `memory-bank/database/lib/sqlite.js` and the generated template copy so sql.js `:memory:` databases stay truly in-memory during tests instead of persisting to a literal `:memory:` file.
+- Added dirty-write persistence gating so read-only DB opens do not overwrite newer writes on close.
+- Updated `recordSessionWork()` in the canonical and template workflow libs to support rapid logging more reliably:
+  - open/close the DB when needed
+  - auto-create missing task rows
+  - keep same-period session reuse synchronized
+  - keep session cache metadata aligned with the active session
+- Updated `completeSessionWork()` in the canonical and template workflow libs so it can discover the project DB path for itself and complete the focused task by default during explicit closeout.
+- Updated regeneration behavior so session files and `session_cache.md` reflect the current DB-native session state more reliably.
+- Synced the generated-project test harness so the template path can validate the same workflow behavior as the canonical repo.
+
+**Verification**:
+- Fresh temp fixtures created with `mb init --database` and `mb db init` passed repeated workflow checks.
+- Same-period `mb workflow --period evening` runs reused the same session id and kept `sessions.focus`, `session_cache`, and regenerated text output aligned.
+- Direct `completeSessionWork()` succeeded without a prior manual `openDb()` call.
+- Real sibling fixture verification in `/Users/deepak/code/memory-bank-test` passed `mb db test` twice in a row after syncing the hardened generated workflow files.
+
+**Design Position**:
+- The DB-native workflow is meant to support rapid recording of changes.
+- `mb workflow` is the fast path and should stay lightweight.
+- `completeSessionWork()` is the explicit closeout path that finalizes session state and summaries.
+
+**Files Changed**:
+- `memory-bank/database/lib/sqlite.js`
+- `memory-bank/database/lib/inserts.js`
+- `memory-bank/database/lib/regenerate.js`
+- `memory-bank/database/lib/workflow.js`
+- `memory-bank/database/test-workflow.js`
+- `mb-cli/templates/memory-bank/database/lib/sqlite.js`
+- `mb-cli/templates/memory-bank/database/lib/inserts.js`
+- `mb-cli/templates/memory-bank/database/lib/regenerate.js`
+- `mb-cli/templates/memory-bank/database/lib/workflow.js`
+- `mb-cli/templates/memory-bank/database/test-workflow.js`
+
+**Outcome**:
+- Phase E moved from partial/bootstrap-only validation to a working generated-project workflow path that now survives repeated test runs and explicit session completion.
+
 ## Notes
 - Each phase should be completed and tested before moving to next
 - Documentation should be updated with each phase

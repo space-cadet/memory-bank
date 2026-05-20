@@ -9,8 +9,8 @@
 import * as inserts from './inserts.js';
 import * as regenerate from './regenerate.js';
 import * as sqlite from './sqlite.js';
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import { existsSync, readFileSync } from 'fs';
+import { join, resolve } from 'path';
 
 // ============================================================================
 // AGENT WORKFLOW
@@ -55,9 +55,9 @@ export async function recordSessionWork({
   const startTime = performance.now();
   const transactionId = `tx-${Date.now()}`;
   const now = new Date();
-  const dateStr = now.toISOString().slice(0, 10);
-  const timeStr = now.toTimeString().slice(0, 8);
+  const { dateStr, timeStr } = getLocalDateTimeParts(now);
   const tzStr = 'IST';
+  let openedHere = false;
 
   // Normalize files_modified to {action, file_path, description}
   const modifications = files_modified.map(f => ({
@@ -68,9 +68,10 @@ export async function recordSessionWork({
 
   try {
     // Open database if not already open
-    const dbPath = sqlite.getDbPath() || ':memory:';
-    if (!sqlite.getDb()) {
+    if (!sqlite.isDbOpen()) {
+      const dbPath = sqlite.getDbPath() || resolveDefaultDbPath();
       await sqlite.openDb(dbPath);
+      openedHere = true;
     }
 
     // Step 1: Insert edit entry with modifications (atomic transaction)
@@ -85,8 +86,21 @@ export async function recordSessionWork({
 
     // Step 2: Update task status if provided
     let taskUpdate = null;
+    const existingTask = await sqlite.queryGet(
+      `SELECT id FROM task_items WHERE id = ?`,
+      [task_id]
+    );
     if (task_status) {
       taskUpdate = await inserts.updateTaskStatus(task_id, task_status, task_description);
+    } else if (!existingTask) {
+      taskUpdate = await inserts.upsertTask({
+        id: task_id,
+        title: task_description,
+        status: 'in_progress',
+        priority: 'medium',
+        started: dateStr,
+        details: task_description
+      });
     }
 
     // Step 3: Create or update session
@@ -100,17 +114,15 @@ export async function recordSessionWork({
     let sessionId;
     if (existingSession) {
       sessionId = existingSession.id;
-      // Update notes
-      if (session_notes) {
-        await sqlite.execRun(
-          `UPDATE sessions SET content = COALESCE(content, '') || '\n\n' || ? WHERE id = ?`,
-          [session_notes, sessionId]
-        );
-      }
+      const sessionContent = session_notes || `Working on ${task_id}: ${task_description}`;
+      await sqlite.execRun(
+        `UPDATE sessions
+         SET focus = ?, content = COALESCE(content, '') || '\n\n' || ?
+         WHERE id = ?`,
+        [task_id, sessionContent, sessionId]
+      );
     } else {
-      const sessionIdStr = `${dateStr}-${session_period}`;
       const sessionResult = await inserts.createSession({
-        id: sessionIdStr,
         date: dateStr,
         period: session_period,
         focus: task_id,
@@ -123,6 +135,7 @@ export async function recordSessionWork({
     // Step 4: Update session cache
     const counts = await inserts.getTaskCounts();
     await inserts.updateSessionCache({
+      current_session_id: sessionId,
       current_focus_task: task_id,
       active_tasks_count: counts.active || 0,
       paused_tasks_count: counts.paused || 0,
@@ -176,7 +189,42 @@ export async function recordSessionWork({
       // Ignore logging errors during failure
     }
     throw err;
+  } finally {
+    if (openedHere) {
+      await sqlite.closeDb();
+    }
   }
+}
+
+function getLocalDateTimeParts(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+
+  return {
+    dateStr: `${year}-${month}-${day}`,
+    timeStr: `${hours}:${minutes}:${seconds}`
+  };
+}
+
+function resolveDefaultDbPath() {
+  const candidates = [
+    'memory_bank.db',
+    'memory-bank/database/memory_bank.db',
+    'database/memory_bank.db'
+  ];
+
+  for (const candidate of candidates) {
+    const fullPath = resolve(candidate);
+    if (existsSync(fullPath)) {
+      return fullPath;
+    }
+  }
+
+  return ':memory:';
 }
 
 // ============================================================================
@@ -191,19 +239,44 @@ export async function completeSessionWork(sessionId, notes = null, {
   output_dir = 'memory-bank',
   tasks_dir = null,
   sessions_dir = null,
-  edits_dir = null
+  edits_dir = null,
+  task_status = 'completed'
 } = {}) {
   const startTime = performance.now();
   const transactionId = `tx-${Date.now()}`;
+  let openedHere = false;
 
   try {
+    if (!sqlite.isDbOpen()) {
+      const dbPath = sqlite.getDbPath() || resolveDefaultDbPath();
+      await sqlite.openDb(dbPath);
+      openedHere = true;
+    }
+
+    const session = await sqlite.queryGet(
+      `SELECT id, focus FROM sessions WHERE id = ?`,
+      [sessionId]
+    );
+
     // Update session status
     await inserts.completeSession(sessionId, notes);
 
+    if (session?.focus && task_status) {
+      await inserts.updateTaskStatus(session.focus, task_status, notes || null);
+    }
+
     // Update counts
     const counts = await inserts.getTaskCounts();
+    const nextActiveSession = await sqlite.queryGet(
+      `SELECT id, focus
+       FROM sessions
+       WHERE status = 'active'
+       ORDER BY created_at DESC, id DESC
+       LIMIT 1`
+    );
     await inserts.updateSessionCache({
-      current_focus_task: null,
+      current_session_id: nextActiveSession?.id || null,
+      current_focus_task: nextActiveSession?.focus || null,
       active_tasks_count: counts.active || 0,
       paused_tasks_count: counts.paused || 0,
       completed_tasks_count: counts.completed || 0
@@ -249,6 +322,10 @@ export async function completeSessionWork(sessionId, notes = null, {
       // Ignore
     }
     throw err;
+  } finally {
+    if (openedHere) {
+      await sqlite.closeDb();
+    }
   }
 }
 

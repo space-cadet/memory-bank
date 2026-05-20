@@ -1,8 +1,56 @@
 # Edit History
 
-*Last Updated: 2026-05-18 21:16:33 IST*
+*Last Updated: 2026-05-21 03:00:25 IST*
 
 ---
+
+## 2026-05-20
+
+#### 03:00:25 IST - T21, T13: Completed the Phase E DB workflow hardening pass, verified canonical tests, and synchronized text-based memory-bank records
+- Modified `memory-bank/database/lib/sqlite.js` - Fixed sql.js `:memory:` handling and added dirty-write persistence gating
+- Modified `memory-bank/database/lib/inserts.js` - Added rapid-logging task auto-create support used by the DB workflow
+- Modified `memory-bank/database/lib/regenerate.js` - Tightened session/session_cache regeneration around current-session semantics
+- Modified `memory-bank/database/lib/workflow.js` - Fixed same-period session synchronization and direct `completeSessionWork()` DB handling
+- Modified `memory-bank/database/test-workflow.js` - Extended verification for repeat-run and explicit-completion behavior
+- Modified `mb-cli/templates/memory-bank/database/lib/sqlite.js` - Synced generated-project sqlite hardening
+- Modified `mb-cli/templates/memory-bank/database/lib/inserts.js` - Synced generated-project rapid-logging task handling
+- Modified `mb-cli/templates/memory-bank/database/lib/regenerate.js` - Synced generated-project regeneration fixes
+- Modified `mb-cli/templates/memory-bank/database/lib/workflow.js` - Synced generated-project workflow hardening
+- Modified `mb-cli/templates/memory-bank/database/test-workflow.js` - Synced generated-project workflow verification coverage
+- Modified `memory-bank/implementation-details/database-update-workflow-plan.md` - Recorded the rapid-recording DB workflow design and Phase E result
+- Modified `memory-bank/implementation-details/cli-implementation-details.md` - Documented the Phase E hardening pass and sibling-fixture verification
+- Modified `memory-bank/implementation-details/db-workflow-phase-e-test-log-2026-05-20.md` - Closed the Phase E test checklist with final hardening results and the last canonical verification run
+- Modified `memory-bank/tasks/T21.md` - Marked the main Phase E blockers resolved and recorded the final verification state
+- Modified `memory-bank/tasks/T13.md` - Recorded fresh-project and generated-template workflow hardening completion
+- Modified `memory-bank/tasks.md` - Refreshed registry timestamp during the text-based memory-bank update
+- Modified `memory-bank/activeContext.md` - Shifted focus to final documentation sync after successful DB workflow verification
+- Modified `memory-bank/session_cache.md` - Refreshed active task context to reflect the completed hardening pass
+- Modified `memory-bank/sessions/2026-05-20-evening.md` - Logged the follow-up hardening, design decision, and final canonical verification work
+- Modified `memory-bank/edit_history.md` - Recorded the completed Phase E hardening pass and text-based memory-bank synchronization
+
+#### 19:19:52 IST - T21, T13: Phase E sibling-project validation exposed fresh-project bootstrap defects and schema drift in the DB-native workflow
+- Modified `mb-cli/src/commands/init.js` - Added `schema.sql` and `test-workflow.js` to generated database package initialization
+- Modified `mb-cli/src/commands/db.js` - Restored shared `findDbPath()` helper for `mb db` subcommands
+- Created `mb-cli/src/server-package/test-workflow.js` - Added generated-project integration test script to canonical server-package
+- Modified `mb-cli/src/server-package/schema.sql` - Re-synced canonical server-package schema to match the canonical workflow schema contract under review
+- Modified `mb-cli/templates/memory-bank/database/lib/inserts.js` - Synced generated-project workflow library updates for Phase E testing
+- Modified `mb-cli/templates/memory-bank/database/lib/regenerate.js` - Synced generated-project workflow regeneration updates for Phase E testing
+- Modified `mb-cli/templates/memory-bank/database/lib/workflow.js` - Synced generated-project workflow wrapper updates for Phase E testing
+- Modified `mb-cli/templates/memory-bank/database/schema.sql` - Re-synced generated-project schema from canonical database schema
+- Created `mb-cli/templates/memory-bank/database/test-workflow.js` - Added generated-project integration test script to database template
+- Modified `memory-bank/database/lib/inserts.js` - Added richer internal session IDs and timezone-safe timestamp handling
+- Modified `memory-bank/database/lib/regenerate.js` - Aligned session/session_cache regeneration with the current canonical schema
+- Modified `memory-bank/database/lib/workflow.js` - Switched workflow date handling to local time parts and richer internal session IDs
+- Modified `memory-bank/database/test-workflow.js` - Updated integration coverage for canonical session filenames and hashed session IDs
+- Modified `memory-bank/implementation-details/database-update-workflow-plan.md` - Replaced abstract Phase E notes with a concrete sibling-project test procedure and pass criteria
+- Created `memory-bank/implementation-details/db-workflow-phase-e-test-log-2026-05-20.md` - Logged exact Phase E commands, successes, failures, and findings
+- Modified `memory-bank/tasks/T21.md` - Recorded Phase E sibling-project validation findings and remaining schema-alignment blockers
+- Modified `memory-bank/tasks/T13.md` - Recorded fresh-project CLI hardening progress and remaining generated-project issues
+- Modified `memory-bank/tasks.md` - Refreshed registry timestamp and removed stale active-row duplication for completed T25
+- Modified `memory-bank/activeContext.md` - Shifted current focus from T25 completion to T21/T13 Phase E schema alignment
+- Modified `memory-bank/session_cache.md` - Pointed current work to the 2026-05-20 evening session and refreshed T21/T13 context
+- Created `memory-bank/sessions/2026-05-20-evening.md` - Logged the Phase E sibling-project validation session
+- Modified `memory-bank/edit_history.md` - Recorded the Phase E validation work and memory-bank synchronization
 
 ## 2026-05-18
 
@@ -640,4 +688,3 @@
 - Updated `/Users/deepak/code/memory-bank/memory-bank/session_cache.md` - Updated with current session information, implementation progress, and notes
 - Updated `/Users/deepak/code/memory-bank/memory-bank/edit_history.md` - Added new entries for the current session
 - Updated `/Users/deepak/code/memory-bank/memory-bank/activeContext.md` - Updated current tasks, implementation focus, and next actions
-

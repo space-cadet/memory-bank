@@ -70,7 +70,8 @@ const TEMPLATE_FILES = [
 const DATABASE_FILES = [
   'package.json',
   'pnpm-workspace.yaml',
-  'README.md'
+  'README.md',
+  'schema.sql'
 ];
 
 const PARSER_SCRIPTS = [
@@ -80,7 +81,8 @@ const PARSER_SCRIPTS = [
   'parse-session-cache.js',
   'run-all.sh',
   'query.js',
-  'query-tasks.js'
+  'query-tasks.js',
+  'test-workflow.js'
 ];
 
 const WORKFLOW_LIB_FILES = [

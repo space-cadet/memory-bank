@@ -18,6 +18,11 @@ let SQL = null;
 let currentDb = null;
 let currentDbPath = null;
 let saveQueue = Promise.resolve();
+let isDirty = false;
+
+function isInMemoryPath(dbPath) {
+  return dbPath === ':memory:';
+}
 
 /**
  * Initialize sql.js WASM module
@@ -42,19 +47,19 @@ export async function openDb(dbPath) {
 
   // Close existing database if open
   if (currentDb) {
-    currentDb.close();
-    currentDb = null;
+    await closeDb();
   }
 
   currentDbPath = dbPath;
 
   // Load existing database or create new one
-  if (existsSync(dbPath)) {
+  if (!isInMemoryPath(dbPath) && existsSync(dbPath)) {
     const buffer = await readFile(dbPath);
     currentDb = new SQL.Database(buffer);
   } else {
     currentDb = new SQL.Database();
   }
+  isDirty = false;
 
   return currentDb;
 }
@@ -79,6 +84,10 @@ export function getDb() {
  */
 export function getDbPath() {
   return currentDbPath;
+}
+
+export function isDbOpen() {
+  return currentDb !== null;
 }
 
 /**
@@ -142,6 +151,9 @@ export async function execRun(sql, params = []) {
 
   const changes = db.getRowsModified();
   const lastInsertRowid = stmt.getAsObject()?.id || db.exec("SELECT last_insert_rowid() as id")[0]?.values[0]?.[0] || null;
+  if (changes > 0) {
+    isDirty = true;
+  }
 
   stmt.free();
 
@@ -158,6 +170,7 @@ export async function execRun(sql, params = []) {
 export async function exec(sql) {
   const db = getDb();
   db.exec(sql);
+  isDirty = true;
 }
 
 /**
@@ -263,7 +276,7 @@ export function transaction(fn) {
  * @returns {Promise<void>}
  */
 export async function saveDb() {
-  if (!currentDb || !currentDbPath) {
+  if (!currentDb || !currentDbPath || isInMemoryPath(currentDbPath) || !isDirty) {
     return;
   }
 
@@ -278,6 +291,7 @@ export async function saveDb() {
       await mkdir(parentDir, { recursive: true });
 
       await writeFile(currentDbPath, buffer);
+      isDirty = false;
     } catch (error) {
       console.error('Failed to save database:', error);
       throw error;
@@ -333,6 +347,7 @@ export default {
   openDb,
   getDb,
   getDbPath,
+  isDbOpen,
   queryAll,
   queryGet,
   execRun,

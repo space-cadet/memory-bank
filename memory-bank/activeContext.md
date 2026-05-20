@@ -1,28 +1,28 @@
 # Active Context
 
-*Last Updated: 2026-05-12 11:34:00 IST*
+*Last Updated: 2026-05-21 02:51:53 IST*
 
 ## Current Tasks
-1. **[T25]**: Standalone Node Package (Browser-First) (HIGH priority)
+1. **[T21]**: Database-Native Memory Bank Update Workflow (HIGH priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: CLI utilities for database insert, query, and workflow operations
-   - Recent Achievement: Browser-first imports hardened (tasks/sessions/session_cache + task file subtasks)
-   - Next: Build `mb db` subcommands (query, workflow, test)
+   - Current Focus: Record the completed Phase E hardening pass and keep the DB-native workflow design/docs synchronized with the implementation
+   - Recent Achievement: Real sibling-project verification now passes twice; repeat logging, direct completion, and generated-project bootstrap issues were fixed
+   - Next: Finish the text-based memory-bank update and keep the rapid-recording workflow documentation clear
 
 2. **[T13]**: Implement Memory Bank CLI (HIGH priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: Expand CLI beyond `init` — add `mb db` subcommand group for database operations
-   - Recent Achievement: Init bootstrap completeness (integrated rules, protocols, commit template)
-   - Next: Implement db query, db workflow, db test commands
+   - Current Focus: Document the completed fresh-project CLI hardening for DB-native workflow support
+   - Recent Achievement: Fresh generated projects now pass repeat `mb db test` runs and support direct `completeSessionWork()` without manual DB opening
+   - Next: Keep template and implementation docs aligned
 
-3. **[T19]**: Memory Bank Viewer Web Interface (HIGH priority)
-   - Status: 🔄 IN PROGRESS (Phase 3 Setup Wizard Complete)
-   - Current Focus: Phase 3 includes setup wizard, write capabilities, and DB management
-   - Recent Achievement: Comprehensive 4-step setup wizard integrated as default entry point
+3. **[T25]**: Standalone Node Package (Browser-First) (HIGH priority)
+   - Status: ✅ COMPLETED
+   - Current Focus: Hold completed packaging work steady while T21/T13 Phase E validation continues
+   - Recent Achievement: Project-relative DB workflow support landed in `mb-cli`
 
 4. **[META-1]**: Memory Bank Update and Maintenance (HIGH priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: Memory bank sync after T21 completion, session maintenance
+   - Current Focus: Synchronize DB workflow findings, Phase E test log, and stale task/session context
 
 5. **[T24]**: Migrate from better-sqlite3 to sql.js (HIGH priority)
    - Status: 🔄 IN PROGRESS
@@ -46,28 +46,21 @@
    - Status: ✅ COMPLETED (2025-11-22)
    - Output: Modular Viewer architecture
 
-## Implementation Focus - Current Session (T25 + T13)
-**T21 Completion Sync (2026-05-12):**
-- ✅ Ported inserts.js, regenerate.js, workflow.js from workspace to canonical repo
-- ✅ Ported test-workflow.js with 60 integration tests
-- ✅ All tests passing in canonical repo
-- ✅ Updated T21 task file and task registry
-
-**T25 CLI Utilities — Partial (Paused for new session):**
-- ✅ `mb db query` — SQL queries with table and JSON output
-- ✅ `mb db test` — Runs integration test suite (needs schema alignment fixes)
-- ✅ `mb db init` — Initialize database schema
-- ✅ `mb db workflow` — Implemented but needs session_cache schema alignment
-- 🔄 Schema alignment: inserts.js, regenerate.js, workflow.js adapted for T20 schema
-- ⬜ Complete schema alignment (session_cache table column names)
-- ⬜ Verify full test suite passes after alignment
-- ⬜ T13 CLI Expansion: Wire database/lib/ modules into CLI commands
+## Implementation Focus - Current Session (T21 + T13)
+**Phase E hardening and verification (2026-05-20 to 2026-05-21):**
+- ✅ Created sibling fixture project at `/Users/deepak/code/memory-bank-test`
+- ✅ Exercised fresh-project `mb init --database` -> dependency install -> `mb db init`
+- ✅ Fixed missing `schema.sql` copy in generated DB packages
+- ✅ Restored missing shared `findDbPath()` helper in `mb-cli/src/commands/db.js`
+- ✅ Fixed sql.js `:memory:` persistence and dirty-write handling for repeat DB workflow tests
+- ✅ Fixed same-period session reuse so focus/task/session/session_cache stay synchronized
+- ✅ Fixed direct `completeSessionWork()` so it can discover the project DB path and run without manual `openDb()`
+- ✅ Re-ran `mb db test` twice in the real sibling fixture and confirmed both passes succeed
 
 ## Next Steps
-- Complete schema alignment between T20 parser schema and T21 workflow code
-- Verify `mb db test` passes with full 60-check suite
-- Finalize `mb db workflow` argument parsing and error handling
-- Run fresh-project end-to-end test for `mb init` + `mb db` workflow
+- Finish the text-based memory-bank update in `mb-core`
+- Keep the implementation docs aligned with the rapid-recording DB workflow design
+- Decide whether any additional post-Phase-E cleanup should be split into a separate task
 
 ## Current Decisions
 1. **Setup Wizard as Default**: All new projects see wizard first
@@ -78,9 +71,9 @@
 6. **Backward Compatible**: mb init CLI still works, produces same results
 
 ## System Status
-- **Database**: ✅ Operational (Phase A Schema + Phase B/C lib modules)
-- **Insert/Regenerate Libs**: ✅ inserts.js, regenerate.js, workflow.js ported and tested (60 tests passing)
-- **CLI (T13)**: 🔄 `mb db` subcommands implemented — needs schema alignment
+- **Database**: ✅ Operational in canonical repo and verified in the real sibling fixture
+- **Insert/Regenerate Libs**: ✅ Canonical and generated-project workflow paths now pass the current Phase E checks
+- **CLI (T13)**: ✅ Fresh-project DB workflow bootstrap and verification path now runs without the earlier manual fixes
 - **Viewer (T19)**: ✅ Modular, Bug-free (Read-only mode)
 - **Editor (T19)**: ✅ DB management, edit_history import, tasks/sessions/session_cache import
 - **Setup Wizard (T19)**: ✅ Complete 4-step initialization flow

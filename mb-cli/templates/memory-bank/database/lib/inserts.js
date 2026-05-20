@@ -4,6 +4,7 @@
  * Uses sql.js via lib/sqlite.js (async API)
  */
 
+import { createHash, randomBytes } from 'crypto';
 import * as sqlite from './sqlite.js';
 
 // ============================================================================
@@ -209,11 +210,12 @@ export async function addTaskSubtasks(taskId, subtasks) {
  * @returns {Promise<{sessionId:number}>}
  */
 export async function createSession({ id = null, date, period, focus = null, status = 'active', content = '' }) {
-  const sessionId = id || `sess-${date}-${period}-${Date.now()}`;
+  const normalizedStatus = status === 'in_progress' ? 'active' : status;
+  const sessionId = id || buildSessionId(date, period);
   await sqlite.execRun(
     `INSERT INTO sessions (id, date, period, focus, status, content)
      VALUES (?, ?, ?, ?, ?, ?)`,
-    [sessionId, date, period, focus, status, content]
+    [sessionId, date, period, focus, normalizedStatus, content]
   );
   return { sessionId };
 }
@@ -258,6 +260,10 @@ export async function completeSession(sessionId, notes = null) {
  */
 export async function updateSessionCache({ current_session_id = null, current_focus_task = null, active_tasks_count = 0, paused_tasks_count = 0, completed_tasks_count = 0 }) {
   const now = new Date().toISOString();
+  const rawContent = JSON.stringify({
+    current_session_id: current_session_id ?? null,
+    updated_at: now
+  });
   const { changes } = await sqlite.execRun(
     `INSERT INTO session_cache (session_id, status, focus_task, active_tasks_count, paused_tasks_count, completed_tasks_count, raw_content)
      VALUES ('current', 'active', ?, ?, ?, ?, ?)
@@ -267,7 +273,7 @@ export async function updateSessionCache({ current_session_id = null, current_fo
        paused_tasks_count = excluded.paused_tasks_count,
        completed_tasks_count = excluded.completed_tasks_count,
        raw_content = excluded.raw_content`,
-    [current_focus_task ?? null, active_tasks_count ?? 0, paused_tasks_count ?? 0, completed_tasks_count ?? 0, `updated ${now}`]
+    [current_focus_task ?? null, active_tasks_count ?? 0, paused_tasks_count ?? 0, completed_tasks_count ?? 0, rawContent]
   );
   return { changes };
 }
@@ -332,14 +338,37 @@ export async function logTransaction({ transaction_id, operation_type, affected_
  * Compute ISO timestamp from date, time, timezone
  */
 function computeTimestamp(date, time, timezone) {
-  const tz = timezone ? ` ${timezone}` : '';
-  const isoString = `${date}T${time}${tz}`;
+  const isoString = `${date}T${time}${timezoneOffset(timezone)}`;
   try {
     const d = new Date(isoString);
     return d.toISOString();
   } catch {
     return new Date().toISOString();
   }
+}
+
+function timezoneOffset(timezone) {
+  if (!timezone) return '';
+
+  const normalized = String(timezone).trim().toUpperCase();
+  if (normalized === 'IST') return '+05:30';
+  if (/^[+-]\d{2}:\d{2}$/.test(normalized)) return normalized;
+  return '';
+}
+
+function buildSessionId(date, period) {
+  const now = new Date();
+  const time = formatLocalTime(now);
+  const entropy = `${date}-${period}-${time}-${randomBytes(8).toString('hex')}`;
+  const shortHash = createHash('sha1').update(entropy).digest('hex').slice(0, 6);
+  return `${date}-${period}-${time}-${shortHash}`;
+}
+
+function formatLocalTime(date) {
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  return `${hours}${minutes}${seconds}`;
 }
 
 /**

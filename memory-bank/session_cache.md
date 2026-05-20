@@ -1,17 +1,17 @@
 # Session Cache
 
 *Created: 2026-05-18 09:57:53 IST*
-*Last Updated: 2026-05-18 21:16:33 IST*
+*Last Updated: 2026-05-21 02:51:53 IST*
 
-**Started**: 2026-05-18 20:43:00 IST
-**Focus Task**: T25: Standalone Node Package (Browser-First)
-**Session File**: `sessions/2026-05-18-evening.md`
+**Started**: 2026-05-20 18:55:15 IST
+**Focus Task**: T21: Database-Native Memory Bank Update Workflow
+**Session File**: `sessions/2026-05-20-evening.md`
 **Status**: 🔄 Active: 18, Paused: 1, Completed: 2
 
 ## Overview
 
 - Active: 18 | Paused: 1 | Completed: 2
-- Last Session: 2026-05-12-afternoon
+- Last Session: 2026-05-20-evening
 - Current Period: evening
 
 ## Active Tasks
@@ -47,12 +47,12 @@
 ### T13: Implement Memory Bank CLI
 **Status:** 🔄 **IN PROGRESS**
 **Started:** 2025-05-17
-**Context**: [Details](tasks/T13.md) - Parser execution & modular refactor (90% complete)
+**Context**: [Details](tasks/T13.md) - Fresh-project CLI hardening for DB-native workflow bootstrap and completion paths
 **Progress**:
-[Details](tasks/T13.md) - Parser execution & modular refactor (90% complete)
-Implemented mb task, mb session, and mb update commands
-Core commands implemented: mb task, mb session, mb update. mb file pending.
-Implemented mb task, mb session, and mb update CLI commands. Fixed inserts.createSession() id bug. Updated CLI docs.
+[Details](tasks/T13.md) - Fresh-project CLI hardening for DB-native workflow bootstrap and completion paths
+Restored shared `findDbPath()` for `mb db` subcommands.
+Extended `mb init --database` to copy `schema.sql` and `test-workflow.js`.
+Verified repeat `mb db test` passes and direct `completeSessionWork()` support in the real sibling fixture.
 
 ### T14: Project-Specific Rule Adaptations
 **Status:** 🔄 **IN PROGRESS**
@@ -99,9 +99,12 @@ Implemented mb task, mb session, and mb update CLI commands. Fixed inserts.creat
 ### T21: Database-Native Memory Bank Update Workflow
 **Status:** 🔄 **IN PROGRESS**
 **Started:** 2025-11-13
-**Context**: [Details](tasks/T21.md) - Phase A complete; edit_history DB-first writes + export endpoint (2025-12-15)
+**Context**: [Details](tasks/T21.md) - Phase E hardening completed for the rapid-recording DB workflow path
 **Progress**:
-[Details](tasks/T21.md) - Phase A complete; edit_history DB-first writes + export endpoint (2025-12-15)
+[Details](tasks/T21.md) - Phase E hardening completed for the rapid-recording DB workflow path
+Created sibling fixture `/Users/deepak/code/memory-bank-test`.
+Fixed bootstrap, same-period session sync, sql.js persistence, and direct completion behavior.
+Verified the real sibling fixture passes `mb db test` twice and supports repeat `mb workflow` usage.
 
 ### T23: Format Specification System
 **Status:** 🔄 **IN PROGRESS**
@@ -164,9 +167,9 @@ Implemented mb task, mb session, and mb update CLI commands. Fixed inserts.creat
 
 ## Next Session Focus
 
+1. T21: Database-Native Memory Bank Update Workflow
 1. META-1: Memory Bank Update and Maintenance
-1. T1: Multi-task Support
-1. T11: Document GitHub Project Integration
+1. T13: Implement Memory Bank CLI
 
 ## System Status
 
