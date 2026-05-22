@@ -27,6 +27,15 @@
 - Created `memory-bank/sessions/2026-05-22-evening.md` - Added current session log for DB-native workflow documentation synchronization
 - Modified `memory-bank/edit_history.md` - Recorded 2026-05-22 memory-bank synchronization updates
 
+#### 17:48:00 IST - T21, T20: Phase F cross-project validation in Cloudy workspace exposed DB workflow gaps
+- Modified `memory-bank/tasks/T21.md` - Added Phase F cross-project validation findings (Cloudy workspace), record-only gap, backfill need, safe migration strategy
+- Modified `memory-bank/tasks/T20.md` - Documented parser scripts exist (~1100 lines), need adaptation for backfill use, added Phase 4 subtasks for cross-project roundtrip verification
+- Created `memory-bank/implementation-details/db-workflow-migration-strategy.md` - Documented safe migration path (text-primary → DB-primary), three critical gaps, decision log
+- Updated `memory-bank/edit_history.md` - Recorded Phase F findings
+- Updated `memory-bank/session_cache.md` - Refreshed focus to T21/T20 Phase F
+- Updated `memory-bank/activeContext.md` - Updated current focus to T21/T20 Phase F gaps
+- Created `memory-bank/sessions/2026-05-22-evening.md` - Session file for Phase F cross-project validation and gap documentation
+
 ## 2026-05-20
 
 #### 03:00:25 IST - T21, T13: Completed the Phase E DB workflow hardening pass, verified canonical tests, and synchronized text-based memory-bank records

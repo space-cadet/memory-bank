@@ -20,9 +20,9 @@ This is the Memory Bank for the Sage (灵剑) OpenClaw workspace.
 | T16 | AI Consciousness Dialog Series | 🔄 | HIGH | 2025-05-26 | T15 | [Details](tasks/T16.md) |
 | T17 | Maintenance and Upkeep of Integrated Rules | 🔄 | MEDIUM | 2025-05-28 | T15, T16 | [Details](tasks/T17.md) |
 | T19 | Memory Bank Viewer Web Interface | 🔄 | HIGH | 2025-11-10 | - | [Details](tasks/T19.md) |
-| T20 | Memory Bank Database Parser | 🔄 | MEDIUM | 2025-11-12 | - | [Details](tasks/T20.md) |
+| T20 | Memory Bank Database Parser | 🔄 | MEDIUM | 2025-11-12 | - | [Details](tasks/T20.md) - Parser scripts exist (~1100 lines), need adaptation for cross-project backfill (T21 dependency) |
 | T20a | Adaptive LLM-Based Format Parser | 🔄 | HIGH | 2025-11-12 | T20 | [Details](tasks/T20a.md) |
-| T21 | Database-Native Memory Bank Update Workflow | 🔄 | HIGH | 2025-11-13 | T13, T20, T20a | [Details](tasks/T21.md) |
+| T21 | Database-Native Memory Bank Update Workflow | 🔄 | HIGH | 2025-11-13 | T13, T20, T20a | [Details](tasks/T21.md) - Phase E complete. Phase F gaps: record-only mode, backfill tool, safe migration strategy |
 | T22 | AdminJS Database Management Interface | ⏸️ | HIGH | 2025-11-22 | T21 | [Details](tasks/T22.md) |
 | T23 | Format Specification System | 🔄 | HIGH | 2025-12-05 | T17, T21 | [Details](tasks/T23.md) |
 | T3 | Implement DB Migration | 🔄 | HIGH | 2025-11-12 | - | [Details](tasks/T3.md) |

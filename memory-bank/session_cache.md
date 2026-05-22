@@ -86,7 +86,7 @@ Added explicit record-only/regenerate-only DB workflow modes and `mb db sync` fo
 ### T20: Memory Bank Database Parser
 **Status:** 🔄 **IN PROGRESS**
 **Started:** 2025-11-12
-**Context**: [Details](tasks/T20.md) - Phase 3 continued: Format handling improvements, timezone optionality
+**Context**: [Details](tasks/T20.md) - Phase 3 continued: Format handling improvements, timezone optionality. Parser scripts (~1100 lines total) exist in `memory-bank/database/`. Need adaptation for cross-project backfill use (T21 dependency).
 **Progress**:
 [Details](tasks/T20.md) - Phase 3 continued: Format handling improvements, timezone optionality
 
@@ -100,13 +100,15 @@ Added explicit record-only/regenerate-only DB workflow modes and `mb db sync` fo
 ### T21: Database-Native Memory Bank Update Workflow
 **Status:** 🔄 **IN PROGRESS**
 **Started:** 2025-11-13
-**Context**: [Details](tasks/T21.md) - Phase E hardening completed for the rapid-recording DB workflow path
+**Context**: [Details](tasks/T21.md) - Phase E hardening completed. Phase F cross-project validation in Cloudy workspace completed 2026-05-22. DB workflow functional (62/62 tests pass) but three gaps identified: (1) no record-only mode, (2) regeneration destroys history without full backfill, (3) text files must stay primary until DB is fully populated.
 **Progress**:
 [Details](tasks/T21.md) - Phase E hardening completed for the rapid-recording DB workflow path
 Created sibling fixture `/Users/deepak/code/memory-bank-test`.
 Fixed bootstrap, same-period session sync, sql.js persistence, and direct completion behavior.
 Verified the real sibling fixture passes `mb db test` twice and supports repeat `mb workflow` usage.
 Extended workflow to explicit record/regenerate split; added sync path; fixed viewer/import schema drift and sql.js dirty-write persistence for import saves.
+Phase F: Cloudy workspace synced libraries, ran `mb db test` (62 passed), ran `mb db workflow` for T21 (success).
+Gaps documented: record-only mode needed, backfill tool needed, safe migration strategy defined.
 
 ### T23: Format Specification System
 **Status:** 🔄 **IN PROGRESS**
@@ -169,9 +171,9 @@ Extended workflow to explicit record/regenerate split; added sync path; fixed vi
 
 ## Next Session Focus
 
-1. T21: Database-Native Memory Bank Update Workflow
+1. T21: Database-Native Memory Bank Update Workflow — Record-only mode implementation, backfill tool planning
+1. T20: Memory Bank Database Parser — Parser adaptation for cross-project backfill
 1. META-1: Memory Bank Update and Maintenance
-1. T13: Implement Memory Bank CLI
 
 ## System Status
 

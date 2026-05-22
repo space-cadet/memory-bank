@@ -5,28 +5,34 @@
 ## Current Tasks
 1. **[T21]**: Database-Native Memory Bank Update Workflow (HIGH priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: Keep the DB-native workflow split and sync upgrades documented and verified against sibling fixture behavior
-   - Recent Achievement: Added explicit record/regenerate workflow modes, added `mb db sync`, and fixed importer/viewer schema drift plus sql.js import persistence
-   - Next: Run a focused cleanup pass for `mb db --db <path> ...` option handling consistency
+   - Current Focus: Phase F gaps — record-only mode, full backfill tool, safe migration strategy
+   - Recent Achievement: Cross-project validation in Cloudy workspace: 62/62 tests pass, workflow execution successful, DB insert/regenerate functional. Added explicit record/regenerate workflow modes, added `mb db sync`, and fixed importer/viewer schema drift plus sql.js import persistence
+   - Critical Finding: No record-only mode — `recordSessionWork()` always regenerates text files
+   - Critical Finding: Regeneration from partially-populated DB destroyed edit history (Cloudy workspace had 0 edit entries, so `edit_history.md` was truncated to 1 entry)
+   - Decision: Text files stay primary until DB is fully backfilled; DB serves as audit log during transition
+   - Next: Document migration strategy (done), plan record-only implementation, evaluate parser adaptation for backfill. Run a focused cleanup pass for `mb db --db <path> ...` option handling consistency
 
-2. **[T13]**: Implement Memory Bank CLI (HIGH priority)
+2. **[T20]**: Memory Bank Database Parser (MEDIUM priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: Continue CLI hardening around DB-native workflows and generated-project maintenance
-   - Recent Achievement: `mb workflow`/`mb db workflow` now support record-only and regenerate-only actions, and `mb db sync` provides upgrade path for existing generated projects
-   - Next: Complete `--db` path-handling cleanup pass and re-verify command matrix
+   - Current Focus: Parser adaptation for cross-project backfill use
+   - Recent Achievement: Parser scripts exist (~1100 lines total in `memory-bank/database/`). `mb workflow`/`mb db workflow` now support record-only and regenerate-only actions, and `mb db sync` provides upgrade path for existing generated projects
+   - Gap: Parsers written for mb-core v6.10 format; need normalization for emoji status, timezone parsing, file modification actions
+   - Next: Adapt T20 parsers for Cloudy workspace format as test case, verify roundtrip integrity. Complete `--db` path-handling cleanup pass and re-verify command matrix
 
-3. **[T25]**: Standalone Node Package (Browser-First) (HIGH priority)
-   - Status: ✅ COMPLETED
-   - Current Focus: Hold completed packaging work steady while T21/T13 Phase E validation continues
-   - Recent Achievement: Project-relative DB workflow support landed in `mb-cli`
+3. **[T13]**: Implement Memory Bank CLI (HIGH priority)
+   - Status: 🔄 IN PROGRESS
+   - Current Focus: Hold steady — CLI hardening complete from Phase E
+   - Recent Achievement: Fresh-project DB workflow bootstrap and completion paths verified
+   - Next: Add `--skip-regenerate` flag to `mb db workflow` when record-only mode is implemented
 
 4. **[META-1]**: Memory Bank Update and Maintenance (HIGH priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: Synchronize DB workflow findings, Phase E test log, and stale task/session context
+   - Current Focus: Synchronize DB workflow Phase F findings across all docs
+   - Next: Ensure all canonical files reflect the text-primary-until-backfill decision
 
-5. **[T24]**: Migrate from better-sqlite3 to sql.js (HIGH priority)
-   - Status: 🔄 IN PROGRESS
-   - Current Focus: Parser compatibility fixes and propagation to canonical/template packages
+5. **[T25]**: Standalone Node Package (Browser-First) (HIGH priority)
+   - Status: ✅ COMPLETED
+   - Current Focus: Hold completed packaging work steady
 
 6. **[T17]**: Maintenance and Upkeep of Integrated Rules (MEDIUM priority)
    - Status: 🔄 IN PROGRESS
@@ -37,43 +43,48 @@
    - Reason: Excessive complexity/dependency hell. Shelved in favor of extending T19.
 
 ## Completed Tasks (Recent)
-1. **[T21]**: Database-Native Memory Bank Update Workflow
-   - Status: ✅ COMPLETED (2026-05-12)
-   - Output: Insert + Regenerate functions ported to canonical repo. 60 integration tests passing. Phases A, B, C, D complete.
-   - Files: `memory-bank/database/lib/inserts.js`, `regenerate.js`, `workflow.js`, `test-workflow.js`
+1. **[T21 Phase E]**: Database-Native Memory Bank Update Workflow
+   - Status: ✅ COMPLETED (2026-05-21)
+   - Output: Sibling-project verification passes; repeat logging, direct completion, generated-project bootstrap fixed
 
 2. **[T19 Phase 2 Refactor]**:
    - Status: ✅ COMPLETED (2025-11-22)
    - Output: Modular Viewer architecture
 
-## Implementation Focus - Current Session (T21 + T13)
-**Phase E hardening and verification (2026-05-20 to 2026-05-21):**
-- ✅ Created sibling fixture project at `/Users/deepak/code/memory-bank-test`
-- ✅ Exercised fresh-project `mb init --database` -> dependency install -> `mb db init`
-- ✅ Fixed missing `schema.sql` copy in generated DB packages
-- ✅ Restored missing shared `findDbPath()` helper in `mb-cli/src/commands/db.js`
-- ✅ Fixed sql.js `:memory:` persistence and dirty-write handling for repeat DB workflow tests
-- ✅ Fixed same-period session reuse so focus/task/session/session_cache stay synchronized
-- ✅ Fixed direct `completeSessionWork()` so it can discover the project DB path and run without manual `openDb()`
-- ✅ Re-ran `mb db test` twice in the real sibling fixture and confirmed both passes succeed
+## Implementation Focus - Current Session (T21 + T20)
+**Phase F cross-project validation and gap documentation (2026-05-22):**
+- ✅ Cloudy workspace synced DB libraries from mb-core Phase E
+- ✅ `mb db test` in Cloudy workspace: 62 passed, 0 failed
+- ✅ `mb db workflow` for T21 (Image Generation Setup): atomic insert, 234ms, 8 file modifications recorded
+- ✅ Created migration strategy document: `db-workflow-migration-strategy.md`
+- ✅ Updated T21 task with Phase F findings, record-only gap, backfill need
+- ✅ Updated T20 task with parser adaptation Phase 4 subtasks
+- 🔄 Text files restored after regeneration incident (git checkout recovery)
+- ❌ Record-only mode not yet implemented
+- ❌ Backfill tool not yet adapted
+- ❌ DB cannot be considered primary until backfill verified
 
 ## Next Steps
-- Finish the text-based memory-bank update in `mb-core`
-- Keep the implementation docs aligned with the rapid-recording DB workflow design
-- Decide whether any additional post-Phase-E cleanup should be split into a separate task
+- Implement record-only mode (`skip_regeneration` flag) in `workflow.js`
+- Adapt T20 parsers for Cloudy workspace format (test case for cross-project backfill)
+- Run roundtrip test: text → DB → text, verify equivalence
+- Only after roundtrip passes: consider DB-primary transition
 
 ## Current Decisions
-1. **Setup Wizard as Default**: All new projects see wizard first
-2. **Skip Wizard for Existing**: Auto-detect initialized projects, skip to viewer
-3. **Modular Architecture**: setup.js is standalone module, non-breaking
-4. **No CLI Required**: Complete no-CLI workflow now possible
-5. **Security First**: All paths validated, directory traversal prevented
-6. **Backward Compatible**: mb init CLI still works, produces same results
+1. **Text stays primary until DB is fully backfilled** (2026-05-22)
+2. **Record-only mode is a blocker** for safe DB adoption
+3. **No code changes until design validated** — document first, patch later
+4. **Setup Wizard as Default**: All new projects see wizard first
+5. **Skip Wizard for Existing**: Auto-detect initialized projects, skip to viewer
+6. **Modular Architecture**: setup.js is standalone module, non-breaking
+7. **No CLI Required**: Complete no-CLI workflow now possible
+8. **Security First**: All paths validated, directory traversal prevented
+9. **Backward Compatible**: mb init CLI still works, produces same results
 
 ## System Status
-- **Database**: ✅ Operational in canonical repo and verified in the real sibling fixture
-- **Insert/Regenerate Libs**: ✅ Canonical and generated-project workflow paths now pass the current Phase E checks
-- **CLI (T13)**: ✅ Fresh-project DB workflow bootstrap and verification path now runs without the earlier manual fixes
+- **Database**: ✅ Operational in canonical repo and verified in Cloudy workspace
+- **Insert/Regenerate Libs**: ✅ Canonical and generated-project workflow paths pass tests
+- **CLI (T13)**: ✅ Fresh-project DB workflow bootstrap and verification path runs
 - **Viewer (T19)**: ✅ Modular, Bug-free (Read-only mode)
 - **Editor (T19)**: ✅ DB management, edit_history import, tasks/sessions/session_cache import
 - **Setup Wizard (T19)**: ✅ Complete 4-step initialization flow
