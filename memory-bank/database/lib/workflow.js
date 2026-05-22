@@ -2,7 +2,7 @@
 
 /**
  * Memory Bank Workflow Wrapper
- * Single function for agents to record session work and regenerate files
+ * Single function for agents to record session work, with optional regeneration
  * Replaces the 8-step manual markdown editing workflow
  */
 
@@ -24,7 +24,7 @@ import { join, resolve } from 'path';
  * 2. Updates task status if changed
  * 3. Creates/completes session record
  * 4. Updates session cache with current counts
- * 5. Regenerates edit_history.md, tasks.md, session_cache.md
+ * 5. Optionally regenerates edit_history.md, tasks.md, session_cache.md
  * 6. Logs the transaction for audit
  *
  * @param {Object} data
@@ -38,6 +38,7 @@ import { join, resolve } from 'path';
  * @param {string} [data.tasks_dir] - Directory for individual task files (e.g., memory-bank/tasks/)
  * @param {string} [data.sessions_dir] - Directory for session files (e.g., memory-bank/sessions/)
  * @param {string} [data.edits_dir] - Directory for edit chunks (e.g., memory-bank/edits/)
+ * @param {boolean} [data.regenerate_markdown] - Whether to rewrite markdown files after recording
  * @returns {Promise<Object>} Operation result with generated files and timing
  */
 export async function recordSessionWork({
@@ -50,7 +51,8 @@ export async function recordSessionWork({
   output_dir = null,
   tasks_dir = null,
   sessions_dir = null,
-  edits_dir = null
+  edits_dir = null,
+  regenerate_markdown = false
 }) {
   const startTime = performance.now();
   const transactionId = `tx-${Date.now()}`;
@@ -142,18 +144,15 @@ export async function recordSessionWork({
       completed_tasks_count: counts.completed || 0
     });
 
-    // Step 5: Regenerate markdown files
-    const baseDir = output_dir || 'memory-bank';
-    const paths = {
-      editHistory: join(baseDir, 'edit_history.md'),
-      tasks: join(baseDir, 'tasks.md'),
-      sessionCache: join(baseDir, 'session_cache.md'),
-      tasksDir: tasks_dir || join(baseDir, 'tasks'),
-      sessionsDir: sessions_dir || join(baseDir, 'sessions'),
-      editsDir: edits_dir || join(baseDir, 'edits')
-    };
-
-    const regenerated = await regenerate.regenerateAll(paths);
+    // Step 5: Optionally regenerate markdown files
+    const regenerated = regenerate_markdown
+      ? await regenerateMarkdownState({
+          output_dir: output_dir || 'memory-bank',
+          tasks_dir,
+          sessions_dir,
+          edits_dir
+        })
+      : {};
 
     // Step 6: Log transaction
     await inserts.logTransaction({
@@ -194,6 +193,22 @@ export async function recordSessionWork({
       await sqlite.closeDb();
     }
   }
+}
+
+export async function regenerateMarkdownState({
+  output_dir = 'memory-bank',
+  tasks_dir = null,
+  sessions_dir = null,
+  edits_dir = null
+} = {}) {
+  return regenerate.regenerateAll({
+    editHistory: join(output_dir, 'edit_history.md'),
+    tasks: join(output_dir, 'tasks.md'),
+    sessionCache: join(output_dir, 'session_cache.md'),
+    tasksDir: tasks_dir || join(output_dir, 'tasks'),
+    sessionsDir: sessions_dir || join(output_dir, 'sessions'),
+    editsDir: edits_dir || join(output_dir, 'edits')
+  });
 }
 
 function getLocalDateTimeParts(date) {

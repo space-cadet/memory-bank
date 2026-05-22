@@ -1,17 +1,17 @@
 # Session Cache
 
 *Created: 2026-05-18 09:57:53 IST*
-*Last Updated: 2026-05-21 02:51:53 IST*
+*Last Updated: 2026-05-22 20:18:36 IST*
 
-**Started**: 2026-05-20 18:55:15 IST
+**Started**: 2026-05-22 20:18:36 IST
 **Focus Task**: T21: Database-Native Memory Bank Update Workflow
-**Session File**: `sessions/2026-05-20-evening.md`
+**Session File**: `sessions/2026-05-22-evening.md`
 **Status**: 🔄 Active: 18, Paused: 1, Completed: 2
 
 ## Overview
 
 - Active: 18 | Paused: 1 | Completed: 2
-- Last Session: 2026-05-20-evening
+- Last Session: 2026-05-22-evening
 - Current Period: evening
 
 ## Active Tasks
@@ -53,6 +53,7 @@
 Restored shared `findDbPath()` for `mb db` subcommands.
 Extended `mb init --database` to copy `schema.sql` and `test-workflow.js`.
 Verified repeat `mb db test` passes and direct `completeSessionWork()` support in the real sibling fixture.
+Added explicit record-only/regenerate-only DB workflow modes and `mb db sync` for generated-project upgrades.
 
 ### T14: Project-Specific Rule Adaptations
 **Status:** 🔄 **IN PROGRESS**
@@ -105,6 +106,7 @@ Verified repeat `mb db test` passes and direct `completeSessionWork()` support i
 Created sibling fixture `/Users/deepak/code/memory-bank-test`.
 Fixed bootstrap, same-period session sync, sql.js persistence, and direct completion behavior.
 Verified the real sibling fixture passes `mb db test` twice and supports repeat `mb workflow` usage.
+Extended workflow to explicit record/regenerate split; added sync path; fixed viewer/import schema drift and sql.js dirty-write persistence for import saves.
 
 ### T23: Format Specification System
 **Status:** 🔄 **IN PROGRESS**

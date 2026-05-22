@@ -249,6 +249,9 @@ export function prepare(sql) {
       stmt.step();
 
       const changes = db.getRowsModified();
+      if (changes > 0) {
+        isDirty = true;
+      }
       stmt.free();
 
       return { changes };

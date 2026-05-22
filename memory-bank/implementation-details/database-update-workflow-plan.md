@@ -1,7 +1,7 @@
 # Database-Native Memory Bank Update Workflow
 
 *Created: 2025-11-13 17:46:43 IST*
-*Last Updated: 2026-05-21 02:51:53 IST*
+*Last Updated: 2026-05-22 20:18:36 IST*
 
 ## Executive Summary
 
@@ -32,6 +32,30 @@ Phase E hardening completed the core behavior needed for this design:
 - verified repeat `mb db test` passes in the real sibling fixture
 
 **Paradigm Shift**: Text files transition from authoritative source to generated output.
+
+## Update - 2026-05-22 (Workflow Split + Sync Path)
+
+The workflow interface was hardened further with explicit action control:
+
+- `mb workflow --record ...` performs DB recording only
+- `mb workflow --regenerate` performs markdown regeneration only
+- `mb workflow --record --regenerate ...` performs both, explicitly
+- default behavior without action flags remains record-only for rapid logging
+
+In parallel, generated-project durability was improved:
+
+- Added `mb db sync` to refresh generated `memory-bank/database` runtime/template assets from current canonical templates
+- Added grouped sync options (`--libs`, `--parsers`, `--database-files`, `--viewer`, `--all`, `--dry-run`)
+
+Schema-contract hardening for viewer/import path:
+
+- Updated importer/server behavior to match canonical DB-native table contracts
+- Added compatibility guard for optional `task_subtasks` table during tasks import
+- Fixed sql.js wrapper dirty-write persistence for `prepare(...).run()` so successful imports are saved reliably
+
+Open follow-up:
+
+- Keep a focused pass on `mb db --db <path> ...` option handling consistency across subcommands and path-inference fallbacks.
 
 ## Architecture Overview
 

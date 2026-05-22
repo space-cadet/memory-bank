@@ -1,6 +1,6 @@
 # Memory Bank CLI Implementation Plan
 *Created: May 18, 2025*
-*Last Updated: 2026-05-12 12:45:00 IST*
+*Last Updated: 2026-05-22 20:18:36 IST*
 
 ## Table of Contents
 1. [Overview](#overview)
@@ -22,6 +22,16 @@
 - `cli-architecture.md`: Detailed CLI architecture and component design
 - `cli-command-specification.md`: Command syntax, outputs, and error scenarios
 - Additional files to be created during implementation
+
+## 2026-05-22 Continuation (DB-Native CLI Hardening)
+
+- Added explicit action split for DB-native workflow commands:
+  - record-only mode
+  - regenerate-only mode
+  - explicit combined mode
+- Added `mb db sync` to upgrade existing generated projects by re-syncing canonical database runtime/template files.
+- Continued verification in sibling fixture `/Users/deepak/code/memory-bank-test`.
+- Noted remaining cleanup item: consistent `--db <path>` option handling across CLI invocations.
 
 ## Template Source of Truth
 Default templates are maintained inside `mb-cli/templates/` and are copied into a target project by `mb init`.

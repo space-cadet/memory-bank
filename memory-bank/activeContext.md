@@ -1,19 +1,19 @@
 # Active Context
 
-*Last Updated: 2026-05-21 02:51:53 IST*
+*Last Updated: 2026-05-22 20:18:36 IST*
 
 ## Current Tasks
 1. **[T21]**: Database-Native Memory Bank Update Workflow (HIGH priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: Record the completed Phase E hardening pass and keep the DB-native workflow design/docs synchronized with the implementation
-   - Recent Achievement: Real sibling-project verification now passes twice; repeat logging, direct completion, and generated-project bootstrap issues were fixed
-   - Next: Finish the text-based memory-bank update and keep the rapid-recording workflow documentation clear
+   - Current Focus: Keep the DB-native workflow split and sync upgrades documented and verified against sibling fixture behavior
+   - Recent Achievement: Added explicit record/regenerate workflow modes, added `mb db sync`, and fixed importer/viewer schema drift plus sql.js import persistence
+   - Next: Run a focused cleanup pass for `mb db --db <path> ...` option handling consistency
 
 2. **[T13]**: Implement Memory Bank CLI (HIGH priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: Document the completed fresh-project CLI hardening for DB-native workflow support
-   - Recent Achievement: Fresh generated projects now pass repeat `mb db test` runs and support direct `completeSessionWork()` without manual DB opening
-   - Next: Keep template and implementation docs aligned
+   - Current Focus: Continue CLI hardening around DB-native workflows and generated-project maintenance
+   - Recent Achievement: `mb workflow`/`mb db workflow` now support record-only and regenerate-only actions, and `mb db sync` provides upgrade path for existing generated projects
+   - Next: Complete `--db` path-handling cleanup pass and re-verify command matrix
 
 3. **[T25]**: Standalone Node Package (Browser-First) (HIGH priority)
    - Status: ✅ COMPLETED

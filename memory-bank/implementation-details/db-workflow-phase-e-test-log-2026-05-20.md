@@ -1,7 +1,7 @@
 # DB Workflow Phase E Test Log
 
 *Created: 2026-05-20 18:55:15 IST*
-*Last Updated: 2026-05-21 03:00:25 IST*
+*Last Updated: 2026-05-22 20:18:36 IST*
 
 ## Purpose
 
@@ -154,3 +154,14 @@ Representative paths selected for realistic workflow coverage:
 ## Open Questions
 
 - The current workflow design should stay optimized for rapid recording of changes via `mb workflow`, with explicit session/task closeout handled by `completeSessionWork()`
+
+## 2026-05-22 Follow-up Verification Addendum
+
+- Confirmed workflow action split implementation:
+  - record-only path does not regenerate markdown
+  - regenerate-only path rewrites markdown from DB state
+  - combined behavior only occurs when explicitly requested
+- Confirmed durable generated-project refresh path via `mb db sync`.
+- Verified importer/viewer path against canonical DB-native schema contract and fixed schema/import drift.
+- Fixed additional sql.js persistence gap where `prepare(...).run()` writes were not marking DB dirty, causing import writes to appear successful but not persist until this fix.
+- Remaining targeted cleanup: `mb db --db <path> ...` option handling consistency.

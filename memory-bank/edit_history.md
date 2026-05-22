@@ -1,8 +1,31 @@
 # Edit History
 
-*Last Updated: 2026-05-21 03:00:25 IST*
+*Last Updated: 2026-05-22 20:18:36 IST*
 
 ---
+
+## 2026-05-22
+
+#### 20:18:36 IST - T21, T13: Recorded DB-native workflow split, generated-project sync path, importer/schema alignment fixes, and current follow-up
+- Modified `mb-cli/src/commands/db.js` - Added workflow action split (record/regenerate), added `db sync`, and sync-grouped generated-project refresh logic
+- Modified `mb-cli/src/index.js` - Updated top-level workflow command options/help for record-only/regenerate-only/explicit-combined usage
+- Modified `mb-cli/templates/memory-bank/database/lib/sqlite.js` - Fixed sql.js dirty-write marking in `prepare(...).run()` path
+- Modified `mb-cli/templates/memory-bank/database/lib/workflow.js` - Added optional regeneration behavior and explicit regeneration helper path
+- Modified `mb-cli/templates/memory-bank/database/server.js` - Updated importer/viewer schema handling and parser compatibility paths
+- Deleted `memory-bank.code-workspace` - Removed workspace file from current uncommitted working set
+- Modified `memory-bank/database/lib/sqlite.js` - Fixed sql.js dirty-write marking in `prepare(...).run()` path
+- Modified `memory-bank/database/lib/workflow.js` - Added optional regeneration behavior and explicit regeneration helper path
+- Modified `memory-bank/database/server.js` - Updated importer/viewer schema handling and parser compatibility paths
+- Modified `memory-bank/tasks/T21.md` - Added 2026-05-22 follow-up covering record/regenerate split, sync path, and remaining `--db` cleanup item
+- Modified `memory-bank/tasks/T13.md` - Added CLI hardening notes for workflow action split and `mb db sync`
+- Modified `memory-bank/tasks.md` - Updated registry timestamp for current memory-bank synchronization
+- Modified `memory-bank/session_cache.md` - Updated current session pointer and refreshed T21/T13 progress context
+- Modified `memory-bank/activeContext.md` - Updated T21/T13 current focus, achievements, and next-step notes
+- Modified `memory-bank/implementation-details/database-update-workflow-plan.md` - Added workflow-split and generated-project sync design update
+- Modified `memory-bank/implementation-details/cli-implementation-details.md` - Added 2026-05-22 DB-native CLI hardening continuation notes
+- Modified `memory-bank/implementation-details/db-workflow-phase-e-test-log-2026-05-20.md` - Added follow-up verification addendum for workflow split and importer persistence fix
+- Created `memory-bank/sessions/2026-05-22-evening.md` - Added current session log for DB-native workflow documentation synchronization
+- Modified `memory-bank/edit_history.md` - Recorded 2026-05-22 memory-bank synchronization updates
 
 ## 2026-05-20
 

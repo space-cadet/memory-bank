@@ -135,7 +135,7 @@ try {
   await openDatabase(dbPath);
 
   if (usingDefaultDbPath && shouldBootstrapDefaultDb) {
-    await initPhaseASchema();
+    await ensurePhaseASchemaInitialized();
     console.log('✅ Initialized default database schema (Phase A)');
   }
 
@@ -155,8 +155,12 @@ async function initPhaseASchema() {
 async function ensureEditHistorySchema() {
   const row = sqlite.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='edit_entries'").get();
   if (!row) {
-    await initPhaseASchema();
+    await ensurePhaseASchemaInitialized();
   }
+}
+
+async function ensurePhaseASchemaInitialized() {
+  await ensureEditHistorySchema();
 }
 
 function parseEditEntry(lines, index) {
@@ -345,12 +349,12 @@ async function parseTaskSubtasksFromDir(tasksDirPath) {
 function parseSessionFilename(filename) {
   const match = String(filename || '').match(/^(\d{4}-\d{2}-\d{2})-([^.]+)\.md$/);
   if (!match) return null;
-  return { session_date: match[1], session_period: match[2] };
+  return { date: match[1], period: match[2] };
 }
 
 function parseSessionFrontmatter(md) {
   const raw = String(md || '');
-  const created = raw.match(/\*Created:\s*([^*]+)\*/);
+  const created = raw.match(/\*Created:\s*([^*]+)\*/) || raw.match(/\*\*Started\*\*:\s*(.+?)(\n|$)/);
   const lastUpdated = raw.match(/\*Last Updated:\s*([^*]+)\*/);
 
   // Also accept non-italic forms used by some repos
@@ -372,8 +376,14 @@ function defaultSessionStartTime(sessionDate) {
 }
 
 function parseFocusTask(md) {
-  const m = String(md || '').match(/\n##\s*Focus Task\s*\n([^\n]+)\n/);
-  return m ? m[1].trim() : null;
+  const inline = String(md || '').match(/\*\*Focus(?: Task)?\*\*:\s*(.+?)(\n|$)/);
+  if (inline) {
+    const raw = inline[1].trim();
+    const taskMatch = raw.match(/(T\d+[a-z]?|META-\d+[a-z]?)/i);
+    return taskMatch ? taskMatch[1] : raw;
+  }
+  const section = String(md || '').match(/\n##\s*Focus Task\s*\n([^\n]+)\n/);
+  return section ? section[1].trim() : null;
 }
 
 function parseSessionCacheCounts(md) {
@@ -402,6 +412,11 @@ function computeTimestampIso(dateStr, timeStr) {
 
 function isValidEditAction(value) {
   return ['Created', 'Modified', 'Updated', 'Deleted'].includes(String(value || '').trim());
+}
+
+function hasTable(tableName) {
+  const row = sqlite.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name = ?").get(tableName);
+  return Boolean(row);
 }
 
 // Serve static files from public directory
@@ -545,7 +560,7 @@ app.post('/api/import/tasks/run', async (req, res) => {
     if (!existsSync(sourcePath)) return res.status(404).json({ error: 'Source file not found' });
 
     await openDatabase(targetDbPath);
-    await initPhaseASchema();
+    await ensurePhaseASchemaInitialized();
 
     const raw = await readFile(sourcePath, 'utf-8');
     const tasks = parseTasksMarkdown(raw);
@@ -553,8 +568,12 @@ app.post('/api/import/tasks/run', async (req, res) => {
     const taskFilesDirPath = resolveUnderProject(join('memory-bank', String(taskFilesDir)));
     const taskSubtasks = includeTaskFiles ? await parseTaskSubtasksFromDir(taskFilesDirPath) : [];
 
+    const taskSubtasksSupported = hasTable('task_subtasks');
+
     if (mode === 'replace') {
-      sqlite.prepare('DELETE FROM task_subtasks').run();
+      if (taskSubtasksSupported) {
+        sqlite.prepare('DELETE FROM task_subtasks').run();
+      }
       sqlite.prepare('DELETE FROM task_dependencies').run();
       sqlite.prepare('DELETE FROM task_items').run();
     } else if (mode !== 'append') {
@@ -562,7 +581,7 @@ app.post('/api/import/tasks/run', async (req, res) => {
     }
 
     const insertTask = sqlite.prepare(`
-      INSERT OR IGNORE INTO task_items (id, title, status, priority, started, details, last_updated)
+      INSERT OR IGNORE INTO task_items (id, title, status, priority, started, details, updated)
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `);
     const insertDep = sqlite.prepare(`
@@ -570,10 +589,12 @@ app.post('/api/import/tasks/run', async (req, res) => {
       VALUES (?, ?)
     `);
 
-    const insertSubtask = sqlite.prepare(`
-      INSERT INTO task_subtasks (task_id, section, position, text, checked)
-      VALUES (?, ?, ?, ?, ?)
-    `);
+    const insertSubtask = taskSubtasksSupported
+      ? sqlite.prepare(`
+          INSERT INTO task_subtasks (task_id, section, position, text, checked)
+          VALUES (?, ?, ?, ?, ?)
+        `)
+      : null;
 
     let tasksInserted = 0;
     let depsInserted = 0;
@@ -610,7 +631,7 @@ app.post('/api/import/tasks/run', async (req, res) => {
     });
 
     await run(tasks);
-    if (taskSubtasks.length > 0) {
+    if (taskSubtasksSupported && taskSubtasks.length > 0) {
       await runSubtasks(taskSubtasks);
     }
     await sqlite.saveDb();
@@ -624,7 +645,8 @@ app.post('/api/import/tasks/run', async (req, res) => {
       depsInserted,
       taskFilesDir: includeTaskFiles ? (taskFilesDirPath || null) : null,
       subtasksParsed: taskSubtasks.length,
-      subtasksInserted
+      subtasksInserted,
+      taskSubtasksSupported
     });
   } catch (err) {
     console.error('ERROR /api/import/tasks/run:', err && err.stack ? err.stack : err);
@@ -652,8 +674,8 @@ app.get('/api/import/sessions/preview', async (req, res) => {
       const meta = parseSessionFrontmatter(raw);
       sample.push({
         file: f,
-        session_date: name.session_date,
-        session_period: name.session_period,
+        session_date: name.date,
+        session_period: name.period,
         focus_task: parseFocusTask(raw) || null,
         start_time: meta.created,
         end_time: meta.lastUpdated
@@ -681,7 +703,7 @@ app.post('/api/import/sessions/run', async (req, res) => {
     if (!existsSync(sessionsDirPath)) return res.status(404).json({ error: 'Directory not found' });
 
     await openDatabase(targetDbPath);
-    await initPhaseASchema();
+    await ensurePhaseASchemaInitialized();
 
     if (mode === 'replace') {
       sqlite.prepare('DELETE FROM sessions').run();
@@ -692,8 +714,8 @@ app.post('/api/import/sessions/run', async (req, res) => {
     const files = (await readdir(sessionsDirPath)).filter(f => f.endsWith('.md'));
     const insert = sqlite.prepare(`
       INSERT INTO sessions (
-        session_date, session_period, focus_task, start_time, end_time, status, notes
-      ) VALUES (?, ?, ?, ?, ?, ?, ?)
+        id, date, period, focus, status, active_count, paused_count, completed_count, cancelled_count, content
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
     const taskExists = sqlite.prepare('SELECT 1 as ok FROM task_items WHERE id = ?').get;
 
@@ -703,13 +725,24 @@ app.post('/api/import/sessions/run', async (req, res) => {
       if (!parsed) continue;
       const fp = join(sessionsDirPath, f);
       const raw = await readFile(fp, 'utf-8');
-      const meta = parseSessionFrontmatter(raw);
       const focusRaw = parseFocusTask(raw) || null;
       const focus = focusRaw && taskExists(focusRaw) ? focusRaw : null;
-      const startTime = meta.created || defaultSessionStartTime(parsed.session_date);
-      const endTime = meta.lastUpdated || null;
-      const status = endTime ? 'completed' : 'in_progress';
-      insert.run(parsed.session_date, parsed.session_period, focus, startTime, endTime, status, raw);
+      const counts = parseSessionCacheCounts(raw);
+      const statusRaw = String(raw).match(/\*\*Status\*\*:\s*(.+?)(\n|$)/);
+      const statusText = statusRaw ? statusRaw[1].trim().toLowerCase() : '';
+      const status = statusText.includes('complete') ? 'completed' : 'active';
+      insert.run(
+        `${parsed.date}-${parsed.period}.md`,
+        parsed.date,
+        parsed.period,
+        focus,
+        status,
+        counts.active,
+        counts.paused,
+        counts.completed,
+        0,
+        raw
+      );
       sessionsInserted += 1;
     }
 
@@ -738,8 +771,7 @@ app.get('/api/import/session-cache/preview', async (req, res) => {
 
     const raw = await readFile(sourcePath, 'utf-8');
     const counts = parseSessionCacheCounts(raw);
-    const focusMatch = String(raw).match(/\*\*Focus Task\*\*:\s*(.+?)(\n|$)/);
-    const focus = focusMatch ? focusMatch[1].trim() : null;
+    const focus = parseFocusTask(raw) || null;
 
     res.json({
       source: sourcePath,
@@ -764,7 +796,7 @@ app.post('/api/import/session-cache/run', async (req, res) => {
     if (!existsSync(sourcePath)) return res.status(404).json({ error: 'Source file not found' });
 
     await openDatabase(targetDbPath);
-    await initPhaseASchema();
+    await ensurePhaseASchemaInitialized();
 
     if (mode === 'replace') {
       sqlite.prepare('DELETE FROM session_cache').run();
@@ -774,14 +806,13 @@ app.post('/api/import/session-cache/run', async (req, res) => {
 
     const raw = await readFile(sourcePath, 'utf-8');
     const counts = parseSessionCacheCounts(raw);
-    const focusMatch = String(raw).match(/\*\*Focus Task\*\*:\s*(.+?)(\n|$)/);
-    const focus = focusMatch ? focusMatch[1].trim() : null;
+    const focus = parseFocusTask(raw) || null;
 
     const insert = sqlite.prepare(`
-      INSERT INTO session_cache (id, current_session_id, current_focus_task, active_count, paused_count, completed_count, last_updated)
-      VALUES (1, NULL, ?, ?, ?, ?, NULL)
+      INSERT INTO session_cache (session_id, status, focus_task, active_tasks_count, paused_tasks_count, completed_tasks_count, cancelled_tasks_count, raw_content)
+      VALUES ('current', 'active', ?, ?, ?, ?, ?, ?)
     `);
-    insert.run(focus, counts.active, counts.paused, counts.completed);
+    insert.run(focus, counts.active, counts.paused, counts.completed, 0, raw);
     await sqlite.saveDb();
 
     res.json({

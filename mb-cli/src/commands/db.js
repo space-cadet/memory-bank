@@ -6,17 +6,58 @@
  * Subcommands:
  *   query <sql>       Run SQL query against memory_bank.db
  *   test              Run integration test suite
- *   workflow          Record session work and regenerate files (interactive)
+ *   workflow          Record session work and/or regenerate files
  *   init              Initialize database schema
  */
 
 import { Command } from 'commander';
 import { resolve, dirname, join } from 'path';
 import { existsSync, readFileSync } from 'fs';
+import { copyFile, mkdir } from 'fs/promises';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+const DB_TEMPLATE_ROOT = resolve(__dirname, '../../templates/memory-bank/database');
+
+const SYNC_GROUPS = {
+  database: [
+    'package.json',
+    'pnpm-workspace.yaml',
+    'README.md',
+    'schema.sql'
+  ],
+  parsers: [
+    'parse-edits.js',
+    'parse-tasks.js',
+    'parse-sessions.js',
+    'parse-session-cache.js',
+    'run-all.sh',
+    'query.js',
+    'query-tasks.js',
+    'test-workflow.js'
+  ],
+  libs: [
+    'lib/sqlite.js',
+    'lib/inserts.js',
+    'lib/regenerate.js',
+    'lib/workflow.js'
+  ],
+  viewer: [
+    'server.js',
+    'schema.sql',
+    'init-schema.js',
+    'test-schema.js',
+    'generate-test-data.js',
+    'public/index.html',
+    'public/js/app.js',
+    'public/js/router.js',
+    'public/js/api.js',
+    'public/js/ui.js',
+    'public/js/setup.js',
+    'public/css/style.css'
+  ]
+};
 
 // Database lib modules — look in project's memory-bank/database/lib first,
 // then fall back to mb-cli's own templates (for development/testing)
@@ -74,6 +115,77 @@ function findDbPath(options = {}) {
   }
 
   return null;
+}
+
+function getMemoryBankRoot(options = {}) {
+  if (options.root) return resolve(options.root);
+
+  const dbPath = findDbPath(options);
+  if (dbPath) {
+    const dbDir = dirname(dbPath);
+    if (dbDir.endsWith('/memory-bank/database') || dbDir.endsWith('\\memory-bank\\database')) {
+      return dirname(dbDir);
+    }
+    if (dbDir.endsWith('/database') || dbDir.endsWith('\\database')) {
+      return dirname(dbDir);
+    }
+  }
+
+  return resolve('memory-bank');
+}
+
+function selectedSyncGroups(options = {}) {
+  if (options.all) return ['database', 'parsers', 'libs', 'viewer'];
+
+  const groups = [];
+  if (options.databaseFiles) groups.push('database');
+  if (options.parsers) groups.push('parsers');
+  if (options.libs) groups.push('libs');
+  if (options.viewer) groups.push('viewer');
+
+  return groups.length > 0 ? groups : ['libs'];
+}
+
+async function syncGeneratedDatabaseFiles(options) {
+  const mbRoot = getMemoryBankRoot(options);
+  const dbRoot = join(mbRoot, 'database');
+  const groups = selectedSyncGroups(options);
+
+  if (!existsSync(dbRoot)) {
+    console.error(`Error: Database directory not found at ${dbRoot}`);
+    console.log('Run `mb init --database` first, or specify --root <memory-bank-dir>.');
+    process.exit(1);
+  }
+
+  console.log(`Syncing generated database files in: ${dbRoot}`);
+  console.log(`Groups: ${groups.join(', ')}`);
+
+  let copied = 0;
+  for (const group of groups) {
+    console.log(`\n${group}:`);
+    for (const relativePath of SYNC_GROUPS[group]) {
+      const sourcePath = join(DB_TEMPLATE_ROOT, relativePath);
+      const targetPath = join(dbRoot, relativePath);
+
+      if (!existsSync(sourcePath)) {
+        console.warn(`  ⚠️  Missing template source: ${relativePath}`);
+        continue;
+      }
+
+      console.log(`  ↻ ${relativePath}`);
+      if (!options.dryRun) {
+        await mkdir(dirname(targetPath), { recursive: true });
+        await copyFile(sourcePath, targetPath);
+      }
+      copied += 1;
+    }
+  }
+
+  if (options.dryRun) {
+    console.log(`\nDRY RUN: ${copied} file(s) would be synced.`);
+  } else {
+    console.log(`\n✅ Synced ${copied} file(s).`);
+  }
 }
 
 // ============================================================================
@@ -224,9 +336,18 @@ async function initCommand(options) {
   }
 }
 
+async function syncCommand(options) {
+  try {
+    await syncGeneratedDatabaseFiles(options);
+  } catch (err) {
+    console.error(`Error: ${err.message}`);
+    process.exit(1);
+  }
+}
+
 // ============================================================================
 // WORKFLOW COMMAND
-// Record session work and regenerate markdown files
+// Record session work and/or regenerate markdown files
 // ============================================================================
 
 async function workflowCommand(options) {
@@ -237,12 +358,22 @@ async function workflowCommand(options) {
     process.exit(1);
   }
 
-  // Validate required arguments
-  if (!options.task || !options.description) {
-    console.error('Error: --task and --description are required');
-    console.log('\nUsage: mb db workflow --task T25 --description "Built CLI utilities" [options]');
+  const shouldRecord = options.record || (!options.record && !options.regenerate);
+  const shouldRegenerate = Boolean(options.regenerate);
+
+  if (!shouldRecord && !shouldRegenerate) {
+    console.error('Error: choose at least one action with --record or --regenerate');
+    process.exit(1);
+  }
+
+  // Validate required arguments for recording
+  if (shouldRecord && (!options.task || !options.description)) {
+    console.error('Error: --task and --description are required when using --record');
+    console.log('\nUsage: mb db workflow --record --task T25 --description "Built CLI utilities" [options]');
     console.log('');
     console.log('Options:');
+    console.log('  --record            Record work into the database (default if no action flag is given)');
+    console.log('  --regenerate        Rewrite markdown files from the current database state');
     console.log('  --task <id>         Task being worked on (e.g., T25)');
     console.log('  --description <txt> Brief description of work done');
     console.log('  --files <list>      Comma-separated file changes: action:path,action:path');
@@ -270,9 +401,12 @@ async function workflowCommand(options) {
   }
 
   console.log(`Database: ${dbPath}`);
-  console.log(`Task: ${options.task}`);
-  console.log(`Description: ${options.description}`);
-  if (files_modified.length > 0) {
+  console.log(`Actions: ${[shouldRecord ? 'record' : null, shouldRegenerate ? 'regenerate' : null].filter(Boolean).join(', ')}`);
+  if (shouldRecord) {
+    console.log(`Task: ${options.task}`);
+    console.log(`Description: ${options.description}`);
+  }
+  if (shouldRecord && files_modified.length > 0) {
     console.log(`Files modified: ${files_modified.length}`);
   }
   console.log('');
@@ -283,23 +417,39 @@ async function workflowCommand(options) {
     // Open database before calling workflow
     await sqlite.openDb(dbPath);
 
-    const result = await workflow.recordSessionWork({
-      task_id: options.task,
-      task_description: options.description,
-      files_modified: files_modified.length > 0 ? files_modified : undefined,
-      task_status: options.status || null,
-      session_notes: '',
-      session_period: options.period || 'morning',
-      output_dir: options.output || null
-    });
+    let result = {
+      entry_id: null,
+      session_id: null,
+      duration_ms: 0,
+      transaction_id: null,
+      files_regenerated: []
+    };
+
+    if (shouldRecord) {
+      result = await workflow.recordSessionWork({
+        task_id: options.task,
+        task_description: options.description,
+        files_modified: files_modified.length > 0 ? files_modified : undefined,
+        task_status: options.status || null,
+        session_notes: '',
+        session_period: options.period || 'morning',
+        output_dir: options.output || null,
+        regenerate_markdown: shouldRegenerate
+      });
+    } else {
+      const regenerated = await workflow.regenerateMarkdownState({
+        output_dir: options.output || 'memory-bank'
+      });
+      result.files_regenerated = Object.keys(regenerated).filter(k => regenerated[k]);
+    }
 
     await sqlite.closeDb();
 
     console.log('✅ Workflow completed successfully');
-    console.log(`  Entry ID: ${result.entry_id}`);
-    console.log(`  Session ID: ${result.session_id}`);
-    console.log(`  Duration: ${result.duration_ms}ms`);
-    console.log(`  Files regenerated: ${result.files_regenerated.join(', ')}`);
+    if (result.entry_id !== null) console.log(`  Entry ID: ${result.entry_id}`);
+    if (result.session_id !== null) console.log(`  Session ID: ${result.session_id}`);
+    if (result.duration_ms) console.log(`  Duration: ${result.duration_ms}ms`);
+    console.log(`  Files regenerated: ${result.files_regenerated.length > 0 ? result.files_regenerated.join(', ') : '(none)'}`);
     return result;
   } catch (err) {
     console.error(`Error: ${err.message}`);
@@ -337,12 +487,22 @@ export async function workflowCommandStandalone(options) {
     process.exit(1);
   }
 
+  const shouldRecord = options.record || (!options.record && !options.regenerate);
+  const shouldRegenerate = Boolean(options.regenerate);
+
+  if (!shouldRecord && !shouldRegenerate) {
+    console.error('Error: choose at least one action with --record or --regenerate');
+    process.exit(1);
+  }
+
   // Validate required arguments
-  if (!options.task || !options.description) {
-    console.error('Error: --task and --description are required');
-    console.log('\nUsage: mb workflow --task T1 --description "Built CLI utilities" [options]');
+  if (shouldRecord && (!options.task || !options.description)) {
+    console.error('Error: --task and --description are required when using --record');
+    console.log('\nUsage: mb workflow --record --task T1 --description "Built CLI utilities" [options]');
     console.log('');
     console.log('Options:');
+    console.log('  --record            Record work into the database (default if no action flag is given)');
+    console.log('  --regenerate        Rewrite markdown files from the current database state');
     console.log('  --task <id>         Task being worked on (e.g., T1)');
     console.log('  --description <txt> Brief description of work done');
     console.log('  --files <list>      Comma-separated file changes: action:path,action:path');
@@ -371,9 +531,12 @@ export async function workflowCommandStandalone(options) {
   }
 
   console.log(`Database: ${dbPath}`);
-  console.log(`Task: ${options.task}`);
-  console.log(`Description: ${options.description}`);
-  if (files_modified.length > 0) {
+  console.log(`Actions: ${[shouldRecord ? 'record' : null, shouldRegenerate ? 'regenerate' : null].filter(Boolean).join(', ')}`);
+  if (shouldRecord) {
+    console.log(`Task: ${options.task}`);
+    console.log(`Description: ${options.description}`);
+  }
+  if (shouldRecord && files_modified.length > 0) {
     console.log(`Files modified: ${files_modified.length}`);
   }
   console.log('');
@@ -384,23 +547,39 @@ export async function workflowCommandStandalone(options) {
     // Open database before calling workflow
     await sqlite.openDb(dbPath);
 
-    const result = await workflow.recordSessionWork({
-      task_id: options.task,
-      task_description: options.description,
-      files_modified: files_modified.length > 0 ? files_modified : undefined,
-      task_status: options.status || null,
-      session_notes: '',
-      session_period: options.period || 'morning',
-      output_dir: options.output || null
-    });
+    let result = {
+      entry_id: null,
+      session_id: null,
+      duration_ms: 0,
+      transaction_id: null,
+      files_regenerated: []
+    };
+
+    if (shouldRecord) {
+      result = await workflow.recordSessionWork({
+        task_id: options.task,
+        task_description: options.description,
+        files_modified: files_modified.length > 0 ? files_modified : undefined,
+        task_status: options.status || null,
+        session_notes: '',
+        session_period: options.period || 'morning',
+        output_dir: options.output || null,
+        regenerate_markdown: shouldRegenerate
+      });
+    } else {
+      const regenerated = await workflow.regenerateMarkdownState({
+        output_dir: options.output || 'memory-bank'
+      });
+      result.files_regenerated = Object.keys(regenerated).filter(k => regenerated[k]);
+    }
 
     await sqlite.closeDb();
 
     console.log('✅ Workflow completed successfully');
-    console.log(`  Entry ID: ${result.entry_id}`);
-    console.log(`  Session ID: ${result.session_id}`);
-    console.log(`  Duration: ${result.duration_ms}ms`);
-    console.log(`  Files regenerated: ${result.files_regenerated.join(', ')}`);
+    if (result.entry_id !== null) console.log(`  Entry ID: ${result.entry_id}`);
+    if (result.session_id !== null) console.log(`  Session ID: ${result.session_id}`);
+    if (result.duration_ms) console.log(`  Duration: ${result.duration_ms}ms`);
+    console.log(`  Files regenerated: ${result.files_regenerated.length > 0 ? result.files_regenerated.join(', ') : '(none)'}`);
     return result;
   } catch (err) {
     console.error(`Error: ${err.message}`);
@@ -431,10 +610,23 @@ export function dbCommand(program) {
     .description('Initialize database schema')
     .action(initCommand);
 
+  db.command('sync')
+    .description('Sync generated database/template files into an existing project')
+    .option('--root <path>', 'Path to the memory-bank directory (defaults to inferred project memory-bank/)')
+    .option('--libs', 'Sync workflow/runtime library files')
+    .option('--parsers', 'Sync parser scripts and query tools')
+    .option('--database-files', 'Sync database root files such as schema.sql and package metadata')
+    .option('--viewer', 'Sync viewer server and UI files')
+    .option('--all', 'Sync all generated database-related files')
+    .option('--dry-run', 'Preview files that would be synced')
+    .action(syncCommand);
+
   db.command('workflow')
-    .description('Record session work and regenerate markdown files')
-    .requiredOption('--task <id>', 'Task being worked on (e.g., T25)')
-    .requiredOption('--description <text>', 'Brief description of work done')
+    .description('Record session work and/or regenerate markdown files')
+    .option('--record', 'Record work into the database (default if no action flag is given)')
+    .option('--regenerate', 'Rewrite markdown files from the current database state')
+    .option('--task <id>', 'Task being worked on (required with --record)')
+    .option('--description <text>', 'Brief description of work done (required with --record)')
     .option('--files <list>', 'Comma-separated file changes: action:path,action:path')
     .option('--status <status>', 'New task status: in_progress, completed, paused')
     .option('--period <period>', 'Session period: morning, afternoon, evening, night', 'morning')

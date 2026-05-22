@@ -72,9 +72,11 @@ updateCommandExport(program);
 // Register workflow command (top-level alias for db workflow)
 program
   .command('workflow')
-  .description('Record session work and regenerate markdown files (DB-native)')
-  .requiredOption('--task <id>', 'Task being worked on (e.g., T1)')
-  .requiredOption('--description <text>', 'Brief description of work done')
+  .description('Record session work and/or regenerate markdown files (DB-native)')
+  .option('--record', 'Record work into the database (default if no action flag is given)')
+  .option('--regenerate', 'Rewrite markdown files from the current database state')
+  .option('--task <id>', 'Task being worked on (required with --record)')
+  .option('--description <text>', 'Brief description of work done (required with --record)')
   .option('--files <list>', 'Comma-separated file changes: action:path,action:path')
   .option('--status <status>', 'New task status: in_progress, completed, paused')
   .option('--period <period>', 'Session period: morning, afternoon, evening, night', 'morning')
@@ -83,14 +85,14 @@ program
   .addHelpText('after', `
 Examples:
   mb workflow --task T1 --description "Implemented feature X"
-  mb workflow --task T2 --description "Fixed bug" --files "Modified:src/index.js,Created:lib/util.js" --status completed
-  mb workflow --task T3 --description "Refactored code" --period afternoon
+  mb workflow --record --regenerate --task T2 --description "Fixed bug" --files "Modified:src/index.js,Created:lib/util.js" --status completed
+  mb workflow --regenerate
+  mb workflow --record --task T3 --description "Refactored code" --period afternoon
 
 This command uses the DB-native workflow:
-  1. Inserts edit entry + file modifications into SQLite
-  2. Updates task status if changed
-  3. Creates/updates session record
-  4. Regenerates edit_history.md, tasks.md, session_cache.md
+  1. With record mode, inserts edit entry + file modifications into SQLite
+  2. With record mode, updates task status and session state
+  3. With regenerate mode, rewrites markdown from the current DB state
 
 Requires: memory-bank/database/lib/ with workflow.js, sqlite.js, inserts.js, regenerate.js
 Set up with: mb init --database
