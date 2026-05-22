@@ -1,17 +1,17 @@
 # Session Cache
 
 *Created: 2026-05-18 09:57:53 IST*
-*Last Updated: 2026-05-21 02:51:53 IST*
+*Last Updated: 2026-05-22 17:48 IST*
 
-**Started**: 2026-05-20 18:55:15 IST
+**Started**: 2026-05-22 17:48 IST
 **Focus Task**: T21: Database-Native Memory Bank Update Workflow
-**Session File**: `sessions/2026-05-20-evening.md`
+**Session File**: `sessions/2026-05-22-evening.md`
 **Status**: 🔄 Active: 18, Paused: 1, Completed: 2
 
 ## Overview
 
 - Active: 18 | Paused: 1 | Completed: 2
-- Last Session: 2026-05-20-evening
+- Last Session: 2026-05-22-evening
 - Current Period: evening
 
 ## Active Tasks
@@ -85,7 +85,7 @@ Verified repeat `mb db test` passes and direct `completeSessionWork()` support i
 ### T20: Memory Bank Database Parser
 **Status:** 🔄 **IN PROGRESS**
 **Started:** 2025-11-12
-**Context**: [Details](tasks/T20.md) - Phase 3 continued: Format handling improvements, timezone optionality
+**Context**: [Details](tasks/T20.md) - Phase 3 continued: Format handling improvements, timezone optionality. Parser scripts (~1100 lines total) exist in `memory-bank/database/`. Need adaptation for cross-project backfill use (T21 dependency).
 **Progress**:
 [Details](tasks/T20.md) - Phase 3 continued: Format handling improvements, timezone optionality
 
@@ -99,12 +99,14 @@ Verified repeat `mb db test` passes and direct `completeSessionWork()` support i
 ### T21: Database-Native Memory Bank Update Workflow
 **Status:** 🔄 **IN PROGRESS**
 **Started:** 2025-11-13
-**Context**: [Details](tasks/T21.md) - Phase E hardening completed for the rapid-recording DB workflow path
+**Context**: [Details](tasks/T21.md) - Phase E hardening completed. Phase F cross-project validation in Cloudy workspace completed 2026-05-22. DB workflow functional (62/62 tests pass) but three gaps identified: (1) no record-only mode, (2) regeneration destroys history without full backfill, (3) text files must stay primary until DB is fully populated.
 **Progress**:
 [Details](tasks/T21.md) - Phase E hardening completed for the rapid-recording DB workflow path
 Created sibling fixture `/Users/deepak/code/memory-bank-test`.
 Fixed bootstrap, same-period session sync, sql.js persistence, and direct completion behavior.
 Verified the real sibling fixture passes `mb db test` twice and supports repeat `mb workflow` usage.
+Phase F: Cloudy workspace synced libraries, ran `mb db test` (62 passed), ran `mb db workflow` for T21 (success).
+Gaps documented: record-only mode needed, backfill tool needed, safe migration strategy defined.
 
 ### T23: Format Specification System
 **Status:** 🔄 **IN PROGRESS**
@@ -167,9 +169,9 @@ Verified the real sibling fixture passes `mb db test` twice and supports repeat 
 
 ## Next Session Focus
 
-1. T21: Database-Native Memory Bank Update Workflow
+1. T21: Database-Native Memory Bank Update Workflow — Record-only mode implementation, backfill tool planning
+1. T20: Memory Bank Database Parser — Parser adaptation for cross-project backfill
 1. META-1: Memory Bank Update and Maintenance
-1. T13: Implement Memory Bank CLI
 
 ## System Status
 
