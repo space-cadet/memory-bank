@@ -76,6 +76,8 @@ CREATE TABLE sessions (
   period TEXT,                           -- morning, afternoon, evening, night
   status TEXT,                           -- active, completed
   focus TEXT,                            -- Task ID being focused on
+  start_time TEXT,                       -- ISO timestamp when session started
+  end_time TEXT,                         -- ISO timestamp when session ended
   active_count INTEGER,                  -- Active task count
   paused_count INTEGER,                  -- Paused task count
   completed_count INTEGER,               -- Completed task count

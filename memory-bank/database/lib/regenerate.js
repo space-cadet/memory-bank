@@ -362,7 +362,7 @@ async function getCurrentSession(focusTaskId = null) {
     const focused = await sqlite.queryGet(
       `SELECT * FROM sessions
        WHERE status = 'active' AND focus = ?
-       ORDER BY created_at DESC, id DESC
+       ORDER BY date DESC, created_at DESC, id DESC
        LIMIT 1`,
       [focusTaskId]
     );
@@ -372,7 +372,7 @@ async function getCurrentSession(focusTaskId = null) {
   const active = await sqlite.queryGet(
     `SELECT * FROM sessions
      WHERE status = 'active'
-     ORDER BY created_at DESC, id DESC
+     ORDER BY date DESC, created_at DESC, id DESC
      LIMIT 1`
   );
   if (active) return active;
@@ -398,7 +398,7 @@ function parseSessionCacheMetadata(rawContent) {
 async function getLatestSession() {
   return sqlite.queryGet(
     `SELECT * FROM sessions
-     ORDER BY created_at DESC, id DESC
+     ORDER BY date DESC, created_at DESC, id DESC
      LIMIT 1`
   );
 }
@@ -489,16 +489,16 @@ export async function regenerateSessionFile(sessionsDir) {
   let sessions;
   try {
     sessions = await sqlite.queryAll(
-      `SELECT id, date, period, focus, status, content, start_time, end_time, created_at
+      `SELECT id, date, period, focus, status, content, start_time, end_time
        FROM sessions
        ORDER BY date DESC, created_at DESC, id DESC`
     );
   } catch (err) {
     if (!err.message.includes('no such column')) throw err;
     sessions = await sqlite.queryAll(
-      `SELECT id, date, period, focus, status, content, created_at
+      `SELECT id, date, period, focus, status, content
        FROM sessions
-       ORDER BY date DESC, created_at DESC, id DESC`
+       ORDER BY date DESC, id DESC`
     );
   }
 
