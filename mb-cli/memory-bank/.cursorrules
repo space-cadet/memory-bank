@@ -1,0 +1,43 @@
+# Development Guidelines
+
+## Project Standards
+
+### Code Style
+- [Add your coding standards]
+- [Formatting preferences]
+- [Naming conventions]
+
+### Architecture Patterns
+- [Key patterns used in this project]
+- [Design principles]
+- [Architectural decisions]
+
+### File Organization
+- [How files are organized]
+- [Module structure]
+- [Naming conventions for files/folders]
+
+### Dependencies
+- [Key dependencies]
+- [Version constraints]
+- [Why each dependency is used]
+
+### Testing Requirements
+- [Testing framework]
+- [Coverage requirements]
+- [Testing conventions]
+
+### Documentation Standards
+- [Comment style]
+- [README requirements]
+- [API documentation format]
+
+### Git Workflow
+- [Branch naming conventions]
+- [Commit message format]
+- [PR review process]
+
+### Important Notes
+- [Project-specific considerations]
+- [Common gotchas]
+- [Best practices for this codebase]
