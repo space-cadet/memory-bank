@@ -370,7 +370,7 @@ function testDataInsertion(db) {
           session.start_time,
           session.end_time,
           session.status,
-          session.notes
+          session.content
         );
       }
     });

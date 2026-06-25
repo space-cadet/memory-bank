@@ -495,7 +495,7 @@ app.post('/api/import/tasks/run', async (req, res) => {
     }
 
     const insertTask = sqlite.prepare(`
-      INSERT OR IGNORE INTO task_items (id, title, status, priority, started, details, updated)
+      INSERT OR IGNORE INTO task_items (id, title, status, priority, started, details, last_updated)
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `);
     const insertDep = sqlite.prepare(`
@@ -605,7 +605,7 @@ app.post('/api/import/sessions/run', async (req, res) => {
     const files = (await readdir(sessionsDirPath)).filter(f => f.endsWith('.md'));
     const insert = sqlite.prepare(`
       INSERT INTO sessions (
-        id, date, period, focus, status, active_count, paused_count, completed_count, cancelled_count, content
+        id, session_date, session_period, focus_task, status, active_count, paused_count, completed_count, cancelled_count, content
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 

@@ -206,7 +206,7 @@ export async function addTaskSubtasks(taskId, subtasks) {
  * @param {string} data.start_time - ISO timestamp
  * @param {string} [data.end_time] - ISO timestamp
  * @param {string} [data.status] - in_progress (default) or completed
- * @param {string} [data.notes] - Session notes
+ * @param {string} [data.content] - Session notes/content
  * @returns {Promise<{sessionId:number}>}
  */
 export async function createSession({ id = null, session_date, session_period, focus_task = null, status = 'active', content = '', start_time = null, end_time = null }) {
