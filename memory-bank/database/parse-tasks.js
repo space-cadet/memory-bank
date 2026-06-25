@@ -313,9 +313,9 @@ async function main() {
     const dbPath = join(__dirname, 'memory_bank.db');
     await sqlite.openDb(dbPath);
     
-    await sqlite.exec('DROP TABLE IF EXISTS task_dependencies');
-    await sqlite.exec('DROP TABLE IF EXISTS task_subtasks');
-    await sqlite.exec('DROP TABLE IF EXISTS task_items');
+    await sqlite.exec('DELETE FROM task_dependencies');
+    await sqlite.exec('DELETE FROM task_subtasks');
+    await sqlite.exec('DELETE FROM task_items');
     
     await initSchema();
     console.log('✓ Database schema initialized\n');

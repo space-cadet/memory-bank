@@ -302,8 +302,8 @@ async function main() {
 
     // Clear existing tables
     console.log('Clearing existing database data...\n');
-    await sqlite.exec('DROP TABLE IF EXISTS file_modifications');
-    await sqlite.exec('DROP TABLE IF EXISTS edit_entries');
+    await sqlite.exec('DELETE FROM file_modifications');
+    await sqlite.exec('DELETE FROM edit_entries');
 
     // Initialize schema
     await initDatabase();

@@ -100,7 +100,7 @@ async function main() {
     
     // Clear existing table
     console.log('Clearing existing session_cache data...\n');
-    await sqlite.exec('DROP TABLE IF EXISTS session_cache');
+    await sqlite.exec('DELETE FROM session_cache');
     await initSchema();
 
     // Parse content
