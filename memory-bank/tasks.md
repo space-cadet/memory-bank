@@ -1,7 +1,7 @@
 # Memory Bank - Sage Workspace
 
-*Created: 2026-05-18 09:57:53 IST*
-*Last Updated: 2026-05-22 20:18:36 IST*
+*Created: 2026-06-25 06:17:48 IST*
+*Last Updated: 2026-06-25 06:17:48 IST*
 
 ## Overview
 
@@ -20,10 +20,10 @@ This is the Memory Bank for the Sage (灵剑) OpenClaw workspace.
 | T16 | AI Consciousness Dialog Series | 🔄 | HIGH | 2025-05-26 | T15 | [Details](tasks/T16.md) |
 | T17 | Maintenance and Upkeep of Integrated Rules | 🔄 | MEDIUM | 2025-05-28 | T15, T16 | [Details](tasks/T17.md) |
 | T19 | Memory Bank Viewer Web Interface | 🔄 | HIGH | 2025-11-10 | - | [Details](tasks/T19.md) |
-| T20 | Memory Bank Database Parser | 🔄 | MEDIUM | 2025-11-12 | - | [Details](tasks/T20.md) - Parser scripts exist (~1100 lines), need adaptation for cross-project backfill (T21 dependency) |
+| T20 | Memory Bank Database Parser | 🔄 | MEDIUM | 2025-11-12 | - | [Details](tasks/T20.md) |
 | T20a | Adaptive LLM-Based Format Parser | 🔄 | HIGH | 2025-11-12 | T20 | [Details](tasks/T20a.md) |
-| T21 | Database-Native Memory Bank Update Workflow | 🔄 | HIGH | 2025-11-13 | T13, T20, T20a | [Details](tasks/T21.md) - Phase E complete. Phase F gaps: record-only mode, backfill tool, safe migration strategy |
-| T22 | AdminJS Database Management Interface | ⏸️ | HIGH | 2025-11-22 | T21 | [Details](tasks/T22.md) |
+| T21 | Database-Native Memory Bank Update Workflow | 🔄 | HIGH | 2025-11-13 | T13, T20, T20a | [Details](tasks/T21.md) |
+| T22 | AdminJS Database Management Interface | 🔄 | HIGH | 2025-11-22 | T21 | [Details](tasks/T22.md) |
 | T23 | Format Specification System | 🔄 | HIGH | 2025-12-05 | T17, T21 | [Details](tasks/T23.md) |
 | T3 | Implement DB Migration | 🔄 | HIGH | 2025-11-12 | - | [Details](tasks/T3.md) |
 | T4 | Optimize Rules System | 🔄 | HIGH | 2025-04-15 | T1 | [Details](tasks/T4.md) |
@@ -35,8 +35,8 @@ This is the Memory Bank for the Sage (灵剑) OpenClaw workspace.
 
 | ID | Title | Status | Priority | Started | Completed | Dependencies | Details |
 |----|-------|--------|----------|---------|-----------|--------------|---------|
-| T18 | Integrated Rules Redesign | ✅ | HIGH | 2025-07-14 | 2025-07-14 | T17 | [Details](tasks/T18.md) |
-| T25 | Standalone Node Package (Browser-First) | ✅ | HIGH | 2025-12-16 | 2026-05-18 | T21 | [Details](tasks/T25.md) |
+| T18 | Integrated Rules Redesign | ✅ | HIGH | 2025-07-14 | 2025-07-14 | 2025-07-14 | [Details](tasks/T18.md) |
+| T25 | Standalone Node Package (Browser-First) | ✅ | HIGH | 2025-12-16 | 2025-12-16 | 2026-05-18 | [Details](tasks/T25.md) |
 
 ## Task Relationships
 
@@ -58,7 +58,7 @@ T17: Maintenance and Upkeep of Integrated Rules
   └── T15
   └── T16
 T18: Integrated Rules Redesign
-  └── T17
+  └── 2025-07-14
 T19: Memory Bank Viewer Web Interface
 T20: Memory Bank Database Parser
 T20a: Adaptive LLM-Based Format Parser
@@ -72,6 +72,8 @@ T22: AdminJS Database Management Interface
 T23: Format Specification System
   └── T17
   └── T21
+T25: Standalone Node Package (Browser-First)
+  └── 2026-05-18
 T3: Implement DB Migration
 T4: Optimize Rules System
   └── T1
@@ -84,7 +86,7 @@ T9: Implement Rules v6.2 Changes
 
 ## Status Summary
 
-- **Active**: 18
-- **Completed**: 1
-- **Paused**: 1
-- **Total**: 20
+- **Active**: 19
+- **Completed**: 2
+- **Paused**: 0
+- **Total**: 21

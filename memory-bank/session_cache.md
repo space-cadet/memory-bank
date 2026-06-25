@@ -1,27 +1,27 @@
 # Session Cache
 
-*Created: 2026-05-18 09:57:53 IST*
-*Last Updated: 2026-05-22 20:18:36 IST*
+*Created: 2026-06-25 06:17:48 IST*
+*Last Updated: 2026-06-25 06:17:48 IST*
 
-**Started**: 2026-05-22 20:18:36 IST
+**Started**: 2026-06-25 06:11:51 IST
 **Focus Task**: T21: Database-Native Memory Bank Update Workflow
-**Session File**: `sessions/2026-05-22-evening.md`
-**Status**: 🔄 Active: 18, Paused: 1, Completed: 2
+**Session File**: `sessions/2026-06-25-morning.md`
+**Status**: 🔄 Active: 19, Paused: 0, Completed: 2
 
 ## Overview
 
-- Active: 18 | Paused: 1 | Completed: 2
-- Last Session: 2026-05-22-evening
-- Current Period: evening
+- Active: 19 | Paused: 0 | Completed: 2
+- Last Session: 2026-06-25
+- Current Period: morning
 
 ## Active Tasks
 
 ### META-1: Memory Bank Update and Maintenance
 **Status:** 🔄 **IN PROGRESS**
 **Started:** 2025-11-13
-**Context**: [Details](tasks/META-1.md) - Updated update workflow (v6.11); T23 format spec initiated
+**Context**: [Details](tasks/META-1.md)
 **Progress**:
-[Details](tasks/META-1.md) - Updated update workflow (v6.11); T23 format spec initiated
+[Details](tasks/META-1.md)
 
 ### T1: Multi-task Support
 **Status:** 🔄 **IN PROGRESS**
@@ -47,80 +47,80 @@
 ### T13: Implement Memory Bank CLI
 **Status:** 🔄 **IN PROGRESS**
 **Started:** 2025-05-17
-**Context**: [Details](tasks/T13.md) - Fresh-project CLI hardening for DB-native workflow bootstrap and completion paths
+**Context**: [Details](tasks/T13.md)
 **Progress**:
-[Details](tasks/T13.md) - Fresh-project CLI hardening for DB-native workflow bootstrap and completion paths
-Restored shared `findDbPath()` for `mb db` subcommands.
-Extended `mb init --database` to copy `schema.sql` and `test-workflow.js`.
-Verified repeat `mb db test` passes and direct `completeSessionWork()` support in the real sibling fixture.
-Added explicit record-only/regenerate-only DB workflow modes and `mb db sync` for generated-project upgrades.
+[Details](tasks/T13.md)
 
 ### T14: Project-Specific Rule Adaptations
 **Status:** 🔄 **IN PROGRESS**
 **Started:** 2025-05-23
-**Context**: [Details](tasks/T14.md) - Research adaptation, templates, and documentation completed
+**Context**: [Details](tasks/T14.md)
 **Progress**:
-[Details](tasks/T14.md) - Research adaptation, templates, and documentation completed
+[Details](tasks/T14.md)
 
 ### T16: AI Consciousness Dialog Series
 **Status:** 🔄 **IN PROGRESS**
 **Started:** 2025-05-26
-**Context**: [Details](tasks/T16.md) - Ongoing documentation of consciousness exploration
+**Context**: [Details](tasks/T16.md)
 **Progress**:
-[Details](tasks/T16.md) - Ongoing documentation of consciousness exploration
+[Details](tasks/T16.md)
 
 ### T17: Maintenance and Upkeep of Integrated Rules
 **Status:** 🔄 **IN PROGRESS**
 **Started:** 2025-05-28
-**Context**: [Details](tasks/T17.md) - v6.11 creation: Strict Schema Enforcement for Viewer compatibility; v6.12 pending (format spec alignment)
+**Context**: [Details](tasks/T17.md)
 **Progress**:
-[Details](tasks/T17.md) - v6.11 creation: Strict Schema Enforcement for Viewer compatibility; v6.12 pending (format spec alignment)
+[Details](tasks/T17.md)
 
 ### T19: Memory Bank Viewer Web Interface
 **Status:** 🔄 **IN PROGRESS**
 **Started:** 2025-11-10
-**Context**: [Details](tasks/T19.md) - Modular SPA; canonicalized into memory-bank/database with server-side pagination/filter/sort (2025-12-13). Ready for Phase 3 (Writes).
+**Context**: [Details](tasks/T19.md)
 **Progress**:
-[Details](tasks/T19.md) - Modular SPA; canonicalized into memory-bank/database with server-side pagination/filter/sort (2025-12-13). Ready for Phase 3 (Writes).
+[Details](tasks/T19.md)
 
 ### T20: Memory Bank Database Parser
 **Status:** 🔄 **IN PROGRESS**
 **Started:** 2025-11-12
-**Context**: [Details](tasks/T20.md) - Phase 3 continued: Format handling improvements, timezone optionality. Parser scripts (~1100 lines total) exist in `memory-bank/database/`. Need adaptation for cross-project backfill use (T21 dependency).
+**Context**: [Details](tasks/T20.md) - Parser scripts exist (~1100 lines), need adaptation for cross-project backfill (T21 dependency)
 **Progress**:
-[Details](tasks/T20.md) - Phase 3 continued: Format handling improvements, timezone optionality
+[Details](tasks/T20.md) - Parser scripts exist (~1100 lines), need adaptation for cross-project backfill (T21 dependency)
 
 ### T20a: Adaptive LLM-Based Format Parser
 **Status:** 🔄 **IN PROGRESS**
 **Started:** 2025-11-12
-**Context**: [Details](tasks/T20a.md) - Design phase: Format analysis complete, LLM-driven detection system
+**Context**: [Details](tasks/T20a.md)
 **Progress**:
-[Details](tasks/T20a.md) - Design phase: Format analysis complete, LLM-driven detection system
+[Details](tasks/T20a.md)
 
 ### T21: Database-Native Memory Bank Update Workflow
 **Status:** 🔄 **IN PROGRESS**
 **Started:** 2025-11-13
-**Context**: [Details](tasks/T21.md) - Phase E hardening completed. Phase F cross-project validation in Cloudy workspace completed 2026-05-22. DB workflow functional (62/62 tests pass) but three gaps identified: (1) no record-only mode, (2) regeneration destroys history without full backfill, (3) text files must stay primary until DB is fully populated.
+**Context**: [Details](tasks/T21.md) - Phase E complete. Phase F gaps: record-only mode, backfill tool, safe migration strategy
 **Progress**:
-[Details](tasks/T21.md) - Phase E hardening completed for the rapid-recording DB workflow path
-Created sibling fixture `/Users/deepak/code/memory-bank-test`.
-Fixed bootstrap, same-period session sync, sql.js persistence, and direct completion behavior.
-Verified the real sibling fixture passes `mb db test` twice and supports repeat `mb workflow` usage.
-Extended workflow to explicit record/regenerate split; added sync path; fixed viewer/import schema drift and sql.js dirty-write persistence for import saves.
-Phase F: Cloudy workspace synced libraries, ran `mb db test` (62 passed), ran `mb db workflow` for T21 (success).
-Gaps documented: record-only mode needed, backfill tool needed, safe migration strategy defined.
+[Details](tasks/T21.md) - Phase E complete. Phase F gaps: record-only mode, backfill tool, safe migration strategy
+Fixed three template-level issues in DB-native workflow: (1) added missing task_subtasks table to schema.sql, (2) changed all parsers from DROP TABLE to DELETE FROM to preserve schema columns, (3) switched init-schema.js from better-sqlite3 to sql.js for VPS compatibility. All verified with full parse→regenerate cycle.
+
+### T22: AdminJS Database Management Interface
+**Status:** 🔄 **IN PROGRESS**
+**Started:** 2025-11-22
+**Context**: [Details](tasks/T22.md)
+**Progress**:
+[Details](tasks/T22.md)
 
 ### T23: Format Specification System
 **Status:** 🔄 **IN PROGRESS**
 **Started:** 2025-12-05
-**Context**: [Details](tasks/T23.md) - Dual markdown+JSON spec for parser/rules alignment
+**Context**: [Details](tasks/T23.md)
 **Progress**:
-[Details](tasks/T23.md) - Dual markdown+JSON spec for parser/rules alignment
+[Details](tasks/T23.md)
 
 ### T3: Implement DB Migration
 **Status:** 🔄 **IN PROGRESS**
 **Started:** 2025-11-12
-**Context**: No context
+**Context**: [Details](tasks/T3.md)
+**Progress**:
+[Details](tasks/T3.md)
 
 ### T4: Optimize Rules System
 **Status:** 🔄 **IN PROGRESS**
@@ -160,20 +160,13 @@ Gaps documented: record-only mode needed, backfill tool needed, safe migration s
 ### T25: Standalone Node Package (Browser-First)
 **Status:** ✅ **COMPLETED**
 **Started:** 2025-12-16
-**Completed:** 2026-05-18
-**Context**: Added DB-native workflow support to mb-cli
-**Files**: `mb-cli/src/commands/db.js`, `mb-cli/src/commands/init.js`, `mb-cli/src/index.js`, `mb-cli/templates/memory-bank/database/lib/*`
-**Progress**:
-1. ✅ Added project-relative DB lib resolution
-2. ✅ Added WORKFLOW_LIB_FILES to init
-3. ✅ Added top-level `mb workflow` command
-4. ✅ Tested on mac-process-monitor project
+**Completed:** 2025-12-16
 
 ## Next Session Focus
 
-1. T21: Database-Native Memory Bank Update Workflow — Record-only mode implementation, backfill tool planning
-1. T20: Memory Bank Database Parser — Parser adaptation for cross-project backfill
 1. META-1: Memory Bank Update and Maintenance
+1. T1: Multi-task Support
+1. T11: Document GitHub Project Integration
 
 ## System Status
 

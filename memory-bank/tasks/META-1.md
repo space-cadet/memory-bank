@@ -8,7 +8,7 @@
 
 ## Details
 
-[Details](tasks/META-1.md) - Updated update workflow (v6.11); T23 format spec initiated
+[Details](tasks/META-1.md)
 
 ## Subtasks
 
