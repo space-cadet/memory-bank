@@ -1,18 +1,18 @@
 # Session Cache
 
 *Created: 2026-06-25 06:17:48 IST*
-*Last Updated: 2026-06-25 06:17:48 IST*
+*Last Updated: 2026-06-25 18:32:00 IST*
 
 **Started**: 2026-06-25 06:11:51 IST
 **Focus Task**: T21: Database-Native Memory Bank Update Workflow
-**Session File**: `sessions/2026-06-25-morning.md`
+**Session File**: `sessions/2026-06-25-afternoon.md`
 **Status**: 🔄 Active: 19, Paused: 0, Completed: 2
 
 ## Overview
 
 - Active: 19 | Paused: 0 | Completed: 2
 - Last Session: 2026-06-25
-- Current Period: morning
+- Current Period: afternoon
 
 ## Active Tasks
 
@@ -96,10 +96,7 @@
 ### T21: Database-Native Memory Bank Update Workflow
 **Status:** 🔄 **IN PROGRESS**
 **Started:** 2025-11-13
-**Context**: [Details](tasks/T21.md) - Phase E complete. Phase F gaps: record-only mode, backfill tool, safe migration strategy
-**Progress**:
-[Details](tasks/T21.md) - Phase E complete. Phase F gaps: record-only mode, backfill tool, safe migration strategy
-Fixed three template-level issues in DB-native workflow: (1) added missing task_subtasks table to schema.sql, (2) changed all parsers from DROP TABLE to DELETE FROM to preserve schema columns, (3) switched init-schema.js from better-sqlite3 to sql.js for VPS compatibility. All verified with full parse→regenerate cycle.
+**Context**: [Details](tasks/T21.md) - Phase E complete. Phase F gaps: record-only mode, backfill tool, safe migration strategy. **CRITICAL ISSUE DISCOVERED**: Column name mismatch between schema.sql and lib/inserts.js, lib/workflow.js, lib/regenerate.js. Schema defines `last_updated`, `session_date`, `session_period`, `focus_task` but lib files still reference `updated`, `date`, `period`, `focus`. Also `sessions.content` vs `sessions.notes` mismatch. Template fix (commit a961805) partially applied to inserts.js and workflow.js but regenerate.js still broken. 4 stale schema.sql copies in mb-core, stale lib files in mb-core/memory-bank/database/, and all downstream repos have broken lib copies.
 
 ### T22: AdminJS Database Management Interface
 **Status:** 🔄 **IN PROGRESS**
