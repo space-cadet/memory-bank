@@ -252,12 +252,14 @@ function generateSessions() {
  */
 function generateSessionCache() {
   return {
-    current_session_id: 1,
-    current_focus_task: 'T21',
-    active_count: 11,
-    paused_count: 0,
-    completed_count: 7,
-    last_updated: '2025-11-13T18:46:25Z'
+    session_id: 'current',
+    status: 'active',
+    focus_task: 'T21',
+    active_tasks_count: 11,
+    paused_tasks_count: 0,
+    completed_tasks_count: 7,
+    cancelled_tasks_count: 0,
+    raw_content: JSON.stringify({ current_session_id: 1, updated_at: '2025-11-13T18:46:25Z' })
   };
 }
 

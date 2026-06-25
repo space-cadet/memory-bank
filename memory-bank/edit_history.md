@@ -1,10 +1,32 @@
 # Edit History
 
-*Last Updated: 2026-06-25 06:17:48 IST*
+*Last Updated: 2026-06-26 01:33:00 IST*
 
 ---
 
 ## 2026-06-25
+
+#### 01:33:00 IST - T21: Full schema consistency fix across mb-core. Fixed all column name mismatches: canonical schema.sql updated to v1.1 (last_updated, session_date, session_period, focus_task, content); all lib files (inserts.js, workflow.js, regenerate.js) aligned; parser files aligned; CLI commands (task.js, session.js) aligned; templates synced; test data aligned; documentation created (schema-protocol-reference.md, schema-audit-2026-06-25.md); stale server-package/ and sync-database-template.js deleted.
+- Modified `memory-bank/database/schema.sql` - v1.1 canonical naming
+- Modified `memory-bank/database/lib/inserts.js` - canonical column names
+- Modified `memory-bank/database/lib/workflow.js` - canonical queries
+- Modified `memory-bank/database/lib/regenerate.js` - canonical queries and generation
+- Modified `memory-bank/database/parse-tasks.js` - last_updated
+- Modified `memory-bank/database/parse-sessions.js` - session_date, session_period, focus_task
+- Modified `memory-bank/database/test-schema.js` - session_cache columns
+- Modified `memory-bank/database/generate-test-data.js` - canonical keys
+- Modified `mb-cli/src/commands/task.js` - last_updated
+- Modified `mb-cli/src/commands/session.js` - session_date, session_period, focus_task
+- Modified `mb-cli/templates/memory-bank/database/schema.sql` - added task_subtasks
+- Modified `mb-cli/templates/memory-bank/database/lib/regenerate.js` - copied fixed version
+- Modified `mb-cli/templates/memory-bank/database/parse-tasks.js` - copied fixed version
+- Modified `mb-cli/templates/memory-bank/database/parse-sessions.js` - copied fixed version
+- Modified `skills/mb-db-workflow/references/schema.sql` - v1.1 naming
+- Created `memory-bank/implementation-details/schema-protocol-reference.md` - single source of truth
+- Created `memory-bank/implementation-details/schema-audit-2026-06-25.md` - full audit report
+- Deleted `mb-cli/src/server-package/` - stale snapshot
+- Deleted `mb-cli/src/sync-database-template.js` - would overwrite fixes
+- Modified `mb-cli/package.json` - removed sync:database-template script
 
 #### 06:11:50 IST - T21: Fixed three template-level issues in DB-native workflow: (1) added missing task_subtasks table to schema.sql, (2) changed all parsers from DROP TABLE to DELETE FROM to preserve schema columns, (3) switched init-schema.js from better-sqlite3 to sql.js for VPS compatibility. All verified with full parse→regenerate cycle.
 - Modified `database/schema.sql` - Added CREATE TABLE task_subtasks + index (lines 45-55)

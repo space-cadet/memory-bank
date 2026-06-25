@@ -1,18 +1,18 @@
 # Session Cache
 
 *Created: 2026-06-25 06:17:48 IST*
-*Last Updated: 2026-06-25 18:32:00 IST*
+*Last Updated: 2026-06-26 01:33:00 IST*
 
 **Started**: 2026-06-25 06:11:51 IST
 **Focus Task**: T21: Database-Native Memory Bank Update Workflow
-**Session File**: `sessions/2026-06-25-afternoon.md`
+**Session File**: `sessions/2026-06-25-night.md`
 **Status**: 🔄 Active: 19, Paused: 0, Completed: 2
 
 ## Overview
 
 - Active: 19 | Paused: 0 | Completed: 2
 - Last Session: 2026-06-25
-- Current Period: afternoon
+- Current Period: night
 
 ## Active Tasks
 
@@ -96,7 +96,17 @@
 ### T21: Database-Native Memory Bank Update Workflow
 **Status:** 🔄 **IN PROGRESS**
 **Started:** 2025-11-13
-**Context**: [Details](tasks/T21.md) - Phase E complete. Phase F gaps: record-only mode, backfill tool, safe migration strategy. **CRITICAL ISSUE DISCOVERED**: Column name mismatch between schema.sql and lib/inserts.js, lib/workflow.js, lib/regenerate.js. Schema defines `last_updated`, `session_date`, `session_period`, `focus_task` but lib files still reference `updated`, `date`, `period`, `focus`. Also `sessions.content` vs `sessions.notes` mismatch. Template fix (commit a961805) partially applied to inserts.js and workflow.js but regenerate.js still broken. 4 stale schema.sql copies in mb-core, stale lib files in mb-core/memory-bank/database/, and all downstream repos have broken lib copies.
+**Context**: [Details](tasks/T21.md) - Phase F: Schema consistency fix COMPLETE (2026-06-25 night). All mb-core files aligned to v1.1 canonical naming. Templates are single source of truth. Remaining: downstream propagation, record-only mode, backfill tool.
+**Progress**:
+1. ✅ Phase A: Schema design
+2. ✅ Phase B: Insert functions
+3. ✅ Phase C: Text regeneration
+4. ✅ Phase D: CLI commands
+5. ✅ Phase E: End-to-end testing
+6. ✅ Phase F.1: Schema consistency fix (all mb-core files)
+7. ⬜ Phase F.2: Downstream repo propagation
+8. ⬜ Phase F.3: Record-only mode
+9. ⬜ Phase F.4: Backfill tool
 
 ### T22: AdminJS Database Management Interface
 **Status:** 🔄 **IN PROGRESS**
@@ -161,9 +171,9 @@
 
 ## Next Session Focus
 
-1. META-1: Memory Bank Update and Maintenance
-1. T1: Multi-task Support
-1. T11: Document GitHub Project Integration
+1. T21: Downstream repo propagation (10 projects from mb-hygiene)
+2. T21: Record-only mode implementation
+3. T21: Backfill tool adaptation
 
 ## System Status
 

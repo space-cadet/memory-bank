@@ -86,7 +86,7 @@ export async function insertEditEntries(entries) {
 export async function upsertTask({ id, title, status, priority, started, details = '' }) {
   const now = new Date().toISOString();
   const { changes } = await sqlite.execRun(
-    `INSERT INTO task_items (id, title, status, priority, started, details, updated)
+    `INSERT INTO task_items (id, title, status, priority, started, details, last_updated)
      VALUES (?, ?, ?, ?, ?, ?, ?)
      ON CONFLICT(id) DO UPDATE SET
        title = excluded.title,
@@ -94,7 +94,7 @@ export async function upsertTask({ id, title, status, priority, started, details
        priority = excluded.priority,
        started = excluded.started,
        details = excluded.details,
-       updated = excluded.updated`,
+       last_updated = excluded.last_updated`,
     [id, title, status, priority, started, details, now]
   );
   return { id, changes };
@@ -120,7 +120,7 @@ export async function updateTaskStatus(taskId, newStatus, detailsUpdate = null) 
   if (!existing) {
     // Auto-create task if it doesn't exist
     const { lastInsertRowid } = await sqlite.execRun(
-      `INSERT INTO task_items (id, title, status, priority, started, updated, details)
+    `INSERT INTO task_items (id, title, status, priority, started, last_updated, details)
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
       [taskId, detailsUpdate || taskId, newStatus, 'medium', now.slice(0, 10), now, detailsUpdate || 'Auto-created task']
     );
@@ -130,7 +130,7 @@ export async function updateTaskStatus(taskId, newStatus, detailsUpdate = null) 
   if (detailsUpdate) {
     const { changes } = await sqlite.execRun(
       `UPDATE task_items
-       SET status = ?, updated = ?, details = COALESCE(details, '') || '\n\n' || ?
+       SET status = ?, last_updated = ?, details = COALESCE(details, '') || '\n\n' || ?
        WHERE id = ?`,
       [newStatus, now, detailsUpdate, taskId]
     );
@@ -138,7 +138,7 @@ export async function updateTaskStatus(taskId, newStatus, detailsUpdate = null) 
   } else {
     const { changes } = await sqlite.execRun(
       `UPDATE task_items
-       SET status = ?, updated = ?
+       SET status = ?, last_updated = ?
        WHERE id = ?`,
       [newStatus, now, taskId]
     );
@@ -209,13 +209,13 @@ export async function addTaskSubtasks(taskId, subtasks) {
  * @param {string} [data.notes] - Session notes
  * @returns {Promise<{sessionId:number}>}
  */
-export async function createSession({ id = null, date, period, focus = null, status = 'active', content = '', start_time = null, end_time = null }) {
+export async function createSession({ id = null, session_date, session_period, focus_task = null, status = 'active', content = '', start_time = null, end_time = null }) {
   const normalizedStatus = status === 'in_progress' ? 'active' : status;
-  const sessionId = id || buildSessionId(date, period);
+  const sessionId = id || buildSessionId(session_date, session_period);
   await sqlite.execRun(
-    `INSERT INTO sessions (id, date, period, focus, status, content, start_time, end_time)
+    `INSERT INTO sessions (id, session_date, session_period, focus_task, status, content, start_time, end_time)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-    [sessionId, date, period, focus, normalizedStatus, content, start_time, end_time]
+    [sessionId, session_date, session_period, focus_task, normalizedStatus, content, start_time, end_time]
   );
   return { sessionId };
 }

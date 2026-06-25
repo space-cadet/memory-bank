@@ -1,16 +1,14 @@
 # Active Context
 
-*Last Updated: 2026-05-22 20:18:36 IST*
+*Last Updated: 2026-06-26 01:33:00 IST*
 
 ## Current Tasks
 1. **[T21]**: Database-Native Memory Bank Update Workflow (HIGH priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: Phase F gaps — record-only mode, full backfill tool, safe migration strategy
-   - Recent Achievement: Cross-project validation in Cloudy workspace: 62/62 tests pass, workflow execution successful, DB insert/regenerate functional. Added explicit record/regenerate workflow modes, added `mb db sync`, and fixed importer/viewer schema drift plus sql.js import persistence
-   - Critical Finding: No record-only mode — `recordSessionWork()` always regenerates text files
-   - Critical Finding: Regeneration from partially-populated DB destroyed edit history (Cloudy workspace had 0 edit entries, so `edit_history.md` was truncated to 1 entry)
-   - Decision: Text files stay primary until DB is fully backfilled; DB serves as audit log during transition
-   - Next: Document migration strategy (done), plan record-only implementation, evaluate parser adaptation for backfill. Run a focused cleanup pass for `mb db --db <path> ...` option handling consistency
+   - Current Focus: Phase F.1 COMPLETE — schema consistency fix across all mb-core files. Phase F.2: downstream propagation, record-only mode, backfill tool
+   - Recent Achievement (2026-06-25 night): Full schema fix sweep completed. All canonical files, templates, CLI commands, parsers, and test data aligned to v1.1 naming (`last_updated`, `session_date`, `session_period`, `focus_task`, `content`). `init-schema.js` verification passed. Deleted stale `server-package/`.
+   - Critical Finding RESOLVED: Column name mismatch between schema.sql and lib files. All fixed.
+   - Next: Propagate fixed templates to downstream repos, implement record-only mode, adapt backfill tool
 
 2. **[T20]**: Memory Bank Database Parser (MEDIUM priority)
    - Status: 🔄 IN PROGRESS
@@ -51,18 +49,20 @@
    - Status: ✅ COMPLETED (2025-11-22)
    - Output: Modular Viewer architecture
 
-## Implementation Focus - Current Session (T21 + T20)
-**Phase F cross-project validation and gap documentation (2026-05-22):**
-- ✅ Cloudy workspace synced DB libraries from mb-core Phase E
-- ✅ `mb db test` in Cloudy workspace: 62 passed, 0 failed
-- ✅ `mb db workflow` for T21 (Image Generation Setup): atomic insert, 234ms, 8 file modifications recorded
-- ✅ Created migration strategy document: `db-workflow-migration-strategy.md`
-- ✅ Updated T21 task with Phase F findings, record-only gap, backfill need
-- ✅ Updated T20 task with parser adaptation Phase 4 subtasks
-- 🔄 Text files restored after regeneration incident (git checkout recovery)
-- ❌ Record-only mode not yet implemented
-- ❌ Backfill tool not yet adapted
-- ❌ DB cannot be considered primary until backfill verified
+## Implementation Focus - Current Session (T21 Phase F)
+**Phase F.1: Schema consistency fix (2026-06-25 night):**
+- ✅ Canonical schema.sql updated to v1.1 naming
+- ✅ All lib files aligned (inserts.js, workflow.js, regenerate.js)
+- ✅ Parser files aligned (parse-tasks.js, parse-sessions.js)
+- ✅ CLI commands aligned (task.js, session.js)
+- ✅ Templates synced from canonical
+- ✅ Test data aligned (test-schema.js, generate-test-data.js)
+- ✅ Documentation created (schema-protocol-reference.md, schema-audit-2026-06-25.md)
+- ✅ Stale server-package/ deleted
+- ✅ init-schema.js verification passed (10 tables, 23 indexes)
+- ⬜ Downstream repo propagation (10 projects)
+- ⬜ Record-only mode implementation
+- ⬜ Backfill tool adaptation
 
 ## Next Steps
 - Implement record-only mode (`skip_regeneration` flag) in `workflow.js`

@@ -76,7 +76,7 @@ export async function regenerateEditHistory(outputPath) {
  */
 export async function regenerateTasks(outputPath) {
   const allTasks = await sqlite.queryAll(
-    `SELECT id, title, status, priority, started, updated, details
+    `SELECT id, title, status, priority, started, last_updated, details
      FROM task_items
      ORDER BY id`
   );
@@ -118,7 +118,7 @@ export async function regenerateTasks(outputPath) {
     md += '|----|-------|--------|----------|---------|-----------|--------------|---------|\n';
     for (const t of completed) {
       const depList = deps.filter(d => d.task_id === t.id).map(d => d.depends_on).join(', ') || '-';
-      const completedDate = t.updated ? t.updated.slice(0, 10) : '-';
+      const completedDate = t.last_updated ? t.last_updated.slice(0, 10) : '-';
       md += `| ${t.id} | ${t.title} | ✅ | ${t.priority.toUpperCase()} | ${t.started} | ${completedDate} | ${depList} | [Details](tasks/${t.id}.md) |\n`;
     }
     md += '\n';
@@ -220,7 +220,7 @@ export async function regenerateSessionCache(outputPath) {
     : (activeTasks[0] ? `${activeTasks[0].id}: ${activeTasks[0].title}` : 'None');
 
   const sessionFile = latestSession
-    ? `sessions/${latestSession.date}-${latestSession.period}.md`
+    ? `sessions/${latestSession.session_date}-${latestSession.session_period}.md`
     : 'sessions/latest.md';
 
   const statusText = cache
@@ -235,8 +235,8 @@ export async function regenerateSessionCache(outputPath) {
   // Overview
   md += '## Overview\n\n';
   md += `- Active: ${activeTasks.length} | Paused: ${pausedTasks.length} | Completed: ${completedTasks.length}\n`;
-  md += `- Last Session: ${latestSession?.date || '-'}\n`;
-  md += `- Current Period: ${latestSession?.period || 'morning'}\n\n`;
+  md += `- Last Session: ${latestSession?.session_date || '-'}\n`;
+  md += `- Current Period: ${latestSession?.session_period || 'morning'}\n\n`;
 
   // Active Tasks
   if (activeTasks.length > 0) {
@@ -264,7 +264,7 @@ export async function regenerateSessionCache(outputPath) {
       md += `### ${t.id}: ${t.title}\n`;
       md += `**Status:** ✅ **COMPLETED**\n`;
       md += `**Started:** ${t.started}\n`;
-      md += `**Completed:** ${t.updated?.slice(0, 10) || '-'}\n\n`;
+      md += `**Completed:** ${t.last_updated?.slice(0, 10) || '-'}\n\n`;
     }
   }
 
@@ -361,8 +361,8 @@ async function getCurrentSession(focusTaskId = null) {
   if (focusTaskId) {
     const focused = await sqlite.queryGet(
       `SELECT * FROM sessions
-       WHERE status = 'active' AND focus = ?
-       ORDER BY date DESC, created_at DESC, id DESC
+       WHERE status = 'active' AND focus_task = ?
+       ORDER BY session_date DESC, created_at DESC, id DESC
        LIMIT 1`,
       [focusTaskId]
     );
@@ -372,7 +372,7 @@ async function getCurrentSession(focusTaskId = null) {
   const active = await sqlite.queryGet(
     `SELECT * FROM sessions
      WHERE status = 'active'
-     ORDER BY date DESC, created_at DESC, id DESC
+     ORDER BY session_date DESC, created_at DESC, id DESC
      LIMIT 1`
   );
   if (active) return active;
@@ -398,7 +398,7 @@ function parseSessionCacheMetadata(rawContent) {
 async function getLatestSession() {
   return sqlite.queryGet(
     `SELECT * FROM sessions
-     ORDER BY date DESC, created_at DESC, id DESC
+     ORDER BY session_date DESC, created_at DESC, id DESC
      LIMIT 1`
   );
 }
@@ -408,7 +408,7 @@ function activeFocusTaskId(cacheFocusTask, currentSession) {
     return cacheFocusTask;
   }
   if (currentSession?.status === 'active') {
-    return currentSession.focus || null;
+    return currentSession.focus_task || null;
   }
   return null;
 }
@@ -423,7 +423,7 @@ function activeFocusTaskId(cacheFocusTask, currentSession) {
  */
 export async function regenerateTaskFiles(tasksDir) {
   const tasks = await sqlite.queryAll(
-    `SELECT id, title, status, priority, started, updated, details FROM task_items ORDER BY id`
+    `SELECT id, title, status, priority, started, last_updated, details FROM task_items ORDER BY id`
   );
 
   for (const task of tasks) {
@@ -431,7 +431,7 @@ export async function regenerateTaskFiles(tasksDir) {
 
     let md = `# ${task.id}: ${task.title}\n\n`;
     md += `*Created: ${task.started || '-'}*\n`;
-    md += `*Last Updated: ${task.updated || '-'}*\n\n`;
+    md += `*Last Updated: ${task.last_updated || '-'}*\n\n`;
     md += `**Status**: ${statusEmoji(task.status)} **${task.status.toUpperCase()}**\n`;
     md += `**Priority**: ${task.priority || 'MEDIUM'}\n\n`;
 
@@ -489,26 +489,26 @@ export async function regenerateSessionFile(sessionsDir) {
   let sessions;
   try {
     sessions = await sqlite.queryAll(
-      `SELECT id, date, period, focus, status, content, start_time, end_time
+      `SELECT id, session_date, session_period, focus_task, status, content, start_time, end_time
        FROM sessions
-       ORDER BY date DESC, created_at DESC, id DESC`
+       ORDER BY session_date DESC, created_at DESC, id DESC`
     );
   } catch (err) {
     if (!err.message.includes('no such column')) throw err;
     sessions = await sqlite.queryAll(
-      `SELECT id, date, period, focus, status, content
+      `SELECT id, session_date, session_period, focus_task, status, content
        FROM sessions
-       ORDER BY date DESC, id DESC`
+       ORDER BY session_date DESC, id DESC`
     );
   }
 
   for (const session of sessions) {
-    const fileName = `${session.date}-${session.period}.md`;
+    const fileName = `${session.session_date}-${session.session_period}.md`;
     const filePath = join(sessionsDir, fileName);
 
-    let md = `# Session: ${session.date} ${session.period.charAt(0).toUpperCase() + session.period.slice(1)}\n\n`;
+    let md = `# Session: ${session.session_date} ${session.session_period.charAt(0).toUpperCase() + session.session_period.slice(1)}\n\n`;
     md += `**Started**: ${session.start_time || session.created_at || '-'}\n`;
-    md += `**Focus Task**: ${session.focus || 'None'}\n`;
+    md += `**Focus Task**: ${session.focus_task || 'None'}\n`;
     md += `**Status**: ${session.status === 'active' || session.status === 'in_progress' ? '🔄' : '✅'} ${session.status.toUpperCase()}\n\n`;
 
     if (session.content) {

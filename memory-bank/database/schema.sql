@@ -1,7 +1,9 @@
 -- Phase A: Database-Native Memory Bank Update Workflow Schema
 -- Created: 2025-11-13 18:00:00 IST
--- Version: 1.0
+-- Updated: 2026-06-25 01:20 IST
+-- Version: 1.1
 -- Purpose: Clean schema for T21 workflow implementation
+-- Reference: memory-bank/implementation-details/schema-protocol-reference.md
 
 -- ============================================================================
 -- CORE EDIT TRACKING TABLES
@@ -49,7 +51,7 @@ CREATE TABLE task_items (
   status TEXT NOT NULL,                  -- in_progress, completed, paused, blocked
   priority TEXT NOT NULL,                -- HIGH, MEDIUM, LOW
   started TEXT NOT NULL,                 -- YYYY-MM-DD
-  updated TIMESTAMP,                     -- Last update timestamp
+  last_updated TIMESTAMP,                -- Last update timestamp (canonical: last_updated)
   details TEXT,                          -- Description and context
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -86,10 +88,10 @@ CREATE TABLE task_dependencies (
 -- Sessions: Individual work sessions
 CREATE TABLE sessions (
   id TEXT PRIMARY KEY,                   -- session identifier
-  date TEXT NOT NULL,                    -- YYYY-MM-DD
-  period TEXT,                           -- morning, afternoon, evening, night
+  session_date TEXT NOT NULL,            -- YYYY-MM-DD (canonical: session_date)
+  session_period TEXT,                   -- morning, afternoon, evening, night (canonical: session_period)
   status TEXT,                           -- active, completed
-  focus TEXT,                            -- Task ID being focused on
+  focus_task TEXT,                       -- Task ID being focused on (canonical: focus_task)
   start_time TEXT,                       -- ISO timestamp when session started
   end_time TEXT,                         -- ISO timestamp when session ended
   active_count INTEGER,                  -- Active task count
@@ -100,9 +102,9 @@ CREATE TABLE sessions (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_sessions_date ON sessions(date);
-CREATE INDEX idx_sessions_period ON sessions(period);
-CREATE INDEX idx_sessions_focus ON sessions(focus);
+CREATE INDEX idx_sessions_date ON sessions(session_date);
+CREATE INDEX idx_sessions_period ON sessions(session_period);
+CREATE INDEX idx_sessions_focus ON sessions(focus_task);
 CREATE INDEX idx_sessions_status ON sessions(status);
 
 -- Session cache: Current session snapshot for quick lookup

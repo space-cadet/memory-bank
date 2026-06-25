@@ -20,10 +20,10 @@ async function initSchema() {
   await sqlite.exec(`
     CREATE TABLE IF NOT EXISTS sessions (
       id TEXT PRIMARY KEY,         -- Filename (e.g., 2025-11-22-evening.md)
-      date TEXT NOT NULL,          -- YYYY-MM-DD
-      period TEXT,                 -- morning, afternoon, evening, night
+      session_date TEXT NOT NULL,  -- YYYY-MM-DD (canonical: session_date)
+      session_period TEXT,         -- morning, afternoon, evening, night (canonical: session_period)
       status TEXT,                 -- In Progress, Complete, etc.
-      focus TEXT,                  -- Main focus of the session
+      focus_task TEXT,             -- Main focus of the session (canonical: focus_task)
       active_count INTEGER,        -- From "Active: X"
       paused_count INTEGER,        -- From "Paused: X"
       completed_count INTEGER,     -- From "Completed: X"
@@ -31,7 +31,7 @@ async function initSchema() {
       content TEXT                 -- Full markdown content
     );
 
-    CREATE INDEX IF NOT EXISTS idx_sessions_date ON sessions(date);
+    CREATE INDEX IF NOT EXISTS idx_sessions_date ON sessions(session_date);
   `);
   console.log('✓ Database schema initialized\n');
 }
@@ -45,16 +45,16 @@ function parseSessionFile(filePath, filename) {
   
   // 1. Extract Date and Period from filename (e.g., 2025-11-22-evening.md)
   const nameMatch = filename.match(/^(\d{4}-\d{2}-\d{2})-(.+)\.md$/);
-  let date = null;
-  let period = null;
+  let session_date = null;
+  let session_period = null;
   
   if (nameMatch) {
-    date = nameMatch[1];
-    period = nameMatch[2];
+    session_date = nameMatch[1];
+    session_period = nameMatch[2];
   } else {
     // Fallback for unusual filenames, use file creation time or content
-    date = new Date(stats.mtime).toISOString().split('T')[0];
-    period = 'unknown';
+    session_date = new Date(stats.mtime).toISOString().split('T')[0];
+    session_period = 'unknown';
   }
 
   // 2. Parse Metadata from Content
@@ -69,7 +69,7 @@ function parseSessionFile(filePath, filename) {
   // Focus (Look for "Focus Task:" or just "Focus:")
   const focusMatch = content.match(/\*\*Focus(?: Task)?\*\*:\s*(.+?)(\n|$)/) || 
                      content.match(/Focus(?: Task)?:\s*(.+?)(\n|$)/);
-  const focus = focusMatch ? focusMatch[1].trim() : '';
+  const focus_task = focusMatch ? focusMatch[1].trim() : '';
 
   // 3. Parse Statistics (Active: 11 | Paused: 0 | ...)
   // Format: "- Active: 11 | Paused: 0 | Completed: 7 | Cancelled: 1"
@@ -89,10 +89,10 @@ function parseSessionFile(filePath, filename) {
 
   return {
     id: filename,
-    date,
-    period,
+    session_date,
+    session_period,
     status,
-    focus,
+    focus_task,
     activeCount,
     pausedCount,
     completedCount,
@@ -117,7 +117,7 @@ async function main() {
     await sqlite.openDb(dbPath);
     
     // Recreate table to ensure clean slate
-    await sqlite.exec('DROP TABLE IF EXISTS sessions');
+    await sqlite.exec('DELETE FROM sessions');
     await initSchema();
 
     // Get all .md files
@@ -133,7 +133,7 @@ async function main() {
     // Prepare insert statement
     const insertSession = sqlite.prepare(`
       INSERT INTO sessions (
-        id, date, period, status, focus, 
+        id, session_date, session_period, status, focus_task, 
         active_count, paused_count, completed_count, cancelled_count, 
         content
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -151,10 +151,10 @@ async function main() {
 
           insertSession.run(
             session.id,
-            session.date,
-            session.period,
+            session.session_date,
+            session.session_period,
             session.status,
-            session.focus,
+            session.focus_task,
             session.activeCount,
             session.pausedCount,
             session.completedCount,
@@ -163,7 +163,7 @@ async function main() {
           );
 
           successCount++;
-          console.log(`✓ ${session.date} (${session.period}) - ${session.status}`);
+          console.log(`✓ ${session.session_date} (${session.session_period}) - ${session.status}`);
         } catch (error) {
           errorCount++;
           console.error(`✗ Failed to parse ${file}: ${error.message}`);
@@ -181,7 +181,7 @@ async function main() {
     // Display Stats
     console.log('\n=====================================');
     const totalSessions = sqlite.prepare('SELECT COUNT(*) as count FROM sessions').get().count;
-    const dateRange = sqlite.prepare('SELECT MIN(date) as start, MAX(date) as end FROM sessions').get();
+    const dateRange = sqlite.prepare('SELECT MIN(session_date) as start, MAX(session_date) as end FROM sessions').get();
     
     console.log(`Total Sessions: ${totalSessions}`);
     console.log(`Date Range: ${dateRange.start} to ${dateRange.end}`);

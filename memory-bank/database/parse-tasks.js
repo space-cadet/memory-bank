@@ -19,7 +19,7 @@ async function initSchema() {
       status TEXT NOT NULL CHECK(status IN ('pending','in_progress','completed','paused')),
       priority TEXT NOT NULL CHECK(priority IN ('low','medium','high')),
       started TEXT NOT NULL,
-      updated TEXT,
+      last_updated TEXT,
       details TEXT NOT NULL
     );
 
@@ -131,7 +131,7 @@ async function populateDatabase(tasks) {
   console.log(`Populating database with ${tasks.length} tasks...\n`);
 
   const insertTask = sqlite.prepare(`
-    INSERT OR IGNORE INTO task_items (id, title, status, priority, started, updated, details)
+    INSERT OR IGNORE INTO task_items (id, title, status, priority, started, last_updated, details)
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `);
   

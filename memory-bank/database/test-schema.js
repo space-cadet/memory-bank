@@ -462,19 +462,20 @@ function testDataInsertion(db) {
   suite.tests++;
   try {
     const insertCache = db.prepare(`
-      INSERT INTO session_cache (id, current_session_id, current_focus_task, active_count, paused_count, completed_count, last_updated)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO session_cache (session_id, status, focus_task, active_tasks_count, paused_tasks_count, completed_tasks_count, cancelled_tasks_count, raw_content)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
     const cache = testData.sessionCache;
     insertCache.run(
-      1,
-      cache.current_session_id,
-      cache.current_focus_task,
-      cache.active_count,
-      cache.paused_count,
-      cache.completed_count,
-      cache.last_updated
+      cache.session_id,
+      cache.status,
+      cache.focus_task,
+      cache.active_tasks_count,
+      cache.paused_tasks_count,
+      cache.completed_tasks_count,
+      cache.cancelled_tasks_count,
+      cache.raw_content
     );
 
     const count = db.prepare('SELECT COUNT(*) as cnt FROM session_cache').get();

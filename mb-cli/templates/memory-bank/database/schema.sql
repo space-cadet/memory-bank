@@ -57,6 +57,20 @@ CREATE TABLE task_items (
 CREATE INDEX idx_task_items_status ON task_items(status);
 CREATE INDEX idx_task_items_priority ON task_items(priority);
 
+-- Task subtasks: Checklist items within a task
+CREATE TABLE task_subtasks (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  task_id TEXT NOT NULL,
+  section TEXT,                          -- Section name (e.g., "Completion Criteria")
+  position INTEGER NOT NULL,             -- Order within task
+  text TEXT NOT NULL,                    -- Subtask description
+  checked INTEGER DEFAULT 0,             -- 0 = unchecked, 1 = checked
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (task_id) REFERENCES task_items(id) ON DELETE CASCADE
+);
+
+CREATE INDEX idx_task_subtasks_task ON task_subtasks(task_id);
+
 -- Task dependencies: Track which tasks depend on others
 -- Note: No foreign keys - dependencies may reference tasks outside this dataset
 CREATE TABLE task_dependencies (
