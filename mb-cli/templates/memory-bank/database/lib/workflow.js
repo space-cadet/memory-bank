@@ -108,7 +108,7 @@ export async function recordSessionWork({
     // Step 3: Create or update session
     const existingSession = await sqlite.queryGet(
       `SELECT id FROM sessions
-       WHERE date = ? AND period = ? AND status = 'active'
+       WHERE session_date = ? AND session_period = ? AND status = 'active'
        ORDER BY id DESC LIMIT 1`,
       [dateStr, session_period]
     );
@@ -119,15 +119,15 @@ export async function recordSessionWork({
       const sessionContent = session_notes || `Working on ${task_id}: ${task_description}`;
       await sqlite.execRun(
         `UPDATE sessions
-         SET focus = ?, content = COALESCE(content, '') || '\n\n' || ?
+         SET focus_task = ?, content = COALESCE(content, '') || '\n\n' || ?
          WHERE id = ?`,
         [task_id, sessionContent, sessionId]
       );
     } else {
       const sessionResult = await inserts.createSession({
-        date: dateStr,
-        period: session_period,
-        focus: task_id,
+        session_date: dateStr,
+        session_period: session_period,
+        focus_task: task_id,
         status: 'active',
         content: session_notes || `Working on ${task_id}: ${task_description}`
       });
@@ -269,21 +269,21 @@ export async function completeSessionWork(sessionId, notes = null, {
     }
 
     const session = await sqlite.queryGet(
-      `SELECT id, focus FROM sessions WHERE id = ?`,
+      `SELECT id, focus_task FROM sessions WHERE id = ?`,
       [sessionId]
     );
 
     // Update session status
     await inserts.completeSession(sessionId, notes);
 
-    if (session?.focus && task_status) {
-      await inserts.updateTaskStatus(session.focus, task_status, notes || null);
+    if (session?.focus_task && task_status) {
+      await inserts.updateTaskStatus(session.focus_task, task_status, notes || null);
     }
 
     // Update counts
     const counts = await inserts.getTaskCounts();
     const nextActiveSession = await sqlite.queryGet(
-      `SELECT id, focus
+      `SELECT id, focus_task
        FROM sessions
        WHERE status = 'active'
        ORDER BY created_at DESC, id DESC
@@ -291,7 +291,7 @@ export async function completeSessionWork(sessionId, notes = null, {
     );
     await inserts.updateSessionCache({
       current_session_id: nextActiveSession?.id || null,
-      current_focus_task: nextActiveSession?.focus || null,
+      current_focus_task: nextActiveSession?.focus_task || null,
       active_tasks_count: counts.active || 0,
       paused_tasks_count: counts.paused || 0,
       completed_tasks_count: counts.completed || 0
