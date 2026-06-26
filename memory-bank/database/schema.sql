@@ -86,12 +86,13 @@ CREATE TABLE task_dependencies (
 -- ============================================================================
 
 -- Sessions: Individual work sessions
+-- Uses short column names (date, period, focus) for brevity and consistency
 CREATE TABLE sessions (
   id TEXT PRIMARY KEY,                   -- session identifier
-  session_date TEXT NOT NULL,            -- YYYY-MM-DD (canonical: session_date)
-  session_period TEXT,                   -- morning, afternoon, evening, night (canonical: session_period)
+  date TEXT NOT NULL,                    -- YYYY-MM-DD
+  period TEXT,                           -- morning, afternoon, evening, night
   status TEXT,                           -- active, completed
-  focus_task TEXT,                       -- Task ID being focused on (canonical: focus_task)
+  focus TEXT,                            -- Task ID being focused on
   start_time TEXT,                       -- ISO timestamp when session started
   end_time TEXT,                         -- ISO timestamp when session ended
   active_count INTEGER,                  -- Active task count
@@ -102,9 +103,9 @@ CREATE TABLE sessions (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_sessions_date ON sessions(session_date);
-CREATE INDEX idx_sessions_period ON sessions(session_period);
-CREATE INDEX idx_sessions_focus ON sessions(focus_task);
+CREATE INDEX idx_sessions_date ON sessions(date);
+CREATE INDEX idx_sessions_period ON sessions(period);
+CREATE INDEX idx_sessions_focus ON sessions(focus);
 CREATE INDEX idx_sessions_status ON sessions(status);
 
 -- Session cache: Current session snapshot for quick lookup

@@ -178,7 +178,7 @@ async function testInserts() {
   // Verify session
   const sessions = await sqlite.queryAll(`SELECT * FROM sessions`);
   assert(sessions.length === 1, '1 session inserted');
-  assert(sessions[0].focus_task === 'T3', 'Session focus is T3');
+  assert(sessions[0].focus === 'T3', 'Session focus is T3');
   assert(sessions[0].status === 'active', 'Session status normalized to active');
 
   // Verify session cache
@@ -271,7 +271,7 @@ async function testWorkflow() {
       { action: 'Created', path: 'memory-bank/database/lib/workflow.js', description: 'Workflow wrapper' }
     ],
     task_status: 'in_progress',
-    session_period: 'morning',
+    period: 'morning',
     output_dir: join(__dirname, 'test_output')
   });
 

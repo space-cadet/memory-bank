@@ -215,7 +215,7 @@ function testConstraints(db) {
   suite.tests++;
   try {
     const fkList = db.prepare('PRAGMA foreign_key_list(sessions)').all();
-    const hasFK = fkList.some(fk => fk.from === 'focus_task' && fk.table === 'task_items');
+    const hasFK = fkList.some(fk => fk.from === 'focus' && fk.table === 'task_items');
     if (hasFK) {
       suite.passed++;
       log.test('sessions → task_items foreign key exists');
@@ -357,16 +357,16 @@ function testDataInsertion(db) {
   suite.tests++;
   try {
     const insertSession = db.prepare(`
-      INSERT INTO sessions (session_date, session_period, focus_task, start_time, end_time, status, notes)
+      INSERT INTO sessions (date, period, focus, start_time, end_time, status, notes)
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `);
 
     const insertMany = db.transaction((sessions) => {
       for (const session of sessions) {
         insertSession.run(
-          session.session_date,
-          session.session_period,
-          session.focus_task,
+          session.date,
+          session.period,
+          session.focus,
           session.start_time,
           session.end_time,
           session.status,
@@ -462,7 +462,7 @@ function testDataInsertion(db) {
   suite.tests++;
   try {
     const insertCache = db.prepare(`
-      INSERT INTO session_cache (id, current_session_id, current_focus_task, active_count, paused_count, completed_count, last_updated)
+      INSERT INTO session_cache (id, current_session_id, current_focus, active_count, paused_count, completed_count, last_updated)
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `);
 
@@ -470,7 +470,7 @@ function testDataInsertion(db) {
     insertCache.run(
       1,
       cache.current_session_id,
-      cache.current_focus_task,
+      cache.current_focus,
       cache.active_count,
       cache.paused_count,
       cache.completed_count,

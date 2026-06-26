@@ -565,9 +565,9 @@ app.get('/api/import/sessions/preview', async (req, res) => {
       const meta = parseSessionFrontmatter(raw);
       sample.push({
         file: f,
-        session_date: name.date,
-        session_period: name.period,
-        focus_task: parseFocusTask(raw) || null,
+        date: name.date,
+        period: name.period,
+        focus: parseFocusTask(raw) || null,
         start_time: meta.created,
         end_time: meta.lastUpdated
       });
@@ -605,7 +605,7 @@ app.post('/api/import/sessions/run', async (req, res) => {
     const files = (await readdir(sessionsDirPath)).filter(f => f.endsWith('.md'));
     const insert = sqlite.prepare(`
       INSERT INTO sessions (
-        id, session_date, session_period, focus_task, status, active_count, paused_count, completed_count, cancelled_count, content
+        id, date, period, focus, status, active_count, paused_count, completed_count, cancelled_count, content
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 

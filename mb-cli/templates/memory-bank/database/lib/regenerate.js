@@ -185,10 +185,10 @@ export async function regenerateSessionCache(outputPath) {
   const cacheMeta = parseSessionCacheMetadata(cache?.raw_content);
   const currentSession = cacheMeta.current_session_id
     ? await sqlite.queryGet(`SELECT * FROM sessions WHERE id = ?`, [cacheMeta.current_session_id])
-    : await getCurrentSession(cache?.focus_task || null);
+    : await getCurrentSession(cache?.focus || null);
 
   const latestSession = currentSession || await getLatestSession();
-  const focusTaskId = cache?.focus_task || activeFocusTaskId(cache?.focus_task, currentSession);
+  const focusTaskId = cache?.focus || activeFocusTaskId(cache?.focus, currentSession);
   const focusTask = focusTaskId
     ? await sqlite.queryGet(`SELECT * FROM task_items WHERE id = ?`, [focusTaskId])
     : null;
@@ -220,7 +220,7 @@ export async function regenerateSessionCache(outputPath) {
     : (activeTasks[0] ? `${activeTasks[0].id}: ${activeTasks[0].title}` : 'None');
 
   const sessionFile = latestSession
-    ? `sessions/${latestSession.session_date}-${latestSession.session_period}.md`
+    ? `sessions/${latestSession.date}-${latestSession.period}.md`
     : 'sessions/latest.md';
 
   const statusText = cache
@@ -235,8 +235,8 @@ export async function regenerateSessionCache(outputPath) {
   // Overview
   md += '## Overview\n\n';
   md += `- Active: ${activeTasks.length} | Paused: ${pausedTasks.length} | Completed: ${completedTasks.length}\n`;
-  md += `- Last Session: ${latestSession?.session_date || '-'}\n`;
-  md += `- Current Period: ${latestSession?.session_period || 'morning'}\n\n`;
+  md += `- Last Session: ${latestSession?.date || '-'}\n`;
+  md += `- Current Period: ${latestSession?.period || 'morning'}\n\n`;
 
   // Active Tasks
   if (activeTasks.length > 0) {
@@ -361,8 +361,8 @@ async function getCurrentSession(focusTaskId = null) {
   if (focusTaskId) {
     const focused = await sqlite.queryGet(
       `SELECT * FROM sessions
-       WHERE status = 'active' AND focus_task = ?
-       ORDER BY session_date DESC, created_at DESC, id DESC
+       WHERE status = 'active' AND focus = ?
+       ORDER BY date DESC, created_at DESC, id DESC
        LIMIT 1`,
       [focusTaskId]
     );
@@ -372,7 +372,7 @@ async function getCurrentSession(focusTaskId = null) {
   const active = await sqlite.queryGet(
     `SELECT * FROM sessions
      WHERE status = 'active'
-     ORDER BY session_date DESC, created_at DESC, id DESC
+     ORDER BY date DESC, created_at DESC, id DESC
      LIMIT 1`
   );
   if (active) return active;
@@ -398,7 +398,7 @@ function parseSessionCacheMetadata(rawContent) {
 async function getLatestSession() {
   return sqlite.queryGet(
     `SELECT * FROM sessions
-     ORDER BY session_date DESC, created_at DESC, id DESC
+     ORDER BY date DESC, created_at DESC, id DESC
      LIMIT 1`
   );
 }
@@ -408,7 +408,7 @@ function activeFocusTaskId(cacheFocusTask, currentSession) {
     return cacheFocusTask;
   }
   if (currentSession?.status === 'active') {
-    return currentSession.focus_task || null;
+    return currentSession.focus || null;
   }
   return null;
 }
@@ -489,26 +489,26 @@ export async function regenerateSessionFile(sessionsDir) {
   let sessions;
   try {
     sessions = await sqlite.queryAll(
-      `SELECT id, session_date, session_period, focus_task, status, content, start_time, end_time
+      `SELECT id, date, period, focus, status, content, start_time, end_time
        FROM sessions
-       ORDER BY session_date DESC, created_at DESC, id DESC`
+       ORDER BY date DESC, created_at DESC, id DESC`
     );
   } catch (err) {
     if (!err.message.includes('no such column')) throw err;
     sessions = await sqlite.queryAll(
-      `SELECT id, session_date, session_period, focus_task, status, content
+      `SELECT id, date, period, focus, status, content
        FROM sessions
-       ORDER BY session_date DESC, id DESC`
+       ORDER BY date DESC, id DESC`
     );
   }
 
   for (const session of sessions) {
-    const fileName = `${session.session_date}-${session.session_period}.md`;
+    const fileName = `${session.date}-${session.period}.md`;
     const filePath = join(sessionsDir, fileName);
 
-    let md = `# Session: ${session.session_date} ${session.session_period.charAt(0).toUpperCase() + session.session_period.slice(1)}\n\n`;
+    let md = `# Session: ${session.date} ${session.period.charAt(0).toUpperCase() + session.period.slice(1)}\n\n`;
     md += `**Started**: ${session.start_time || session.created_at || '-'}\n`;
-    md += `**Focus Task**: ${session.focus_task || 'None'}\n`;
+    md += `**Focus Task**: ${session.focus || 'None'}\n`;
     md += `**Status**: ${session.status === 'active' || session.status === 'in_progress' ? '🔄' : '✅'} ${session.status.toUpperCase()}\n\n`;
 
     if (session.content) {

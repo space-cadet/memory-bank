@@ -200,22 +200,22 @@ export async function addTaskSubtasks(taskId, subtasks) {
  * Create a new session
  *
  * @param {Object} data
- * @param {string} data.session_date - YYYY-MM-DD
- * @param {string} data.session_period - morning, afternoon, evening, night
- * @param {string} [data.focus_task] - Task ID being focused on
+ * @param {string} data.date - YYYY-MM-DD
+ * @param {string} data.period - morning, afternoon, evening, night
+ * @param {string} [data.focus] - Task ID being focused on
  * @param {string} data.start_time - ISO timestamp
  * @param {string} [data.end_time] - ISO timestamp
  * @param {string} [data.status] - in_progress (default) or completed
  * @param {string} [data.content] - Session notes/content
  * @returns {Promise<{sessionId:number}>}
  */
-export async function createSession({ id = null, session_date, session_period, focus_task = null, status = 'active', content = '' }) {
+export async function createSession({ id = null, date, period, focus = null, status = 'active', content = '' }) {
   const normalizedStatus = status === 'in_progress' ? 'active' : status;
-  const sessionId = id || buildSessionId(session_date, session_period);
+  const sessionId = id || buildSessionId(date, period);
   await sqlite.execRun(
     `INSERT INTO sessions (id, date, period, focus, status, content)
      VALUES (?, ?, ?, ?, ?, ?)`,
-    [sessionId, session_date, session_period, focus_task, normalizedStatus, content]
+    [sessionId, date, period, focus, normalizedStatus, content]
   );
   return { sessionId };
 }

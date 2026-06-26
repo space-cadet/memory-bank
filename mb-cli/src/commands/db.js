@@ -432,7 +432,7 @@ async function workflowCommand(options) {
         files_modified: files_modified.length > 0 ? files_modified : undefined,
         task_status: options.status || null,
         session_notes: '',
-        session_period: options.period || 'morning',
+        period: options.period || 'morning',
         output_dir: options.output || null,
         regenerate_markdown: shouldRegenerate
       });
@@ -562,7 +562,7 @@ export async function workflowCommandStandalone(options) {
         files_modified: files_modified.length > 0 ? files_modified : undefined,
         task_status: options.status || null,
         session_notes: '',
-        session_period: options.period || 'morning',
+        period: options.period || 'morning',
         output_dir: options.output || null,
         regenerate_markdown: shouldRegenerate
       });

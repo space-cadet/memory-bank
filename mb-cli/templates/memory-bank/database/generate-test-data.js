@@ -209,36 +209,36 @@ function generateFileModifications() {
 function generateSessions() {
   return [
     {
-      session_date: '2025-11-13',
-      session_period: 'evening',
-      focus_task: 'T21',
+      date: '2025-11-13',
+      period: 'evening',
+      focus: 'T21',
       start_time: '2025-11-13T17:29:35Z',
       end_time: null,
       status: 'in_progress',
       notes: 'T21: Database-native memory bank update workflow, paradigm shift to DB-authoritative, schema design'
     },
     {
-      session_date: '2025-11-12',
-      session_period: 'afternoon',
-      focus_task: 'T20',
+      date: '2025-11-12',
+      period: 'afternoon',
+      focus: 'T20',
       start_time: '2025-11-12T14:00:00Z',
       end_time: '2025-11-12T17:00:00Z',
       status: 'completed',
       notes: 'T20: Memory Bank Database Parser implementation (Phase 1 complete)'
     },
     {
-      session_date: '2025-11-11',
-      session_period: 'evening',
-      focus_task: 'T3',
+      date: '2025-11-11',
+      period: 'evening',
+      focus: 'T3',
       start_time: '2025-11-11T17:00:00Z',
       end_time: '2025-11-11T19:45:00Z',
       status: 'completed',
       notes: 'T3 Database Migration Verification & Documentation'
     },
     {
-      session_date: '2025-11-10',
-      session_period: 'evening',
-      focus_task: 'T19',
+      date: '2025-11-10',
+      period: 'evening',
+      focus: 'T19',
       start_time: '2025-11-10T18:00:00Z',
       end_time: '2025-11-10T19:30:00Z',
       status: 'completed',
@@ -253,7 +253,7 @@ function generateSessions() {
 function generateSessionCache() {
   return {
     current_session_id: 1,
-    current_focus_task: 'T21',
+    current_focus: 'T21',
     active_count: 11,
     paused_count: 0,
     completed_count: 7,

@@ -33,7 +33,7 @@ import { join, resolve } from 'path';
  * @param {Array<{action:string,path:string,description:string}>} [data.files_modified] - Files changed
  * @param {string} [data.task_status] - New status if changed: in_progress, completed, paused
  * @param {string} [data.session_notes] - Notes about the session
- * @param {string} [data.session_period] - morning, afternoon, evening, night
+ * @param {string} [data.period] - morning, afternoon, evening, night
  * @param {string} [data.output_dir] - Directory to write markdown files (default: memory-bank/)
  * @param {string} [data.tasks_dir] - Directory for individual task files (e.g., memory-bank/tasks/)
  * @param {string} [data.sessions_dir] - Directory for session files (e.g., memory-bank/sessions/)
@@ -47,7 +47,7 @@ export async function recordSessionWork({
   files_modified = [],
   task_status = null,
   session_notes = '',
-  session_period = 'morning',
+  period = 'morning',
   output_dir = null,
   tasks_dir = null,
   sessions_dir = null,
@@ -108,9 +108,9 @@ export async function recordSessionWork({
     // Step 3: Create or update session
     const existingSession = await sqlite.queryGet(
       `SELECT id FROM sessions
-       WHERE session_date = ? AND session_period = ? AND status = 'active'
+       WHERE date = ? AND period = ? AND status = 'active'
        ORDER BY id DESC LIMIT 1`,
-      [dateStr, session_period]
+      [dateStr, period]
     );
 
     let sessionId;
@@ -119,15 +119,15 @@ export async function recordSessionWork({
       const sessionContent = session_notes || `Working on ${task_id}: ${task_description}`;
       await sqlite.execRun(
         `UPDATE sessions
-         SET focus_task = ?, content = COALESCE(content, '') || '\n\n' || ?
+         SET focus = ?, content = COALESCE(content, '') || '\n\n' || ?
          WHERE id = ?`,
         [task_id, sessionContent, sessionId]
       );
     } else {
       const sessionResult = await inserts.createSession({
-        session_date: dateStr,
-        session_period: session_period,
-        focus_task: task_id,
+        date: dateStr,
+        period: period,
+        focus: task_id,
         status: 'active',
         content: session_notes || `Working on ${task_id}: ${task_description}`
       });
@@ -138,7 +138,7 @@ export async function recordSessionWork({
     const counts = await inserts.getTaskCounts();
     await inserts.updateSessionCache({
       current_session_id: sessionId,
-      current_focus_task: task_id,
+      current_focus: task_id,
       active_tasks_count: counts.active || 0,
       paused_tasks_count: counts.paused || 0,
       completed_tasks_count: counts.completed || 0
@@ -269,21 +269,21 @@ export async function completeSessionWork(sessionId, notes = null, {
     }
 
     const session = await sqlite.queryGet(
-      `SELECT id, focus_task FROM sessions WHERE id = ?`,
+      `SELECT id, focus FROM sessions WHERE id = ?`,
       [sessionId]
     );
 
     // Update session status
     await inserts.completeSession(sessionId, notes);
 
-    if (session?.focus_task && task_status) {
-      await inserts.updateTaskStatus(session.focus_task, task_status, notes || null);
+    if (session?.focus && task_status) {
+      await inserts.updateTaskStatus(session.focus, task_status, notes || null);
     }
 
     // Update counts
     const counts = await inserts.getTaskCounts();
     const nextActiveSession = await sqlite.queryGet(
-      `SELECT id, focus_task
+      `SELECT id, focus
        FROM sessions
        WHERE status = 'active'
        ORDER BY created_at DESC, id DESC
@@ -291,7 +291,7 @@ export async function completeSessionWork(sessionId, notes = null, {
     );
     await inserts.updateSessionCache({
       current_session_id: nextActiveSession?.id || null,
-      current_focus_task: nextActiveSession?.focus_task || null,
+      current_focus: nextActiveSession?.focus || null,
       active_tasks_count: counts.active || 0,
       paused_tasks_count: counts.paused || 0,
       completed_tasks_count: counts.completed || 0

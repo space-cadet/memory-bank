@@ -81,14 +81,14 @@ function statusEmoji(status) {
 
 function generateSessionMarkdown(session, taskTitle = null) {
   const now = getISTTimestamp();
-  const session_date = session.session_date || todayDate();
-  const session_period = session.session_period || 'morning';
-  const focusTask = session.focus_task || 'None';
+  const date = session.date || todayDate();
+  const period = session.period || 'morning';
+  const focusTask = session.focus || 'None';
   const focusLine = focusTask !== 'None' && taskTitle
     ? `**${focusTask}**: ${taskTitle}`
     : `**${focusTask}**`;
 
-  let md = `# Session ${session_date} ${session_period.charAt(0).toUpperCase() + session_period.slice(1)}\n\n`;
+  let md = `# Session ${date} ${period.charAt(0).toUpperCase() + period.slice(1)}\n\n`;
   md += `*Created: ${now}*\n`;
   md += `*Last Updated: ${now}*\n\n`;
   md += `## Focus Task\n${focusLine}\n\n`;
@@ -150,18 +150,18 @@ async function startCommand(options) {
     // Create session in DB
     await inserts.createSession({
       id: sessionId,
-      session_date: today,
-      session_period: period,
-      focus_task,
+      date: today,
+      period: period,
+      focus: focus,
       status: 'active',
       content: ''
     });
 
     // Get task title if focus specified
     let taskTitle = null;
-    if (focus_task) {
+    if (focus) {
       const task = await sqlite.queryGet(
-        `SELECT title FROM task_items WHERE id = ?`, [focus_task]
+        `SELECT title FROM task_items WHERE id = ?`, [focus]
       );
       taskTitle = task?.title || null;
     }
@@ -172,7 +172,7 @@ async function startCommand(options) {
     ensureDir(sessionsDir);
     const sessionPath = resolve(sessionsDir, `${sessionId}.md`);
 
-    const sessionData = { session_date: today, session_period: period, focus_task };
+    const sessionData = { date: today, period: period, focus: focus };
     const md = generateSessionMarkdown(sessionData, taskTitle);
     writeFileSync(sessionPath, md, 'utf-8');
 
@@ -187,7 +187,7 @@ async function startCommand(options) {
 
     await inserts.updateSessionCache({
       current_session_id: sessionId,
-      current_focus_task: focus_task,
+      current_focus: focus,
       active_count: taskCounts?.active || 0,
       paused_count: taskCounts?.paused || 0,
       completed_count: taskCounts?.completed || 0
@@ -222,7 +222,7 @@ async function listCommand(options) {
     const { sqlite } = await loadDbModules();
     await sqlite.openDb(dbPath);
 
-    let sql = `SELECT id, session_date, session_period, status, focus_task FROM sessions`;
+    let sql = `SELECT id, date, period, status, focus FROM sessions`;
     const params = [];
 
     if (options.status) {
@@ -230,7 +230,7 @@ async function listCommand(options) {
       params.push(options.status);
     }
 
-    sql += ` ORDER BY session_date DESC, session_period DESC`;
+    sql += ` ORDER BY date DESC, period DESC`;
 
     const sessions = await sqlite.queryAll(sql, params);
     await sqlite.closeDb();
@@ -248,10 +248,10 @@ async function listCommand(options) {
     const headers = ['ID', 'Date', 'Period', 'Status', 'Focus'];
     const rows = sessions.map(s => [
       s.id,
-      s.session_date,
-      s.session_period,
+      s.date,
+      s.period,
       statusEmoji(s.status),
-      s.focus_task || '-'
+      s.focus || '-'
     ]);
 
     const widths = headers.map((h, i) =>
@@ -319,10 +319,10 @@ async function showCommand(sessionId, options) {
 
     console.log(`Session ${sessionId}`);
     console.log('='.repeat(50));
-    console.log(`Date:    ${session.session_date}`);
-    console.log(`Period:  ${session.session_period}`);
+    console.log(`Date:    ${session.date}`);
+    console.log(`Period:  ${session.period}`);
     console.log(`Status:  ${statusEmoji(session.status)} ${session.status}`);
-    console.log(`Focus:   ${session.focus_task || 'None'}`);
+    console.log(`Focus:   ${session.focus || 'None'}`);
     if (session.content) {
       console.log(`\nContent preview:`);
       console.log(session.content.slice(0, 200) + (session.content.length > 200 ? '...' : ''));

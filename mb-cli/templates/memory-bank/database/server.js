@@ -674,9 +674,9 @@ app.get('/api/import/sessions/preview', async (req, res) => {
       const meta = parseSessionFrontmatter(raw);
       sample.push({
         file: f,
-        session_date: name.date,
-        session_period: name.period,
-        focus_task: parseFocusTask(raw) || null,
+        date: name.date,
+        period: name.period,
+        focus: parseFocusTask(raw) || null,
         start_time: meta.created,
         end_time: meta.lastUpdated
       });
@@ -714,7 +714,7 @@ app.post('/api/import/sessions/run', async (req, res) => {
     const files = (await readdir(sessionsDirPath)).filter(f => f.endsWith('.md'));
     const insert = sqlite.prepare(`
       INSERT INTO sessions (
-        id, session_date, session_period, focus_task, status, active_count, paused_count, completed_count, cancelled_count, content
+        id, date, period, focus, status, active_count, paused_count, completed_count, cancelled_count, content
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
     const taskExists = sqlite.prepare('SELECT 1 as ok FROM task_items WHERE id = ?').get;
@@ -775,7 +775,7 @@ app.get('/api/import/session-cache/preview', async (req, res) => {
 
     res.json({
       source: sourcePath,
-      current_focus_task: focus,
+      current_focus: focus,
       active_count: counts.active,
       paused_count: counts.paused,
       completed_count: counts.completed
@@ -819,7 +819,7 @@ app.post('/api/import/session-cache/run', async (req, res) => {
       dbPath,
       source: sourcePath,
       mode,
-      current_focus_task: focus,
+      current_focus: focus,
       active_count: counts.active,
       paused_count: counts.paused,
       completed_count: counts.completed
@@ -1057,7 +1057,7 @@ app.get('/api/table/:name', (req, res) => {
       orderBy = ` ORDER BY ${sortBy} ${normalizedSortDir}`;
     } else if (name === 'sessions') {
       // Default ordering for sessions only when no explicit sort is requested.
-      orderBy = ' ORDER BY session_date DESC, id DESC';
+      orderBy = ' ORDER BY date DESC, id DESC';
     }
 
     const data = sqlite

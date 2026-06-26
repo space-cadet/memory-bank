@@ -68,8 +68,8 @@ const UI = {
 
     const rows = (result.sessions || []).map(s => {
       return `<div class="field" style="margin-top: 6px;">
-        <span class="field-name">${this.escapeHtml(s.session_date)} ${this.escapeHtml(s.session_period)}</span>
-        <span class="field-value">${this.escapeHtml(String(s.focus_task || ''))}</span>
+        <span class="field-name">${this.escapeHtml(s.date)} ${this.escapeHtml(s.period)}</span>
+        <span class="field-value">${this.escapeHtml(String(s.focus || ''))}</span>
       </div>`;
     }).join('');
 

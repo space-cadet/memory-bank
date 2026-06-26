@@ -200,22 +200,22 @@ export async function addTaskSubtasks(taskId, subtasks) {
  * Create a new session
  *
  * @param {Object} data
- * @param {string} data.session_date - YYYY-MM-DD
- * @param {string} data.session_period - morning, afternoon, evening, night
- * @param {string} [data.focus_task] - Task ID being focused on
+ * @param {string} data.date - YYYY-MM-DD
+ * @param {string} data.period - morning, afternoon, evening, night
+ * @param {string} [data.focus] - Task ID being focused on
  * @param {string} data.start_time - ISO timestamp
  * @param {string} [data.end_time] - ISO timestamp
  * @param {string} [data.status] - in_progress (default) or completed
  * @param {string} [data.content] - Session notes/content
  * @returns {Promise<{sessionId:number}>}
  */
-export async function createSession({ id = null, session_date, session_period, focus_task = null, status = 'active', content = '', start_time = null, end_time = null }) {
+export async function createSession({ id = null, date, period, focus = null, status = 'active', content = '', start_time = null, end_time = null }) {
   const normalizedStatus = status === 'in_progress' ? 'active' : status;
-  const sessionId = id || buildSessionId(session_date, session_period);
+  const sessionId = id || buildSessionId(date, period);
   await sqlite.execRun(
-    `INSERT INTO sessions (id, session_date, session_period, focus_task, status, content, start_time, end_time)
+    `INSERT INTO sessions (id, date, period, focus, status, content, start_time, end_time)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-    [sessionId, session_date, session_period, focus_task, normalizedStatus, content, start_time, end_time]
+    [sessionId, date, period, focus, normalizedStatus, content, start_time, end_time]
   );
   return { sessionId };
 }
@@ -252,13 +252,13 @@ export async function completeSession(sessionId, notes = null) {
  *
  * @param {Object} data
  * @param {number} [data.current_session_id]
- * @param {string} [data.current_focus_task]
+ * @param {string} [data.current_focus]
  * @param {number} [data.active_count]
  * @param {number} [data.paused_count]
  * @param {number} [data.completed_count]
  * @returns {Promise<{changes:number}>}
  */
-export async function updateSessionCache({ current_session_id = null, current_focus_task = null, active_tasks_count = 0, paused_tasks_count = 0, completed_tasks_count = 0 }) {
+export async function updateSessionCache({ current_session_id = null, current_focus = null, active_tasks_count = 0, paused_tasks_count = 0, completed_tasks_count = 0 }) {
   const now = new Date().toISOString();
   const rawContent = JSON.stringify({
     current_session_id: current_session_id ?? null,
@@ -273,7 +273,7 @@ export async function updateSessionCache({ current_session_id = null, current_fo
        paused_tasks_count = excluded.paused_tasks_count,
        completed_tasks_count = excluded.completed_tasks_count,
        raw_content = excluded.raw_content`,
-    [current_focus_task ?? null, active_tasks_count ?? 0, paused_tasks_count ?? 0, completed_tasks_count ?? 0, rawContent]
+    [current_focus ?? null, active_tasks_count ?? 0, paused_tasks_count ?? 0, completed_tasks_count ?? 0, rawContent]
   );
   return { changes };
 }
