@@ -1,0 +1,3 @@
+packages:
+  - 'mb-cli'
+  - 'memory-bank/database'
