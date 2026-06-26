@@ -6,24 +6,33 @@
 
 The Memory Bank system provides structured documentation and context management for AI assistants working on long-running software projects. It maintains perfect project continuity across multiple sessions while optimizing token usage through progressive loading and efficient documentation patterns.
 
-**Current Status**: Production-stable text-first system with experimental database paradigm in development.
+**Current Status**: Database-native workflow is production-ready. Text-first mode still supported for legacy projects.
+
+## Quick Start
+
+New to the system? See [`docs/cli-workflow.md`](docs/cli-workflow.md) for the complete CLI guide.
+
+```bash
+# Record work in one command
+mb workflow --record --task T1 --description "Built feature X" \
+  --files "Created:src/index.js" --status completed --regenerate
+```
 
 ## Key Features
 
 **Operational (Production Ready)**:
+- **CLI Workflow**: `mb workflow`, `mb task`, `mb session` — see [`docs/cli-workflow.md`](docs/cli-workflow.md)
 - **Tiered Knowledge Structure**: Bootstrap → Critical → Essential → Reference loading
-- **Text-First Workflow**: Markdown-based authoritative documentation
+- **Text-First Workflow**: Legacy support for projects without SQLite backend
 - **Task Management**: Registry with 20+ tasks, status tracking, and dependency management
 - **Session Continuity**: Multi-session context preservation with session cache
 - **Memory Bank Viewer**: Web-based viewer for file navigation and visualization
 - **CLI Interface**: `mb init` command with selective component installation
-- **Integrated Rules v6.10**: Comprehensive documentation with Memory Bank Update Workflow
-- **Database Migration**: Verified 95% complete, 364 records migrated, zero errors
+- **Integrated Rules v6.12**: Comprehensive documentation with Memory Bank Update Workflow
+- **Database-Native Migration**: Complete. All projects migrated to SQLite backend.
 
-**Experimental (In Development, Not Production Ready)**:
-- **Database-Native Paradigm**: T21 Phase A complete, Phases B-E pending
+**Experimental (In Development)**:
 - **Adaptive Format Parser**: T20a design phase complete, Phase 1 pending
-- **CLI Task/Session Commands**: T13 Phase 2 pending (only mb init complete)
 
 ## Project Structure
 
