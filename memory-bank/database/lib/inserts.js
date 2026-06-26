@@ -209,13 +209,13 @@ export async function addTaskSubtasks(taskId, subtasks) {
  * @param {string} [data.content] - Session notes/content
  * @returns {Promise<{sessionId:number}>}
  */
-export async function createSession({ id = null, date, period, focus = null, status = 'active', content = '', start_time = null, end_time = null }) {
+export async function createSession({ id = null, date, period, focus = null, status = 'active', content = '' }) {
   const normalizedStatus = status === 'in_progress' ? 'active' : status;
   const sessionId = id || buildSessionId(date, period);
   await sqlite.execRun(
-    `INSERT INTO sessions (id, date, period, focus, status, content, start_time, end_time)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-    [sessionId, date, period, focus, normalizedStatus, content, start_time, end_time]
+    `INSERT INTO sessions (id, date, period, focus, status, content)
+     VALUES (?, ?, ?, ?, ?, ?)`,
+    [sessionId, date, period, focus, normalizedStatus, content]
   );
   return { sessionId };
 }
