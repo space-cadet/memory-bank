@@ -213,7 +213,7 @@ export async function createSession({ id = null, session_date, session_period, f
   const normalizedStatus = status === 'in_progress' ? 'active' : status;
   const sessionId = id || buildSessionId(session_date, session_period);
   await sqlite.execRun(
-    `INSERT INTO sessions (id, session_date, session_period, focus_task, status, content)
+    `INSERT INTO sessions (id, date, period, focus, status, content)
      VALUES (?, ?, ?, ?, ?, ?)`,
     [sessionId, session_date, session_period, focus_task, normalizedStatus, content]
   );

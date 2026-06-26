@@ -45,6 +45,7 @@ const CORE_FILES = [
   'errorLog.md',
   'progress.md',
   'projectbrief.md',
+  'productContext.md',
   'session_cache.md',
   'systemPatterns.md',
   'tasks.md',
