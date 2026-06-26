@@ -94,8 +94,8 @@ function generateTaskMarkdown(task, subtasks = [], deps = []) {
   md += `**Status**: ${statusText}\n`;
   md += `**Priority**: ${task.priority.toUpperCase()}\n`;
   md += `**Started**: ${task.started || now.split(' ')[0]}\n`;
-  if (task.status === 'completed' && task.last_updated) {
-    md += `**Completed**: ${task.last_updated.slice(0, 10)}\n`;
+  if (task.status === 'completed' && task.updated) {
+    md += `**Completed**: ${task.updated.slice(0, 10)}\n`;
   }
   md += `**Dependencies**: ${deps.length > 0 ? deps.join(', ') : 'None'}\n\n`;
 
@@ -218,7 +218,7 @@ async function createCommand(title, options) {
       status,
       priority,
       started: today,
-      last_updated: new Date().toISOString(),
+      updated: new Date().toISOString(),
       details
     };
 
@@ -256,7 +256,7 @@ async function listCommand(options) {
     const { sqlite } = await loadDbModules();
     await sqlite.openDb(dbPath);
 
-    let sql = `SELECT id, title, status, priority, started, last_updated FROM task_items`;
+    let sql = `SELECT id, title, status, priority, started, updated FROM task_items`;
     const params = [];
 
     if (options.status) {
@@ -470,7 +470,7 @@ async function updateCommand(taskId, options) {
         updates.push('details = ?');
         params.push(options.description);
       }
-      updates.push('last_updated = ?');
+      updates.push('updated = ?');
       params.push(new Date().toISOString());
       params.push(taskId);
 
