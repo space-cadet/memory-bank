@@ -185,10 +185,10 @@ export async function regenerateSessionCache(outputPath) {
   const cacheMeta = parseSessionCacheMetadata(cache?.raw_content);
   const currentSession = cacheMeta.current_session_id
     ? await sqlite.queryGet(`SELECT * FROM sessions WHERE id = ?`, [cacheMeta.current_session_id])
-    : await getCurrentSession(cache?.focus || null);
+    : await getCurrentSession(cache?.focus_task || null);
 
   const latestSession = currentSession || await getLatestSession();
-  const focusTaskId = cache?.focus || activeFocusTaskId(cache?.focus, currentSession);
+  const focusTaskId = cache?.focus_task || activeFocusTaskId(cache?.focus_task, currentSession);
   const focusTask = focusTaskId
     ? await sqlite.queryGet(`SELECT * FROM task_items WHERE id = ?`, [focusTaskId])
     : null;
