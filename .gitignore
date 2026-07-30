@@ -19,4 +19,4 @@ node_modules/
 
 console-logs/
 memory-bank/console-logs/
-memory-bank/memory-bank/viewer-logs/
+memory-bank/memory-bank/viewer-logs/*.backup.*
