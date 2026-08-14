@@ -4,7 +4,7 @@
   "description": "Markdown-first project memory and continuity CLI with optional SQLite workflows",
   "main": "src/index.js",
   "bin": {
-    "mb": "./src/index.js"
+    "mb": "src/index.js"
   },
   "type": "module",
   "scripts": {
