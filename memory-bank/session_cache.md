@@ -21,7 +21,7 @@
 **Started:** 2026-08-14
 **Context**: Release hardening is committed, pushed, and accepted by GitHub Actions; the remaining work is prerelease publication and representative-project acceptance.
 **Progress**:
-Package metadata, allowlisting, documentation, CI, and clean tarball/database workflow tests completed. Commit `7d0113d`; CI run `31782879770` succeeded. The `0.1.0-beta.1` candidate is prepared and passes the local fast gates; push/CI, publication authorization, and representative-project acceptance remain.
+Package metadata, allowlisting, documentation, CI, and clean tarball/database workflow tests completed. Commit `7d0113d`; CI run `31782879770` succeeded. The `0.1.0-beta.1` candidate is committed as `972bb28`, pushed, and passed CI run `31783981976`; publication authorization and representative-project acceptance remain.
 
 ## Completed Tasks
 
@@ -32,8 +32,7 @@ Package metadata, allowlisting, documentation, CI, and clean tarball/database wo
 
 ## Next Session Focus
 
-1. T27: Push the `0.1.0-beta.1` candidate and verify CI
-2. T27: Publish and validate `0.1.0-beta.1` only after explicit authorization
+1. T27: Publish and validate `0.1.0-beta.1` only after explicit authorization
 
 ## System Status
 
