@@ -6,7 +6,7 @@
 **Started**: 2026-08-14 IST
 **Focus Task**: T27: Publish the Memory Bank CLI to npm
 **Session File**: `sessions/2026-08-14-afternoon.md`
-**Status**: 🔄 Active session; Active task: 1, Paused: 0
+**Status**: ✅ Completed session; Active task: 1, Paused: 0
 
 ## Overview
 
@@ -21,7 +21,7 @@
 **Started:** 2026-08-14
 **Context**: Release hardening is committed, pushed, and accepted by GitHub Actions; the remaining work is prerelease publication and representative-project acceptance.
 **Progress**:
-Package metadata, allowlisting, documentation, CI, and clean tarball/database workflow tests completed. Commit `7d0113d`; CI run `31782879770` succeeded. The `0.1.0-beta.1` candidate is committed as `972bb28`, pushed, and passed CI run `31783981976`. npm publication was attempted but requires the account’s 2FA OTP; no package was published.
+Package metadata, allowlisting, documentation, CI, and clean tarball/database workflow tests completed. Commit `7d0113d`; CI run `31782879770` succeeded. The `0.1.0-beta.1` candidate was committed as `972bb28`, corrected as `ca0f433`, pushed, and passed CI run `31783981976`. npm publication succeeded with the configured access token, and the published package passed Markdown-first and database-workflow acceptance in two isolated consumers.
 
 ## Completed Tasks
 
@@ -32,7 +32,7 @@ Package metadata, allowlisting, documentation, CI, and clean tarball/database wo
 
 ## Next Session Focus
 
-1. T27: Complete npm publication with the account OTP, then validate `0.1.0-beta.1` in two representative projects
+1. T27: Gather prerelease feedback and decide whether stable-release gates are satisfied
 
 ## System Status
 

@@ -25,9 +25,9 @@
 
 4. **[T27]**: Publish the Memory Bank CLI to npm (HIGH priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: `0.1.0-beta.1` candidate is committed, pushed, and CI-verified; npm publication attempt is waiting on account 2FA OTP
+   - Current Focus: `0.1.0-beta.1` is published and accepted in Markdown-first and database-workflow consumers; stable release remains after prerelease feedback
    - Dependencies: T13 CLI functionality and T25 clean-install/package lessons
-   - Next: Complete npm publication with the account OTP, then validate the published beta in two representative projects
+   - Next: Gather prerelease feedback and decide whether the first stable release gates are satisfied
 
 5. **[META-1]**: Memory Bank Update and Maintenance (HIGH priority)
    - Status: 🔄 IN PROGRESS
