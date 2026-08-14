@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
+import { readFileSync } from 'node:fs';
 import { initCommand } from './commands/init.js';
 import { dbCommand } from './commands/db.js';
 import { taskCommand } from './commands/task.js';
@@ -9,12 +10,16 @@ import { updateCommandExport } from './commands/update.js';
 
 import { workflowCommandStandalone } from './commands/db.js';
 
+const packageMetadata = JSON.parse(
+  readFileSync(new URL('../package.json', import.meta.url), 'utf8')
+);
+
 const program = new Command();
 
 program
   .name('mb')
   .description('Memory Bank CLI')
-  .version('0.1.0');
+  .version(packageMetadata.version);
 
 program
   .command('init')

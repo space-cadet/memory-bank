@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0 - Unreleased
+## 0.1.0-beta.1 - 2026-08-14
 
 - Prepared the Memory Bank CLI for its first public npm prerelease.
 - Added npm package metadata, artifact allowlisting, and MIT licensing.
