@@ -6,7 +6,7 @@
 **Started**: 2026-08-14 IST
 **Focus Task**: T27: Publish the Memory Bank CLI to npm
 **Session File**: `sessions/2026-08-14-afternoon.md`
-**Status**: ✅ Completed: 1, Active: 1, Paused: 0
+**Status**: ✅ Completed session; Active task: 1, Paused: 0
 
 ## Overview
 
@@ -19,9 +19,9 @@
 ### T27: Publish the Memory Bank CLI to npm
 **Status:** 🔄 **IN PROGRESS**
 **Started:** 2026-08-14
-**Context**: Release hardening complete locally; awaiting pushed CI verification and authorized prerelease publication.
+**Context**: Release hardening is committed, pushed, and accepted by GitHub Actions; the remaining work is prerelease publication and representative-project acceptance.
 **Progress**:
-Package metadata, allowlisting, documentation, CI, and clean tarball tests completed.
+Package metadata, allowlisting, documentation, CI, and clean tarball/database workflow tests completed. Commit `7d0113d`; CI run `31782879770` succeeded.
 
 ## Completed Tasks
 
@@ -32,7 +32,7 @@ Package metadata, allowlisting, documentation, CI, and clean tarball tests compl
 
 ## Next Session Focus
 
-1. T27: Push the release-hardening commit, verify GitHub Actions, then prepare the prerelease
+1. T27: Publish and validate `0.1.0-beta.1` in a fresh release session
 
 ## System Status
 

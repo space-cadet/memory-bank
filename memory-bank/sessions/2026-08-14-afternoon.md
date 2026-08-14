@@ -18,9 +18,11 @@
 - `npm run test:packed`: passed with a clean tarball and full database workflow.
 - `npm pack --dry-run --json`: passed with the intended 61-file runtime artifact.
 - `git diff --check`: passed.
+- Release-hardening commit `7d0113d` was pushed to `origin/main`.
+- GitHub Actions run `31782879770` completed successfully for the pushed commit.
 
 ## Next Steps
 
-1. Commit and push the release-hardening work.
-2. Verify the new GitHub Actions workflow on the pushed commit.
-3. Prepare and authorize publication of `0.1.0-beta.1`.
+1. Start a fresh T27 session for prerelease publication and acceptance testing.
+2. Bump the package version to `0.1.0-beta.1`, commit, and verify CI.
+3. Publish only after explicit authorization, then validate the published beta in representative projects.

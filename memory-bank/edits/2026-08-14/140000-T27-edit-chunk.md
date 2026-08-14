@@ -14,3 +14,4 @@ Prepared the Memory Bank CLI for npm prerelease: selected `@space-cadet/memory-b
 - Created `mb-cli/scripts/test-packed-install.mjs` and `mb-cli/test/cli.test.js` — clean artifact and initialization verification.
 - Modified CLI commands and templates — fixed generated-project database resolution, database path handling, protocol/rules packaging, and commit template availability.
 - Modified Memory Bank records — created T27, publication plan, session, and progress/context updates.
+- Committed and pushed the complete release-hardening foundation as `7d0113d`; the new GitHub Actions workflow passed on `main`.
