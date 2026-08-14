@@ -1,7 +1,7 @@
 # Memory Bank CLI npm Package Publication Plan
 
 *Created: 2026-08-14*
-*Last Updated: 2026-08-14*
+*Last Updated: 2026-08-14 14:58:28 IST*
 *Related Task: [T27](../tasks/T27.md)*
 
 ## Purpose
@@ -10,7 +10,7 @@ Turn the existing `mb-cli/` command-line tool into a dependable public npm packa
 
 ## Current Position
 
-The CLI already exposes `mb init`, `mb db`, `mb task`, `mb session`, `mb update`, and `mb workflow`. Its templates and database workflow have been exercised in sibling projects, but the package is still arranged like an internal repository component rather than a public install artifact.
+The CLI exposes `mb init`, `mb db`, `mb task`, `mb session`, `mb update`, and `mb workflow`. The `0.1.0-beta.1` package is now public and has passed Markdown-first and optional database-workflow acceptance in two clean consumers. Stable publication remains deferred until prerelease feedback and the remaining release gates are resolved.
 
 The package currently needs release hardening in four areas:
 
@@ -78,9 +78,8 @@ The initial release may use the explicit model, provided the error messages and 
 
 ## Evidence to Record
 
-- Final package name, version, and npm dist-tag.
-- `npm pack --dry-run` artifact inventory.
-- CI run URL or identifier and test summary.
-- Clean-install command/results for the tarball and prerelease.
-- Representative project acceptance results.
-- Any retained limitation, especially database dependency setup or parser/backfill scope.
+- Final package: `@space-cadet/memory-bank@0.1.0-beta.1`; `beta` and `latest` currently point to the beta.
+- `npm pack --dry-run` reported the intended 61-file runtime artifact.
+- GitHub Actions run `31787276322` passed the package, tarball, and packed-install checks after the Node 24-compatible action update.
+- Normal name-based installation and documented Markdown-first/database workflows passed in two isolated consumers.
+- Retained limitation: the configured npm credential can publish but cannot remove the `latest` dist-tag (`403 Forbidden`); stable publication remains deferred.
