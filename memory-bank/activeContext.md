@@ -25,9 +25,9 @@
 
 4. **[T27]**: Publish the Memory Bank CLI to npm (HIGH priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: `0.1.0-beta.1` is published and accepted; dist-tag cleanup is blocked by npm permission, and the GitHub Actions runtime update is pending CI
+   - Current Focus: `0.1.0-beta.1` is published and accepted; dist-tag cleanup is blocked by npm permission, while the GitHub Actions runtime update is CI-green
    - Dependencies: T13 CLI functionality and T25 clean-install/package lessons
-   - Next: Obtain dist-tag management permission, verify the updated CI workflow, then gather prerelease feedback before stable release
+   - Next: Obtain dist-tag management permission, then gather prerelease feedback before stable release
 
 5. **[META-1]**: Memory Bank Update and Maintenance (HIGH priority)
    - Status: 🔄 IN PROGRESS
