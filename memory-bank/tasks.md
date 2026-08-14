@@ -12,6 +12,7 @@ This is the Memory Bank for the Sage (灵剑) OpenClaw workspace.
 | ID | Title | Status | Priority | Started | Dependencies | Details |
 |----|-------|--------|----------|---------|--------------|---------|
 | T999 | Verification record only | 🔄 | MEDIUM | 2026-05-22 | - | [Details](tasks/T999.md) |
+| T27 | Publish the Memory Bank CLI to npm | 🔄 | HIGH | 2026-08-14 | T13, T25 | [Details](tasks/T27.md) |
 
 ## Completed Tasks
 
@@ -24,11 +25,13 @@ This is the Memory Bank for the Sage (灵剑) OpenClaw workspace.
 ```
 T21: Schema v1.1 alignment - migrate sessions to short column names
 T999: Verification record only
+T27: Publish the Memory Bank CLI to npm (depends on T13, T25)
 ```
 
 ## Status Summary
 
-- **Active**: 1
+- **Active**: 2
+- **Pending**: 0
 - **Completed**: 1
 - **Paused**: 0
-- **Total**: 2
+- **Total**: 3

@@ -1,0 +1,34 @@
+name: Memory Bank CLI
+
+on:
+  pull_request:
+    paths:
+      - 'mb-cli/**'
+      - '.github/workflows/mb-cli.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'mb-cli/**'
+      - '.github/workflows/mb-cli.yml'
+
+jobs:
+  verify-package:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mb-cli
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: mb-cli/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - run: npm pack --dry-run --json
+      - run: pnpm test:packed

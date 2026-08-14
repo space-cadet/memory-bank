@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 const DB_TEMPLATE_ROOT = path.join(__dirname, '..', '..', 'templates', 'memory-bank', 'database');
 const MB_TEMPLATE_ROOT = path.join(__dirname, '..', '..', 'templates', 'memory-bank');
 const PROTOCOL_CANDIDATE_ROOTS = [
-  path.join(__dirname, '..', '..', '..', 'memory-bank', 'protocols'),
+  path.join(__dirname, '..', '..', 'memory-bank', 'protocols'),
   path.join(__dirname, '..', '..', 'templates', 'memory-bank', 'protocols')
 ];
 const PROTOCOL_FILES = [
@@ -21,7 +21,7 @@ const PROTOCOL_FILES = [
 ];
 const INTEGRATED_RULES_FILE = 'integrated-rules-v6.12.md';
 const INTEGRATED_RULES_CANDIDATE_PATHS = [
-  path.join(__dirname, '..', '..', '..', INTEGRATED_RULES_FILE),
+  path.join(__dirname, '..', '..', 'memory-bank', INTEGRATED_RULES_FILE),
   path.join(__dirname, '..', '..', 'templates', INTEGRATED_RULES_FILE)
 ];
 

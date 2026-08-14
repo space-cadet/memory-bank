@@ -1,8 +1,9 @@
 {
-  "name": "@memory-bank/server",
+  "name": "@space-cadet/memory-bank-database",
   "version": "1.0.0",
   "description": "Self-contained server for initializing and managing Memory Bank projects with embedded templates and database viewer",
   "type": "module",
+  "private": true,
   "main": "server.js",
   "bin": {
     "memory-bank-server": "./server.js"
@@ -18,10 +19,10 @@
     "knowledge-management",
     "setup-wizard"
   ],
-  "author": "Memory Bank Contributors",
+  "author": "Space Cadet",
   "license": "MIT",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20"
   },
   "dependencies": {
     "express": "^5.0.0",
@@ -36,10 +37,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-org/memory-bank"
+    "url": "git+https://github.com/space-cadet/memory-bank.git"
   },
   "bugs": {
-    "url": "https://github.com/your-org/memory-bank/issues"
+    "url": "https://github.com/space-cadet/memory-bank/issues"
   },
-  "homepage": "https://github.com/your-org/memory-bank#readme"
+  "homepage": "https://github.com/space-cadet/memory-bank#readme"
 }

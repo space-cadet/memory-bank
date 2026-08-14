@@ -11,21 +11,9 @@
  *   cache               Show or update session cache
  */
 
-import { resolve, dirname, join } from 'path';
+import { resolve, dirname } from 'path';
 import { existsSync, writeFileSync, mkdirSync, readFileSync, renameSync } from 'fs';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const DB_LIB_BASE = resolve(__dirname, '../../../memory-bank/database/lib');
-
-async function loadDbModules() {
-  const sqlite = await import(join(DB_LIB_BASE, 'sqlite.js'));
-  const inserts = await import(join(DB_LIB_BASE, 'inserts.js'));
-  const regenerate = await import(join(DB_LIB_BASE, 'regenerate.js'));
-  return { sqlite, inserts, regenerate };
-}
+import { loadDbModules } from '../lib/db-resolver.js';
 
 function findDbPath(options) {
   if (options.db) return resolve(options.db);

@@ -1,6 +1,6 @@
 # Active Context
 
-*Last Updated: 2026-06-26 01:33:00 IST*
+*Last Updated: 2026-08-14 IST*
 
 ## Current Tasks
 1. **[T21]**: Database-Native Memory Bank Update Workflow (HIGH priority)
@@ -23,20 +23,26 @@
    - Recent Achievement: Fresh-project DB workflow bootstrap and completion paths verified
    - Next: Add `--skip-regenerate` flag to `mb db workflow` when record-only mode is implemented
 
-4. **[META-1]**: Memory Bank Update and Maintenance (HIGH priority)
+4. **[T27]**: Publish the Memory Bank CLI to npm (HIGH priority)
+   - Status: 🔄 IN PROGRESS
+   - Current Focus: Release hardening and clean tarball verification complete; CI workflow ready for its first remote run
+   - Dependencies: T13 CLI functionality and T25 clean-install/package lessons
+   - Next: Commit and push the release-hardening changes, verify GitHub Actions, then prepare `0.1.0-beta.1` for authorized publication
+
+5. **[META-1]**: Memory Bank Update and Maintenance (HIGH priority)
    - Status: 🔄 IN PROGRESS
    - Current Focus: Synchronize DB workflow Phase F findings across all docs
    - Next: Ensure all canonical files reflect the text-primary-until-backfill decision
 
-5. **[T25]**: Standalone Node Package (Browser-First) (HIGH priority)
+6. **[T25]**: Standalone Node Package (Browser-First) (HIGH priority)
    - Status: ✅ COMPLETED
    - Current Focus: Hold completed packaging work steady
 
-6. **[T17]**: Maintenance and Upkeep of Integrated Rules (MEDIUM priority)
+7. **[T17]**: Maintenance and Upkeep of Integrated Rules (MEDIUM priority)
    - Status: 🔄 IN PROGRESS
    - Current Focus: Rules documentation v6.12 alignment
 
-7. **[T22]**: AdminJS Database Management Interface (HIGH priority)
+8. **[T22]**: AdminJS Database Management Interface (HIGH priority)
    - Status: ❌ CANCELLED (2025-11-22)
    - Reason: Excessive complexity/dependency hell. Shelved in favor of extending T19.
 

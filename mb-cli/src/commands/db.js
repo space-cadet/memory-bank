@@ -594,24 +594,27 @@ export async function workflowCommandStandalone(options) {
 export function dbCommand(program) {
   const db = program
     .command('db')
-    .description('Database operations for Memory Bank')
-    .option('-d, --db <path>', 'Path to SQLite database (default: memory_bank.db)');
+    .description('Database operations for Memory Bank');
 
   db.command('query <sql>')
     .description('Execute SQL query against the database')
+    .option('-d, --db <path>', 'Path to SQLite database')
     .option('-j, --json', 'Output as JSON instead of table')
     .action(queryCommand);
 
   db.command('test')
     .description('Run integration test suite (test-workflow.js)')
+    .option('-d, --db <path>', 'Path to SQLite database')
     .action(testCommand);
 
   db.command('init')
     .description('Initialize database schema')
+    .option('-d, --db <path>', 'Path to SQLite database')
     .action(initCommand);
 
   db.command('sync')
     .description('Sync generated database/template files into an existing project')
+    .option('-d, --db <path>', 'Path to SQLite database')
     .option('--root <path>', 'Path to the memory-bank directory (defaults to inferred project memory-bank/)')
     .option('--libs', 'Sync workflow/runtime library files')
     .option('--parsers', 'Sync parser scripts and query tools')
@@ -623,6 +626,7 @@ export function dbCommand(program) {
 
   db.command('workflow')
     .description('Record session work and/or regenerate markdown files')
+    .option('-d, --db <path>', 'Path to SQLite database')
     .option('--record', 'Record work into the database (default if no action flag is given)')
     .option('--regenerate', 'Rewrite markdown files from the current database state')
     .option('--task <id>', 'Task being worked on (required with --record)')

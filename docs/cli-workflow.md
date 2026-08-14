@@ -30,19 +30,24 @@ mb task update T1 --status completed
 
 ## Setup
 
-The `mb` CLI is a Node.js script. If you cloned `mb-core`:
+The `mb` CLI requires Node.js 20 or later. Install the public package globally:
 
 ```bash
-# Symlink to PATH
-ln -s $(pwd)/mb-cli/src/index.js ~/.local/bin/mb
+npm install --global @space-cadet/memory-bank
+mb --version
+```
 
-# Ensure node_modules resolve. Option A: shared NODE_PATH
-export NODE_PATH="$(dirname $(pwd))/node_modules:${NODE_PATH}"
-# Option B: install per-project
-cd memory-bank/database && pnpm install sql.js
+Or run it in the current project without a global installation:
 
-# Verify
-mb --version  # 0.1.0
+```bash
+npx @space-cadet/memory-bank init --interactive
+```
+
+The interactive setup menu lets you select core Markdown files, templates, optional database/parser support, and the optional viewer. When database or viewer support is selected, install the generated project's dependencies before invoking database-backed commands:
+
+```bash
+cd memory-bank/database
+pnpm install
 ```
 
 ## Commands

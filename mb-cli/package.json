@@ -1,7 +1,7 @@
 {
-  "name": "mb-cli",
+  "name": "@space-cadet/memory-bank",
   "version": "0.1.0",
-  "description": "Memory Bank CLI",
+  "description": "Markdown-first project memory and continuity CLI with optional SQLite workflows",
   "main": "src/index.js",
   "bin": {
     "mb": "./src/index.js"
@@ -9,14 +9,45 @@
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test test/*.test.js",
+    "test:packed": "node scripts/test-packed-install.mjs",
+    "pack:check": "npm pack --dry-run --json"
   },
   "keywords": [
     "cli",
-    "memory-bank"
+    "memory-bank",
+    "project-context",
+    "documentation",
+    "ai-agents",
+    "cli"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": "Space Cadet",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/space-cadet/memory-bank.git"
+  },
+  "bugs": {
+    "url": "https://github.com/space-cadet/memory-bank/issues"
+  },
+  "homepage": "https://github.com/space-cadet/memory-bank#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "src/**/*.js",
+    "templates/**",
+    "memory-bank/protocols/**",
+    "memory-bank/integrated-rules-v6.12.md",
+    "!memory-bank/README.md",
+    "!memory-bank/changelog.md",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
   "dependencies": {
     "commander": "14.0.0",
     "sql.js": "^1.13.0"

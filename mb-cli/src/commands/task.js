@@ -12,15 +12,9 @@
  */
 
 import { Command } from 'commander';
-import { resolve, dirname, join } from 'path';
+import { resolve, dirname } from 'path';
 import { existsSync, writeFileSync, mkdirSync, readFileSync, renameSync } from 'fs';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-// Database lib modules (relative from mb-cli/src/commands/ to repo root)
-const DB_LIB_BASE = resolve(__dirname, '../../../memory-bank/database/lib');
+import { loadDbModules } from '../lib/db-resolver.js';
 function getMbDir(dbPath) {
   if (!dbPath) return resolve('memory-bank');
   // If DB is at memory-bank/database/memory_bank.db, MB dir is the parent of database/
@@ -30,13 +24,6 @@ function getMbDir(dbPath) {
   }
   // Otherwise assume DB is directly in memory-bank/
   return dbDir;
-}
-
-async function loadDbModules() {
-  const sqlite = await import(join(DB_LIB_BASE, 'sqlite.js'));
-  const inserts = await import(join(DB_LIB_BASE, 'inserts.js'));
-  const regenerate = await import(join(DB_LIB_BASE, 'regenerate.js'));
-  return { sqlite, inserts, regenerate };
 }
 
 function findDbPath(options) {

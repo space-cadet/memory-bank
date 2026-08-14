@@ -1,9 +1,10 @@
 {
-  "name": "memory-bank-database",
+  "name": "@space-cadet/memory-bank-database",
   "version": "1.0.0",
   "description": "Database tools for Memory Bank - parsers, queries, and web server",
   "main": "server.js",
   "type": "module",
+  "private": true,
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js --port 3001",
@@ -20,8 +21,19 @@
     "database",
     "sqlite"
   ],
-  "author": "",
+  "author": "Space Cadet",
   "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/space-cadet/memory-bank.git"
+  },
+  "bugs": {
+    "url": "https://github.com/space-cadet/memory-bank/issues"
+  },
+  "homepage": "https://github.com/space-cadet/memory-bank#readme",
   "dependencies": {
     "express": "^5.0.0",
     "sql.js": "^1.10.3"

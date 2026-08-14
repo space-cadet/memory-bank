@@ -1,8 +1,22 @@
 # Implementation Progress
 
-*Last Updated: 2026-06-26 01:33:00 IST*
+*Last Updated: 2026-08-14 IST*
 
 ## Active Tasks (Current Session - November 2025)
+
+### T27: Publish the Memory Bank CLI to npm
+**Status:** 🔄 IN PROGRESS
+**Priority:** HIGH
+**Started:** 2026-08-14
+
+**Release preparation (2026-08-14):**
+- ✅ Confirmed `@space-cadet/memory-bank`, MIT licensing, and public repository metadata
+- ✅ Added artifact allowlisting, package documentation, clean-install tests, and release CI
+- ✅ Verified the packed artifact's Markdown-first and optional database workflows in a clean temporary project
+- ⬜ Run the new GitHub Actions workflow after push
+- ⬜ Publish and accept a `0.1.0-beta.1` prerelease when authorized
+
+**Next**: Push the release-hardening changes and verify CI before requesting authorization to publish a prerelease.
 
 ### T21: Database-Native Memory Bank Update Workflow
 **Status:** 🔄 IN PROGRESS (Phase A Complete)
