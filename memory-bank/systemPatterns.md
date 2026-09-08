@@ -92,16 +92,18 @@
 ## Experimental Patterns (Not Production)
 
 ### Event-Backed Coordination (T28)
-**Status**: Planned experiment; validation pending
+**Status**: Experiment complete; revise before adoption
 
-The candidate model uses immutable JSON or JSONL events as a portable,
-Git-friendly coordination source. Markdown remains the human-readable view,
-and SQLite may be rebuilt locally as an optional query index.
+The tested model uses immutable per-event JSON files as the candidate
+coordination source. JSONL is a portable export, Markdown remains the
+human-readable view, and SQLite may be rebuilt locally as an optional query
+index. A shared JSONL file is not the proposed authority because concurrent
+appends would recreate a shared-write conflict.
 
-Required properties are stable event IDs, versioned envelopes, provenance,
-idempotent replay, deterministic projection, and explicit conflict reporting.
-The experiment must prove import fidelity and convergence before any production
-workflow changes. See `implementation-details/event-backed-memory-bank-plan.md`.
+Verified properties are stable event IDs, provenance, idempotent replay,
+deterministic projection, and explicit conflict reporting. Authenticated writer
+identity, ownership, and real Git merge checks remain before production use.
+See `implementation-details/event-backed-memory-bank-plan.md`.
 
 ### Database-Native Architecture (T21, T20, T20a)
 **Status**: Under development, not ready for deployment

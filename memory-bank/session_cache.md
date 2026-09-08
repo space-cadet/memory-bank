@@ -1,12 +1,12 @@
 # Session Cache
 
 *Created: 2026-08-14 IST*
-*Last Updated: 2026-09-08 16:09:24 IST*
+*Last Updated: 2026-09-08 16:55:56 IST*
 
 **Started**: 2026-09-08 16:09:24 IST
 **Focus Task**: T28: Event-Backed Memory Bank Coordination
 **Session File**: `sessions/2026-09-08-afternoon.md`
-**Status**: ✅ Planning session complete; T28a is next
+**Status**: ✅ T28 experiment complete; no production migration started
 
 ## Overview
 
@@ -17,11 +17,13 @@
 ## Active Tasks
 
 ### T28: Event-Backed Memory Bank Coordination
-**Status:** 🔄 **IN PROGRESS**
+**Status:** ✅ **COMPLETED**
 **Started:** 2026-09-08 16:09:24 IST
 **Context**: Evaluate immutable events as a Git-friendly coordination source while Markdown remains the production authority.
 **Progress**:
-Created T28 and T28a-T28c, recorded the canonical experiment plan, and prepared the filtered ArXivite fixture. T28a import design is the next step.
+T28 completed a loss-aware import, deterministic Markdown projection, exact
+record-event round trip, and concurrency simulation. Immutable event files are
+the candidate store; shared JSONL remains an export.
 
 ## Completed Tasks
 
@@ -32,7 +34,7 @@ Created T28 and T28a-T28c, recorded the canonical experiment plan, and prepared 
 
 ## Next Session Focus
 
-1. T28a: Inventory fixture formats and define the versioned event envelope
+1. Keep the production Memory Bank text-first unless a separate migration task is approved
 
 ## System Status
 

@@ -1,7 +1,7 @@
 # Database-Native Memory Bank Update Workflow
 
 *Created: 2025-11-13 17:46:43 IST*
-*Last Updated: 2026-09-08 16:09:24 IST*
+*Last Updated: 2026-09-08 17:15:16 IST*
 
 ## T28 Alternative Evaluation - 2026-09-08
 
@@ -12,6 +12,14 @@ T21 schema work, or authorize a production migration. The alternatives will be
 compared only after import, round-trip, and parallel-conflict tests pass.
 
 See `event-backed-memory-bank-plan.md`.
+
+### T28 Result - 2026-09-08
+
+The import, projection, round-trip, and concurrency tests passed. The result
+does not replace this SQLite workflow or authorize a migration. It recommends
+immutable per-event JSON files as the next coordination candidate, with JSONL
+and Markdown generated from those events. A shared JSONL file should remain an
+export because concurrent appends would still collide.
 
 ## Executive Summary
 

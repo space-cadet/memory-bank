@@ -1,20 +1,22 @@
 # Active Context
 
-*Last Updated: 2026-09-08 16:09:24 IST*
+*Last Updated: 2026-09-08 17:15:16 IST*
 
 ## Current Tasks
 1. **[T28]**: Event-Backed Memory Bank Coordination (HIGH priority)
-   - Status: 🔄 IN PROGRESS
-   - Current Focus: T28a Markdown-to-event import design using the copied ArXivite Memory Bank fixture
+   - Status: ✅ COMPLETED
+   - Current Focus: Experiment closed; production Memory Bank remains text-first
    - Boundary: Text remains authoritative; no production schema or workflow changes are authorized
-   - Next: Inventory fixture formats and define the smallest loss-aware event envelope
+   - Recent Achievement: Imported, projected, round-tripped, and tested concurrent event behavior
+   - Next: Only start a separate, approved migration task if production adoption is wanted
 
 2. **[T20]**: Memory Bank Database Parser (MEDIUM priority)
    - Status: 🔄 IN PROGRESS
    - Current Focus: Parser adaptation for cross-project backfill use
    - Recent Achievement: Parser scripts exist (~1100 lines total in `memory-bank/database/`). `mb workflow`/`mb db workflow` now support record-only and regenerate-only actions, and `mb db sync` provides upgrade path for existing generated projects
    - Gap: Parsers written for mb-core v6.10 format; need normalization for emoji status, timezone parsing, file modification actions
-   - Next: Reuse parser normalization lessons in T28a and test against the copied ArXivite fixture
+   - Recent Achievement: T28a tested the copied ArXivite fixture with a separate loss-aware event importer
+   - Next: Reuse the format findings in a generic parser core when T20 backfill work resumes
 
 3. **[T13]**: Implement Memory Bank CLI (HIGH priority)
    - Status: 🔄 IN PROGRESS
@@ -54,13 +56,14 @@
    - Status: ✅ COMPLETED (2025-11-22)
    - Output: Modular Viewer architecture
 
-## Implementation Focus - Current Session (T28 Planning)
+## Implementation Focus - Current Session (T28 Closeout)
 
 - ✅ Copied a filtered ArXivite Memory Bank fixture to `/Users/deepak/code/mb-core-test/memory-bank/`
 - ✅ Defined T28a import, T28b projection, and T28c concurrency-test stages
-- ⬜ Inventory the fixture and define the versioned event envelope
-- ⬜ Test deterministic projection and semantic round trips
-- ⬜ Test parallel merge, retry, duplicate, and contradiction behavior
+- ✅ Inventoried 1,002 files and defined the first versioned event envelope
+- ✅ Completed T28a semantic import and initial retry/conflict behavior tests
+- ✅ Completed deterministic projection and semantic round trips
+- ✅ Completed parallel update, retry, duplicate, and contradiction behavior tests
 
 ## Historical Database Work (T21)
 **Phase F.1: Schema consistency fix (2026-06-25 night):**
@@ -78,12 +81,12 @@
 - ⬜ Backfill tool adaptation
 
 ## Next Steps
-- Begin T28a with a read-only fixture inventory and import coverage report
+- Keep T28 findings as a reference; do not alter production coordination storage
 - Keep generated output separate from the copied fixture during experiments
 - Implement record-only mode (`skip_regeneration` flag) in `workflow.js`
 - Adapt T20 parsers for Cloudy workspace format (test case for cross-project backfill)
-- Run roundtrip test: text → DB → text, verify equivalence
-- Only after roundtrip passes: consider DB-primary transition
+- Run the T20 text → DB → text roundtrip when parser work resumes
+- Do not begin a DB-primary or event-primary migration without a separate approved task
 
 ## Current Decisions
 1. **T28 is an experiment**; the production Memory Bank remains text-first
