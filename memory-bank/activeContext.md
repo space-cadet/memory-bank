@@ -1,21 +1,20 @@
 # Active Context
 
-*Last Updated: 2026-08-14 14:58:28 IST*
+*Last Updated: 2026-09-08 16:09:24 IST*
 
 ## Current Tasks
-1. **[T21]**: Database-Native Memory Bank Update Workflow (HIGH priority)
+1. **[T28]**: Event-Backed Memory Bank Coordination (HIGH priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: Phase F.1 COMPLETE — schema consistency fix across all mb-core files. Phase F.2: downstream propagation, record-only mode, backfill tool
-   - Recent Achievement (2026-06-25 night): Full schema fix sweep completed. All canonical files, templates, CLI commands, parsers, and test data aligned to v1.1 naming (`last_updated`, `session_date`, `session_period`, `focus_task`, `content`). `init-schema.js` verification passed. Deleted stale `server-package/`.
-   - Critical Finding RESOLVED: Column name mismatch between schema.sql and lib files. All fixed.
-   - Next: Propagate fixed templates to downstream repos, implement record-only mode, adapt backfill tool
+   - Current Focus: T28a Markdown-to-event import design using the copied ArXivite Memory Bank fixture
+   - Boundary: Text remains authoritative; no production schema or workflow changes are authorized
+   - Next: Inventory fixture formats and define the smallest loss-aware event envelope
 
 2. **[T20]**: Memory Bank Database Parser (MEDIUM priority)
    - Status: 🔄 IN PROGRESS
    - Current Focus: Parser adaptation for cross-project backfill use
    - Recent Achievement: Parser scripts exist (~1100 lines total in `memory-bank/database/`). `mb workflow`/`mb db workflow` now support record-only and regenerate-only actions, and `mb db sync` provides upgrade path for existing generated projects
    - Gap: Parsers written for mb-core v6.10 format; need normalization for emoji status, timezone parsing, file modification actions
-   - Next: Adapt T20 parsers for Cloudy workspace format as test case, verify roundtrip integrity. Complete `--db` path-handling cleanup pass and re-verify command matrix
+   - Next: Reuse parser normalization lessons in T28a and test against the copied ArXivite fixture
 
 3. **[T13]**: Implement Memory Bank CLI (HIGH priority)
    - Status: 🔄 IN PROGRESS
@@ -47,15 +46,23 @@
    - Reason: Excessive complexity/dependency hell. Shelved in favor of extending T19.
 
 ## Completed Tasks (Recent)
-1. **[T21 Phase E]**: Database-Native Memory Bank Update Workflow
-   - Status: ✅ COMPLETED (2026-05-21)
-   - Output: Sibling-project verification passes; repeat logging, direct completion, generated-project bootstrap fixed
+1. **[T21]**: Schema v1.1 Alignment
+   - Status: ✅ COMPLETED (2026-06-26)
+   - Output: Canonical schema, libraries, parsers, commands, templates, and tests aligned
 
 2. **[T19 Phase 2 Refactor]**:
    - Status: ✅ COMPLETED (2025-11-22)
    - Output: Modular Viewer architecture
 
-## Implementation Focus - Current Session (T21 Phase F)
+## Implementation Focus - Current Session (T28 Planning)
+
+- ✅ Copied a filtered ArXivite Memory Bank fixture to `/Users/deepak/code/mb-core-test/memory-bank/`
+- ✅ Defined T28a import, T28b projection, and T28c concurrency-test stages
+- ⬜ Inventory the fixture and define the versioned event envelope
+- ⬜ Test deterministic projection and semantic round trips
+- ⬜ Test parallel merge, retry, duplicate, and contradiction behavior
+
+## Historical Database Work (T21)
 **Phase F.1: Schema consistency fix (2026-06-25 night):**
 - ✅ Canonical schema.sql updated to v1.1 naming
 - ✅ All lib files aligned (inserts.js, workflow.js, regenerate.js)
@@ -71,21 +78,25 @@
 - ⬜ Backfill tool adaptation
 
 ## Next Steps
+- Begin T28a with a read-only fixture inventory and import coverage report
+- Keep generated output separate from the copied fixture during experiments
 - Implement record-only mode (`skip_regeneration` flag) in `workflow.js`
 - Adapt T20 parsers for Cloudy workspace format (test case for cross-project backfill)
 - Run roundtrip test: text → DB → text, verify equivalence
 - Only after roundtrip passes: consider DB-primary transition
 
 ## Current Decisions
-1. **Text stays primary until DB is fully backfilled** (2026-05-22)
-2. **Record-only mode is a blocker** for safe DB adoption
-3. **No code changes until design validated** — document first, patch later
-4. **Setup Wizard as Default**: All new projects see wizard first
-5. **Skip Wizard for Existing**: Auto-detect initialized projects, skip to viewer
-6. **Modular Architecture**: setup.js is standalone module, non-breaking
-7. **No CLI Required**: Complete no-CLI workflow now possible
-8. **Security First**: All paths validated, directory traversal prevented
-9. **Backward Compatible**: mb init CLI still works, produces same results
+1. **T28 is an experiment**; the production Memory Bank remains text-first
+2. **Event files are the candidate portable authority**; SQLite may become a generated local index
+3. **T21 remains completed** and is not reopened by T28
+4. **Text stays primary until an alternative is fully validated**
+5. **No code changes until design validated** — document first, patch later
+6. **Setup Wizard as Default**: All new projects see wizard first
+7. **Skip Wizard for Existing**: Auto-detect initialized projects, skip to viewer
+8. **Modular Architecture**: setup.js is standalone module, non-breaking
+9. **No CLI Required**: Complete no-CLI workflow now possible
+10. **Security First**: All paths validated, directory traversal prevented
+11. **Backward Compatible**: mb init CLI still works, produces same results
 
 ## System Status
 - **Database**: ✅ Operational in canonical repo and verified in Cloudy workspace

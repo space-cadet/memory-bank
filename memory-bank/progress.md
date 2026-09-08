@@ -1,8 +1,21 @@
 # Implementation Progress
 
-*Last Updated: 2026-08-14 14:58:28 IST*
+*Last Updated: 2026-09-08 16:09:24 IST*
 
-## Active Tasks (Current Session - August 2026)
+## Active Tasks (Current Session - September 2026)
+
+### T28: Event-Backed Memory Bank Coordination
+**Status:** 🔄 IN PROGRESS
+**Priority:** HIGH
+**Started:** 2026-09-08
+
+- ✅ Prepared a filtered ArXivite Memory Bank fixture
+- ✅ Defined T28a import, T28b projection, and T28c concurrency stages
+- 🔄 Begin loss-aware Markdown-to-event import design
+- ⬜ Verify deterministic Markdown projection and semantic round trips
+- ⬜ Simulate parallel merges, retries, duplicates, and contradictions
+
+**Next**: Inventory the fixture and define the smallest versioned event envelope.
 
 ### T27: Publish the Memory Bank CLI to npm
 **Status:** 🔄 IN PROGRESS
@@ -20,8 +33,8 @@
 
 **Next**: Gather beta feedback, resolve dist-tag permissions, and decide whether stable-release gates are satisfied.
 
-### T21: Database-Native Memory Bank Update Workflow
-**Status:** 🔄 IN PROGRESS (Phase A Complete)
+### T21: Schema v1.1 Alignment
+**Status:** ✅ COMPLETED
 **Priority:** HIGH
 **Started:** 2025-11-13
 
@@ -34,9 +47,7 @@
 - ✅ Deleted stale server-package/ and sync-database-template.js
 - ✅ Documentation: schema-protocol-reference.md, schema-audit-2026-06-25.md
 
-**Next**: Phase F.2 (downstream propagation), Phase F.3 (record-only mode), Phase F.4 (backfill tool)
-
-**Note**: Templates are now single source of truth. Old column names forbidden. Database paradigm approaching production readiness.
+**Note**: T21 completed schema alignment. T28 now evaluates an event-backed alternative without reopening T21.
 
 ### T20a: Adaptive LLM-Based Format Parser
 **Status:** 🔄 IN PROGRESS (Design Phase Complete)
@@ -172,19 +183,20 @@
 - Integrated Rules v6.10 (comprehensive, with Tiered Knowledge Structure)
 
 **Experimental/In Development Components**:
+- Event-backed coordination experiment (T28) - planning complete, validation pending
 - Database-native paradigm (T21, T20, T20a) - not ready for deployment
 - CLI task/session commands (T13 Phase 2)
 - Adaptive format parser (T20a Phase 1)
 
 ## Upcoming Work
 
-- [ ] Complete T21 Phase B (database insert functions)
-- [ ] Complete T21 Phase C (text regeneration functions)
+- [ ] Complete T28a fixture inventory and import coverage report
+- [ ] Complete T28b deterministic projection and round-trip validation
+- [ ] Complete T28c parallel merge and conflict simulation
 - [ ] Complete T13 Phase 2 (task, session, template commands)
 - [ ] Complete T19 Phase 2 (file content viewer enhancements)
 - [ ] Complete T20 Phase 3 (session cache, error log parsers)
 - [ ] Begin T20a Phase 1 (LLM prompt design)
-- [ ] Complete T21 Phase E (end-to-end testing)
 
 ## Known Issues
 

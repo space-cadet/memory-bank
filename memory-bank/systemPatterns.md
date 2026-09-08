@@ -1,5 +1,5 @@
 # System Patterns
-*Last Updated: 2025-11-13 18:46:25 IST*
+*Last Updated: 2026-09-08 16:09:24 IST*
 
 ## Core Principles
 
@@ -90,6 +90,18 @@
 - Verify cross-references after major updates
 
 ## Experimental Patterns (Not Production)
+
+### Event-Backed Coordination (T28)
+**Status**: Planned experiment; validation pending
+
+The candidate model uses immutable JSON or JSONL events as a portable,
+Git-friendly coordination source. Markdown remains the human-readable view,
+and SQLite may be rebuilt locally as an optional query index.
+
+Required properties are stable event IDs, versioned envelopes, provenance,
+idempotent replay, deterministic projection, and explicit conflict reporting.
+The experiment must prove import fidelity and convergence before any production
+workflow changes. See `implementation-details/event-backed-memory-bank-plan.md`.
 
 ### Database-Native Architecture (T21, T20, T20a)
 **Status**: Under development, not ready for deployment

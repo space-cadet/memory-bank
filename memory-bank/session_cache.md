@@ -1,27 +1,27 @@
 # Session Cache
 
 *Created: 2026-08-14 IST*
-*Last Updated: 2026-08-14 14:58:28 IST*
+*Last Updated: 2026-09-08 16:09:24 IST*
 
-**Started**: 2026-08-14 IST
-**Focus Task**: T27: Publish the Memory Bank CLI to npm
-**Session File**: `sessions/2026-08-14-evening.md`
-**Status**: ✅ Completed session; Active task: 1, Paused: 0
+**Started**: 2026-09-08 16:09:24 IST
+**Focus Task**: T28: Event-Backed Memory Bank Coordination
+**Session File**: `sessions/2026-09-08-afternoon.md`
+**Status**: ✅ Planning session complete; T28a is next
 
 ## Overview
 
-- Active: 1 | Paused: 0 | Completed: 1
-- Last Session: 2026-08-14
-- Current Period: evening
+- Active: 5 | Paused: 2 | Completed: 1
+- Last Session: 2026-09-08
+- Current Period: afternoon
 
 ## Active Tasks
 
-### T27: Publish the Memory Bank CLI to npm
+### T28: Event-Backed Memory Bank Coordination
 **Status:** 🔄 **IN PROGRESS**
-**Started:** 2026-08-14
-**Context**: The `0.1.0-beta.1` prerelease is published and accepted; remaining work is beta feedback, npm `latest` dist-tag permission cleanup, and the stable-release decision.
+**Started:** 2026-09-08 16:09:24 IST
+**Context**: Evaluate immutable events as a Git-friendly coordination source while Markdown remains the production authority.
 **Progress**:
-Package metadata, allowlisting, documentation, CI, and clean tarball/database workflow tests completed. `@space-cadet/memory-bank@0.1.0-beta.1` was published and accepted in two isolated consumers. GitHub Actions run `31787276322` passed after the action-runtime update. The remaining T27 work is prerelease feedback, npm `latest` dist-tag permission cleanup, and the eventual stable-release decision.
+Created T28 and T28a-T28c, recorded the canonical experiment plan, and prepared the filtered ArXivite fixture. T28a import design is the next step.
 
 ## Completed Tasks
 
@@ -32,7 +32,7 @@ Package metadata, allowlisting, documentation, CI, and clean tarball/database wo
 
 ## Next Session Focus
 
-1. T27: Gather prerelease feedback and decide whether stable-release gates are satisfied
+1. T28a: Inventory fixture formats and define the versioned event envelope
 
 ## System Status
 

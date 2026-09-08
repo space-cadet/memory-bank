@@ -1,7 +1,17 @@
 # Database-Native Memory Bank Update Workflow
 
 *Created: 2025-11-13 17:46:43 IST*
-*Last Updated: 2026-05-22 20:18:36 IST*
+*Last Updated: 2026-09-08 16:09:24 IST*
+
+## T28 Alternative Evaluation - 2026-09-08
+
+T28 is evaluating immutable JSON or JSONL events as the portable coordination
+source, with generated Markdown views and an optional disposable SQLite index.
+This does not invalidate the database workflow evidence below, reopen completed
+T21 schema work, or authorize a production migration. The alternatives will be
+compared only after import, round-trip, and parallel-conflict tests pass.
+
+See `event-backed-memory-bank-plan.md`.
 
 ## Executive Summary
 
