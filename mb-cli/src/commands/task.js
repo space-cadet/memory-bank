@@ -212,8 +212,10 @@ async function createCommand(title, options) {
     const md = generateTaskMarkdown(taskData, subtasks, deps);
     writeFileSync(taskPath, md, 'utf-8');
 
-    // Regenerate tasks.md
-    await regenerate.regenerateTasks(resolve(mbDir, 'tasks.md'));
+    // Regeneration is opt-in: SQLite may not contain all Markdown task records.
+    if (options.regenerate) {
+      await regenerate.regenerateTasks(resolve(mbDir, 'tasks.md'));
+    }
 
     // Save DB
     await sqlite.saveDb();
@@ -473,8 +475,10 @@ async function updateCommand(taskId, options) {
     const mbDir = getMbDir(dbPath);
     const tasksDir = resolve(mbDir, 'tasks');
 
-    // Regenerate tasks.md
-    await regenerate.regenerateTasks(resolve(mbDir, 'tasks.md'));
+    // Regeneration is opt-in: SQLite may not contain all Markdown task records.
+    if (options.regenerate) {
+      await regenerate.regenerateTasks(resolve(mbDir, 'tasks.md'));
+    }
 
     // Update task file if it exists
     const taskFilePath = resolve(tasksDir, `${taskId}.md`);
@@ -557,8 +561,10 @@ async function deleteCommand(taskId, options) {
       console.log(`  Archived to: ${archivedPath}`);
     }
 
-    // Regenerate tasks.md
-    await regenerate.regenerateTasks(resolve(mbDir, 'tasks.md'));
+    // Regeneration is opt-in: SQLite may not contain all Markdown task records.
+    if (options.regenerate) {
+      await regenerate.regenerateTasks(resolve(mbDir, 'tasks.md'));
+    }
 
     await sqlite.saveDb();
     await sqlite.closeDb();
@@ -588,6 +594,7 @@ export function taskCommand(program) {
     .option('--description <text>', 'Detailed description')
     .option('--subtasks <list>', 'Comma-separated subtasks: "Design schema,Implement API,Write tests"')
     .option('--depends <ids>', 'Comma-separated dependency task IDs: "T1,T2"')
+    .option('--regenerate', 'Rewrite tasks.md from SQLite (may remove Markdown-only entries)')
     .action(createCommand);
 
   task.command('list')
@@ -611,12 +618,14 @@ export function taskCommand(program) {
     .option('-t, --title <text>', 'New title')
     .option('--description <text>', 'New description')
     .option('--note <text>', 'Note to append when updating status')
+    .option('--regenerate', 'Rewrite tasks.md from SQLite (may remove Markdown-only entries)')
     .action(updateCommand);
 
   task.command('delete <id>')
     .description('Delete a task (archives the task file)')
     .option('-d, --db <path>', 'Path to SQLite database')
     .option('-y, --yes', 'Confirm deletion without prompt')
+    .option('--regenerate', 'Rewrite tasks.md from SQLite (may remove Markdown-only entries)')
     .action(deleteCommand);
 
   return task;

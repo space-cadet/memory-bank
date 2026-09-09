@@ -98,9 +98,16 @@ mb task list                          # List all tasks
 mb task list --status in_progress     # Filter by status
 mb task show T25                      # Show task details
 mb task create "Build API" --id T26 --priority high --status in_progress
+mb task create "Build API" --id T26 --regenerate  # Explicitly rewrite tasks.md from SQLite
 mb task update T26 --status completed
+mb task update T26 --status completed --regenerate
 mb task delete T26 --yes
 ```
+
+Task mutations do not regenerate `tasks.md` by default. This protects Markdown-only
+task records when the SQLite index is stale or incomplete. Use `--regenerate` only
+after verifying that SQLite contains the complete task registry; regeneration may
+remove records that exist only in Markdown.
 
 ### `mb session` — Session Management
 
