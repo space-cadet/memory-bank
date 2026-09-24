@@ -42,6 +42,16 @@ Before starting, determine:
 3. Files modified and their change descriptions
 4. Whether implementation documentation needs updating (ALWAYS check this)
 
+## Fast path — known current work
+
+If `$mem-scan` already ran in this task, use its task IDs, inspected files, source-change summary, proposed record changes, Memory Bank profile, and rules/template paths. Check only what changed since that scan; do not repeat searches or reopen source unless a specific documentation fact is unclear. When `$commit-message` follows, pass along the final changed paths, central task IDs, validation result, and known follow-ups.
+
+When the current session identifies the task, changed files, and outcome, skip discovery and any full-bank scan. Read only `activeContext.md`, `session_cache.md`, the relevant task, and today's session file. Search `tasks.md` and implementation docs narrowly by task ID or component when needed.
+
+Make a short change plan before editing. Update each record only when its facts changed: the task file for progress, `tasks.md` for registry fields, knowledge docs for durable technical learning, the session file for the session record, and the cache for current focus and next action. Avoid repeating the same narrative in every file. Group edits with stable, verified anchors into a few related patches; avoid one all-or-nothing patch across many files. If a patch fails, reread only the conflicting target sections and retry them, without restarting discovery.
+
+Create one canonical edit chunk for the update round, then refresh `edit_history.md` as its generated view. Validate the changed files once with `git diff --check` and, when available, `node mb-cli/scripts/validate-memory-update.mjs --chunk memory-bank/edits/YYYY-MM-DD/FILE.md --root .`. Generate a commit message only when requested or committing. A documentation-only closeout does not need the full test suite.
+
 ## Step 0: Discovery — What Work Needs Documentation?
 
 **Use this step when you do not already have a complete record of what was done in the current session.** If you have been tracking work as it happened (e.g., via edit chunks, session notes, or task updates), you may skip this step and proceed directly to the 8-step workflow.
@@ -51,6 +61,8 @@ Before starting, determine:
 - You were not the agent that performed the work
 - The user says "update the memory bank" without specifying what changed
 - You suspect work was done that you are not aware of
+
+Start with Git changes since the last update and recent chunks. Search by task ID and changed component. Expand to a full-bank scan only if targeted searches cannot establish ownership or reveal conflicting records.
 
 ### 0.1 Check Last Memory-Bank Update
 
@@ -105,13 +117,13 @@ From the above, build a list of work items to document:
 
 ## The 8-Step Workflow
 
-After completing Step 0 (Discovery), proceed with the 8 documentation steps:
+Use only the applicable documentation steps below after the fast path or discovery. Leave records unchanged when their facts did not change.
 
 ### Step 1: Update Individual Task File
 
 File: `memory-bank/tasks/Txx.md`
 
-If the task file exists, append progress updates. If not, request user approval to create it.
+If the task file exists, append meaningful progress updates. Create a task only when the work lacks an existing owner; a direct user request to update the Memory Bank authorizes the needed records unless a substantive task choice is unresolved.
 
 Template:
 ```markdown
@@ -146,7 +158,7 @@ Template:
 
 File: `memory-bank/tasks.md`
 
-Update the master task registry table. MUST use exact schema:
+Update the master task registry table only when status, title, priority, dependency, or membership changed. MUST use exact schema:
 
 ```markdown
 | ID | Title | Status | Priority | Started | Dependencies | Details |
@@ -159,9 +171,9 @@ Update the master task registry table. MUST use exact schema:
 - Status MUST use standard emojis only
 - Keep active tasks at top, completed below
 
-### Step 3: Update Implementation Documentation (CRITICAL)
+### Step 3: Check Implementation Documentation
 
-**This step is not optional.** Implementation docs are where the project's earned knowledge lives. Every significant change must be reflected here.
+Check whether durable technical knowledge changed. Update the relevant implementation documentation when it did; do not create or touch implementation docs for routine status-only updates.
 
 Update relevant files in `memory-bank/implementation-details/` and other knowledge-layer files:
 
@@ -217,6 +229,8 @@ Periods: morning, afternoon, evening, night
 
 File: `memory-bank/session_cache.md`
 
+Keep the live cache focused on the current session, task, and next action. Do not copy the full session log into it.
+
 Template:
 ```markdown
 # Session Cache
@@ -228,27 +242,8 @@ Template:
 **Focus Task**: [Task ID]
 **Session File**: `sessions/YYYY-MM-DD-PERIOD.md`
 
-## Overview
-- Active: [Count] | Paused: [Count]
-- Last Session: [Previous Session File]
-- Current Period: [period]
-
-## Task Registry
-- T1: [Brief] - 🔄
-
-## Active Tasks
-### [Task ID]: [Title]
-**Status:** 🔄 **Priority:** [H/M/L]
-**Started:** [Date] **Last**: [Date]
-**Context**: [Key context]
-**Files**: `[file1]`, `[file2]`
-**Progress**:
-1. ✅ [Done]
-2. 🔄 [Current]
-3. ⬜ [Next]
-
-## Session History (Last 5)
-1. `sessions/YYYY-MM-DD-PERIOD.md` - [BRIEF FOCUS]
+## Next Action
+- [One concrete next step]
 ```
 
 ### Step 6: Update Other Memory Bank Files
@@ -292,7 +287,7 @@ source_commit: [40-char-sha]
 
 File: `memory-bank/edit_history.md`
 
-This is a GENERATED VIEW from chunk files. Newest entries on top.
+This is a GENERATED VIEW from chunk files. Newest entries on top. Use the project's generator when available; otherwise add the new chunk entry without changing historical entries.
 
 ```markdown
 # Edit History
@@ -317,8 +312,8 @@ Example: `(feat)T3: Database Migration Complete - Added user table, seed data (9
 ## Anti-Patterns
 
 - NEVER edit `edit_history.md` directly — always create chunk files
-- NEVER use relative paths or tildes (~) — absolute paths only
-- NEVER add features without user approval
+- Use absolute paths for tool operations; use project-relative paths inside edit chunks
+- Do not use database regeneration on text-primary projects until backfill and round-trip equivalence are verified
 - NEVER skip the edit chunk step — it's the canonical record
 - NEVER delete session files — append-only
 

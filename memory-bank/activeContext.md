@@ -1,16 +1,22 @@
 # Active Context
 
-*Last Updated: 2026-09-08 17:15:16 IST*
+*Last Updated: 2026-09-24 15:41:13 IST*
 
 ## Current Tasks
-1. **[T28]**: Event-Backed Memory Bank Coordination (HIGH priority)
+1. **[T29]**: Evaluate Beads and Dolt for Multi-Worktree Memory Bank Coordination (HIGH priority)
+   - Status: 🔄 IN PROGRESS
+   - Current Focus: Candidate research and bounded disposable experiment plan recorded
+   - Boundary: No production storage migration or change to the text-primary workflow
+   - Next: Run the worktree, branch reconciliation, projection, and recovery checks in `implementation-details/beads-dolt-experiment-plan.md`
+
+2. **[T28]**: Event-Backed Memory Bank Coordination (HIGH priority)
    - Status: ✅ COMPLETED
    - Current Focus: Experiment closed; production Memory Bank remains text-first
    - Boundary: Text remains authoritative; no production schema or workflow changes are authorized
    - Recent Achievement: Imported, projected, round-tripped, and tested concurrent event behavior
    - Next: Only start a separate, approved migration task if production adoption is wanted
 
-2. **[T20]**: Memory Bank Database Parser (MEDIUM priority)
+3. **[T20]**: Memory Bank Database Parser (MEDIUM priority)
    - Status: 🔄 IN PROGRESS
    - Current Focus: Parser adaptation for cross-project backfill use
    - Recent Achievement: Parser scripts exist (~1100 lines total in `memory-bank/database/`). `mb workflow`/`mb db workflow` now support record-only and regenerate-only actions, and `mb db sync` provides upgrade path for existing generated projects
@@ -18,32 +24,33 @@
    - Recent Achievement: T28a tested the copied ArXivite fixture with a separate loss-aware event importer
    - Next: Reuse the format findings in a generic parser core when T20 backfill work resumes
 
-3. **[T13]**: Implement Memory Bank CLI (HIGH priority)
+4. **[T13]**: Implement Memory Bank CLI (HIGH priority)
    - Status: 🔄 IN PROGRESS
    - Current Focus: Hold steady — CLI hardening complete from Phase E
    - Recent Achievement: Fresh-project DB workflow bootstrap and completion paths verified
    - Next: Add `--skip-regenerate` flag to `mb db workflow` when record-only mode is implemented
 
-4. **[T27]**: Publish the Memory Bank CLI to npm (HIGH priority)
+5. **[T27]**: Publish the Memory Bank CLI to npm (HIGH priority)
    - Status: 🔄 IN PROGRESS
    - Current Focus: `0.1.0-beta.1` is published and accepted; dist-tag cleanup is blocked by npm permission, while the GitHub Actions runtime update is CI-green
    - Dependencies: T13 CLI functionality and T25 clean-install/package lessons
    - Next: Obtain dist-tag management permission, then gather prerelease feedback before stable release
 
-5. **[META-1]**: Memory Bank Update and Maintenance (HIGH priority)
+6. **[META-1]**: Memory Bank Update and Maintenance (HIGH priority)
    - Status: 🔄 IN PROGRESS
-   - Current Focus: Synchronize DB workflow Phase F findings across all docs
-   - Next: Ensure all canonical files reflect the text-primary-until-backfill decision
+   - Current Focus: Fast text-primary closeout workflow and focused edit-chunk validation
+   - Recent Achievement: Global and repository workflows aligned; routine updates now use targeted discovery
+   - Next: Benchmark ordinary closeouts and compare total chain time with update time
 
-6. **[T25]**: Standalone Node Package (Browser-First) (HIGH priority)
+7. **[T25]**: Standalone Node Package (Browser-First) (HIGH priority)
    - Status: ✅ COMPLETED
    - Current Focus: Hold completed packaging work steady
 
-7. **[T17]**: Maintenance and Upkeep of Integrated Rules (MEDIUM priority)
+8. **[T17]**: Maintenance and Upkeep of Integrated Rules (MEDIUM priority)
    - Status: 🔄 IN PROGRESS
    - Current Focus: Rules documentation v6.12 alignment
 
-8. **[T22]**: AdminJS Database Management Interface (HIGH priority)
+9. **[T22]**: AdminJS Database Management Interface (HIGH priority)
    - Status: ❌ CANCELLED (2025-11-22)
    - Reason: Excessive complexity/dependency hell. Shelved in favor of extending T19.
 
@@ -81,6 +88,8 @@
 - ⬜ Backfill tool adaptation
 
 ## Next Steps
+- Run the bounded T29 evaluation without changing production coordination storage
+- Measure ordinary META-1 closeouts and compare update time with total workflow time
 - Keep T28 findings as a reference; do not alter production coordination storage
 - Keep generated output separate from the copied fixture during experiments
 - Implement record-only mode (`skip_regeneration` flag) in `workflow.js`

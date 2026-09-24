@@ -1,7 +1,7 @@
 # Memory Bank - Sage Workspace
 
 *Created: 2026-06-26 13:21:04 IST*
-*Last Updated: 2026-09-08 17:15:16 IST*
+*Last Updated: 2026-09-24 15:41:13 IST*
 
 ## Overview
 
@@ -14,6 +14,8 @@ This is the Memory Bank for the Sage (灵剑) OpenClaw workspace.
 | T20 | Memory Bank Database Parser | 🔄 | MEDIUM | 2025-11-12 | - | [Details](tasks/T20.md) |
 | T999 | Verification record only | 🔄 | MEDIUM | 2026-05-22 | - | [Details](tasks/T999.md) |
 | T27 | Publish the Memory Bank CLI to npm | 🔄 | HIGH | 2026-08-14 | T13, T25 | [Details](tasks/T27.md) |
+| T29 | Evaluate Beads and Dolt for Multi-Worktree Memory Bank Coordination | 🔄 | HIGH | 2026-09-24 | T28, T20 | [Details](tasks/T29.md) |
+| META-1 | Memory Bank Update and Maintenance | 🔄 | HIGH | 2025-11-13 | - | [Details](tasks/META-1.md) |
 
 ## Completed Tasks
 
@@ -31,6 +33,7 @@ This is the Memory Bank for the Sage (灵剑) OpenClaw workspace.
 T21: Schema v1.1 alignment - migrate sessions to short column names
 T999: Verification record only
 T27: Publish the Memory Bank CLI to npm (depends on T13, T25)
+T29: Evaluate Beads and Dolt for multi-worktree Memory Bank coordination (informed by T28; uses T20 event/import tooling)
 T28: Event-backed coordination experiment (depends on T20)
   ├─ T28a: Markdown-to-event import
   ├─ T28b: Deterministic Markdown projection (depends on T28a)
@@ -39,8 +42,8 @@ T28: Event-backed coordination experiment (depends on T20)
 
 ## Status Summary
 
-- **Active**: 5
+- **Active**: 6
 - **Pending**: 0
 - **Completed**: 5
 - **Paused**: 2
-- **Total**: 12
+- **Total**: 13
