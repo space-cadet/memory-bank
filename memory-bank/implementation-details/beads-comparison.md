@@ -1,7 +1,7 @@
 # Beads vs. Memory Bank: Similarities and Differences
 
 *Created: 2025-12-15 09:51:42 IST*
-*Last Updated: 2025-12-15 09:52:58 IST*
+*Last Updated: 2026-09-24 15:41:13 IST*
 
 ## Related
 - [T23: Format Specification System](../tasks/T23.md)
@@ -72,3 +72,33 @@
   - canonical text log committed to git (e.g., JSONL)
   - local SQLite cache for speed
   - hooks/merge driver for safe reconciliation
+
+## 2026-09-24: Multi-worktree candidate review
+
+The current question is whether Memory Bank task state can be edited from
+separate branches or worktrees and reconciled without losing independent
+updates. Beads with Dolt is the strongest candidate found for a bounded test:
+Beads supplies task-oriented operations and Dolt supplies database history
+and merge/conflict behavior. Beads also has a shared-server mode for local
+concurrent clients. These features make it a candidate, not a verified fit;
+the local shared-server path and separate-branch reconciliation need distinct
+tests.
+
+PROJECTMEM is closer to agent memory because it stores typed events and
+generated summaries, but its default event file is not a shared Git-backed
+multi-worktree authority. Jujutsu's operation-log concurrency is relevant
+version-control machinery, but it is not a Memory Bank or task store.
+
+Recommendation: run the disposable T29 experiment before selecting any
+production coordination model. Keep task state and narrative projections
+separate during the test, and do not migrate the production text-primary
+Memory Bank based on feature comparison alone.
+
+References checked 2026-09-24:
+
+- [Beads FAQ](https://github.com/gastownhall/beads/blob/main/docs/reference/faq.md)
+- [Dolt version control](https://www.dolthub.com/docs/sql-reference/version-control/)
+- [Dolt conflict handling](https://www.dolthub.com/docs/concepts/dolt/git/conflicts/)
+- [Beads worktree issue 3628](https://github.com/gastownhall/beads/issues/3628)
+- [PROJECTMEM](https://github.com/riponcm/projectmem)
+- [Jujutsu concurrency](https://docs.jj-vcs.dev/prerelease/technical/concurrency/)

@@ -1,8 +1,31 @@
 # Edit History
 
-*Last Updated: 2026-09-08 17:15:16 IST*
+*Last Updated: 2026-09-24 15:41:13 IST*
 
 ---
+
+## 2026-09-24
+
+#### 15:41:13 IST - META-1: Record workflow measurements and coordination experiment plan
+- Modified `memory-bank/tasks/META-1.md` - Added measured closeout timings and remaining benchmark work
+- Modified `memory-bank/sessions/2026-09-24-night.md` - Recorded follow-up timings, candidate research, and experiment status
+- Created `memory-bank/tasks/T29.md` - Opened a bounded Beads/Dolt multi-worktree evaluation
+- Created `memory-bank/implementation-details/beads-dolt-experiment-plan.md` - Specified test stages, recovery checks, and decision thresholds
+- Modified `memory-bank/implementation-details/beads-comparison.md` - Added current candidate assessment and references
+- Modified `memory-bank/tasks.md` - Registered T29 and updated task counts
+- Modified `memory-bank/activeContext.md` - Added T29 focus and next steps
+- Modified `memory-bank/session_cache.md` - Added the planned evaluation and timing follow-up
+- Modified `memory-bank/edit_history.md` - Refreshed the generated history view
+
+#### 01:17:41 IST - META-1: Shorten routine Memory Bank updates
+- Modified `skills/mb-text-workflow/SKILL.md` - Added targeted discovery and conditional record updates
+- Created `mb-cli/scripts/validate-memory-update.mjs` - Added focused edit-chunk and record validation
+- Modified `memory-bank/tasks/META-1.md` - Recorded the workflow improvement and remaining timing check
+- Modified `memory-bank/tasks.md` - Registered the existing META-1 task
+- Modified `memory-bank/activeContext.md` - Updated the current maintenance focus
+- Modified `memory-bank/session_cache.md` - Linked the current session and next measurement step
+- Created `memory-bank/sessions/2026-09-24-night.md` - Recorded the review and implementation outcome
+- Modified `memory-bank/edit_history.md` - Refreshed the generated history view
 
 ## 2026-09-08
 

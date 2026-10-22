@@ -1,7 +1,7 @@
 # Memory Bank - Sage Workspace
 
 *Created: 2026-06-26 13:21:04 IST*
-*Last Updated: 2026-09-15 11:57:00 IST*
+*Last Updated: 2026-10-22 11:39:35 IST*
 
 ## Overview
 
@@ -14,7 +14,9 @@ This is the Memory Bank for the Sage (灵剑) OpenClaw workspace.
 | T20 | Memory Bank Database Parser | 🔄 | MEDIUM | 2025-11-12 | - | [Details](tasks/T20.md) |
 | T999 | Verification record only | 🔄 | MEDIUM | 2026-05-22 | - | [Details](tasks/T999.md) |
 | T27 | Publish the Memory Bank CLI to npm | 🔄 | HIGH | 2026-08-14 | T13, T25 | [Details](tasks/T27.md) |
-| T29 | Parser Generalization and Regeneration Drift Detection | ⬜ | HIGH | 2026-09-15 | T20 | [Details](tasks/T29.md) |
+| T29 | Evaluate Beads and Dolt for Multi-Worktree Memory Bank Coordination | 🔄 | HIGH | 2026-09-24 | T28, T20 | [Details](tasks/T29.md) |
+| META-1 | Memory Bank Update and Maintenance | 🔄 | HIGH | 2025-11-13 | - | [Details](tasks/META-1.md) |
+| T30 | Parser Generalization and Regeneration Drift Detection | ⬜ | HIGH | 2026-09-15 | T20 | [Details](tasks/T30.md) |
 
 ## Completed Tasks
 
@@ -32,17 +34,18 @@ This is the Memory Bank for the Sage (灵剑) OpenClaw workspace.
 T21: Schema v1.1 alignment - migrate sessions to short column names
 T999: Verification record only
 T27: Publish the Memory Bank CLI to npm (depends on T13, T25)
+T29: Evaluate Beads and Dolt for multi-worktree Memory Bank coordination (informed by T28; uses T20 event/import tooling)
 T28: Event-backed coordination experiment (depends on T20)
   ├─ T28a: Markdown-to-event import
   ├─ T28b: Deterministic Markdown projection (depends on T28a)
   └─ T28c: Parallel merge and conflict simulation (depends on T28b)
-T29: Parser generalization + regeneration drift detection (depends on T20; follow-up to 2026-09-10 regeneration incident)
+T30: Parser generalization + regeneration drift detection (depends on T20; follow-up to 2026-09-10 regeneration incident)
 ```
 
 ## Status Summary
 
-- **Active**: 5
+- **Active**: 6
 - **Pending**: 1
 - **Completed**: 5
 - **Paused**: 2
-- **Total**: 13
+- **Total**: 14
